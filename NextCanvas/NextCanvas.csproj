@@ -33,9 +33,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>NextCanvas.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Fluent, Version=6.1.0.326, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fluent.Ribbon.6.1.0.326\lib\net45\Fluent.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -54,7 +69,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Controls\NextDynamicRenderer.cs" />
+    <Compile Include="Controls\NextInkCanvas.cs" />
+    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Models\MainWindowModel.cs" />
+    <Compile Include="ObservableViewModelCollection.cs" />
+    <Compile Include="PropertyChangedObject.cs" />
+    <Compile Include="ViewModels\DocumentViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -62,12 +87,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -85,6 +112,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -92,6 +120,44 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NextCanvas.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="NextCanvas.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Home\Eraser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <SplashScreen Include="Images\splash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Home\Brush.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Select.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Home\Select.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Home\NewPage-Big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Shared\Arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Shared\NewPage-Small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Home\Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Shared\Copy-Small.png" />
+    <Resource Include="Images\Ribbon\Shared\Cut-Small.png" />
+    <Resource Include="Images\Ribbon\Shared\Paste-Small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

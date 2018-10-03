@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NextCanvas
+namespace NextCanvas.Controls
 {
     /// <summary>
-    /// Logique d'interaction pour MainWindow.xaml
+    /// Logique d'interaction pour NextInkCanvas.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class NextInkCanvas : InkCanvas
     {
-        public MainWindow()
+        public NextInkCanvas()
         {
-            InitializeComponent();
+            DynamicRenderer = new NextDynamicRenderer();
         }
     }
 }
