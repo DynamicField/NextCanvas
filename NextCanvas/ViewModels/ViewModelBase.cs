@@ -16,5 +16,6 @@ namespace NextCanvas.ViewModels
         {
             Model = new T();
         }
+        public override string ToString() => Model.ToString();
     }
 }

@@ -17,13 +17,14 @@ namespace NextCanvas.Models
         public string Name { get; set; } = "Tool";
         public object LargeIcon { get; set; } = null;
         public object SmallIcon { get; set; } = null;
-        public string Group { get; set; } = "Unknown";
+        public ToolGroup Group { get; set; } = new ToolGroup();
         public Cursor Cursor { get; set; } = Cursors.Pen;
         public bool IsDisplayed { get; set; } = true;
         public InkCanvasEditingMode Mode { get; set; } = InkCanvasEditingMode.Ink;
         public Tool()
         {
             DrawingAttributes.FitToCurve = true;
+            DrawingAttributes.Color = Group.Color;
         }
     }
     public abstract class StrokeTool : Tool

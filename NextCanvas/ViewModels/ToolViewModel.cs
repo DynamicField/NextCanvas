@@ -18,13 +18,18 @@ namespace NextCanvas.ViewModels
         }
         public ToolViewModel(Tool model) : base(model)
         {
+            Initialize();
             model.DrawingAttributes.FitToCurve = true;
         }
         public ToolViewModel(Tool model, Uri icon) : this(model)
         {
             LargeIcon = icon;
         }
-
+        private void Initialize()
+        {
+            Group = new ToolGroupViewModel(Model.Group);
+            InitDrawing(DrawingAttributes);
+        }
         public bool HasColor
         {
             get => Model.HasColor;
@@ -51,11 +56,33 @@ namespace NextCanvas.ViewModels
             get => Model.Mode;
             set { Model.Mode = value; OnPropertyChanged(nameof(Mode)); }
         }
-        public string Group
+        private ToolGroupViewModel group;
+        public ToolGroupViewModel Group
         {
-            get => Model.Group;
-            set { Model.Group = value; OnPropertyChanged(nameof(Group)); }
+            get => group;
+            set
+            {
+                if (group != null)
+                {
+                    group.PropertyChanged -= Group_PropertyChanged;
+                }
+                group = value;
+                Model.Group = group.Model;
+                group.PropertyChanged += Group_PropertyChanged;
+                OnPropertyChanged(nameof(Group));
+                OnPropertyChanged(nameof(GroupName));
+            }
         }
+
+        private void Group_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ToolGroupViewModel.Name))
+            {
+                OnPropertyChanged(nameof(GroupName));
+            }
+        }
+
+        public string GroupName => Group.Name;
         public bool IsDisplayed
         {
             get => Model.IsDisplayed;
@@ -66,18 +93,39 @@ namespace NextCanvas.ViewModels
             get => Model.Cursor;
             set { Model.Cursor = value; OnPropertyChanged(nameof(Cursor)); OnPropertyChanged(nameof(UseCursor)); }
         }
-        public bool UseCursor => !(Cursor is null); // ah yes is
+        public bool UseCursor => Cursor != null; // ah yes is
         public bool HasSize => Mode != InkCanvasEditingMode.None && Mode != InkCanvasEditingMode.Select;
         public StylusShape EraserShape => new RectangleStylusShape(DrawingAttributes.Width, DrawingAttributes.Height);
         public DrawingAttributes DrawingAttributes
         {
-            get => Model.DrawingAttributes;
+            get
+            {
+                Model.DrawingAttributes.Color = Group.Color;
+                return Model.DrawingAttributes;
+            }
             set
             {
-                Model.DrawingAttributes = value;
-                OnPropertyChanged(nameof(DrawingAttributes));
+                InitDrawing(value);
             }
         }
+
+        private void InitDrawing(DrawingAttributes value)
+        {
+            Model.DrawingAttributes.AttributeChanged -= ColorChangeHandler;
+            Model.DrawingAttributes = value;
+            // Group.Color = Model.DrawingAttributes.Color;
+            Model.DrawingAttributes.AttributeChanged += ColorChangeHandler;
+            OnPropertyChanged(nameof(DrawingAttributes));
+        }
+
+        private void ColorChangeHandler(object sender, PropertyDataChangedEventArgs e)
+        {
+            if (e.NewValue is Color c)
+            {
+                group.Color = c;
+            }
+        }
+
         public double UniformSize
         {
             get => DrawingAttributes.Height;
@@ -91,12 +139,17 @@ namespace NextCanvas.ViewModels
                 OnPropertyChanged(nameof(UniformSize));
                 OnPropertyChanged(nameof(EraserShape));
                 // Some kind of hack to make the cursor update. dunno why microsoft didnt do gr8 xd
-                if (Mode == InkCanvasEditingMode.EraseByPoint || Mode == InkCanvasEditingMode.EraseByStroke)
-                {
-                    InkCanvasEditingMode previous = Mode;
-                    Mode = InkCanvasEditingMode.None;
-                    Mode = previous;
-                }
+                UpdateCursorIfEraser(this);
+            }
+        }
+
+        public static void UpdateCursorIfEraser(ToolViewModel t)
+        {
+            if (t.Mode == InkCanvasEditingMode.EraseByPoint || t.Mode == InkCanvasEditingMode.EraseByStroke)
+            {
+                InkCanvasEditingMode previous = t.Mode;
+                t.Mode = InkCanvasEditingMode.None;
+                t.Mode = previous;
             }
         }
     }

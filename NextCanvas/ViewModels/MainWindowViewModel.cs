@@ -50,10 +50,11 @@ namespace NextCanvas.ViewModels
                     selectedToolIndex = value;
                     OnPropertyChanged(nameof(SelectedToolIndex));
                     OnPropertyChanged(nameof(SelectedTool));
+                    ToolViewModel.UpdateCursorIfEraser(SelectedTool);
                 }
                 else
                 {
-                    throw new IndexOutOfRangeException("out of range ;(");
+                    // throw new IndexOutOfRangeException("out of range ;(");
                 }
             }
         }
@@ -134,6 +135,10 @@ namespace NextCanvas.ViewModels
             {
                 CurrentDocument.Pages.RemoveAt(index);
                 UpdatePageManipulation();
+                if (index == 0)
+                {
+                    CurrentDocument.SelectedIndex = CurrentDocument.SelectedIndex; // Update the deleted page :v
+                }
             }
         }
         private void ExtendPage(string direction)

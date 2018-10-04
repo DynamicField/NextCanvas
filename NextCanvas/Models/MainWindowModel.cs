@@ -11,11 +11,37 @@ namespace NextCanvas.Models
     public class MainWindowModel
     {
         public Document Document { get; set; } = new Document();
-        public List<Tool> Tools { get; set; } = new List<Tool> {
+        public ToolGroupCollection Groups { get; set; } = new ToolGroupCollection
+        {
+            new ToolGroup
+            {
+                Name = "Brushes",
+                Color = Colors.Black
+            },
+            new ToolGroup
+            {
+                Name = "Other",
+                Color = Colors.Black
+            },
+            new ToolGroup
+            {
+                Name = "Highlighters",
+                Color = Colors.Yellow
+            },
+            new ToolGroup
+            {
+                Name = "Erasers",
+                Color = Colors.Black
+            }
+        };
+        public List<Tool> Tools { get; set; }
+        public MainWindowModel()
+        {
+            Tools = new List<Tool> {
             new Tool
             {
                 Name = "Normal Brush",
-                Group = "Brushes",
+                Group = Groups["Brushes"],
                 LargeIcon = new Uri("pack://application:,,,/Images/Ribbon/Home/Brush.png"),
                 DrawingAttributes = new System.Windows.Ink.DrawingAttributes
                 {
@@ -28,7 +54,7 @@ namespace NextCanvas.Models
             new Tool
             {
                 Name = "Medium Brush",
-                Group = "Brushes",
+                Group = Groups["Brushes"],
                 LargeIcon = new Uri("pack://application:,,,/Images/Ribbon/Home/Brush.png"),
                 DrawingAttributes = new System.Windows.Ink.DrawingAttributes
                 {
@@ -40,7 +66,7 @@ namespace NextCanvas.Models
             new Tool
             {
                 Name = "Big Brush",
-                Group = "Brushes",
+                Group = Groups["Brushes"],
                 LargeIcon = new Uri("pack://application:,,,/Images/Ribbon/Home/Brush.png"),
                 DrawingAttributes = new System.Windows.Ink.DrawingAttributes
                 {
@@ -53,28 +79,68 @@ namespace NextCanvas.Models
             new Tool
             {
                 Name = "Select",
-                Group = "Other",
+                Group = Groups["Other"],
                 LargeIcon = new Uri("pack://application:,,,/Images/Ribbon/Home/Select.png"),
                 Mode = System.Windows.Controls.InkCanvasEditingMode.Select,
-                IsDisplayed = false
+                IsDisplayed = false,
+                Cursor = null
             },
             new Tool
             {
-                Name = "Eraser",
-                Group = "Other",
+                Name = "Small Eraser",
+                Group = Groups["Erasers"],
                 LargeIcon = new Uri("pack://application:,,,/Images/Ribbon/Home/Eraser.png"),
                 Mode = System.Windows.Controls.InkCanvasEditingMode.EraseByPoint,
                 DrawingAttributes = new System.Windows.Ink.DrawingAttributes
                 {
-                    Width = 5,
-                    Height = 5
+                    Width = 4,
+                    Height = 4
+                },
+                Cursor = null
+            },
+            new Tool
+            {
+                Name = "Medium Eraser",
+                Group = Groups["Erasers"],
+                LargeIcon = new Uri("pack://application:,,,/Images/Ribbon/Home/Eraser.png"),
+                Mode = System.Windows.Controls.InkCanvasEditingMode.EraseByPoint,
+                DrawingAttributes = new System.Windows.Ink.DrawingAttributes
+                {
+                    Width = 10,
+                    Height = 10
+                },
+                Cursor = null
+            },
+            new Tool
+            {
+                Name = "Big Eraser",
+                Group = Groups["Erasers"],
+                LargeIcon = new Uri("pack://application:,,,/Images/Ribbon/Home/Eraser.png"),
+                Mode = System.Windows.Controls.InkCanvasEditingMode.EraseByPoint,
+                DrawingAttributes = new System.Windows.Ink.DrawingAttributes
+                {
+                    Width = 40,
+                    Height = 40
+                },
+                Cursor = null
+            },
+            new Tool
+            {
+                Name = "Huge Eraser",
+                Group = Groups["Erasers"],
+                LargeIcon = new Uri("pack://application:,,,/Images/Ribbon/Home/Eraser.png"),
+                Mode = System.Windows.Controls.InkCanvasEditingMode.EraseByPoint,
+                DrawingAttributes = new System.Windows.Ink.DrawingAttributes
+                {
+                    Width = 100,
+                    Height = 100
                 },
                 Cursor = null
             },
             new Tool
             {
                 Name = "Highlighter",
-                Group = "Highlighters",
+                Group = Groups["Highlighters"],
                 LargeIcon = new Uri("pack://application:,,,/Images/Ribbon/Shared/Highlighter_24.png"),
                 DrawingAttributes = new System.Windows.Ink.DrawingAttributes
                 {
@@ -85,6 +151,6 @@ namespace NextCanvas.Models
                 }
             }
         };
-        public MainWindowModel() { }
+        }
     }
 }

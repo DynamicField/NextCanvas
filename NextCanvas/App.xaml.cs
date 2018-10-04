@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NextCanvas.Views;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -17,6 +18,14 @@ namespace NextCanvas
         public App()
         {
             System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-UK");
+            AppDomain.CurrentDomain.UnhandledException += RestInPeperonies;
+        }
+
+        private void RestInPeperonies(object sender, UnhandledExceptionEventArgs e)
+        {
+            var exception = e.ExceptionObject as Exception;
+            new ExceptionWindow(exception.ToString()).ShowDialog();
+            Application.Current.Shutdown(1);
         }
     }
 }

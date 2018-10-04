@@ -42,7 +42,6 @@ namespace NextCanvas
             {
                 CopyButton.IsEnabled = CutButton.IsEnabled = false;
             }
-            StrokeCollection selectedStrokes = canvas.GetSelectedStrokes();
         }
 
         private void Paste_Click(object sender, RoutedEventArgs e)
@@ -86,7 +85,7 @@ namespace NextCanvas
 
         private void InRibbonGallery_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            canvas.DefaultDrawingAttributes.Color = colorGallery.SelectedColor ?? Colors.Black;
+            // canvas.DefaultDrawingAttributes.Color = colorGallery.SelectedColor ?? Colors.Black;
         }
 
         private void ResizeCanvasEvent(object sender, RoutedEventArgs e)

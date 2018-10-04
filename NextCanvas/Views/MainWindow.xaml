@@ -106,7 +106,7 @@
                     <fluent:RibbonGroupBox Header="Basic tools">
                         <fluent:InRibbonGallery SelectedIndex="{Binding SelectedToolIndex}" ItemsSource="{Binding Tools}" Selectable="True" 
                                                 Header="OwO" ResizeMode="Both" MinItemsInRow="3" MaxItemsInRow="20" Orientation="Horizontal"
-                                                ItemHeight="54" ItemWidth="54" GroupBy="Group" SelectionChanged="InRibbonGallery_SelectionChanged">
+                                                ItemHeight="54" ItemWidth="54" GroupBy="GroupName" SelectionChanged="InRibbonGallery_SelectionChanged">
                             <!--<fluent:InRibbonGallery.ItemContainerStyle>
                                 <Style TargetType="fluent:GalleryItem">
                                     <Setter Property="Visibility" Value="{Binding IsDisplayed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -137,7 +137,7 @@
                     <fluent:RibbonGroupBox Header="Colors" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=toggleButton}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <fluent:ColorGallery SelectedColorChanged="ColorGallery_SelectedColorChanged" x:Name="colorGallery"
-                            SelectedColor="{Binding SelectedTool.DrawingAttributes.Color, Mode=OneWayToSource}" IsAutomaticColorButtonVisible="False"
+                            SelectedColor="{Binding SelectedTool.DrawingAttributes.Color, Mode=TwoWay}" IsAutomaticColorButtonVisible="False"
                             IsMoreColorsButtonVisible="True" IsNoColorButtonVisible="False" Mode="ThemeColors" ChipHeight="14" ChipWidth="14">
                                 <fluent:ColorGallery.Resources>
                                     <Style TargetType="{x:Type fluent:GroupSeparatorMenuItem}">
