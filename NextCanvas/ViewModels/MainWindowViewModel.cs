@@ -38,6 +38,37 @@ namespace NextCanvas.ViewModels
             Colors.Yellow,
             Colors.Purple
         };
+        public ObservableViewModelCollection<ToolViewModel, Tool> Tools { get; set; }
+        private int selectedToolIndex;
+
+        public int SelectedToolIndex
+        {
+            get { return selectedToolIndex; }
+            set {
+                if (value >= 0 && value < Tools.Count || Tools.Count == 0)
+                {
+                    selectedToolIndex = value;
+                    OnPropertyChanged(nameof(SelectedToolIndex));
+                    OnPropertyChanged(nameof(SelectedTool));
+                }
+                else
+                {
+                    throw new IndexOutOfRangeException("out of range ;(");
+                }
+            }
+        }
+        public ToolViewModel SelectedTool
+        {
+            get
+            {
+                return Tools[SelectedToolIndex];
+            }
+            set
+            {
+                var find = Tools.IndexOf(value);
+                SelectedToolIndex = find;
+            }
+        }
         private void Subscribe() // To my youtube channel XD
         {
             document.Pages.CollectionChanged += PagesChanged;
@@ -66,6 +97,7 @@ namespace NextCanvas.ViewModels
         public DelegateCommand NewPageCommand { get; private set; }
         public DelegateCommand DeletePageCommand { get; private set; }
         public DelegateCommand ExtendPageCommand { get; private set; }
+        public DelegateCommand SetToolByNameCommand { get; private set; }
         public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
         public MainWindowViewModel() : base()
         {
@@ -78,13 +110,24 @@ namespace NextCanvas.ViewModels
         private void Initalize()
         {
             document = new DocumentViewModel(Model.Document);
+            Tools = new ObservableViewModelCollection<ToolViewModel, Tool>(Model.Tools, t => new ToolViewModel(t));
             Subscribe();
             PreviousPageCommand = new DelegateCommand(o => ChangePage(Direction.Backwards), o => CanChangePage(Direction.Backwards));
             NextPageCommand = new DelegateCommand(o => ChangePage(Direction.Forwards), o => CanChangePage(Direction.Forwards));
             NewPageCommand = new DelegateCommand(o => CreateNewPage());
             DeletePageCommand = new DelegateCommand(o => DeletePage(CurrentDocument.SelectedIndex), o => CanDeletePage);
             ExtendPageCommand = new DelegateCommand(o => ExtendPage(o.ToString()));
+            SetToolByNameCommand = new DelegateCommand(o => SetToolByName(o.ToString()), o => IsNameValid(o.ToString()));
         }
+        private void SetToolByName(string name)
+        {
+            if (!IsNameValid(name))
+            {
+                return;
+            }
+            SelectedTool = Tools.First(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        }
+        private bool IsNameValid(string name) => Tools.Any(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         private void DeletePage(int index)
         {
             if (CanDeletePage)

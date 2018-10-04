@@ -52,7 +52,11 @@ namespace NextCanvas
 
         private void Sync_Collection(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (DisableSync) return;
+            if (DisableSync)
+            {
+                return;
+            }
+
             if (e.NewItems != null)
             {
                 foreach (var item in e.NewItems.Cast<TViewModel>())
