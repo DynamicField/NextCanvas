@@ -10,6 +10,7 @@ namespace NextCanvas.Models
     public class ToolGroup
     {
         public string Name { get; set; } = "Unknown";
+        public bool HasGotColor { get; set; } = true;
         public override string ToString()
         {
             return Name;

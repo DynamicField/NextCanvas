@@ -163,7 +163,9 @@
     <SplashScreen Include="Images\splash.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Ribbon\Home\Brush.png" />
+    <Resource Include="Images\Ribbon\Home\Brush.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Select.png" />
@@ -206,6 +208,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Home\Add.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

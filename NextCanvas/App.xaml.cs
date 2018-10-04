@@ -22,6 +22,7 @@ namespace NextCanvas
         }
 
         private void RestInPeperonies(object sender, UnhandledExceptionEventArgs e)
+
         {
             var exception = e.ExceptionObject as Exception;
             new ExceptionWindow(exception.ToString()).ShowDialog();

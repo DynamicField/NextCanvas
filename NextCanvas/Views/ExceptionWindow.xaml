@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NextCanvas.Views"
         mc:Ignorable="d"
-        Title="ExceptionWindow" Height="454.787" Width="763.617" BorderThickness="5">
+        MinWidth="500" MinHeight="440"
+        Title="Oh look!" Height="454.787" Width="763.617" BorderThickness="5">
     <Window.BorderBrush>
         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
             <GradientStop Color="Red" Offset="0"/>
@@ -32,15 +33,17 @@
             </Grid.RowDefinitions>
             <StackPanel>
                 <TextBlock FontSize="25" FontWeight="Bold">Oh well... That sucks.</TextBlock>
-                <TextBlock TextWrapping="Wrap" LineHeight="12" Margin="0,5">Some really ugly exception didn't got catched... if only we could catch it! The program could continue to work like in a beautiful dream...
+                <TextBlock TextWrapping="Wrap" LineHeight="12" Margin="0,5">Some really ugly exception didn't get catched... sad. The program could continue to work like in a beautiful dream...
                 But no, of course you gotta have this exception that just throws away your happiness on this pleasant day. <LineBreak/> Oh, wait, you don't know what is an exception? It's just an error basically.
                 But you can catch it and yell "<Bold>HAHA GOT YOU NOW LEMME TELL TO EVERYONE THAT YOU EXIST XD YOU WON'T MAKE ANY PROGRAM CRASH LOL</Bold>".</TextBlock>
                 <TextBlock>Now here is some useful information that only 1337 hax0rs can understand, a.k.a .NET developers.</TextBlock>
             </StackPanel>
-            <TextBox Grid.Row="1" Margin="0,10,10,5" FontFamily="Consolas" Padding="2" IsReadOnly="True" x:Name="Info">...Nothing :v</TextBox>
+            <TextBox Grid.Row="1" Margin="0,10,10,5" FontFamily="Consolas" Padding="2" IsReadOnly="True" x:Name="Info" 
+                     VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap">...Nothing :v</TextBox>
         </Grid>
         <Border Grid.Row="1" Grid.ColumnSpan="2" Background="LightGray">
             <StackPanel Orientation="Horizontal" Margin="8" HorizontalAlignment="Right">
+                <Button Padding="30,5" Margin="10,0"  Click="Button_Click_1">Report this problem </Button>
                 <Button Padding="30,5" Click="Button_Click">Ok :(</Button>
             </StackPanel>
         </Border>

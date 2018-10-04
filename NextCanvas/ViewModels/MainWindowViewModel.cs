@@ -30,21 +30,15 @@ namespace NextCanvas.ViewModels
                 UpdatePageText();
             }
         }
-        public ObservableCollection<Color> FavoriteColors { get; set; } = new ObservableCollection<Color>
-        {
-            Colors.Black,
-            Colors.Blue,
-            Colors.Red,
-            Colors.Yellow,
-            Colors.Purple
-        };
+        public ObservableCollection<Color> FavoriteColors => Model.FavouriteColors;
         public ObservableViewModelCollection<ToolViewModel, Tool> Tools { get; set; }
         private int selectedToolIndex;
 
         public int SelectedToolIndex
         {
-            get { return selectedToolIndex; }
-            set {
+            get => selectedToolIndex;
+            set
+            {
                 if (value >= 0 && value < Tools.Count || Tools.Count == 0)
                 {
                     selectedToolIndex = value;
@@ -60,13 +54,10 @@ namespace NextCanvas.ViewModels
         }
         public ToolViewModel SelectedTool
         {
-            get
-            {
-                return Tools[SelectedToolIndex];
-            }
+            get => Tools[SelectedToolIndex];
             set
             {
-                var find = Tools.IndexOf(value);
+                int find = Tools.IndexOf(value);
                 SelectedToolIndex = find;
             }
         }
@@ -100,7 +91,12 @@ namespace NextCanvas.ViewModels
         public DelegateCommand ExtendPageCommand { get; private set; }
         public DelegateCommand SetToolByNameCommand { get; private set; }
         public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
+
         public MainWindowViewModel() : base()
+        {
+            Initalize();
+        }
+        public MainWindowViewModel(MainWindowModel model) : base(model)
         {
             Initalize();
         }
@@ -120,6 +116,7 @@ namespace NextCanvas.ViewModels
             ExtendPageCommand = new DelegateCommand(o => ExtendPage(o.ToString()));
             SetToolByNameCommand = new DelegateCommand(o => SetToolByName(o.ToString()), o => IsNameValid(o.ToString()));
         }
+
         private void SetToolByName(string name)
         {
             if (!IsNameValid(name))
@@ -128,7 +125,11 @@ namespace NextCanvas.ViewModels
             }
             SelectedTool = Tools.First(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
-        private bool IsNameValid(string name) => Tools.Any(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        private bool IsNameValid(string name)
+        {
+            return Tools.Any(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        }
+
         private void DeletePage(int index)
         {
             if (CanDeletePage)
@@ -175,9 +176,7 @@ namespace NextCanvas.ViewModels
             Forwards = 1,
             Backwards = -1
         }
-        public MainWindowViewModel(MainWindowModel model) : base(model)
-        {
-            Initalize();
-        }
+
+
     }
 }

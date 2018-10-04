@@ -34,7 +34,6 @@ namespace NextCanvas
                 });
             }
         }
-
         public ObservableViewModelCollection(IList<TModel> modelCollection = null,
             Func<TModel, TViewModel> vmConstructor = null, Action<TViewModel> added = null,
             Action<TViewModel> removed = null) : this(modelCollection, vmConstructor)

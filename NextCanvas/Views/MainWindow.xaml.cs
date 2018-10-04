@@ -105,5 +105,10 @@ namespace NextCanvas
             }
             canvas.SizeChanged -= Canvas_SizeChanged;
         }
+
+        private void DebugStylusXD_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
