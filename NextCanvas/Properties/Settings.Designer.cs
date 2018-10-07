@@ -22,17 +22,5 @@ namespace NextCanvas.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Paramètre {
-            get {
-                return ((string)(this["Paramètre"]));
-            }
-            set {
-                this["Paramètre"] = value;
-            }
-        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Fluent;
+using Newtonsoft.Json;
 using NextCanvas.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,13 +29,15 @@ namespace NextCanvas.ViewModels
                 Model.Document = document.Model;
                 Subscribe();
                 OnPropertyChanged(nameof(CurrentDocument));
+                UpdatePageManipulation();
                 UpdatePageText();
             }
         }
         public ObservableCollection<Color> FavoriteColors => Model.FavouriteColors;
         public ObservableViewModelCollection<ToolViewModel, Tool> Tools { get; set; }
         private int selectedToolIndex;
-
+        public string SavePath { get; set; } = null;
+        public string OpenPath { get; set; } = null;
         public int SelectedToolIndex
         {
             get => selectedToolIndex;
@@ -52,9 +56,19 @@ namespace NextCanvas.ViewModels
                 }
             }
         }
+        // better use this tho
         public ToolViewModel SelectedTool
         {
-            get => Tools[SelectedToolIndex];
+            get {
+
+                ToolViewModel tool = Tools[SelectedToolIndex];
+                Color color = tool.DrawingAttributes.Color;
+                if (!ColorGallery.StandardThemeColors.Contains(color) && !FavoriteColors.Contains(color))
+                {
+                    FavoriteColors.Add(color);
+                }
+                return tool;
+            }
             set
             {
                 int find = Tools.IndexOf(value);
@@ -90,6 +104,8 @@ namespace NextCanvas.ViewModels
         public DelegateCommand DeletePageCommand { get; private set; }
         public DelegateCommand ExtendPageCommand { get; private set; }
         public DelegateCommand SetToolByNameCommand { get; private set; }
+        public DelegateCommand SaveCommand { get; private set; }
+        public DelegateCommand OpenCommand { get; private set; }
         public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
 
         public MainWindowViewModel() : base()
@@ -115,8 +131,46 @@ namespace NextCanvas.ViewModels
             DeletePageCommand = new DelegateCommand(o => DeletePage(CurrentDocument.SelectedIndex), o => CanDeletePage);
             ExtendPageCommand = new DelegateCommand(o => ExtendPage(o.ToString()));
             SetToolByNameCommand = new DelegateCommand(o => SetToolByName(o.ToString()), o => IsNameValid(o.ToString()));
+            SaveCommand = new DelegateCommand(o => SaveDocument());
+            OpenCommand = new DelegateCommand(o => OpenDocument());
         }
-
+        // The following shall be replaced with some zippy archives and resources and isf and blah and wow and everything you need to be gud
+        private void SaveDocument()
+        {
+            if (SavePath == null)
+            {
+                return;
+            }
+            try
+            {
+                using (var streamyStream = new StreamWriter(SavePath, false))
+                {
+                    streamyStream.Write(JsonConvert.SerializeObject(CurrentDocument.Model));
+                }
+            }
+            finally
+            {
+                SavePath = null;
+            }
+        }
+        private void OpenDocument()
+        {
+            if (OpenPath == null)
+            {
+                return;
+            }
+            try
+            {
+                using (var streamyStream = new StreamReader(OpenPath))
+                {
+                    CurrentDocument = new DocumentViewModel(JsonConvert.DeserializeObject<Document>(streamyStream.ReadToEnd()));
+                }
+            }
+            finally
+            {
+                OpenPath = null;
+            }
+        }
         private void SetToolByName(string name)
         {
             if (!IsNameValid(name))
@@ -129,7 +183,6 @@ namespace NextCanvas.ViewModels
         {
             return Tools.Any(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
-
         private void DeletePage(int index)
         {
             if (CanDeletePage)
@@ -176,7 +229,5 @@ namespace NextCanvas.ViewModels
             Forwards = 1,
             Backwards = -1
         }
-
-
     }
 }

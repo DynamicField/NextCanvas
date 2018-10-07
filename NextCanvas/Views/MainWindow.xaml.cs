@@ -1,5 +1,7 @@
 ﻿using Fluent;
+using Microsoft.Win32;
 using NextCanvas.ViewModels;
+using NextCanvas.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +33,7 @@ namespace NextCanvas
             InitializeComponent();
             DataContext = new MainWindowViewModel();
             canvas.DefaultDrawingAttributes.FitToCurve = true;
+            
         }
         private void Canvas_SelectionChanged(object sender, EventArgs e)
         {
@@ -108,7 +111,46 @@ namespace NextCanvas
 
         private void DebugStylusXD_Click(object sender, RoutedEventArgs e)
         {
+            new StylusDebugWindow { Owner = this }.Show();
+        }
 
+        private void NewButton_Click(object sender, RoutedEventArgs e)
+        {
+            new MainWindow().Show();
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as MainWindowViewModel;
+            var dialog = new SaveFileDialog
+            {
+                Filter = "NextCanvas document (*.ncd)|*.ncd"
+            };
+            if (dialog.ShowDialog() ?? false)
+            {
+                vm.SavePath = dialog.FileName;
+            }
+            else
+            {
+                vm.SavePath = null;
+            }
+        }
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as MainWindowViewModel;
+            var dialog = new OpenFileDialog
+            {
+                Filter = "NextCanvas document (*.ncd)|*.ncd"
+            };
+            if (dialog.ShowDialog() ?? false)
+            {
+                vm.OpenPath = dialog.FileName;
+            }
+            else
+            {
+                vm.OpenPath = null;
+            }
         }
     }
 }

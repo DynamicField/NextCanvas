@@ -17,7 +17,7 @@ namespace NextCanvas
     {
         public App()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-UK");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             AppDomain.CurrentDomain.UnhandledException += RestInPeperonies;
         }
 

@@ -55,6 +55,5 @@ namespace NextCanvas.Controls
                 (sender as NextInkCanvas).UseCustomCursor = (bool)e.NewValue;
             }));
 
-
     }
 }

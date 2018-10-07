@@ -24,7 +24,7 @@ namespace NextCanvas.Models
             new ToolGroup
             {
                 Name = "Highlighters",
-                Color = Colors.Yellow
+                Color = Colors.Orange
             },
             new ToolGroup
             {
@@ -150,8 +150,8 @@ namespace NextCanvas.Models
                 DrawingAttributes = new System.Windows.Ink.DrawingAttributes
                 {
                     Color = Colors.Yellow,
-                    Width = 2,
-                    Height = 5,
+                    Width = 3,
+                    Height = 20,
                     IsHighlighter = true
                 }
             }

@@ -1,7 +1,8 @@
-﻿<Application x:Class="NextCanvas.App"
+﻿<Application
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:NextCanvas"
+             xmlns:fluent="urn:fluent-ribbon" x:Class="NextCanvas.App"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -9,7 +10,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Style TargetType="Paragraph">
+            <Style TargetType="{x:Type Paragraph}">
                 <Setter Property="LineHeight" Value="0.5"/>
             </Style>
             <Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="DeleteSelection" Margin="2,0,0,0">
