@@ -26,7 +26,7 @@ namespace NextCanvas.Models
                 }
             }
         }
-        public int Width { get; set; } = 1080;
-        public int Height { get; set; } = 720;
+        public int Width { get; set; } = 1720;
+        public int Height { get; set; } = 1420;
     }
 }

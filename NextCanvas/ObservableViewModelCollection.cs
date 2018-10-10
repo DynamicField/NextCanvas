@@ -9,14 +9,14 @@ namespace NextCanvas
 {
     public class ObservableViewModelCollection<TViewModel, TModel> : ObservableCollection<TViewModel> where TViewModel : ViewModels.ViewModelBase<TModel> where TModel : class, new()
     {
-        public bool DisableSync { get; set; } = false;
+        public bool DisableSync { get; set; }
 
         public Action<TViewModel> ItemAdded { get; set; }
         public Action<TViewModel> ItemRemoved { get; set; }
 
         protected IList<TModel> ModelCollection { get; set; }
 
-        public ObservableViewModelCollection() : base()
+        public ObservableViewModelCollection()
         {
             CollectionChanged += Sync_Collection;
         }

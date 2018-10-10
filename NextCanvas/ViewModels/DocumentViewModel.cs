@@ -35,7 +35,7 @@ namespace NextCanvas.ViewModels
                 return Pages[SelectedIndex];
             }
         }
-        public DocumentViewModel() : base()
+        public DocumentViewModel()
         {
             Initialize();
         }

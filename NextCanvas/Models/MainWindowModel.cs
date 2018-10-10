@@ -52,7 +52,7 @@ namespace NextCanvas.Models
                 {
                     Color = Colors.Black,
                     Height = 2,
-                    Width = 2
+                    Width = 2,
                 },
                 Cursor = Cursors.Pen
             },

@@ -1,0 +1,31 @@
+﻿<Window x:Class="NextCanvas.Views.MultiCanvasExperimentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NextCanvas.Views"
+        mc:Ignorable="d"
+        Title="MultiCanvasExperimentWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="2">Multi canvas experiment :v</TextBlock>
+        <Border Grid.Row="1" Margin="5" BorderBrush="DarkGray" BorderThickness="4" x:Name="canvas">
+            <Grid>
+                <InkCanvas x:Name="foregroundCanvas" Background="{x:Null}" Panel.ZIndex="1" >
+                    <TextBlock Margin="1" Background="Cyan">I'm in that nice foreground canvas !!!</TextBlock>
+                </InkCanvas>
+                <InkCanvas x:Name="backgroundCanvas" Background="LightCyan" Panel.ZIndex="0">
+                    <TextBlock Margin="1" Background="DarkCyan" InkCanvas.Top="12">I'm in that background canvas gimme some love :(</TextBlock>
+                </InkCanvas>
+            </Grid>
+        </Border>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="6" Grid.Row="2">
+            <Button Content="Select" Margin="5" Padding="5" Click="Button_Click_1"/>
+            <Button Content="Write" Margin="5" Padding="5" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

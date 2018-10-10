@@ -15,8 +15,8 @@ namespace NextCanvas.Models
         public DrawingAttributes DrawingAttributes { get; set; } = new DrawingAttributes();
         public bool HasColor { get; set; } = true;
         public string Name { get; set; } = "Tool";
-        public object LargeIcon { get; set; } = null;
-        public object SmallIcon { get; set; } = null;
+        public object LargeIcon { get; set; }
+        public object SmallIcon { get; set; }
         public ToolGroup Group { get; set; } = new ToolGroup();
         public Cursor Cursor { get; set; } = Cursors.Pen;
         public bool IsDisplayed { get; set; } = true;

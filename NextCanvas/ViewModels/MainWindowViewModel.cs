@@ -15,6 +15,7 @@ namespace NextCanvas.ViewModels
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>
     {
         private DocumentViewModel document;
+
         public DocumentViewModel CurrentDocument
         {
             get => document;
@@ -33,17 +34,19 @@ namespace NextCanvas.ViewModels
                 UpdatePageText();
             }
         }
+
         public ObservableCollection<Color> FavoriteColors => Model.FavouriteColors;
         public ObservableViewModelCollection<ToolViewModel, Tool> Tools { get; set; }
         private int selectedToolIndex;
-        public string SavePath { get; set; } = null;
-        public string OpenPath { get; set; } = null;
+        public string SavePath { get; set; }
+        public string OpenPath { get; set; }
+
         public int SelectedToolIndex
         {
             get => selectedToolIndex;
             set
             {
-                if (value >= 0 && value < Tools.Count || Tools.Count == 0)
+                if ((value >= 0 && value < Tools.Count) || Tools.Count == 0)
                 {
                     selectedToolIndex = value;
                     OnPropertyChanged(nameof(SelectedToolIndex));
@@ -71,10 +74,10 @@ namespace NextCanvas.ViewModels
             }
             set
             {
-                int find = Tools.IndexOf(value);
-                SelectedToolIndex = find;
+                SelectedToolIndex = Tools.IndexOf(value);
             }
         }
+
         private void Subscribe() // To my youtube channel XD
         {
             document.Pages.CollectionChanged += PagesChanged;
@@ -98,6 +101,7 @@ namespace NextCanvas.ViewModels
         {
             UpdatePageText();
         }
+
         public DelegateCommand PreviousPageCommand { get; private set; }
         public DelegateCommand NextPageCommand { get; private set; }
         public DelegateCommand NewPageCommand { get; private set; }
@@ -108,18 +112,21 @@ namespace NextCanvas.ViewModels
         public DelegateCommand OpenCommand { get; private set; }
         public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
 
-        public MainWindowViewModel() : base()
+        public MainWindowViewModel()
         {
             Initalize();
         }
+
         public MainWindowViewModel(MainWindowModel model) : base(model)
         {
             Initalize();
         }
+
         private void UpdatePageText()
         {
             OnPropertyChanged(nameof(PageDisplayText));
         }
+
         private void Initalize()
         {
             document = new DocumentViewModel(Model.Document);
@@ -153,6 +160,7 @@ namespace NextCanvas.ViewModels
                 SavePath = null;
             }
         }
+
         private void OpenDocument()
         {
             if (OpenPath == null)
@@ -171,6 +179,7 @@ namespace NextCanvas.ViewModels
                 OpenPath = null;
             }
         }
+
         private void SetToolByName(string name)
         {
             if (!IsNameValid(name))
@@ -179,10 +188,12 @@ namespace NextCanvas.ViewModels
             }
             SelectedTool = Tools.First(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
+
         private bool IsNameValid(string name)
         {
             return Tools.Any(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
+
         private void DeletePage(int index)
         {
             if (CanDeletePage)
@@ -195,6 +206,7 @@ namespace NextCanvas.ViewModels
                 }
             }
         }
+
         private void ExtendPage(string direction)
         {
             if (direction.Equals("Right", StringComparison.InvariantCultureIgnoreCase))
@@ -206,7 +218,9 @@ namespace NextCanvas.ViewModels
                 CurrentDocument.SelectedPage.Height += 350;
             }
         }
+
         private bool CanDeletePage => CurrentDocument.Pages.Count > 1;
+
         private void ChangePage(Direction direction)
         {
             if (CanChangePage(direction))
@@ -214,16 +228,19 @@ namespace NextCanvas.ViewModels
                 document.SelectedIndex += (int)direction;
             }
         }
+
         private void CreateNewPage()
         {
             CurrentDocument.Pages.Add(new PageViewModel());
             ChangePage(Direction.Forwards);
         }
+
         private bool CanChangePage(Direction direction)
         {
             return (direction == Direction.Forwards && document.SelectedIndex + 1 != document.Pages.Count) ||
                    (direction == Direction.Backwards && document.SelectedIndex - 1 >= 0);
         }
+
         private enum Direction
         {
             Forwards = 1,
