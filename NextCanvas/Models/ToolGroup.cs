@@ -11,6 +11,14 @@ namespace NextCanvas.Models
     {
         public string Name { get; set; } = "Unknown";
         public bool HasGotColor { get; set; } = true;
+        private bool? hasDemo;
+
+        public bool HasDemo
+        {
+            get { return hasDemo ?? HasGotColor; }
+            set { hasDemo = value; }
+        }
+
         public override string ToString()
         {
             return Name;

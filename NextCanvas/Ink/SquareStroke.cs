@@ -17,10 +17,9 @@ namespace NextCanvas.Ink
         private Pen pen;
         public SquareStroke(System.Windows.Input.StylusPointCollection stylusPoints) : base(stylusPoints)
         {
-            StylusPoint minX, minY, maxX, maxY;
             if (StylusPoints.Count > 3)
             {
-                PopulateRectangle(out minX, out minY, out maxX, out maxY);
+                PopulateRectangle(out StylusPoint minX, out StylusPoint minY, out StylusPoint maxX, out StylusPoint maxY);
             }
             brush = new LinearGradientBrush(Colors.Red, Colors.Blue, 5d);
             pen = new Pen(brush, 2d);
@@ -43,8 +42,7 @@ namespace NextCanvas.Ink
                 base.DrawCore(drawingContext, drawingAttributes);
                 return;
             }
-            StylusPoint minX, minY, maxX, maxY;
-            PopulateRectangle(out minX, out minY, out maxX, out maxY);
+            PopulateRectangle(out StylusPoint minX, out StylusPoint minY, out StylusPoint maxX, out StylusPoint maxY);
             drawingContext.DrawRectangle(brush, pen, new Rect(new Point(minX.X, minY.Y), new Point(maxX.X, maxY.Y)));
         }
 

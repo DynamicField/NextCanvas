@@ -20,6 +20,17 @@ namespace NextCanvas.Models
         public ToolGroup Group { get; set; } = new ToolGroup();
         public Cursor Cursor { get; set; } = Cursors.Pen;
         public bool IsDisplayed { get; set; } = true;
+        private bool? hasDemo = null;
+        public bool HasDemo
+        {
+            get {
+                return hasDemo ?? HasColor;
+            }
+            set {
+                hasDemo = value;
+            }
+        }
+        public bool HasSize => Mode != InkCanvasEditingMode.None && Mode != InkCanvasEditingMode.Select;
         public InkCanvasEditingMode Mode { get; set; } = InkCanvasEditingMode.Ink;
         public Tool()
         {

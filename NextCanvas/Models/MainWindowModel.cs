@@ -87,7 +87,7 @@ namespace NextCanvas.Models
                 Group = Groups["Other"],
                 LargeIcon = new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Select.png"),
                 Mode = System.Windows.Controls.InkCanvasEditingMode.Select,
-                IsDisplayed = false,
+                HasDemo = false,
                 Cursor = null
             },
             new Tool
@@ -101,7 +101,7 @@ namespace NextCanvas.Models
                     Width = 4,
                     Height = 4
                 },
-                Cursor = null
+                Cursor = null,
             },
             new Tool
             {

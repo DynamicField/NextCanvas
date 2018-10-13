@@ -87,8 +87,13 @@
     </ApplicationDefinition>
     <Compile Include="Controls\NextDynamicRenderer.cs" />
     <Compile Include="Controls\NextInkCanvas.cs" />
+    <Compile Include="Converters\BoolToOrientationConverter.cs" />
+    <Compile Include="Converters\OrConverter.cs" />
+    <Compile Include="Converters\DivideByConverter.cs" />
     <Compile Include="Converters\IsEqualToConverter.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="ExtendedBinding.cs" />
+    <Compile Include="Ink\DemoStroke.cs" />
     <Compile Include="Ink\SquareStroke.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Tool.cs" />

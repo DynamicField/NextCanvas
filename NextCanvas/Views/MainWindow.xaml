@@ -6,12 +6,17 @@
         xmlns:local="clr-namespace:NextCanvas.Controls"
         xmlns:vm="clr-namespace:NextCanvas.ViewModels"
         xmlns:fluent="urn:fluent-ribbon" xmlns:Converters="clr-namespace:NextCanvas.Converters"
-    xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase" x:Class="NextCanvas.MainWindow"
+     xmlns:ink="clr-namespace:NextCanvas.Ink"
+     xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    x:Class="NextCanvas.MainWindow"
         UseLayoutRounding="True"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:MainWindowViewModel}}"
         Title="NextCanvas" Height="720" Width="1202">
     <fluent:RibbonWindow.Resources>
+        <Converters:BoolToOrientationConverter x:Key="BoolToOrientationConverter"/>
+        <Converters:DivideByConverter x:Key="DivideByConverter"/>
         <Converters:IsEqualToConverter x:Key="IsEqualToConverter"/>
+        <Converters:OrConverter x:Key="OrConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style TargetType="{x:Type Button}" x:Key="OpacityOnHover">
             <Style.Triggers>
@@ -147,11 +152,37 @@
                         <fluent:Button LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Add.png" Header="Create tool" SizeDefinition="large"></fluent:Button>
                     </fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox Header="Tool shape">
+                        <fluent:RibbonGroupBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OrConverter}">
+                                <Binding Path="SelectedTool.HasSize"/>
+                                <Binding Path="SelectedTool.HasDemo"/>
+                            </MultiBinding>
+                        </fluent:RibbonGroupBox.Visibility>
                         <StackPanel>
-                            <TextBlock HorizontalAlignment="Center" Margin="1" FontSize="12"><Run Text="Size :"/></TextBlock>
-                            <fluent:Spinner FontSize="12" Minimum="1" Maximum="18000" x:Name="size" MinWidth="70"
+                            <StackPanel Visibility="{Binding SelectedTool.HasSize, Mode=OneWay}" Orientation="{Binding SelectedTool.HasDemo, Converter={StaticResource BoolToOrientationConverter}, Mode=OneWay}" Margin="0,1,0,0">
+                                <TextBlock HorizontalAlignment="Center" Margin="1" FontSize="12" VerticalAlignment="Center">
+                                    <Run Text="Size :"/>
+                                </TextBlock>
+                                <fluent:Spinner FontSize="12" Minimum="1" Maximum="18000" x:Name="size" MinWidth="70"
                                             Value="{Binding SelectedTool.UniformSize}" 
-                                            Increment="1" Margin="-8,0,0,0" Interval="18"/>
+                                            Increment="1" Interval="18">
+                                    <fluent:Spinner.Style>
+                                        <Style TargetType="fluent:Spinner">
+                                            <Setter Property="Margin" Value="-8,0,0,0"></Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedTool.HasDemo}" Value="True">
+                                                    <Setter Property="Margin" Value="-5,0,0,0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </fluent:Spinner.Style>
+                                </fluent:Spinner>
+                            </StackPanel>
+                            <Border BorderBrush="Gray" BorderThickness="1" Margin="1,1,0,0"  Visibility="{Binding SelectedTool.HasDemo, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                                <InkCanvas VerticalAlignment="Top" Height="44" EditingMode="None" x:Name="preview"
+                                   Strokes="{Binding SelectedTool.DemoStroke}" Width="90">
+                                </InkCanvas>
+                            </Border>
                         </StackPanel>
                     </fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox Header="Colors" Visibility="{Binding SelectedTool.Group.HasGotColor, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -167,7 +198,7 @@
                             </fluent:ColorGallery>
                         </ScrollViewer>
                     </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox Header="Pages" Name="Pages">
+                    <fluent:RibbonGroupBox Header="Pages" Name="Pages" Icon="/NextCanvas;component/Images/Ribbon/Home/NewPage-Big.png">
                         <fluent:Button Header="Go Left" LargeIcon="/NextCanvas;component/Images/Ribbon/Shared/Arrow.png" Command="{Binding PreviousPageCommand}" SizeDefinition="Large, Large, Large"/>
                         <fluent:Button Header="New page" LargeIcon="/NextCanvas;component/Images/Ribbon/Home/NewPage-Big.png" Command="{Binding NewPageCommand}" SizeDefinition="Large, Large, Large"/>
                         <fluent:Button Header="Delete page" LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Delete.png" Command="{Binding DeletePageCommand}" SizeDefinition="Large, Large, Large"/>

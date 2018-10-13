@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Ink;
 using System.Windows.Media;
 
 namespace NextCanvas.ViewModels
@@ -77,7 +78,6 @@ namespace NextCanvas.ViewModels
                 SelectedToolIndex = Tools.IndexOf(value);
             }
         }
-
         private void Subscribe() // To my youtube channel XD
         {
             document.Pages.CollectionChanged += PagesChanged;
@@ -121,7 +121,7 @@ namespace NextCanvas.ViewModels
         {
             Initalize();
         }
-
+        
         private void UpdatePageText()
         {
             OnPropertyChanged(nameof(PageDisplayText));

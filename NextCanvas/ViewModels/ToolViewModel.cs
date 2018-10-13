@@ -33,7 +33,7 @@ namespace NextCanvas.ViewModels
         public bool HasColor
         {
             get => Model.HasColor;
-            set { Model.HasColor = value; OnPropertyChanged(nameof(HasColor)); }
+            set { Model.HasColor = value; OnPropertyChanged(nameof(HasColor)); OnPropertyChanged(nameof(HasDemo)); }
         }
         public string Name
         {
@@ -83,10 +83,23 @@ namespace NextCanvas.ViewModels
         }
 
         public string GroupName => Group.Name;
+        public StrokeCollection DemoStroke => new StrokeCollection
+        {
+            new Stroke(new StylusPointCollection()
+            {
+                new StylusPoint(15,22),
+                new StylusPoint(75,22)
+            }, DrawingAttributes)
+        };
         public bool IsDisplayed
         {
             get => Model.IsDisplayed;
             set { Model.IsDisplayed = value; OnPropertyChanged(nameof(IsDisplayed)); }
+        }
+        public bool HasDemo
+        {
+            get => Model.HasDemo && Group.HasDemo;
+            set { Model.HasDemo = value; OnPropertyChanged(nameof(HasDemo)); }
         }
         public Cursor Cursor
         {
@@ -116,10 +129,12 @@ namespace NextCanvas.ViewModels
             // Group.Color = Model.DrawingAttributes.Color;
             Model.DrawingAttributes.AttributeChanged += ColorChangeHandler;
             OnPropertyChanged(nameof(DrawingAttributes));
+            OnPropertyChanged(nameof(DemoStroke));
         }
 
         private void ColorChangeHandler(object sender, PropertyDataChangedEventArgs e)
         {
+            OnPropertyChanged(nameof(DemoStroke));
             if (e.NewValue is Color c)
             {
                 group.Color = c;
