@@ -228,7 +228,13 @@ namespace NextCanvas.ViewModels
                 document.SelectedIndex += (int)direction;
             }
         }
-
+        private void ChangePage(int index)
+        {
+            if (CanChangePage(index))
+            {
+                document.SelectedIndex = index;
+            }
+        }
         private void CreateNewPage()
         {
             CurrentDocument.Pages.Add(new PageViewModel());
@@ -240,7 +246,7 @@ namespace NextCanvas.ViewModels
             return (direction == Direction.Forwards && document.SelectedIndex + 1 != document.Pages.Count) ||
                    (direction == Direction.Backwards && document.SelectedIndex - 1 >= 0);
         }
-
+        private bool CanChangePage(int index) => document.Pages.Count > index;
         private enum Direction
         {
             Forwards = 1,

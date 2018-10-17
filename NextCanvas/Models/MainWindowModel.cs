@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using Newtonsoft.Json;
 
 namespace NextCanvas.Models
 {
     public class MainWindowModel
     {
+        [JsonIgnore]
         public Document Document { get; set; } = new Document();
         public ToolGroupCollection Groups { get; set; } = new ToolGroupCollection
         {
@@ -156,7 +158,10 @@ namespace NextCanvas.Models
                 }
             }
         };
-            FavouriteColors.Add(Colors.Black);
+            if (!FavouriteColors.Contains(Colors.Black))
+            {
+                FavouriteColors.Add(Colors.Black);               
+            }
         }
     }
 }
