@@ -34,10 +34,7 @@ namespace NextCanvas.Controls
                 InkCanvasClipboardFormat.Xaml,
                 InkCanvasClipboardFormat.Text
             };
-        }
-        protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
-        {
-            base.OnPreviewMouseDown(e);
+            
         }
         protected override void OnStrokeCollected(InkCanvasStrokeCollectedEventArgs e)
         {

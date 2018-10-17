@@ -33,8 +33,15 @@ namespace NextCanvas
             InitializeComponent();
             DataContext = new MainWindowViewModel();
             canvas.DefaultDrawingAttributes.FitToCurve = true;
-            
+            ApplicationCommands.Paste.CanExecuteChanged += Paste_CanExecuteChanged;
         }
+        // The following is a little dirty hack because there you can't really paste to the center or just get the ApplicationCommands.Paste can execute binding
+        // with the InkCanvas as a target which is dumb but whatever
+        private void Paste_CanExecuteChanged(object sender, EventArgs e)
+        {
+            PasteButton.IsEnabled = canvas.CanPaste();
+        }
+
         private void Canvas_SelectionChanged(object sender, EventArgs e)
         {
             if (canvas.GetSelectedElements().Count != 0 || canvas.GetSelectedStrokes().Count != 0)
@@ -156,6 +163,12 @@ namespace NextCanvas
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             new MultiCanvasExperimentWindow().Show();
+        }
+
+        private void PasteButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            // Paste to some kind of "center", because the default is dumb (0,0).            
+            canvas.Paste(new Point(ScrollParent.ContentHorizontalOffset + ScrollParent.ActualWidth / 2, ScrollParent.ContentVerticalOffset + ScrollParent.ActualHeight / 2));            
         }
     }
 }
