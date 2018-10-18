@@ -93,14 +93,17 @@
     <Compile Include="Converters\IsEqualToConverter.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="ExtendedBinding.cs" />
-    <Compile Include="Ink\DemoStroke.cs" />
     <Compile Include="Ink\SquareStroke.cs" />
+    <Compile Include="Models\Content\ContentElement.cs" />
+    <Compile Include="Models\Content\TextBoxElement.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Tool.cs" />
     <Compile Include="Models\ToolGroup.cs" />
     <Compile Include="ObservableViewModelCollection.cs" />
     <Compile Include="PropertyChangedObject.cs" />
     <Compile Include="ToolGroupDictionary.cs" />
+    <Compile Include="ViewModels\Content\ContentElementViewModel.cs" />
+    <Compile Include="ViewModels\Content\TextBoxElementViewModel.cs" />
     <Compile Include="ViewModels\DocumentViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
@@ -242,6 +245,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Ribbon\Home\SelectAll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\Content\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
