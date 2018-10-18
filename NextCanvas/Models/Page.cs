@@ -31,7 +31,10 @@ namespace NextCanvas.Models
         public List<ContentElement> Elements { get; set; } = new List<ContentElement> {
             new TextBoxElement
             {
-                RtfText = "Nice!"
+                RtfText = "Nice!",
+                Left = 50,
+                Width = 111,
+                Height = 75
             }
         };
         public int Width { get; set; } = 1720;

@@ -1,12 +1,15 @@
 ﻿using NextCanvas.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using NextCanvas.Controls.Content;
 
 namespace NextCanvas
 {
@@ -18,6 +21,7 @@ namespace NextCanvas
         public App()
         {
             System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+
             AppDomain.CurrentDomain.UnhandledException += RestInPeperonies;
         }
 
