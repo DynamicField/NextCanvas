@@ -1,4 +1,5 @@
 ﻿using NextCanvas.Models;
+using NextCanvas.Models.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,17 @@ namespace NextCanvas.ViewModels
     {
         public PageViewModel()
         {
+            Initialize();
         }
 
         public PageViewModel(Page model) : base(model)
         {
+            Initialize();
         }
-
+        private void Initialize()
+        {
+            Elements = new ObservableViewModelCollection<IViewModel<ContentElement>, ContentElement>(Model.Elements, (e) => e.GetAssociatedViewModel());
+        }
         public StrokeCollection Strokes
         {
             get => Model.Strokes;
@@ -30,7 +36,7 @@ namespace NextCanvas.ViewModels
                 }
             }
         }
-
+        public ObservableViewModelCollection<IViewModel<ContentElement>, ContentElement> Elements { get; set; } 
         public int Width
         {
             get => Model.Width;

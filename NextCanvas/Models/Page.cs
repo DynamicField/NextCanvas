@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NextCanvas.Models.Content;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Ink;
 
@@ -26,6 +28,12 @@ namespace NextCanvas.Models
                 }
             }
         }
+        public List<ContentElement> Elements { get; set; } = new List<ContentElement> {
+            new TextBoxElement
+            {
+                RtfText = "Nice!"
+            }
+        };
         public int Width { get; set; } = 1720;
         public int Height { get; set; } = 1420;
     }

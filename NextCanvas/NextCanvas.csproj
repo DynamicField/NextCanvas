@@ -85,6 +85,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\Content\ContentElementRenderer.xaml.cs">
+      <DependentUpon>ContentElementRenderer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NextDynamicRenderer.cs" />
     <Compile Include="Controls\NextInkCanvas.cs" />
     <Compile Include="Converters\BoolToOrientationConverter.cs" />
@@ -96,6 +99,7 @@
     <Compile Include="Ink\SquareStroke.cs" />
     <Compile Include="Models\Content\ContentElement.cs" />
     <Compile Include="Models\Content\TextBoxElement.cs" />
+    <Compile Include="Models\IViewModelProvider.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Tool.cs" />
     <Compile Include="Models\ToolGroup.cs" />
@@ -116,6 +120,10 @@
     <Compile Include="Views\StylusDebugWindow.xaml.cs">
       <DependentUpon>StylusDebugWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\Content\ContentElementRenderer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ExceptionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -246,8 +254,6 @@
   <ItemGroup>
     <Resource Include="Images\Ribbon\Home\SelectAll.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\Content\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NextCanvas
 {
-    public class ObservableViewModelCollection<TViewModel, TModel> : ObservableCollection<TViewModel> where TViewModel : ViewModels.ViewModelBase<TModel> where TModel : class, new()
+    public class ObservableViewModelCollection<TViewModel, TModel> : ObservableCollection<TViewModel> where TViewModel : ViewModels.IViewModel<TModel> where TModel : class, new()
     {
         public bool DisableSync { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using NextCanvas.Models.Content;
+﻿using NextCanvas.Models;
+using NextCanvas.Models.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,14 @@ namespace NextCanvas.ViewModels.Content
 {
     public class TextBoxElementViewModel : ContentElementViewModel<TextBoxElement>
     {
+        public TextBoxElementViewModel()
+        {
+        }
+
+        public TextBoxElementViewModel(TextBoxElement model) : base(model)
+        {
+        }
+
         public string RtfText
         {
             get { return Model.RtfText; }

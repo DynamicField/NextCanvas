@@ -46,7 +46,7 @@
                            Strokes="{Binding CurrentDocument.SelectedPage.Strokes}" 
                                 Canvas.Left="0" Canvas.Top="0" 
                                 SelectionChanged="Canvas_SelectionChanged"
-                           UseCustomCursorDP="{Binding SelectedTool.UseCursor}" 
+                           UseCustomCursorDP="{Binding SelectedTool.UseCursor}" ItemsSource="{Binding CurrentDocument.SelectedPage.Elements}"
                                 Cursor="{Binding SelectedTool.Cursor}" DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}">
                                 <!-- lmao so much things -->
                                 <Image Source="https://archzine.fr/wp-content/uploads/2016/05/formidable-panda-geant-mignon-en-image-arbre.jpg" Width="125" InkCanvas.Top="40"  Panel.ZIndex="1"/>
