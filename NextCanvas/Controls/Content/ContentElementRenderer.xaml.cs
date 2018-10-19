@@ -34,6 +34,8 @@ namespace NextCanvas.Controls.Content
         }
         // Why do I do that ?
         // It's because for some reason the ink canvas just delete the binding expression idk why :(
+        // This kind of a "hack" works but
+        // FIND A BETTER SOLUTION PLS
         private void InitializePropertiesBindings()
         {
             var data = DataContext as ContentElementViewModel;
@@ -43,63 +45,63 @@ namespace NextCanvas.Controls.Content
             }
             DependencyPropertyDescriptor.FromProperty(InkCanvas.TopProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
-                if (this.GetBindingExpression(InkCanvas.TopProperty) != null && (double)GetValue(InkCanvas.TopProperty) != double.NaN)
+                if (GetBindingExpression(InkCanvas.TopProperty) != null && (double)GetValue(InkCanvas.TopProperty) != double.NaN)
                 {
                     return;
                 }
                 data.Top = (double)GetValue(InkCanvas.TopProperty);
                 var otherBinding = new Binding("Top") { Source = DataContext, Mode = BindingMode.TwoWay };
-                this.SetBinding(InkCanvas.TopProperty, otherBinding); // Update then
+                SetBinding(InkCanvas.TopProperty, otherBinding); // Update then
             });
             DependencyPropertyDescriptor.FromProperty(InkCanvas.BottomProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
-                if (this.GetBindingExpression(InkCanvas.BottomProperty) != null && (double)GetValue(InkCanvas.BottomProperty) != double.NaN)
+                if (GetBindingExpression(InkCanvas.BottomProperty) != null && (double)GetValue(InkCanvas.BottomProperty) != double.NaN)
                 {
                     return;
                 }
                 data.Bottom = (double)GetValue(InkCanvas.BottomProperty);
                 var otherBinding = new Binding("Bottom") { Source = DataContext, Mode = BindingMode.TwoWay };
-                this.SetBinding(InkCanvas.BottomProperty, otherBinding); // Update then
+                SetBinding(InkCanvas.BottomProperty, otherBinding); // Update then
             });
             DependencyPropertyDescriptor.FromProperty(InkCanvas.RightProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
-                if (this.GetBindingExpression(InkCanvas.RightProperty) != null && (double)GetValue(InkCanvas.RightProperty) != double.NaN)
+                if (GetBindingExpression(InkCanvas.RightProperty) != null && (double)GetValue(InkCanvas.RightProperty) != double.NaN)
                 {
                     return;
                 }
                 data.Right = (double)GetValue(InkCanvas.RightProperty);
                 var otherBinding = new Binding("Right") { Source = DataContext, Mode = BindingMode.TwoWay };
-                this.SetBinding(InkCanvas.RightProperty, otherBinding); // Update then
+                SetBinding(InkCanvas.RightProperty, otherBinding); // Update then
             });
             DependencyPropertyDescriptor.FromProperty(InkCanvas.LeftProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
-                if (this.GetBindingExpression(InkCanvas.LeftProperty) != null && (double)GetValue(InkCanvas.LeftProperty) != double.NaN)
+                if (GetBindingExpression(InkCanvas.LeftProperty) != null && (double)GetValue(InkCanvas.LeftProperty) != double.NaN)
                 {
                     return;
                 }
                 data.Left = (double)GetValue(InkCanvas.LeftProperty);
                 var otherBinding = new Binding("Left") { Source = DataContext, Mode = BindingMode.TwoWay };
-                this.SetBinding(InkCanvas.LeftProperty, otherBinding); // Update then
+                SetBinding(InkCanvas.LeftProperty, otherBinding); // Update then
             });
             DependencyPropertyDescriptor.FromProperty(WidthProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
-                if (this.GetBindingExpression(WidthProperty) != null)
+                if (GetBindingExpression(WidthProperty) != null)
                 {
                     return;
                 }
                 data.Width = Width;
                 var otherBinding = new Binding("Width") { Source = DataContext, Mode = BindingMode.TwoWay };
-                this.SetBinding(WidthProperty, otherBinding); // Update then
+                SetBinding(WidthProperty, otherBinding); // Update then
             });
             DependencyPropertyDescriptor.FromProperty(HeightProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
-                if (this.GetBindingExpression(HeightProperty) != null)
+                if (GetBindingExpression(HeightProperty) != null)
                 {
                     return;
                 }
                 data.Height = Height;
                 var otherBinding = new Binding("Height") { Source = DataContext, Mode = BindingMode.TwoWay };
-                this.SetBinding(HeightProperty, otherBinding); // Update then
+                SetBinding(HeightProperty, otherBinding); // Update then
             });
         }
     }
