@@ -1,5 +1,6 @@
 ﻿using NextCanvas.Ink;
 using NextCanvas.ViewModels;
+using NextCanvas.ViewModels.Content;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -119,10 +120,9 @@ namespace NextCanvas.Controls
 
         private static void AddChild(NextInkCanvas canvas, object item)
         {
-            canvas.Children.Add(new Controls.Content.ContentElementRenderer()
-            {
-                DataContext = item
-            });
+            Content.ContentElementRenderer element = new Controls.Content.ContentElementRenderer();
+            canvas.Children.Add(element);
+            element.Initialize((ContentElementViewModel)item);
         }
         private static void RemoveChild(NextInkCanvas canvas, object item)
         {

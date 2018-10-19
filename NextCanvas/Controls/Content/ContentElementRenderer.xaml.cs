@@ -26,20 +26,29 @@ namespace NextCanvas.Controls.Content
         public ContentElementRenderer()
         {
             InitializeComponent();
+        }
+        public void Initialize(ContentElementViewModel v)
+        {
+            DataContext = v;
             InitializePropertiesBindings();
         }
         // Why do I do that ?
         // It's because for some reason the ink canvas just delete the binding expression idk why :(
         private void InitializePropertiesBindings()
         {
+            var data = DataContext as ContentElementViewModel;
+            if (data == null)
+            {
+                return; // why isnt it a contentelement blah blah?
+            }
             DependencyPropertyDescriptor.FromProperty(InkCanvas.TopProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
                 if (this.GetBindingExpression(InkCanvas.TopProperty) != null && (double)GetValue(InkCanvas.TopProperty) != double.NaN)
                 {
                     return;
                 }
-                (DataContext as dynamic).Top = (double)GetValue(InkCanvas.TopProperty);
-                var otherBinding = new Binding("Top") { Source = DataContext, Mode = BindingMode.TwoWay};
+                data.Top = (double)GetValue(InkCanvas.TopProperty);
+                var otherBinding = new Binding("Top") { Source = DataContext, Mode = BindingMode.TwoWay };
                 this.SetBinding(InkCanvas.TopProperty, otherBinding); // Update then
             });
             DependencyPropertyDescriptor.FromProperty(InkCanvas.BottomProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
@@ -48,7 +57,7 @@ namespace NextCanvas.Controls.Content
                 {
                     return;
                 }
-                (DataContext as dynamic).Bottom = (double)GetValue(InkCanvas.BottomProperty);
+                data.Bottom = (double)GetValue(InkCanvas.BottomProperty);
                 var otherBinding = new Binding("Bottom") { Source = DataContext, Mode = BindingMode.TwoWay };
                 this.SetBinding(InkCanvas.BottomProperty, otherBinding); // Update then
             });
@@ -58,7 +67,7 @@ namespace NextCanvas.Controls.Content
                 {
                     return;
                 }
-                (DataContext as dynamic).Right = (double)GetValue(InkCanvas.RightProperty);
+                data.Right = (double)GetValue(InkCanvas.RightProperty);
                 var otherBinding = new Binding("Right") { Source = DataContext, Mode = BindingMode.TwoWay };
                 this.SetBinding(InkCanvas.RightProperty, otherBinding); // Update then
             });
@@ -68,7 +77,7 @@ namespace NextCanvas.Controls.Content
                 {
                     return;
                 }
-                (DataContext as dynamic).Left = (double)GetValue(InkCanvas.LeftProperty);
+                data.Left = (double)GetValue(InkCanvas.LeftProperty);
                 var otherBinding = new Binding("Left") { Source = DataContext, Mode = BindingMode.TwoWay };
                 this.SetBinding(InkCanvas.LeftProperty, otherBinding); // Update then
             });
@@ -78,7 +87,7 @@ namespace NextCanvas.Controls.Content
                 {
                     return;
                 }
-                (DataContext as dynamic).Width = Width;
+                data.Width = Width;
                 var otherBinding = new Binding("Width") { Source = DataContext, Mode = BindingMode.TwoWay };
                 this.SetBinding(WidthProperty, otherBinding); // Update then
             });
@@ -88,14 +97,10 @@ namespace NextCanvas.Controls.Content
                 {
                     return;
                 }
-                (DataContext as dynamic).Height = Height;
+                data.Height = Height;
                 var otherBinding = new Binding("Height") { Source = DataContext, Mode = BindingMode.TwoWay };
                 this.SetBinding(HeightProperty, otherBinding); // Update then
             });
-        }
-        public ContentElementRenderer(object element) : this()
-        {
-            DataContext = element;
         }
     }
 }

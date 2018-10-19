@@ -1,5 +1,6 @@
 ﻿using NextCanvas.Models;
 using NextCanvas.Models.Content;
+using NextCanvas.ViewModels.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace NextCanvas.ViewModels
         }
         private void Initialize()
         {
-            Elements = new ObservableViewModelCollection<IViewModel<ContentElement>, ContentElement>(Model.Elements, (e) => e.GetAssociatedViewModel());
+            Elements = new ObservableViewModelCollection<IViewModel<ContentElement>, ContentElement>(Model.Elements, e => ContentElementViewModel.GetViewModel(e));
         }
         public StrokeCollection Strokes
         {

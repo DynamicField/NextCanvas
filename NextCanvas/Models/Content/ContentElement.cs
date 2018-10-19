@@ -8,7 +8,7 @@ using NextCanvas.ViewModels.Content;
 
 namespace NextCanvas.Models.Content
 {
-    public class ContentElement : IViewModelProvider<ContentElement>
+    public class ContentElement
     {
         public double Left { get; set; } = 0;
         public double Top { get; set; } = 0;
@@ -18,9 +18,5 @@ namespace NextCanvas.Models.Content
         public double Width { get; set; } = 200;
         public double Height { get; set; } = 200;
 
-        public virtual IViewModel<ContentElement> GetAssociatedViewModel()
-        {
-            return new ContentElementViewModel<ContentElement>(this);
-        }
     }
 }

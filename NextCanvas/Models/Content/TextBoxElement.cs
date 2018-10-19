@@ -14,10 +14,5 @@ namespace NextCanvas.Models.Content
 {\*\generator Riched20 10.0.17134}\viewkind4\uc1 
 \pard\sa200\sl276\slmult1\f0\fs22\lang12 Hello world :3\par
 }";
-
-        public override IViewModel<ContentElement> GetAssociatedViewModel()
-        {
-            return new TextBoxElementViewModel(this);
-        }
     }
 }

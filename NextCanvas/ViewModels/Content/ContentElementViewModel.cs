@@ -10,6 +10,7 @@ namespace NextCanvas.ViewModels.Content
     // oof that's one complicated class 😓
     public class ContentElementViewModel : ViewModelBase<ContentElement>
     {
+
         public ContentElementViewModel()
         {
         }
@@ -51,6 +52,16 @@ namespace NextCanvas.ViewModels.Content
         {
             get { return Model.Height; }
             set { Model.Height = value; OnPropertyChanged(nameof(Height)); }
+        }
+        public static ContentElementViewModel GetViewModel(ContentElement model)
+        {
+            switch (model)
+            {
+                case TextBoxElement t:
+                    return new TextBoxElementViewModel(t);
+                default:
+                    return new ContentElementViewModel(model);
+            }
         }
     }
 }

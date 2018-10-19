@@ -99,7 +99,6 @@
     <Compile Include="Ink\SquareStroke.cs" />
     <Compile Include="Models\Content\ContentElement.cs" />
     <Compile Include="Models\Content\TextBoxElement.cs" />
-    <Compile Include="Models\IViewModelProvider.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Tool.cs" />
     <Compile Include="Models\ToolGroup.cs" />
