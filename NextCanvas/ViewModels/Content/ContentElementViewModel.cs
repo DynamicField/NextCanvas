@@ -8,16 +8,15 @@ using NextCanvas.Models.Content;
 namespace NextCanvas.ViewModels.Content
 {
     // oof that's one complicated class 😓
-    public class ContentElementViewModel<T> : ViewModelBase<T> where T : ContentElement, new()
+    public class ContentElementViewModel : ViewModelBase<ContentElement>
     {
         public ContentElementViewModel()
         {
         }
 
-        public ContentElementViewModel(T model) : base(model)
+        public ContentElementViewModel(ContentElement model) : base(model)
         {
         }
-
         public virtual double Left
         {
             get { return Model.Left; }
@@ -54,5 +53,4 @@ namespace NextCanvas.ViewModels.Content
             set { Model.Height = value; OnPropertyChanged(nameof(Height)); }
         }
     }
-    public class ContentElementViewModel : ContentElementViewModel<ContentElement> { }
 }
