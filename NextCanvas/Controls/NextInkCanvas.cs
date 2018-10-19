@@ -42,10 +42,9 @@ namespace NextCanvas.Controls
         }
         protected override void OnStrokeCollected(InkCanvasStrokeCollectedEventArgs e)
         {
-
             //// Remove the original stroke and add a custom stroke.
             //this.Strokes.Remove(e.Stroke);
-            //var customStroke = new SquareStroke(e.Stroke.StylusPoints);
+            //var customStroke = new SquareStroke(e.Stroke.StylusPoints, e.Stroke.DrawingAttributes);
             //this.Strokes.Add(customStroke);
 
             //// Pass the custom stroke to base class' OnStrokeCollected method.
@@ -53,7 +52,6 @@ namespace NextCanvas.Controls
             //    new InkCanvasStrokeCollectedEventArgs(customStroke);
             //base.OnStrokeCollected(args);
             base.OnStrokeCollected(e);
-
         }
         protected override void OnStrokeErasing(InkCanvasStrokeErasingEventArgs e)
         {
@@ -120,7 +118,7 @@ namespace NextCanvas.Controls
 
         private static void AddChild(NextInkCanvas canvas, object item)
         {
-            Content.ContentElementRenderer element = new Controls.Content.ContentElementRenderer();
+            Content.ContentElementRenderer element = new Content.ContentElementRenderer();
             canvas.Children.Add(element);
             element.Initialize((ContentElementViewModel)item);
         }

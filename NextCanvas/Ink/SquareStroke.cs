@@ -11,25 +11,30 @@ using System.Windows.Shapes;
 
 namespace NextCanvas.Ink
 {
+    public static class DrawingAttributesExtensions
+    {
+        public static DrawingAttributes SetFitToCurve(this DrawingAttributes t, bool fit)
+        {
+            t.FitToCurve = fit;
+            return t;
+        }
+    }
     public class SquareStroke : Stroke
     {
-        private Brush brush;
-        private Pen pen;
-        public SquareStroke(System.Windows.Input.StylusPointCollection stylusPoints) : base(stylusPoints)
+        //private Brush brush;
+        //private Pen pen;
+        public SquareStroke(StylusPointCollection stylusPoints) : this(stylusPoints, new DrawingAttributes())
+        {          
+            //brush = new LinearGradientBrush(Colors.Red, Colors.Blue, 5d);
+            //pen = new Pen(brush, 2d);
+        }
+        public bool DisableSquare { get; set; } = true;
+        public SquareStroke(StylusPointCollection stylusPoints, DrawingAttributes drawingAttributes) : base(stylusPoints, drawingAttributes.SetFitToCurve(false))
         {
             if (StylusPoints.Count > 3)
             {
                 PopulateRectangle(out StylusPoint minX, out StylusPoint minY, out StylusPoint maxX, out StylusPoint maxY);
             }
-            brush = new LinearGradientBrush(Colors.Red, Colors.Blue, 5d);
-            pen = new Pen(brush, 2d);
-            // lol
-        }
-        public bool DisableSquare { get; set; } = true;
-        public SquareStroke(System.Windows.Input.StylusPointCollection stylusPoints, DrawingAttributes drawingAttributes) : base(stylusPoints, drawingAttributes)
-        {
-            brush = new LinearGradientBrush(Colors.Red, Colors.Blue, 5d);
-            pen = new Pen(brush, 2d);
         }
         protected override void OnStylusPointsChanged(EventArgs e)
         {
@@ -37,13 +42,17 @@ namespace NextCanvas.Ink
         }
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
         {
+            if (drawingAttributes.FitToCurve)
+            {
+                drawingAttributes.FitToCurve = false; // no don't
+            }
             if (StylusPoints.Count < 2 || DisableSquare)
             {
                 base.DrawCore(drawingContext, drawingAttributes);
                 return;
             }
-            PopulateRectangle(out StylusPoint minX, out StylusPoint minY, out StylusPoint maxX, out StylusPoint maxY);
-            drawingContext.DrawRectangle(brush, pen, new Rect(new Point(minX.X, minY.Y), new Point(maxX.X, maxY.Y)));
+            //PopulateRectangle(out StylusPoint minX, out StylusPoint minY, out StylusPoint maxX, out StylusPoint maxY);
+            //drawingContext.DrawRectangle(brush, pen, new Rect(new Point(minX.X, minY.Y), new Point(maxX.X, maxY.Y)));
         }
 
         private void PopulateRectangle(out StylusPoint minX, out StylusPoint minY, out StylusPoint maxX, out StylusPoint maxY, bool populate = true)
@@ -54,7 +63,7 @@ namespace NextCanvas.Ink
                 new StylusPoint(minX.X, maxY.Y),
                 new StylusPoint(minX.X, minY.Y),
                 new StylusPoint(maxX.X, minY.Y),
-                new StylusPoint(maxX.X, maxX.Y),
+                new StylusPoint(maxX.X, maxY.Y),
                 new StylusPoint(minX.X, maxY.Y)
             };
             // top
