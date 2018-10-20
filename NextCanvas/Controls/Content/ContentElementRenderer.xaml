@@ -14,7 +14,7 @@
         <ContentPresenter Content="{Binding}">
             <ContentPresenter.Resources>
                 <DataTemplate DataType="{x:Type vm:TextBoxElementViewModel}">
-                    <local:RtfRichTextBox RtfText="{Binding RtfText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsUndoEnabled="False"></local:RtfRichTextBox>
+                    <local:RtfRichTextBox RtfText="{Binding RtfText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsUndoEnabled="True"></local:RtfRichTextBox>
                 </DataTemplate>
             </ContentPresenter.Resources>
         </ContentPresenter>

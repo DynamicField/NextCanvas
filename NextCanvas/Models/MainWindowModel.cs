@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 
 namespace NextCanvas.Models
 {
+    /// <summary>
+    /// This is the main window model *SWOOSH*
+    /// </summary>
     public class MainWindowModel
     {
         [JsonIgnore]
@@ -25,7 +28,7 @@ namespace NextCanvas.Models
             new ToolGroup
             {
                 Name = "Highlighters",
-                Color = Colors.Orange
+                Color = Color.FromRgb(255, 222, 5)
             },
             new ToolGroup
             {
