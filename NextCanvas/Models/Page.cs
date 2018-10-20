@@ -1,14 +1,14 @@
-﻿using NextCanvas.Models.Content;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows.Ink;
+using Newtonsoft.Json;
+using NextCanvas.Models.Content;
 
 namespace NextCanvas.Models
 {
     public class Page
     {
-        [Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public StrokeCollection Strokes { get; set; } = new StrokeCollection();
         public byte[] StrokesSerialized
         {

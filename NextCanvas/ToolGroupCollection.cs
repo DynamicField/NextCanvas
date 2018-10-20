@@ -1,17 +1,15 @@
-﻿using NextCanvas.Models;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NextCanvas.Models;
 
 namespace NextCanvas
 {
     public class ToolGroupCollection : IList<ToolGroup>
     {
         public ToolGroup this[int index] { get => ((IList<ToolGroup>)Groups)[index]; set => ((IList<ToolGroup>)Groups)[index] = value; }
-        public ToolGroup this[string index] { get => ((IList<ToolGroup>)Groups).First(t => t.Name.Equals(index, StringComparison.InvariantCultureIgnoreCase));
+        public ToolGroup this[string index] { get => Groups.First(t => t.Name.Equals(index, StringComparison.InvariantCultureIgnoreCase));
             set
             {
                 Groups[Groups.FindIndex(t => t.Name.Equals(index, StringComparison.InvariantCultureIgnoreCase))] = value;

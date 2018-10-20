@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 
@@ -21,8 +17,8 @@ namespace NextCanvas.Converters
         /// <returns>orientation :3</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool val = (bool)value;
-            bool parameterBool = false;
+            var val = value != null && (bool)value;
+            var parameterBool = false;
             if (parameter != null)
             {
                 bool.TryParse(parameter.ToString(), out parameterBool);
@@ -35,10 +31,8 @@ namespace NextCanvas.Converters
             {
                 return Orientation.Horizontal;
             }
-            else
-            {
-                return Orientation.Vertical;
-            }
+
+            return Orientation.Vertical;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

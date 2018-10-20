@@ -1,18 +1,12 @@
-﻿using NextCanvas.Views;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using NextCanvas.Controls.Content;
+using NextCanvas.Views;
 
 namespace NextCanvas
 {
+    /// <inheritdoc />
     /// <summary>
     /// Logique d'interaction pour App.xaml
     /// </summary>
@@ -20,17 +14,15 @@ namespace NextCanvas
     {
         public App()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
-
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             AppDomain.CurrentDomain.UnhandledException += RestInPeperonies;
         }
 
-        private void RestInPeperonies(object sender, UnhandledExceptionEventArgs e)
-
+        private static void RestInPeperonies(object sender, UnhandledExceptionEventArgs e)
         {
-            var exception = e.ExceptionObject as Exception;
+            var exception = (Exception)e.ExceptionObject;
             new ExceptionWindow(exception.ToString()).ShowDialog();
-            Application.Current.Shutdown(1);
+            Current.Shutdown(1);
         }
     }
 }

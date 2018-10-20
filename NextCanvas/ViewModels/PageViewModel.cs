@@ -1,12 +1,7 @@
-﻿using NextCanvas.Models;
+﻿using System.Windows.Ink;
+using NextCanvas.Models;
 using NextCanvas.Models.Content;
 using NextCanvas.ViewModels.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Ink;
 
 namespace NextCanvas.ViewModels
 {
@@ -31,7 +26,7 @@ namespace NextCanvas.ViewModels
             set
             {
                 Model.Strokes.Clear();
-                foreach (Stroke item in Strokes)
+                foreach (var item in value)
                 {
                     Model.Strokes.Add(item);
                 }

@@ -5,18 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NextCanvas.Controls"
         xmlns:vm="clr-namespace:NextCanvas.ViewModels"
-        xmlns:fluent="urn:fluent-ribbon" xmlns:Converters="clr-namespace:NextCanvas.Converters"
-     xmlns:ink="clr-namespace:NextCanvas.Ink"
-     xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-    x:Class="NextCanvas.MainWindow"
+        xmlns:fluent="urn:fluent-ribbon" xmlns:converters="clr-namespace:NextCanvas.Converters"
+    xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    x:Class="NextCanvas.Views.MainWindow"
         UseLayoutRounding="True"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:MainWindowViewModel}}"
         Title="NextCanvas" Height="720" Width="1202">
     <fluent:RibbonWindow.Resources>
-        <Converters:BoolToOrientationConverter x:Key="BoolToOrientationConverter"/>
-        <Converters:DivideByConverter x:Key="DivideByConverter"/>
-        <Converters:IsEqualToConverter x:Key="IsEqualToConverter"/>
-        <Converters:OrConverter x:Key="OrConverter"/>
+        <converters:BoolToOrientationConverter x:Key="BoolToOrientationConverter"/>
+        <converters:IsEqualToConverter x:Key="IsEqualToConverter"/>
+        <converters:OrConverter x:Key="OrConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style TargetType="{x:Type Button}" x:Key="OpacityOnHover">
             <Style.Triggers>
@@ -40,7 +38,7 @@
                         Command="{Binding ExtendPageCommand}" CommandParameter="Right" Click="ResizeCanvasEvent"/>
                         <Canvas Width="{Binding CurrentDocument.SelectedPage.Width}" Height="{Binding CurrentDocument.SelectedPage.Height}">
                             <local:NextInkCanvas 
-                                x:Name="canvas" EditingMode="{Binding SelectedTool.Mode, Mode=TwoWay}" EraserShapeDP="{Binding SelectedTool.EraserShape}"
+                                x:Name="Canvas" EditingMode="{Binding SelectedTool.Mode, Mode=TwoWay}" EraserShapeDP="{Binding SelectedTool.EraserShape}"
                            Width="{Binding CurrentDocument.SelectedPage.Width}" 
                                 Height="{Binding CurrentDocument.SelectedPage.Height}"
                            Strokes="{Binding CurrentDocument.SelectedPage.Strokes}" 
@@ -113,12 +111,12 @@
                     <fluent:RibbonGroupBox Header="Selection" Name="Selection">
                         <fluent:ToggleButton Header="Select" GroupName="Tool" LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Select.png" SizeDefinition="Large"
                                              Command="{Binding SetToolByNameCommand}" CommandParameter="Select" x:Name="Select" IsChecked="{Binding SelectedTool.Name, ConverterParameter=Select, Converter={StaticResource IsEqualToConverter}, Mode=OneWay}"/>
-                        <fluent:Button Header="Select All" LargeIcon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png"  Icon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png" SizeDefinition="large, large, small" Command="ApplicationCommands.SelectAll" CommandTarget="{Binding ElementName=canvas, Mode=OneWay}"></fluent:Button>
-                        <fluent:Button SizeDefinition="middle, small, small" Header="Copy" Icon="/NextCanvas;component/Images/Ribbon/Shared/Copy-Small.png" x:Name="CopyButton" IsEnabled="False" Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=canvas, Mode=OneWay}"/>
-                        <fluent:Button SizeDefinition="middle, small, small" Header="Cut" Icon="/NextCanvas;component/Images/Ribbon/Shared/Cut-Small.png" x:Name="CutButton" IsEnabled="False" Command="ApplicationCommands.Cut" CommandTarget="{Binding ElementName=canvas, Mode=OneWay}"/>
+                        <fluent:Button Header="Select All" LargeIcon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png"  Icon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png" SizeDefinition="large, large, small" Command="ApplicationCommands.SelectAll" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"></fluent:Button>
+                        <fluent:Button SizeDefinition="middle, small, small" Header="Copy" Icon="/NextCanvas;component/Images/Ribbon/Shared/Copy-Small.png" x:Name="CopyButton" IsEnabled="False" Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"/>
+                        <fluent:Button SizeDefinition="middle, small, small" Header="Cut" Icon="/NextCanvas;component/Images/Ribbon/Shared/Cut-Small.png" x:Name="CutButton" IsEnabled="False" Command="ApplicationCommands.Cut" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"/>
                         <fluent:Button SizeDefinition="middle, small, small" Header="Paste" Icon="/NextCanvas;component/Images/Ribbon/Shared/Paste-Small.png" x:Name="PasteButton" Click="PasteButton_OnClick" />
                         <fluent:Button Header="Delete selection" LargeIcon="{StaticResource DeleteSelection}" SizeDefinition="large"
-                                       Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=CopyButton}" x:Name="deleteButton" 
+                                       Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=CopyButton}" x:Name="DeleteButton" 
                                        Click="DeleteButton_Click"/>
                     </fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox Header="Basic tools" Name="Tools" Icon="{Binding SelectedTool.LargeIcon}">
@@ -133,7 +131,7 @@
                                                 SelectedItem="{Binding SelectedTool}"
                                                 Header="Tool..." ResizeMode="Both" MinItemsInRow="3" MaxItemsInRow="13" Orientation="Horizontal" 
                                                 ItemHeight="54" ItemWidth="54" GroupBy="GroupName" SelectionChanged="InRibbonGallery_SelectionChanged"
-                                                SizeDefinition="Large, Large, Large" x:Name="toolsGallery">
+                                                SizeDefinition="Large, Large, Large" x:Name="ToolsGallery">
                             <!--<fluent:InRibbonGallery.ItemContainerStyle>
                                 <Style TargetType="fluent:GalleryItem">
                                     <Setter Property="Visibility" Value="{Binding IsDisplayed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -164,7 +162,7 @@
                                 <TextBlock HorizontalAlignment="Center" Margin="1" FontSize="12" VerticalAlignment="Center">
                                     <Run Text="Size :"/>
                                 </TextBlock>
-                                <fluent:Spinner FontSize="12" Minimum="1" Maximum="18000" x:Name="size" MinWidth="70"
+                                <fluent:Spinner FontSize="12" Minimum="1" Maximum="18000" x:Name="Size" MinWidth="70"
                                             Value="{Binding SelectedTool.UniformSize}" 
                                             Increment="1" Interval="18">
                                     <fluent:Spinner.Style>
@@ -180,7 +178,7 @@
                                 </fluent:Spinner>
                             </StackPanel>
                             <Border BorderBrush="Gray" BorderThickness="1" Margin="1,1,0,0"  Visibility="{Binding SelectedTool.HasDemo, Converter={StaticResource BooleanToVisibilityConverter}}" >
-                                <InkCanvas VerticalAlignment="Top" Height="44" EditingMode="None" x:Name="preview"
+                                <InkCanvas VerticalAlignment="Top" Height="44" EditingMode="None" x:Name="Preview"
                                    Strokes="{Binding SelectedTool.DemoStroke}" Width="90">
                                 </InkCanvas>
                             </Border>
@@ -188,7 +186,7 @@
                     </fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox Header="Colors" Visibility="{Binding SelectedTool.Group.HasGotColor, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <fluent:ColorGallery SelectedColorChanged="ColorGallery_SelectedColorChanged" x:Name="colorGallery"
+                            <fluent:ColorGallery SelectedColorChanged="ColorGallery_SelectedColorChanged" x:Name="ColorGallery"
                             SelectedColor="{Binding SelectedTool.DrawingAttributes.Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             IsMoreColorsButtonVisible="True" IsNoColorButtonVisible="False" Mode="ThemeColors" ChipHeight="14" ChipWidth="14" IsAutomaticColorButtonVisible="False">
                                 <fluent:ColorGallery.Resources>
@@ -236,15 +234,15 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <TextBlock HorizontalAlignment="Right">Width:</TextBlock>
-                            <fluent:Spinner Grid.Column="1" Increment="25" Value="{Binding CurrentDocument.SelectedPage.Width}" Margin="0,0,0,5"></fluent:Spinner>
-                            <TextBlock Grid.Row="1" HorizontalAlignment="Right">Height:</TextBlock>
+                            <fluent:Spinner Grid.Row="0" Grid.Column="1" Increment="25" Value="{Binding CurrentDocument.SelectedPage.Width}" Margin="0,0,0,5"></fluent:Spinner>
+                            <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">Height:</TextBlock>
                             <fluent:Spinner Grid.Row="1" Grid.Column="1" Increment="25" Value="{Binding CurrentDocument.SelectedPage.Height}"></fluent:Spinner>
                         </Grid>
                     </fluent:RibbonGroupBox>
                 </fluent:RibbonTabItem>
                 <fluent:RibbonTabItem Header="Debug">
                     <fluent:RibbonGroupBox Header="Stylus">
-                        <fluent:Button LargeIcon="pack://application:,,,/Nextcanvas;component/Images/NextCanvas.png" Header="Stylus Debug" Click="DebugStylusXD_Click" x:Name="DebugStylusXD"/>
+                        <fluent:Button LargeIcon="pack://application:,,,/Nextcanvas;component/Images/NextCanvas.png" Header="Stylus Debug" Click="DebugStylusXD_Click" x:Name="DebugStylusXd"/>
                         <fluent:Button LargeIcon="pack://application:,,,/Nextcanvas;component/Images/Menu/Open.png" Header="Multi Canvas" Click="Button_Click"></fluent:Button>
                     </fluent:RibbonGroupBox>
                 </fluent:RibbonTabItem>

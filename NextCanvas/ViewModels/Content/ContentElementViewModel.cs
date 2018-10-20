@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NextCanvas.Models.Content;
+﻿using NextCanvas.Models.Content;
 
 namespace NextCanvas.ViewModels.Content
 {

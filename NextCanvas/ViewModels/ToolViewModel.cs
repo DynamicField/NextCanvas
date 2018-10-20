@@ -1,13 +1,10 @@
-﻿using NextCanvas.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+using NextCanvas.Models;
 
 namespace NextCanvas.ViewModels
 {
@@ -74,7 +71,7 @@ namespace NextCanvas.ViewModels
             }
         }
 
-        private void Group_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Group_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ToolGroupViewModel.Name))
             {
@@ -85,7 +82,7 @@ namespace NextCanvas.ViewModels
         public string GroupName => Group.Name;
         public StrokeCollection DemoStroke => new StrokeCollection
         {
-            new Stroke(new StylusPointCollection()
+            new Stroke(new StylusPointCollection
             {
                 new StylusPoint(15,22),
                 new StylusPoint(75,22)
@@ -162,7 +159,7 @@ namespace NextCanvas.ViewModels
         {
             if (t.Mode == InkCanvasEditingMode.EraseByPoint || t.Mode == InkCanvasEditingMode.EraseByStroke)
             {
-                InkCanvasEditingMode previous = t.Mode;
+                var previous = t.Mode;
                 t.Mode = InkCanvasEditingMode.None;
                 t.Mode = previous;
             }

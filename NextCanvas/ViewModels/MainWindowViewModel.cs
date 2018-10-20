@@ -1,15 +1,13 @@
-﻿using Fluent;
-using Newtonsoft.Json;
-using NextCanvas.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Ink;
 using System.Windows.Media;
+using Fluent;
+using Newtonsoft.Json;
+using NextCanvas.Models;
 
 namespace NextCanvas.ViewModels
 {
@@ -54,10 +52,6 @@ namespace NextCanvas.ViewModels
                     OnPropertyChanged(nameof(SelectedTool));
                     ToolViewModel.UpdateCursorIfEraser(SelectedTool);
                 }
-                else
-                {
-                    // throw new IndexOutOfRangeException("out of range ;(");
-                }
             }
         }
         // better use this tho
@@ -65,8 +59,8 @@ namespace NextCanvas.ViewModels
         {
             get {
 
-                ToolViewModel tool = Tools[SelectedToolIndex];
-                Color color = tool.DrawingAttributes.Color;
+                var tool = Tools[SelectedToolIndex];
+                var color = tool.DrawingAttributes.Color;
                 if (!ColorGallery.StandardThemeColors.Contains(color) && !FavoriteColors.Contains(color))
                 {
                     FavoriteColors.Add(color);
@@ -84,7 +78,7 @@ namespace NextCanvas.ViewModels
             document.PropertyChanged += DocumentPropertyChanged;
         }
 
-        private void DocumentPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void DocumentPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             UpdatePageText();
             UpdatePageManipulation();
@@ -97,7 +91,7 @@ namespace NextCanvas.ViewModels
             DeletePageCommand.RaiseCanExecuteChanged();
         }
 
-        private void PagesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void PagesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdatePageText();
         }

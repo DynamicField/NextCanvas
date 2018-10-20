@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NextCanvas.ViewModels;
 
 namespace NextCanvas
 {
-    public class ObservableViewModelCollection<TViewModel, TModel> : ObservableCollection<TViewModel> where TViewModel : ViewModels.IViewModel<TModel> where TModel : class, new()
+    public sealed class ObservableViewModelCollection<TViewModel, TModel> : ObservableCollection<TViewModel> where TViewModel : IViewModel<TModel> where TModel : class, new()
     {
         public bool DisableSync { get; set; }
 
         public Action<TViewModel> ItemAdded { get; set; }
         public Action<TViewModel> ItemRemoved { get; set; }
 
-        protected IList<TModel> ModelCollection { get; set; }
+        private IList<TModel> ModelCollection { get; set; }
 
         public ObservableViewModelCollection()
         {
@@ -49,7 +49,7 @@ namespace NextCanvas
             DisableSync = false;
         }
 
-        private void Sync_Collection(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Sync_Collection(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (DisableSync)
             {

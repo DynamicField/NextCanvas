@@ -1,20 +1,7 @@
-﻿using NextCanvas.ViewModels.Content;
-using NextCanvas.Models.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.ComponentModel;
+using NextCanvas.ViewModels.Content;
 
 namespace NextCanvas.Controls.Content
 {
@@ -45,7 +32,7 @@ namespace NextCanvas.Controls.Content
             }
             DependencyPropertyDescriptor.FromProperty(InkCanvas.TopProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
-                if (GetBindingExpression(InkCanvas.TopProperty) != null && (double)GetValue(InkCanvas.TopProperty) != double.NaN)
+                if (GetBindingExpression(InkCanvas.TopProperty) != null && !double.IsNaN((double)GetValue(InkCanvas.TopProperty)))
                 {
                     return;
                 }
@@ -55,7 +42,7 @@ namespace NextCanvas.Controls.Content
             });
             DependencyPropertyDescriptor.FromProperty(InkCanvas.BottomProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
-                if (GetBindingExpression(InkCanvas.BottomProperty) != null && (double)GetValue(InkCanvas.BottomProperty) != double.NaN)
+                if (GetBindingExpression(InkCanvas.BottomProperty) != null && !double.IsNaN((double)GetValue(InkCanvas.BottomProperty)))
                 {
                     return;
                 }
@@ -65,7 +52,7 @@ namespace NextCanvas.Controls.Content
             });
             DependencyPropertyDescriptor.FromProperty(InkCanvas.RightProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
-                if (GetBindingExpression(InkCanvas.RightProperty) != null && (double)GetValue(InkCanvas.RightProperty) != double.NaN)
+                if (GetBindingExpression(InkCanvas.RightProperty) != null && !double.IsNaN((double)GetValue(InkCanvas.RightProperty)))
                 {
                     return;
                 }
@@ -75,7 +62,7 @@ namespace NextCanvas.Controls.Content
             });
             DependencyPropertyDescriptor.FromProperty(InkCanvas.LeftProperty, typeof(ContentElementRenderer)).AddValueChanged(this, (s, e) =>
             {
-                if (GetBindingExpression(InkCanvas.LeftProperty) != null && (double)GetValue(InkCanvas.LeftProperty) != double.NaN)
+                if (GetBindingExpression(InkCanvas.LeftProperty) != null && !double.IsNaN((double)GetValue(InkCanvas.LeftProperty)))
                 {
                     return;
                 }

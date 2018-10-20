@@ -1,25 +1,14 @@
-﻿using NextCanvas.Ink;
-using NextCanvas.ViewModels;
-using NextCanvas.ViewModels.Content;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using NextCanvas.Controls.Content;
+using NextCanvas.Ink;
+using NextCanvas.ViewModels.Content;
 
 namespace NextCanvas.Controls
 {
@@ -27,7 +16,7 @@ namespace NextCanvas.Controls
     /// Logique d'interaction pour NextInkCanvas.xaml
     /// lol i'm funny i called it NEXT XDDDDDD
     /// </summary>
-    public partial class NextInkCanvas : InkCanvas
+    public class NextInkCanvas : InkCanvas
     {
         public NextInkCanvas()
         {
@@ -40,6 +29,7 @@ namespace NextCanvas.Controls
             };
 
         }
+        // ReSharper disable once RedundantOverriddenMember
         protected override void OnStrokeCollected(InkCanvasStrokeCollectedEventArgs e)
         {
             //// Remove the original stroke and add a custom stroke.
@@ -61,17 +51,20 @@ namespace NextCanvas.Controls
             }
             base.OnStrokeErasing(e);
         }
+        // ReSharper disable once InconsistentNaming
         public StylusShape EraserShapeDP
         {
             get => (StylusShape)GetValue(EraserShapeDPProperty);
             set => SetValue(EraserShapeDPProperty, value);
         }
         // Using a DependencyProperty as the backing store for EraserShapeDP.  This enables animation, styling, binding, etc...
+        // ReSharper disable once InconsistentNaming
         public static readonly DependencyProperty EraserShapeDPProperty =
             DependencyProperty.Register("EraserShapeDP", typeof(StylusShape), typeof(NextInkCanvas), new PropertyMetadata((sender, e) =>
             {
-                (sender as NextInkCanvas).EraserShape = e.NewValue as StylusShape;
+                ((NextInkCanvas)sender).EraserShape = e.NewValue as StylusShape ?? throw new InvalidOperationException();
             }));
+        // ReSharper disable once InconsistentNaming
         public bool UseCustomCursorDP
         {
             get => (bool)GetValue(UseCustomCursorDPProperty);
@@ -79,10 +72,11 @@ namespace NextCanvas.Controls
         }
 
         // Using a DependencyProperty as the backing store for UseCustomCursorDP.  This enables animation, styling, binding, etc...
+        // ReSharper disable once InconsistentNaming
         public static readonly DependencyProperty UseCustomCursorDPProperty =
             DependencyProperty.Register("UseCustomCursorDP", typeof(bool), typeof(NextInkCanvas), new PropertyMetadata((sender, e) =>
             {
-                (sender as NextInkCanvas).UseCustomCursor = (bool)e.NewValue;
+                ((NextInkCanvas)sender).UseCustomCursor = (bool)e.NewValue;
             }));
 
         public IEnumerable ItemsSource
@@ -99,8 +93,7 @@ namespace NextCanvas.Controls
                 {
                     return;
                 }
-                NextInkCanvas casted = sender as NextInkCanvas;
-
+                var casted = (NextInkCanvas) sender;
                 if (e.OldValue is INotifyCollectionChanged old)
                 {
                     old.CollectionChanged -= casted.ItemsSourceItemChanged;
@@ -110,31 +103,32 @@ namespace NextCanvas.Controls
                 {
                     newish.CollectionChanged += casted.ItemsSourceItemChanged;
                 }
-                foreach (object item in e.NewValue as IEnumerable)
+                foreach (var item in (IEnumerable)e.NewValue)
                 {
                     AddChild(casted, item);
                 }
             }));
 
-        private static void AddChild(NextInkCanvas canvas, object item)
+        private static void AddChild(InkCanvas canvas, object item)
         {
-            Content.ContentElementRenderer element = new Content.ContentElementRenderer();
+            var element = new ContentElementRenderer();
             canvas.Children.Add(element);
             element.Initialize((ContentElementViewModel)item);
         }
-        private static void RemoveChild(NextInkCanvas canvas, object item)
+        private static void RemoveChild(InkCanvas canvas, object item)
         {
-            UIElement toRemove = ((ICollection<UIElement>)canvas.Children).First(e => (e as FrameworkElement)?.DataContext == item);
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            var toRemove = ((ICollection<UIElement>)canvas.Children).First(e => (e as FrameworkElement)?.DataContext == item);
             // Don't eat the exception it tastes bad
             canvas.Children.Remove(toRemove);
         }
         private void ItemsSourceItemChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            foreach (object item in e.NewItems)
+            foreach (var item in e.NewItems)
             {
                 AddChild(this, item);
             }
-            foreach (object item in e.OldItems)
+            foreach (var item in e.OldItems)
             {
                 RemoveChild(this, item);
             }

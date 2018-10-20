@@ -1,16 +1,13 @@
-﻿using NextCanvas.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Specialized;
+using NextCanvas.Models;
 
 namespace NextCanvas.ViewModels
 {
     public class DocumentViewModel : ViewModelBase<Document>
     {
         public ObservableViewModelCollection<PageViewModel, Page> Pages { get; set; }
-        private int selectedIndex = 0;
+        private int selectedIndex;
         public int SelectedIndex
         {
             get
@@ -46,7 +43,7 @@ namespace NextCanvas.ViewModels
             Pages.CollectionChanged += Pages_CollectionChanged;
         }
 
-        private void Pages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Pages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (SelectedIndex > 0 && e.OldStartingIndex >= SelectedIndex)
             {

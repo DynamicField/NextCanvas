@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using System.Windows.Input.StylusPlugIns;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace NextCanvas.Controls
 {
     public class NextDynamicRenderer : DynamicRenderer
     {
-        public NextDynamicRenderer()
-        {
-        }
+        // ReSharper disable once RedundantOverriddenMember
         protected override void OnDraw(DrawingContext drawingContext, StylusPointCollection stylusPoints, Geometry geometry, Brush fillBrush)
         {
             //if (stylusPoints.Count >= 2)
