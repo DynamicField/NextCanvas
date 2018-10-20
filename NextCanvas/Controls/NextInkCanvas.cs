@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using NextCanvas.Controls.Content;
 using NextCanvas.Ink;
-using NextCanvas.ViewModels.Content;
 
 namespace NextCanvas.Controls
 {
@@ -113,7 +112,7 @@ namespace NextCanvas.Controls
         {
             var element = new ContentElementRenderer();
             canvas.Children.Add(element);
-            element.Initialize((ContentElementViewModel)item);
+            element.Initialize(item);
         }
         private static void RemoveChild(InkCanvas canvas, object item)
         {

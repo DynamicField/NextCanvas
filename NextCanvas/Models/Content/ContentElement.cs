@@ -9,6 +9,5 @@
 
         public double Width { get; set; } = 200;
         public double Height { get; set; } = 200;
-
     }
 }

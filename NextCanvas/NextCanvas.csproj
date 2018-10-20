@@ -88,6 +88,7 @@
     <Compile Include="Controls\Content\ContentElementRenderer.xaml.cs">
       <DependentUpon>ContentElementRenderer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Content\RtfRichTextBox.cs" />
     <Compile Include="Controls\NextDynamicRenderer.cs" />
     <Compile Include="Controls\NextInkCanvas.cs" />
     <Compile Include="Converters\BoolToOrientationConverter.cs" />

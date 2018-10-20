@@ -18,7 +18,7 @@ namespace NextCanvas.ViewModels
         }
         private void Initialize()
         {
-            Elements = new ObservableViewModelCollection<IViewModel<ContentElement>, ContentElement>(Model.Elements, e => ContentElementViewModel.GetViewModel(e));
+            Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements, e => ContentElementViewModel.GetViewModel(e));
         }
         public StrokeCollection Strokes
         {
@@ -32,7 +32,7 @@ namespace NextCanvas.ViewModels
                 }
             }
         }
-        public ObservableViewModelCollection<IViewModel<ContentElement>, ContentElement> Elements { get; set; } 
+        public ObservableViewModelCollection<ContentElementViewModel, ContentElement> Elements { get; set; } 
         public int Width
         {
             get => Model.Width;

@@ -2,15 +2,12 @@
 
 namespace NextCanvas.ViewModels.Content
 {
-    public class TextBoxElementViewModel : ContentElementViewModel
+    public class TextBoxElementViewModel : ContentElementViewModel, IViewModel<TextBoxElement>
     {
         public new TextBoxElement Model { get => (TextBoxElement)base.Model; }
         protected override ContentElement BuildDefaultModel()
         {
             return new TextBoxElement();
-        }
-        public TextBoxElementViewModel()
-        {
         }
         public TextBoxElementViewModel(TextBoxElement model) : base(model)
         {
@@ -19,10 +16,6 @@ namespace NextCanvas.ViewModels.Content
         {
             get { return Model.RtfText; }
             set { Model.RtfText = value; OnPropertyChanged(nameof(RtfText)); }
-        }
-        public void SaveRtf()
-        {
-
         }
     }
 }

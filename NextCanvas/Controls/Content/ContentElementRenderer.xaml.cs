@@ -14,7 +14,7 @@ namespace NextCanvas.Controls.Content
         {
             InitializeComponent();
         }
-        public void Initialize(ContentElementViewModel v)
+        public void Initialize(object v)
         {
             DataContext = v;
             InitializePropertiesBindings();
@@ -25,8 +25,7 @@ namespace NextCanvas.Controls.Content
         // FIND A BETTER SOLUTION PLS
         private void InitializePropertiesBindings()
         {
-            var data = DataContext as ContentElementViewModel;
-            if (data == null)
+            if (!(DataContext is ContentElementViewModel data))
             {
                 return; // why isnt it a contentelement blah blah?
             }

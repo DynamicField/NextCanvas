@@ -135,6 +135,10 @@ namespace NextCanvas.ViewModels
             SaveCommand = new DelegateCommand(o => SaveDocument());
             OpenCommand = new DelegateCommand(o => OpenDocument());
         }
+        public static JsonSerializerSettings TypeHandlingSettings { get; } = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
         // The following shall be replaced with some zippy archives and resources and isf and blah and wow and everything you need to be gud
         private void SaveDocument()
         {
@@ -146,7 +150,7 @@ namespace NextCanvas.ViewModels
             {
                 using (var streamyStream = new StreamWriter(SavePath, false))
                 {
-                    streamyStream.Write(JsonConvert.SerializeObject(CurrentDocument.Model));
+                    streamyStream.Write(JsonConvert.SerializeObject(CurrentDocument.Model, TypeHandlingSettings));
                 }
             }
             finally
@@ -165,7 +169,9 @@ namespace NextCanvas.ViewModels
             {
                 using (var streamyStream = new StreamReader(OpenPath))
                 {
-                    CurrentDocument = new DocumentViewModel(JsonConvert.DeserializeObject<Document>(streamyStream.ReadToEnd()));
+                    var value = streamyStream.ReadToEnd();
+                    var deserialized = JsonConvert.DeserializeObject<Document>(value, TypeHandlingSettings);
+                    CurrentDocument = new DocumentViewModel(deserialized);
                 }
             }
             finally
