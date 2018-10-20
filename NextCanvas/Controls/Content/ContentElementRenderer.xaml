@@ -16,6 +16,9 @@
                 <DataTemplate DataType="{x:Type vm:TextBoxElementViewModel}">
                     <local:RtfRichTextBox RtfText="{Binding RtfText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsUndoEnabled="True"></local:RtfRichTextBox>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ContentElementViewModel}">
+                    <local:ElementRecognitionError/>
+                </DataTemplate>
             </ContentPresenter.Resources>
         </ContentPresenter>
     </Grid>

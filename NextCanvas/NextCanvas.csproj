@@ -88,6 +88,9 @@
     <Compile Include="Controls\Content\ContentElementRenderer.xaml.cs">
       <DependentUpon>ContentElementRenderer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Content\ElementRecognitionError.xaml.cs">
+      <DependentUpon>ElementRecognitionError.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Content\RtfRichTextBox.cs" />
     <Compile Include="Controls\NextDynamicRenderer.cs" />
     <Compile Include="Controls\NextInkCanvas.cs" />
@@ -123,6 +126,10 @@
       <DependentUpon>StylusDebugWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\Content\ContentElementRenderer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Content\ElementRecognitionError.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,10 +4,13 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Media;
 using Fluent;
 using Newtonsoft.Json;
 using NextCanvas.Models;
+using NextCanvas.Models.Content;
+using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 
 namespace NextCanvas.ViewModels
 {
@@ -108,12 +111,12 @@ namespace NextCanvas.ViewModels
 
         public MainWindowViewModel()
         {
-            Initalize();
+            Initialize();
         }
 
         public MainWindowViewModel(MainWindowModel model) : base(model)
         {
-            Initalize();
+            Initialize();
         }
         
         private void UpdatePageText()
@@ -121,7 +124,7 @@ namespace NextCanvas.ViewModels
             OnPropertyChanged(nameof(PageDisplayText));
         }
 
-        private void Initalize()
+        private void Initialize()
         {
             document = new DocumentViewModel(Model.Document);
             Tools = new ObservableViewModelCollection<ToolViewModel, Tool>(Model.Tools, t => new ToolViewModel(t));
@@ -135,10 +138,21 @@ namespace NextCanvas.ViewModels
             SaveCommand = new DelegateCommand(o => SaveDocument());
             OpenCommand = new DelegateCommand(o => OpenDocument());
         }
-        public static JsonSerializerSettings TypeHandlingSettings { get; } = new JsonSerializerSettings
+        protected JsonSerializerSettings TypeHandlingSettings { get; } = new JsonSerializerSettings
         {
-            TypeNameHandling = TypeNameHandling.Auto
+            TypeNameHandling = TypeNameHandling.Auto,
+            Error = IgnoreError
         };
+
+        private static void IgnoreError(object sender, ErrorEventArgs e)
+        {
+            if (e.CurrentObject is Page p && Regex.IsMatch(e.ErrorContext.Path, @"Pages\.\$values\[[0-9]+\]\.Elements\.\$type")) // If type is wrong
+            {
+                p.Elements.Add(new ContentElement()); // oh no
+            }
+            e.ErrorContext.Handled = true;
+        }
+
         // The following shall be replaced with some zippy archives and resources and isf and blah and wow and everything you need to be gud
         private void SaveDocument()
         {
