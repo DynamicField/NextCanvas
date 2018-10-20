@@ -92,8 +92,10 @@
       <DependentUpon>ElementRecognitionError.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Content\RtfRichTextBox.cs" />
+    <Compile Include="Controls\ElementCreationContext.cs" />
     <Compile Include="Controls\NextDynamicRenderer.cs" />
     <Compile Include="Controls\NextInkCanvas.cs" />
+    <Compile Include="Controls\SelectionWrapper.cs" />
     <Compile Include="Converters\BoolToOrientationConverter.cs" />
     <Compile Include="Converters\OrConverter.cs" />
     <Compile Include="Converters\DivideByConverter.cs" />
@@ -263,6 +265,8 @@
   <ItemGroup>
     <Resource Include="Images\Ribbon\Home\SelectAll.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Insert\NewTextBox.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

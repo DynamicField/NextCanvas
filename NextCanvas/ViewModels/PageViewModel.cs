@@ -51,6 +51,5 @@ namespace NextCanvas.ViewModels
                 OnPropertyChanged(nameof(Height));
             }
         }
-
     }
 }

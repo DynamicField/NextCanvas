@@ -21,6 +21,7 @@ namespace NextCanvas.Controls
         public NextInkCanvas()
         {
             DynamicRenderer = new NextDynamicRenderer();
+            SelectionHelper = new SelectionWrapper(SelectChildren);
             PreferredPasteFormats = new List<InkCanvasClipboardFormat>
             {
                 InkCanvasClipboardFormat.InkSerializedFormat,
@@ -29,10 +30,14 @@ namespace NextCanvas.Controls
             };
             CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas), new CommandBinding(ApplicationCommands.Delete, DeleteCommandExecuted, CanExecuteDeleteCommand));
         }
-
+        public void SelectChildren(object dataContext)
+        {
+            Select(new[] { GetElementFromDataContext(this, dataContext) });
+        }
+        public SelectionWrapper SelectionHelper { get; }
         private static void DeleteCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            var canvas = (NextInkCanvas) sender;
+            var canvas = (NextInkCanvas)sender;
             if (e.Command == ApplicationCommands.Delete)
             {
                 canvas.DeleteSelection();
@@ -41,7 +46,7 @@ namespace NextCanvas.Controls
 
         private static void CanExecuteDeleteCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            var canvas = (NextInkCanvas) sender;
+            var canvas = (NextInkCanvas)sender;
             if (e.Command == ApplicationCommands.Delete)
             {
                 e.CanExecute = canvas.GetSelectedElements().Any() || canvas.GetSelectedStrokes().Any();

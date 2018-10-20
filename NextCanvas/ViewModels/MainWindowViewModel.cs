@@ -1,4 +1,10 @@
-﻿using System;
+﻿using Fluent;
+using Newtonsoft.Json;
+using NextCanvas.Controls;
+using NextCanvas.Models;
+using NextCanvas.Models.Content;
+using NextCanvas.ViewModels.Content;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -6,10 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
-using Fluent;
-using Newtonsoft.Json;
-using NextCanvas.Models;
-using NextCanvas.Models.Content;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 
 namespace NextCanvas.ViewModels
@@ -60,7 +62,8 @@ namespace NextCanvas.ViewModels
         // better use this tho
         public ToolViewModel SelectedTool
         {
-            get {
+            get
+            {
 
                 var tool = Tools[SelectedToolIndex];
                 var color = tool.DrawingAttributes.Color;
@@ -70,10 +73,7 @@ namespace NextCanvas.ViewModels
                 }
                 return tool;
             }
-            set
-            {
-                SelectedToolIndex = Tools.IndexOf(value);
-            }
+            set => SelectedToolIndex = Tools.IndexOf(value);
         }
         private void Subscribe() // To my youtube channel XD
         {
@@ -98,7 +98,6 @@ namespace NextCanvas.ViewModels
         {
             UpdatePageText();
         }
-
         public DelegateCommand PreviousPageCommand { get; private set; }
         public DelegateCommand NextPageCommand { get; private set; }
         public DelegateCommand NewPageCommand { get; private set; }
@@ -107,6 +106,7 @@ namespace NextCanvas.ViewModels
         public DelegateCommand SetToolByNameCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
         public DelegateCommand OpenCommand { get; private set; }
+        public DelegateCommand CreateTextBoxCommand { get; private set; }
         public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
 
         public MainWindowViewModel()
@@ -118,7 +118,7 @@ namespace NextCanvas.ViewModels
         {
             Initialize();
         }
-        
+
         private void UpdatePageText()
         {
             OnPropertyChanged(nameof(PageDisplayText));
@@ -137,13 +137,13 @@ namespace NextCanvas.ViewModels
             SetToolByNameCommand = new DelegateCommand(o => SetToolByName(o.ToString()), o => IsNameValid(o.ToString()));
             SaveCommand = new DelegateCommand(o => SaveDocument());
             OpenCommand = new DelegateCommand(o => OpenDocument());
+            CreateTextBoxCommand = new DelegateCommand(CreateTextBox);
         }
         protected JsonSerializerSettings TypeHandlingSettings { get; } = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Auto,
             Error = IgnoreError
         };
-
         private static void IgnoreError(object sender, ErrorEventArgs e)
         {
             if (e.CurrentObject is Page p && Regex.IsMatch(e.ErrorContext.Path, @"Pages\.\$values\[[0-9]+\]\.Elements\.\$type")) // If type is wrong
@@ -151,6 +151,40 @@ namespace NextCanvas.ViewModels
                 p.Elements.Add(new ContentElement()); // oh no
             }
             e.ErrorContext.Handled = true;
+        }
+
+        private void CenterElement(ContentElementViewModel v, ElementCreationContext context)
+        {
+            v.Left = GetCenterLeft(context, v.Width);
+            v.Top = GetCenterTop(context, v.Height);
+        }
+        private double GetCenterLeft(ElementCreationContext context, double width)
+        {
+            return context.ContentHorizontalOffset + context.VisibleWidth / 2 - width / 2;
+        }
+        private double GetCenterTop(ElementCreationContext context, double height)
+        {
+            return context.ContentVerticalOffset + context.VisibleHeight / 2 - height / 2;
+        }
+        private void CreateTextBox(object select = null)
+        {
+            var element = new TextBoxElementViewModel();
+            if (select != null && select is ElementCreationContext context)
+            {
+                CenterElement(element, context);
+                CurrentDocument.SelectedPage.Elements.Add(element);
+                SelectedTool = GetSelectTool();
+                context.Selection.Select(element);
+            }
+            else
+            {
+                CurrentDocument.SelectedPage.Elements.Add(element);
+            }
+        }
+
+        private ToolViewModel GetSelectTool()
+        {
+            return Tools.First(t => t.Mode == System.Windows.Controls.InkCanvasEditingMode.Select);
         }
 
         // The following shall be replaced with some zippy archives and resources and isf and blah and wow and everything you need to be gud
@@ -260,7 +294,11 @@ namespace NextCanvas.ViewModels
             return (direction == Direction.Forwards && document.SelectedIndex + 1 != document.Pages.Count) ||
                    (direction == Direction.Backwards && document.SelectedIndex - 1 >= 0);
         }
-        private bool CanChangePage(int index) => document.Pages.Count > index;
+        private bool CanChangePage(int index)
+        {
+            return document.Pages.Count > index;
+        }
+
         private enum Direction
         {
             Forwards = 1,
