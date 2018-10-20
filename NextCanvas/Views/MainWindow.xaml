@@ -43,20 +43,8 @@
                                 Height="{Binding CurrentDocument.SelectedPage.Height}"
                            Strokes="{Binding CurrentDocument.SelectedPage.Strokes}" 
                                 Canvas.Left="0" Canvas.Top="0" 
-                                SelectionChanged="Canvas_SelectionChanged"
                            UseCustomCursorDP="{Binding SelectedTool.UseCursor}" ItemsSource="{Binding CurrentDocument.SelectedPage.Elements}"
-                                Cursor="{Binding SelectedTool.Cursor}" DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}">
-                                <!-- lmao so much things -->
-                                <Image Source="https://archzine.fr/wp-content/uploads/2016/05/formidable-panda-geant-mignon-en-image-arbre.jpg" Width="125" InkCanvas.Top="40"  Panel.ZIndex="1"/>
-                                <RichTextBox MinWidth="200">
-                                    <FlowDocument>
-                                        <Paragraph>
-                                            <Run Text="Hehe :)"/>
-                                        </Paragraph>
-                                    </FlowDocument>
-                                </RichTextBox>
-                                
-                            </local:NextInkCanvas>
+                                Cursor="{Binding SelectedTool.Cursor}" DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}"/>
                         </Canvas>
                         <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
                         Padding="5,2" Margin="2" Opacity="0.2" Style="{StaticResource OpacityOnHover}"
@@ -112,12 +100,11 @@
                         <fluent:ToggleButton Header="Select" GroupName="Tool" LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Select.png" SizeDefinition="Large"
                                              Command="{Binding SetToolByNameCommand}" CommandParameter="Select" x:Name="Select" IsChecked="{Binding SelectedTool.Name, ConverterParameter=Select, Converter={StaticResource IsEqualToConverter}, Mode=OneWay}"/>
                         <fluent:Button Header="Select All" LargeIcon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png"  Icon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png" SizeDefinition="large, large, small" Command="ApplicationCommands.SelectAll" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"></fluent:Button>
-                        <fluent:Button SizeDefinition="middle, small, small" Header="Copy" Icon="/NextCanvas;component/Images/Ribbon/Shared/Copy-Small.png" x:Name="CopyButton" IsEnabled="False" Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"/>
-                        <fluent:Button SizeDefinition="middle, small, small" Header="Cut" Icon="/NextCanvas;component/Images/Ribbon/Shared/Cut-Small.png" x:Name="CutButton" IsEnabled="False" Command="ApplicationCommands.Cut" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"/>
+                        <fluent:Button SizeDefinition="middle, small, small" Header="Copy" Icon="/NextCanvas;component/Images/Ribbon/Shared/Copy-Small.png" x:Name="CopyButton" Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"/>
+                        <fluent:Button SizeDefinition="middle, small, small" Header="Cut" Icon="/NextCanvas;component/Images/Ribbon/Shared/Cut-Small.png" x:Name="CutButton" Command="ApplicationCommands.Cut" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"/>
                         <fluent:Button SizeDefinition="middle, small, small" Header="Paste" Icon="/NextCanvas;component/Images/Ribbon/Shared/Paste-Small.png" x:Name="PasteButton" Click="PasteButton_OnClick" />
                         <fluent:Button Header="Delete selection" LargeIcon="{StaticResource DeleteSelection}" SizeDefinition="large"
-                                       Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=CopyButton}" x:Name="DeleteButton" 
-                                       Click="DeleteButton_Click"/>
+                                       Command="ApplicationCommands.Delete" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}" Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Self}}" />
                     </fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox Header="Basic tools" Name="Tools" Icon="{Binding SelectedTool.LargeIcon}">
                         <fluent:RibbonGroupBox.Resources>

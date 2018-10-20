@@ -29,33 +29,6 @@ namespace NextCanvas.Views
         {
             PasteButton.IsEnabled = Canvas.CanPaste();
         }
-
-        private void Canvas_SelectionChanged(object sender, EventArgs e)
-        {
-            if (Canvas.GetSelectedElements().Count != 0 || Canvas.GetSelectedStrokes().Count != 0)
-            {
-                CopyButton.IsEnabled = CutButton.IsEnabled = true;
-            }
-            else
-            {
-                CopyButton.IsEnabled = CutButton.IsEnabled = false;
-            }
-        }
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            var list = Canvas.GetSelectedStrokes();
-            Canvas.Strokes.Remove(list);
-            var elements = Canvas.GetSelectedElements();
-            if (elements.Any())
-            {
-                for (var i = elements.Count - 1; i >= 0; i--)
-                {
-                    Canvas.Children.Remove(elements[i]);
-                }
-            }
-            Canvas_SelectionChanged(sender, null);
-        }
-
         private void ColorGallery_SelectedColorChanged(object sender, RoutedEventArgs e)
         {
             Canvas.DefaultDrawingAttributes.Color = ColorGallery.SelectedColor ?? Colors.Black;

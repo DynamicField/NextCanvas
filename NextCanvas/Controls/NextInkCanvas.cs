@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NextCanvas.Controls.Content;
+using NextCanvas.Ink;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -6,8 +8,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
-using NextCanvas.Controls.Content;
-using NextCanvas.Ink;
+using System.Windows.Input;
+using Fluent.Internal;
 
 namespace NextCanvas.Controls
 {
@@ -26,7 +28,38 @@ namespace NextCanvas.Controls
                 InkCanvasClipboardFormat.Xaml,
                 InkCanvasClipboardFormat.Text
             };
+            CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas), new CommandBinding(ApplicationCommands.Delete, DeleteCommandExecuted, CanExecuteDeleteCommand));
+        }
 
+        private static void DeleteCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            var canvas = (NextInkCanvas) sender;
+            if (e.Command == ApplicationCommands.Delete)
+            {
+                canvas.DeleteSelection();
+            }
+        }
+
+        private static void CanExecuteDeleteCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            var canvas = (NextInkCanvas) sender;
+            if (e.Command == ApplicationCommands.Delete)
+            {
+                e.CanExecute = canvas.GetSelectedElements().Any() || canvas.GetSelectedStrokes().Any();
+            }
+        }
+        public void DeleteSelection()
+        {
+            var list = GetSelectedStrokes();
+            Strokes.Remove(list);
+            var elements = GetSelectedElements();
+            if (elements.Any())
+            {
+                for (var i = elements.Count - 1; i >= 0; i--)
+                {
+                    RemoveChild(this, ((FrameworkElement)elements[i]).DataContext);
+                }
+            }
         }
         // ReSharper disable once RedundantOverriddenMember
         protected override void OnStrokeCollected(InkCanvasStrokeCollectedEventArgs e)
@@ -92,7 +125,7 @@ namespace NextCanvas.Controls
                 {
                     return;
                 }
-                var casted = (NextInkCanvas) sender;
+                var casted = (NextInkCanvas)sender;
                 if (e.OldValue is INotifyCollectionChanged old)
                 {
                     old.CollectionChanged -= casted.ItemsSourceItemChanged;
@@ -114,23 +147,52 @@ namespace NextCanvas.Controls
             canvas.Children.Add(element);
             element.Initialize(item);
         }
-        private static void RemoveChild(InkCanvas canvas, object item)
+        private bool isInternal = false;
+        private static void RemoveChild(NextInkCanvas canvas, object item)
         {
-            // ReSharper disable once SuspiciousTypeConversion.Global
-            var toRemove = ((ICollection<UIElement>)canvas.Children).First(e => (e as FrameworkElement)?.DataContext == item);
-            // Don't eat the exception it tastes bad
-            canvas.Children.Remove(toRemove);
+            if (canvas.ItemsSource is IList l)
+            {
+                canvas.isInternal = true;
+                l.Remove(item);
+            }
+        }
+        private static FrameworkElement GetElementFromDataContext(NextInkCanvas canvas, object item)
+        {
+            return canvas.Children.Cast<FrameworkElement>().First(e => e.DataContext == item);
+        }
+        private static void RemoveVisualChild(NextInkCanvas canvas, UIElement item)
+        {
+            canvas.Children.Remove(item);
+        }
+        private static void RemoveVisualChild(NextInkCanvas canvas, object dataContext)
+        {
+            RemoveVisualChild(canvas, GetElementFromDataContext(canvas, dataContext));
         }
         private void ItemsSourceItemChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            foreach (var item in e.NewItems)
+            if (e.NewItems != null)
             {
-                AddChild(this, item);
+                foreach (var item in e.NewItems)
+                {
+                    AddChild(this, item);
+                }
             }
-            foreach (var item in e.OldItems)
+            if (e.OldItems != null)
             {
-                RemoveChild(this, item);
+                foreach (var item in e.OldItems)
+                {
+                    if (isInternal)
+                    {
+                        RemoveVisualChild(this, item);
+                    }
+                    else
+                    {
+                        RemoveChild(this, item);
+                    }
+                }
             }
+
+            isInternal = false;
         }
     }
 }
