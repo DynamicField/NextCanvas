@@ -92,7 +92,7 @@
       <DependentUpon>ElementRecognitionError.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Content\RtfRichTextBox.cs" />
-    <Compile Include="Controls\ElementCreationContext.cs" />
+    <Compile Include="Controls\Content\ElementCreationContext.cs" />
     <Compile Include="Controls\NextDynamicRenderer.cs" />
     <Compile Include="Controls\NextInkCanvas.cs" />
     <Compile Include="Controls\SelectionWrapper.cs" />

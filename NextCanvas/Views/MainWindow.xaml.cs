@@ -8,6 +8,7 @@ using System.Windows.Media;
 using Fluent;
 using Microsoft.Win32;
 using NextCanvas.Controls;
+using NextCanvas.Controls.Content;
 using NextCanvas.ViewModels;
 
 namespace NextCanvas.Views
