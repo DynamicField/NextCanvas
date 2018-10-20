@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
-using Fluent.Internal;
 
 namespace NextCanvas.Controls
 {
@@ -147,7 +146,8 @@ namespace NextCanvas.Controls
             canvas.Children.Add(element);
             element.Initialize(item);
         }
-        private bool isInternal = false;
+
+        private bool isInternal;
         private static void RemoveChild(NextInkCanvas canvas, object item)
         {
             if (canvas.ItemsSource is IList l)

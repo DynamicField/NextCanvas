@@ -9,6 +9,10 @@ namespace NextCanvas.ViewModels.Content
         {
             return new TextBoxElement();
         }
+        public TextBoxElementViewModel()
+        {
+                
+        }
         public TextBoxElementViewModel(TextBoxElement model) : base(model)
         {
         }    
