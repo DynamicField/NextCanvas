@@ -1,13 +1,11 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using Fluent;
 using Microsoft.Win32;
-using NextCanvas.Controls;
 using NextCanvas.Controls.Content;
 using NextCanvas.ViewModels;
 
@@ -22,12 +20,10 @@ namespace NextCanvas.Views
             ScrollParent.ContentHorizontalOffset, ScrollParent.ContentVerticalOffset, ScrollParent.ActualWidth,
             ScrollParent.ActualHeight);
         public MainWindow()
-        {
-            
+        {           
             InitializeComponent();
             DataContext = new MainWindowViewModel();
             Canvas.DefaultDrawingAttributes.FitToCurve = true;
-            ApplicationCommands.Paste.CanExecuteChanged += Paste_CanExecuteChanged;
             ScrollParent.SizeChanged += ScrollParent_SizeChanged;
             ScrollParent.ScrollChanged += ScrollParent_ScrollChanged;
         }
@@ -46,19 +42,21 @@ namespace NextCanvas.Views
         {
             OnPropertyChanged(nameof(CreationContext));
         }
-
-        // The following is a little dirty hack because there you can't really paste to the center or just get the ApplicationCommands.Paste can execute binding
-        // with the InkCanvas as a target which is dumb but whatever
-        private void Paste_CanExecuteChanged(object sender, EventArgs e)
-        {
-            PasteButton.IsEnabled = Canvas.CanPaste();
-        }
         private void ColorGallery_SelectedColorChanged(object sender, RoutedEventArgs e)
         {
+            if (ColorGallery.SelectedColor is null)
+            {
+                return;
+            }
             Canvas.DefaultDrawingAttributes.Color = ColorGallery.SelectedColor ?? Colors.Black;
-            foreach (var item in Canvas.GetSelectedStrokes())
+            var strokes = Canvas.GetSelectedStrokes();
+            foreach (var item in strokes)
             {
                 item.DrawingAttributes.Color = ColorGallery.SelectedColor ?? Colors.Black;
+            }
+            if (strokes.Any())
+            {
+                ColorGallery.SelectedColor = null;
             }
         }
 
@@ -133,19 +131,16 @@ namespace NextCanvas.Views
         {
             new MultiCanvasExperimentWindow().Show();
         }
-
-        // TODO: Replace this with smth inside the NextInkCanvas class.
-        private void PasteButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            // Paste to some kind of "center", because the default is dumb (0,0).            
-            Canvas.Paste(new Point(ScrollParent.ContentHorizontalOffset + ScrollParent.ActualWidth / 2, ScrollParent.ContentVerticalOffset + ScrollParent.ActualHeight / 2));            
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void InsertClick_GoToHome(object sender, RoutedEventArgs e)
+        {
+            Ribbon.SelectedTabIndex = 0;
         }
     }
 }

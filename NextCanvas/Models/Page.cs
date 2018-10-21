@@ -28,14 +28,7 @@ namespace NextCanvas.Models
                 }
             }
         }
-        public List<ContentElement> Elements { get; set; } = new List<ContentElement> {
-            new TextBoxElement
-            {               
-                Left = 50,
-                Width = 111,
-                Height = 75
-            }
-        };
+        public List<ContentElement> Elements { get; set; } = new List<ContentElement>();
         public int Width { get; set; } = 1720;
         public int Height { get; set; } = 1420;
     }

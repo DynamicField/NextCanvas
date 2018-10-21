@@ -1,6 +1,5 @@
 ﻿using Fluent;
 using Newtonsoft.Json;
-using NextCanvas.Controls;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
 using NextCanvas.ViewModels.Content;
@@ -11,9 +10,11 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
 using System.Windows.Media;
 using NextCanvas.Controls.Content;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
+using Page = NextCanvas.Models.Page;
 
 namespace NextCanvas.ViewModels
 {
@@ -108,6 +109,7 @@ namespace NextCanvas.ViewModels
         public DelegateCommand SaveCommand { get; private set; }
         public DelegateCommand OpenCommand { get; private set; }
         public DelegateCommand CreateTextBoxCommand { get; private set; }
+        public DelegateCommand SwitchToSelectToolCommand { get; private set; }
         public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
 
         public MainWindowViewModel()
@@ -136,6 +138,7 @@ namespace NextCanvas.ViewModels
             DeletePageCommand = new DelegateCommand(o => DeletePage(CurrentDocument.SelectedIndex), o => CanDeletePage);
             ExtendPageCommand = new DelegateCommand(o => ExtendPage(o.ToString()));
             SetToolByNameCommand = new DelegateCommand(o => SetToolByName(o.ToString()), o => IsNameValid(o.ToString()));
+            SwitchToSelectToolCommand = new DelegateCommand(o => SwitchToSelectTool(), o => IsThereAnySelectTools());
             SaveCommand = new DelegateCommand(o => SaveDocument());
             OpenCommand = new DelegateCommand(o => OpenDocument());
             CreateTextBoxCommand = new DelegateCommand(CreateTextBox);
@@ -182,12 +185,25 @@ namespace NextCanvas.ViewModels
                 CurrentDocument.SelectedPage.Elements.Add(element);
             }
         }
+        private void SwitchToSelectTool()
+        {
+            if (SelectedTool.Mode == InkCanvasEditingMode.Select) return;
+            var tool = GetSelectTool();
+            if (tool is null)
+            {
+                throw new InvalidOperationException("There isn't any select tool in the list. Wait why?");
+            }
 
+            SelectedTool = tool;
+        }
         private ToolViewModel GetSelectTool()
         {
-            return Tools.First(t => t.Mode == System.Windows.Controls.InkCanvasEditingMode.Select);
+            return !IsThereAnySelectTools() ? null : Tools.First(t => t.Mode == InkCanvasEditingMode.Select);
         }
-
+        private bool IsThereAnySelectTools()
+        {
+            return Tools.Any(t => t.Mode == InkCanvasEditingMode.Select);
+        }
         // The following shall be replaced with some zippy archives and resources and isf and blah and wow and everything you need to be gud
         private void SaveDocument()
         {

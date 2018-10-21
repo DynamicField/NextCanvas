@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,28 +29,112 @@ namespace NextCanvas.Controls
                 InkCanvasClipboardFormat.Xaml,
                 InkCanvasClipboardFormat.Text
             };
-            CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas), new CommandBinding(ApplicationCommands.Delete, DeleteCommandExecuted, CanExecuteDeleteCommand));
+            CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas), new CommandBinding(ApplicationCommands.Delete, CommandExecuted, CanExecuteCommand));
+            CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas), new CommandBinding(ApplicationCommands.Paste, CommandExecuted, CanExecuteCommand));
         }
         public void SelectChildren(object dataContext)
         {
             Select(new[] { GetElementFromDataContext(this, dataContext) });
         }
+
+        protected override void OnSelectionChanged(EventArgs e)
+        {
+            base.OnSelectionChanged(e);
+            var elements = GetSelectedElements();
+            if (elements.Count == 1)
+            {
+                elements[0].Focus();
+                if (elements[0] is ContentElementRenderer render)
+                {
+                    render.FocusChild();
+                }
+            }
+        }
+
         public SelectionWrapper SelectionHelper { get; }
-        private static void DeleteCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        private static void CommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             var canvas = (NextInkCanvas)sender;
             if (e.Command == ApplicationCommands.Delete)
             {
                 canvas.DeleteSelection();
             }
+
+            if (e.Command == ApplicationCommands.Paste)
+            {
+                canvas.Paste();
+            }
         }
 
-        private static void CanExecuteDeleteCommand(object sender, CanExecuteRoutedEventArgs e)
+
+        public ScrollViewer ScrollViewerReferent
+        {
+            get { return (ScrollViewer)GetValue(ScrollViewerReferentProperty); }
+            set { SetValue(ScrollViewerReferentProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ScrollViewerReferent.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ScrollViewerReferentProperty =
+            DependencyProperty.Register("ScrollViewerReferent", typeof(ScrollViewer), typeof(NextInkCanvas), new PropertyMetadata(null));
+
+        private MemoryStream lastDataObject;
+        private double pasteDiff;
+        /// <summary>
+        /// Pastes the clipboard content to the *CENTER*.
+        /// </summary>
+        public new void Paste()
+        {
+            UpdatePasteDifference();
+            if (!CanPaste())
+            {
+                return;
+            }
+            double horizontalOffset = 0, verticalOffset = 0;
+            double width = ActualWidth, height = ActualHeight;
+            if (ScrollViewerReferent != null) // sees if there is any useful scroll viewers.
+            {
+                horizontalOffset = ScrollViewerReferent.ContentHorizontalOffset;
+                verticalOffset = ScrollViewerReferent.ContentVerticalOffset;
+                width = ScrollViewerReferent.ActualWidth;
+                height = ScrollViewerReferent.ActualHeight;
+            }
+            Paste(new Point(horizontalOffset + width / 2 + pasteDiff, verticalOffset + height / 2 + pasteDiff));
+        }
+        private void UpdatePasteDifference()
+        {
+            if (!(Clipboard.GetData(StrokeCollection.InkSerializedFormat) is MemoryStream data))
+            {
+                pasteDiff = 0;
+                return;
+            }
+            if (lastDataObject == null)
+            {
+                pasteDiff = 0;
+                lastDataObject = data;
+                return;
+            }
+            if (data.Length == lastDataObject.Length) // It's less heavier than having to create two stream readers and blah blah blah
+            {
+                pasteDiff += 5;
+            }
+            else
+            {
+                pasteDiff = 0;
+            }
+            lastDataObject = data;
+        }
+
+        private static void CanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
         {
             var canvas = (NextInkCanvas)sender;
             if (e.Command == ApplicationCommands.Delete)
             {
                 e.CanExecute = canvas.GetSelectedElements().Any() || canvas.GetSelectedStrokes().Any();
+            }
+
+            if (e.Command == ApplicationCommands.Paste)
+            {
+                e.CanExecute = canvas.CanPaste();
             }
         }
         public void DeleteSelection()

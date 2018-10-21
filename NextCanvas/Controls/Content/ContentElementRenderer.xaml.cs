@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+﻿using NextCanvas.ViewModels.Content;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using NextCanvas.ViewModels.Content;
+using System.Windows.Media;
 
 namespace NextCanvas.Controls.Content
 {
@@ -13,7 +15,14 @@ namespace NextCanvas.Controls.Content
         public ContentElementRenderer()
         {
             InitializeComponent();
+            Loaded += (idc, idontcare) => { FocusChild(); };
         }
+
+        public void FocusChild()
+        {
+            ((UIElement)VisualTreeHelper.GetChild(ElementContentPresenter, 0)).Focus();
+        }
+
         public void Initialize(object v)
         {
             DataContext = v;

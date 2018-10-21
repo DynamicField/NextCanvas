@@ -4,12 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NextCanvas.Controls"
-    xmlns:sublocal="clr-namespace:NextCanvas"
         xmlns:vm="clr-namespace:NextCanvas.ViewModels"
         xmlns:fluent="urn:fluent-ribbon" xmlns:converters="clr-namespace:NextCanvas.Converters"
-    xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-    xmlns:local1="clr-namespace:NextCanvas.Views"
-    x:Class="NextCanvas.Views.MainWindow"
+        xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:local1="clr-namespace:NextCanvas.Views"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        x:Class="NextCanvas.Views.MainWindow"
         UseLayoutRounding="True"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:MainWindowViewModel}}"
         Title="NextCanvas" Height="720" Width="1202">
@@ -46,7 +46,14 @@
                            Strokes="{Binding CurrentDocument.SelectedPage.Strokes}" 
                                 Canvas.Left="0" Canvas.Top="0" 
                            UseCustomCursorDP="{Binding SelectedTool.UseCursor}" ItemsSource="{Binding CurrentDocument.SelectedPage.Elements}"
-                                Cursor="{Binding SelectedTool.Cursor}" DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}"/>
+                                Cursor="{Binding SelectedTool.Cursor}" DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}" 
+                                ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding SwitchToSelectToolCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </local:NextInkCanvas>
                         </Canvas>
                         <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
                         Padding="5,2" Margin="2" Opacity="0.2" Style="{StaticResource OpacityOnHover}"
@@ -61,7 +68,7 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <fluent:Ribbon Grid.ColumnSpan="3" Panel.ZIndex="2" Margin="0,0,0,0">
+            <fluent:Ribbon Grid.ColumnSpan="3" Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon">
                 <fluent:Ribbon.Menu>
                     <fluent:ApplicationMenu>
                         <fluent:ApplicationMenu.Resources>
@@ -100,11 +107,11 @@
                 <fluent:RibbonTabItem Header="Home" IsSelected="True" ReduceOrder="Selection, Pages, Pages, Pages">
                     <fluent:RibbonGroupBox Header="Selection" x:Name="Selection">
                         <fluent:ToggleButton Header="Select" GroupName="Tool" LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Select.png" SizeDefinition="Large"
-                                             Command="{Binding SetToolByNameCommand}" CommandParameter="Select" x:Name="Select" IsChecked="{Binding SelectedTool.Name, ConverterParameter=Select, Converter={StaticResource IsEqualToConverter}, Mode=OneWay}"/>
+                                             Command="{Binding SwitchToSelectToolCommand}" IsChecked="{Binding SelectedTool.Name, ConverterParameter=Select, Converter={StaticResource IsEqualToConverter}, Mode=OneWay}"/>
                         <fluent:Button Header="Select All" LargeIcon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png"  Icon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png" SizeDefinition="large, large, small" Command="ApplicationCommands.SelectAll" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"/>
                         <fluent:Button SizeDefinition="middle, small, small" Header="Copy" Icon="/NextCanvas;component/Images/Ribbon/Shared/Copy-Small.png" x:Name="CopyButton" Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"/>
                         <fluent:Button SizeDefinition="middle, small, small" Header="Cut" Icon="/NextCanvas;component/Images/Ribbon/Shared/Cut-Small.png" x:Name="CutButton" Command="ApplicationCommands.Cut" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"/>
-                        <fluent:Button SizeDefinition="middle, small, small" Header="Paste" Icon="/NextCanvas;component/Images/Ribbon/Shared/Paste-Small.png" x:Name="PasteButton" Click="PasteButton_OnClick" />
+                        <fluent:Button SizeDefinition="middle, small, small" Header="Paste" Icon="/NextCanvas;component/Images/Ribbon/Shared/Paste-Small.png" x:Name="PasteButton" Command="ApplicationCommands.Paste" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}" />
                         <fluent:Button Header="Delete selection" LargeIcon="{StaticResource DeleteSelection}" SizeDefinition="large"
                                        Command="ApplicationCommands.Delete" CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}" Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Self}}" />
                     </fluent:RibbonGroupBox>
@@ -205,7 +212,7 @@
                 </fluent:RibbonTabItem>
                 <fluent:RibbonTabItem Header="Insert">
                     <fluent:RibbonGroupBox Header="Text">
-                        <fluent:Button Header="Text box" LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/NewTextBox.png"
+                        <fluent:Button Header="Text box" LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/NewTextBox.png" Click="InsertClick_GoToHome"
                                        Command="{Binding CreateTextBoxCommand}" CommandParameter="{Binding CreationContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
                     </fluent:RibbonGroupBox>
                 </fluent:RibbonTabItem>
