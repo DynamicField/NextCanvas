@@ -15,7 +15,6 @@ namespace NextCanvas.Controls.Content
         public ContentElementRenderer()
         {
             InitializeComponent();
-            Loaded += (idc, idontcare) => { FocusChild(); };
         }
 
         public void FocusChild()
