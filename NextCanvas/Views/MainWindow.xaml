@@ -210,10 +210,14 @@
                         </fluent:Button>
                     </fluent:RibbonGroupBox>
                 </fluent:RibbonTabItem>
-                <fluent:RibbonTabItem Header="Insert">
+                <fluent:RibbonTabItem Header="Insert" IsSelected="True">
                     <fluent:RibbonGroupBox Header="Text">
                         <fluent:Button Header="Text box" LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/NewTextBox.png" Click="InsertClick_GoToHome"
                                        Command="{Binding CreateTextBoxCommand}" CommandParameter="{Binding CreationContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
+                    </fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox Header="Images">
+                        <fluent:Button Header="Image" LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/NewImage.png" Click="NewImage_Click"
+                                       Command="{Binding CreateImageCommand}" CommandParameter="{Binding CreationContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
                     </fluent:RibbonGroupBox>
                 </fluent:RibbonTabItem>
                 <fluent:RibbonTabItem Header="Page">

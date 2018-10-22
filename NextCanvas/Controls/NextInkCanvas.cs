@@ -39,7 +39,6 @@ namespace NextCanvas.Controls
 
         protected override void OnSelectionChanged(EventArgs e)
         {
-            base.OnSelectionChanged(e);
             var elements = GetSelectedElements();
             if (elements.Count == 1)
             {
@@ -49,6 +48,7 @@ namespace NextCanvas.Controls
                     render.FocusChild();
                 }
             }
+            base.OnSelectionChanged(e);
         }
 
         public SelectionWrapper SelectionHelper { get; }

@@ -67,6 +67,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -109,6 +110,7 @@
     <Compile Include="Models\Content\ContentElement.cs" />
     <Compile Include="Models\Content\ImageElement.cs" />
     <Compile Include="Models\Content\Resource.cs" />
+    <Compile Include="Models\Content\ResourceElement.cs" />
     <Compile Include="Models\Content\ResourceType.cs" />
     <Compile Include="Models\Content\TextBoxElement.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
@@ -117,8 +119,11 @@
     <Compile Include="Models\ToolGroup.cs" />
     <Compile Include="ObservableViewModelCollection.cs" />
     <Compile Include="PropertyChangedObject.cs" />
+    <Compile Include="Serialization\DocumentSerializer.cs" />
+    <Compile Include="Serialization\FileStreamExtensions.cs" />
     <Compile Include="ToolGroupCollection.cs" />
     <Compile Include="ViewModels\Content\ContentElementViewModel.cs" />
+    <Compile Include="ViewModels\Content\ImageElementViewModel.cs" />
     <Compile Include="ViewModels\Content\ResourceViewModel.cs" />
     <Compile Include="ViewModels\Content\TextBoxElementViewModel.cs" />
     <Compile Include="ViewModels\DocumentViewModel.cs" />
@@ -274,6 +279,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Ribbon\Insert\NewTextBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Insert\NewImage.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

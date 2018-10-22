@@ -1,7 +1,5 @@
 ﻿using Fluent;
-using Newtonsoft.Json;
 using NextCanvas.Models;
-using NextCanvas.Models.Content;
 using NextCanvas.ViewModels.Content;
 using System;
 using System.Collections.ObjectModel;
@@ -9,14 +7,12 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Ionic.Zip;
 using NextCanvas.Controls.Content;
-using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
-using Page = NextCanvas.Models.Page;
-
+using NextCanvas.Models.Content;
+using NextCanvas.Serialization;
 namespace NextCanvas.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>
@@ -47,7 +43,7 @@ namespace NextCanvas.ViewModels
         private int selectedToolIndex;
         public string SavePath { get; set; }
         public string OpenPath { get; set; }
-
+        public string OpenImagePath { get; set; }
         public int SelectedToolIndex
         {
             get => selectedToolIndex;
@@ -111,6 +107,7 @@ namespace NextCanvas.ViewModels
         public DelegateCommand OpenCommand { get; private set; }
         public DelegateCommand CreateTextBoxCommand { get; private set; }
         public DelegateCommand SwitchToSelectToolCommand { get; private set; }
+        public DelegateCommand CreateImageCommand { get; private set; }
         public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
 
         public MainWindowViewModel()
@@ -143,21 +140,9 @@ namespace NextCanvas.ViewModels
             SaveCommand = new DelegateCommand(o => SaveDocument());
             OpenCommand = new DelegateCommand(o => OpenDocument());
             CreateTextBoxCommand = new DelegateCommand(CreateTextBox);
+            CreateImageCommand = new DelegateCommand(CreateImage);
         }
-        protected JsonSerializerSettings TypeHandlingSettings { get; } = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            Error = IgnoreError
-        };
-        private static void IgnoreError(object sender, ErrorEventArgs e)
-        {
-            if (e.CurrentObject is Page p && Regex.IsMatch(e.ErrorContext.Path, @"Pages\.\$values\[[0-9]+\]\.Elements\.\$type")) // If type is wrong
-            {
-                p.Elements.Add(new ContentElement()); // oh no
-            }
-            e.ErrorContext.Handled = true;
-        }
-
+        
         private void CenterElement(ContentElementViewModel v, ElementCreationContext context)
         {
             v.Left = GetCenterLeft(context, v.Width);
@@ -176,16 +161,36 @@ namespace NextCanvas.ViewModels
             var element = new TextBoxElementViewModel();
             if (select != null && select is ElementCreationContext context)
             {
-                CenterElement(element, context);
-                CurrentDocument.SelectedPage.Elements.Add(element);
-                SelectedTool = GetSelectTool();
-                context.Selection.Select(element);
+                NewItemRoutine(element, context);
             }
             else
             {
                 CurrentDocument.SelectedPage.Elements.Add(element);
             }
         }
+        private void NewItemRoutine(ContentElementViewModel element, ElementCreationContext context)
+        {
+            CenterElement(element, context);
+            CurrentDocument.SelectedPage.Elements.Add(element);
+            SelectedTool = GetSelectTool();
+            context.Selection.Select(element);
+        }
+
+        private void CreateImage(object select = null)
+        {
+            if (OpenImagePath == null) return;
+            ResourceViewModel resource;
+            using (var fileStream = File.Open(OpenImagePath, FileMode.Open, FileAccess.Read))
+            {
+                resource = CurrentDocument.AddResource(fileStream);
+            } // Release the file, we already copied it. 
+            var element = new ImageElementViewModel(new ImageElement(resource.Model));
+            if (select != null && select is ElementCreationContext context)
+            {
+                NewItemRoutine(element, context);
+            }
+        }
+
         private void SwitchToSelectTool()
         {
             if (SelectedTool.Mode == InkCanvasEditingMode.Select) return;
@@ -206,6 +211,7 @@ namespace NextCanvas.ViewModels
             return Tools.Any(t => t.Mode == InkCanvasEditingMode.Select);
         }
         // The following shall be replaced with some zippy archives and resources and isf and blah and wow and everything you need to be gud
+        // Oh wait, it is now XD
         private void SaveDocument()
         {
             if (SavePath == null)
@@ -214,24 +220,13 @@ namespace NextCanvas.ViewModels
             }
             try
             {
-                using (var zip = new ZipFile())
-                {
-                    var mainJson = JsonConvert.SerializeObject(CurrentDocument.Model, TypeHandlingSettings);
-                    zip.AddEntry("document.json", mainJson);
-                    zip.AddDirectoryByName("resources");
-                    foreach (var resource in CurrentDocument.Model.Resources)
-                    {
-                        zip.AddEntry($"resources\\{resource.Name}", resource.Data);
-                    }
-                    zip.Save(SavePath);
-                }
+                DocumentSerializer.SaveCompressedDocument(CurrentDocument.Model, SavePath);
             }
             finally
             {
                 SavePath = null;
             }
-        }
-
+        }   
         private void OpenDocument()
         {
             if (OpenPath == null)
@@ -244,11 +239,16 @@ namespace NextCanvas.ViewModels
                 {
                     try
                     {
-                        OpenCompressedFileFormat(fileStream);
+                        CurrentDocument = new DocumentViewModel(DocumentSerializer.OpenCompressedFileFormat(fileStream));
+                        // This was a test v
+                        //CurrentDocument.Pages[0].Elements.Add(new ImageElementViewModel(new ImageElement
+                        //{
+                        //    Resource = CurrentDocument.Resources[0].Model
+                        //}));
                     }
                     catch (ZipException) // Try reading as json
                     {
-                        OpenJson(fileStream);
+                        CurrentDocument = new DocumentViewModel(DocumentSerializer.OpenJson(fileStream));
                     }
                 }
             }
@@ -257,35 +257,6 @@ namespace NextCanvas.ViewModels
                 OpenPath = null;
             }
         }
-        // New file format. 100% better. I swear.
-        private void OpenCompressedFileFormat(FileStream fileStream)
-        {
-            using (var zipFile = ZipFile.Read(fileStream))
-            {
-                var documentJson = zipFile.Entries.First(e => e.FileName.EndsWith("document.json"));
-                var docReader = documentJson.OpenReader();
-                using (var streamReader = new StreamReader(docReader))
-                {
-                    ReadDocumentJson(streamReader);
-                }
-            }
-        }
-
-        // JSON reading
-        private void OpenJson(Stream fileStream)
-        {
-            using (var streamyStream = new StreamReader(fileStream))
-            {
-                ReadDocumentJson(streamyStream);
-            }
-        }
-        private void ReadDocumentJson(TextReader streamyStream)
-        {
-            var value = streamyStream.ReadToEnd();
-            var deserialized = JsonConvert.DeserializeObject<Document>(value, TypeHandlingSettings);
-            CurrentDocument = new DocumentViewModel(deserialized);
-        }
-
         private void SetToolByName(string name)
         {
             if (!IsNameValid(name))
@@ -326,6 +297,8 @@ namespace NextCanvas.ViewModels
         }
 
         private bool CanDeletePage => CurrentDocument.Pages.Count > 1;
+
+        private DocumentSerializer DocumentSerializer { get; } = new DocumentSerializer();
 
         private void ChangePage(Direction direction)
         {

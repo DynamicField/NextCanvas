@@ -16,9 +16,7 @@ namespace NextCanvas.Views
     /// </summary>
     public partial class MainWindow : RibbonWindow, INotifyPropertyChanged
     {
-        public ElementCreationContext CreationContext => new ElementCreationContext(Canvas.SelectionHelper,
-            ScrollParent.ContentHorizontalOffset, ScrollParent.ContentVerticalOffset, ScrollParent.ActualWidth,
-            ScrollParent.ActualHeight);
+        
         public MainWindow()
         {           
             InitializeComponent();
@@ -27,6 +25,10 @@ namespace NextCanvas.Views
             ScrollParent.SizeChanged += ScrollParent_SizeChanged;
             ScrollParent.ScrollChanged += ScrollParent_ScrollChanged;
         }
+        // Creation context for commands. Nice. Nice. Nice. Nice. Nice. Nice.
+        public ElementCreationContext CreationContext => new ElementCreationContext(Canvas.SelectionHelper,
+            ScrollParent.ContentHorizontalOffset, ScrollParent.ContentVerticalOffset, ScrollParent.ActualWidth,
+            ScrollParent.ActualHeight);
 
         private void ScrollParent_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -141,6 +143,23 @@ namespace NextCanvas.Views
         private void InsertClick_GoToHome(object sender, RoutedEventArgs e)
         {
             Ribbon.SelectedTabIndex = 0;
+        }
+
+        private void NewImage_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = (MainWindowViewModel) DataContext;
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Image files (*.jpg, *.bmp, *.png)|*.jpg; *.bmp; *.png"
+            };
+            if (dialog.ShowDialog() ?? false)
+            {
+                vm.OpenImagePath = dialog.FileName;
+            }
+            else
+            {
+                vm.OpenImagePath = null;
+            }
         }
     }
 }

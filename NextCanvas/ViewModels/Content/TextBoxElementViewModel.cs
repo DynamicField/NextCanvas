@@ -4,7 +4,8 @@ namespace NextCanvas.ViewModels.Content
 {
     public class TextBoxElementViewModel : ContentElementViewModel, IViewModel<TextBoxElement>
     {
-        public new TextBoxElement Model { get => (TextBoxElement)base.Model; }
+        public new TextBoxElement Model => (TextBoxElement)base.Model;
+
         protected override ContentElement BuildDefaultModel()
         {
             return new TextBoxElement();

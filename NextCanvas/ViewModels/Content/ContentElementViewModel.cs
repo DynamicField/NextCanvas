@@ -15,37 +15,37 @@ namespace NextCanvas.ViewModels.Content
         }
         public virtual double Left
         {
-            get { return Model.Left; }
+            get => Model.Left;
             set { Model.Left = value; OnPropertyChanged(nameof(Left)); }
         }
 
         public virtual double Top
         {
-            get { return Model.Top; }
+            get => Model.Top;
             set { Model.Top = value; OnPropertyChanged(nameof(Top)); }
         }
 
         public virtual double Bottom
         {
-            get { return Model.Bottom; }
+            get => Model.Bottom;
             set { Model.Bottom = value; OnPropertyChanged(nameof(Bottom)); }
         }
 
         public virtual double Right
         {
-            get { return Model.Right; }
+            get => Model.Right;
             set { Model.Right = value; OnPropertyChanged(nameof(Right)); }
         }
 
         public virtual double Width
         {
-            get { return Model.Width; }
+            get => Model.Width;
             set { Model.Width = value; OnPropertyChanged(nameof(Width)); }
         }
 
         public virtual double Height
         {
-            get { return Model.Height; }
+            get => Model.Height;
             set { Model.Height = value; OnPropertyChanged(nameof(Height)); }
         }
         public static ContentElementViewModel GetViewModel(ContentElement model)
@@ -54,6 +54,8 @@ namespace NextCanvas.ViewModels.Content
             {
                 case TextBoxElement t:
                     return new TextBoxElementViewModel(t);
+                case ImageElement i:
+                    return new ImageElementViewModel(i);
                 default:
                     return new ContentElementViewModel(model);
             }

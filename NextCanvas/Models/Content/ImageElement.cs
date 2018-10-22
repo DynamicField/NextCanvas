@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NextCanvas.Models.Content
+﻿namespace NextCanvas.Models.Content
 {
-    public class ImageElement : ContentElement
+    public class ImageElement : ResourceElement
     {
-        public Resource ImageResource { get; set; }
+        public ImageElement()
+        {
+            
+        }
+
+        public ImageElement(Resource resource) : base(resource)
+        {
+        }
     }
 }

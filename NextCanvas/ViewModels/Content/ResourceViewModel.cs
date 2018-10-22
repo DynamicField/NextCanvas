@@ -6,6 +6,10 @@ namespace NextCanvas.ViewModels.Content
 {
     public class ResourceViewModel : ViewModelBase<Resource>
     {
+        public ResourceViewModel(Resource model) : base(model)
+        {
+        }
+
         public string Name
         {
             get => Model.Name;
@@ -33,6 +37,16 @@ namespace NextCanvas.ViewModels.Content
             {
                 Model.Data = value;
                 OnPropertyChanged(nameof(Data));
+            }
+        }
+
+        public string DataMD5Hash
+        {
+            get => Model.DataMD5Hash;
+            set
+            {
+                Model.DataMD5Hash = value;
+                OnPropertyChanged(nameof(DataMD5Hash));
             }
         }
     }
