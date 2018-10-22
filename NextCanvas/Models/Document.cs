@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using NextCanvas.Models.Content;
 
 namespace NextCanvas.Models
 {
@@ -15,5 +16,6 @@ namespace NextCanvas.Models
         {
             Pages = pages;
         }
+        public List<Resource> Resources { get; set; } = new List<Resource>();
     }
 }

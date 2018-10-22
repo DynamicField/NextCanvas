@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Ionic.Zip;
 using NextCanvas.Controls.Content;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using Page = NextCanvas.Models.Page;
@@ -213,9 +214,16 @@ namespace NextCanvas.ViewModels
             }
             try
             {
-                using (var streamyStream = new StreamWriter(SavePath, false))
+                using (var zip = new ZipFile())
                 {
-                    streamyStream.Write(JsonConvert.SerializeObject(CurrentDocument.Model, TypeHandlingSettings));
+                    var mainJson = JsonConvert.SerializeObject(CurrentDocument.Model, TypeHandlingSettings);
+                    zip.AddEntry("document.json", mainJson);
+                    zip.AddDirectoryByName("resources");
+                    foreach (var resource in CurrentDocument.Model.Resources)
+                    {
+                        zip.AddEntry($"resources\\{resource.Name}", resource.Data);
+                    }
+                    zip.Save(SavePath);
                 }
             }
             finally
@@ -232,17 +240,50 @@ namespace NextCanvas.ViewModels
             }
             try
             {
-                using (var streamyStream = new StreamReader(OpenPath))
+                using (var fileStream = File.Open(OpenPath, FileMode.Open))
                 {
-                    var value = streamyStream.ReadToEnd();
-                    var deserialized = JsonConvert.DeserializeObject<Document>(value, TypeHandlingSettings);
-                    CurrentDocument = new DocumentViewModel(deserialized);
+                    try
+                    {
+                        OpenCompressedFileFormat(fileStream);
+                    }
+                    catch (ZipException) // Try reading as json
+                    {
+                        OpenJson(fileStream);
+                    }
                 }
             }
             finally
             {
                 OpenPath = null;
             }
+        }
+        // New file format. 100% better. I swear.
+        private void OpenCompressedFileFormat(FileStream fileStream)
+        {
+            using (var zipFile = ZipFile.Read(fileStream))
+            {
+                var documentJson = zipFile.Entries.First(e => e.FileName.EndsWith("document.json"));
+                var docReader = documentJson.OpenReader();
+                using (var streamReader = new StreamReader(docReader))
+                {
+                    ReadDocumentJson(streamReader);
+                }
+            }
+        }
+
+        // JSON reading
+        private void OpenJson(Stream fileStream)
+        {
+            using (var streamyStream = new StreamReader(fileStream))
+            {
+                ReadDocumentJson(streamyStream);
+            }
+        }
+        private void ReadDocumentJson(TextReader streamyStream)
+        {
+            var value = streamyStream.ReadToEnd();
+            var deserialized = JsonConvert.DeserializeObject<Document>(value, TypeHandlingSettings);
+            CurrentDocument = new DocumentViewModel(deserialized);
         }
 
         private void SetToolByName(string name)

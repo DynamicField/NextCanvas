@@ -55,6 +55,9 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="Fluent, Version=6.1.0.326, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Fluent.Ribbon.6.1.0.326\lib\net45\Fluent.dll</HintPath>
     </Reference>
@@ -104,6 +107,9 @@
     <Compile Include="Ink\DrawingAttributesExtensions.cs" />
     <Compile Include="Ink\SquareStroke.cs" />
     <Compile Include="Models\Content\ContentElement.cs" />
+    <Compile Include="Models\Content\ImageElement.cs" />
+    <Compile Include="Models\Content\Resource.cs" />
+    <Compile Include="Models\Content\ResourceType.cs" />
     <Compile Include="Models\Content\TextBoxElement.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\StrokeTool.cs" />
@@ -113,6 +119,7 @@
     <Compile Include="PropertyChangedObject.cs" />
     <Compile Include="ToolGroupCollection.cs" />
     <Compile Include="ViewModels\Content\ContentElementViewModel.cs" />
+    <Compile Include="ViewModels\Content\ResourceViewModel.cs" />
     <Compile Include="ViewModels\Content\TextBoxElementViewModel.cs" />
     <Compile Include="ViewModels\DocumentViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
