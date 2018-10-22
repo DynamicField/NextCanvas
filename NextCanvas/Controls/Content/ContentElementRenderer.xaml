@@ -17,7 +17,17 @@
                     <Image Source="{Binding Image, Mode=OneWay}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:TextBoxElementViewModel}">
-                    <local:RtfRichTextBox RtfText="{Binding RtfText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsUndoEnabled="True"></local:RtfRichTextBox>
+                    <local:RtfRichTextBox RtfText="{Binding RtfText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsUndoEnabled="True" Background="{x:Null}" FontSize="18">
+                        <local:RtfRichTextBox.Style>
+                            <Style TargetType="local:RtfRichTextBox">
+                                <Style.Triggers>
+                                    <Trigger Property="IsFocused" Value="False">
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:RtfRichTextBox.Style>
+                    </local:RtfRichTextBox>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:ContentElementViewModel}">
                     <local:ElementRecognitionError/>
