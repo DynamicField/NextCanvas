@@ -248,11 +248,6 @@ namespace NextCanvas.ViewModels
                     try
                     {
                         CurrentDocument = new DocumentViewModel(DocumentSerializer.OpenCompressedFileFormat(fileStream));
-                        // This was a test v
-                        //CurrentDocument.Pages[0].Elements.Add(new ImageElementViewModel(new ImageElement
-                        //{
-                        //    Resource = CurrentDocument.Resources[0].Model
-                        //}));
                     }
                     catch (ZipException) // Try reading as json
                     {

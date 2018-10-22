@@ -19,10 +19,10 @@ namespace NextCanvas.Models.Content
         public Resource(string name, Stream data)
         {
             Name = name;
-            var stream = new MemoryStream();
+            var memoryStream = new MemoryStream();
             data.Position = 0;
-            data.CopyTo(stream);
-            Data = stream;
+            data.CopyTo(memoryStream);
+            Data = memoryStream;
         }
         public string Name { get; set; }
         public ResourceType Type { get; set; }        

@@ -1,11 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using Ionic.Crc;
 using Ionic.Zip;
 using Newtonsoft.Json;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
+using System;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 
 namespace NextCanvas.Serialization
@@ -52,28 +53,48 @@ namespace NextCanvas.Serialization
         {
             using (var zipFile = ZipFile.Read(fileStream))
             {
-                var documentJson = zipFile.Entries.First(e => e.FileName == "document.json");
-                var docReader = documentJson.OpenReader();
-                Document doc;
-                using (var streamReader = new StreamReader(docReader))
-                {
-                    doc = ReadDocumentJson(streamReader);
-                }
+                var doc = GetDocumentJson(zipFile);
                 foreach (var resource in doc.Resources)
                 {
-                    ProcessDataCopying(zipFile, resource);
+                    ProcessDataCopying(zipFile, resource); // Copy the deeta to the resources.
                 }
-                foreach (var list in doc.Pages.Select(p => p.Elements))
+                AttachResources(doc); // Attach them to all the elements.
+                return doc; // Yeah we're done :) dope nah?
+            }
+        }
+
+        private Document GetDocumentJson(ZipFile zipFile)
+        {
+            var documentJson = zipFile.Entries.First(e => e.FileName == "document.json");
+            Document doc;
+            using (var docReader = documentJson.OpenReader())
+            {
+                doc = GetBaseDocumentJson(docReader);
+            }
+
+            return doc;
+        }
+        private Document GetBaseDocumentJson(Stream docReader)
+        {
+            Document doc;
+            using (var streamReader = new StreamReader(docReader))
+            {
+                doc = ReadDocumentJson(streamReader);
+            }
+            return doc;
+        }
+
+        private static void AttachResources(Document doc)
+        {
+            foreach (var list in doc.Pages.Select(p => p.Elements))
+            {
+                foreach (var thing in list)
                 {
-                    foreach (var thing in list)
+                    if (thing is ResourceElement element && element.Resource != null)
                     {
-                        if (thing is ResourceElement element && element.Resource != null)
-                        {
-                            element.Resource = doc.Resources.First(r => r.Name.Equals(element.Resource.Name));
-                        }
+                        element.Resource = doc.Resources.First(r => r.Name.Equals(element.Resource.Name));
                     }
                 }
-                return doc;
             }
         }
 

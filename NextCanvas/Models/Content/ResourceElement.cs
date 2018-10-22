@@ -1,12 +1,13 @@
 ﻿namespace NextCanvas.Models.Content
 {
-    public class ResourceElement : ContentElement
+    public abstract class ResourceElement : ContentElement
     {
-        public ResourceElement()
+        protected ResourceElement()
         {
             
         }
-        public ResourceElement(Resource resource)
+
+        protected ResourceElement(Resource resource)
         {
             Resource = resource;
         }

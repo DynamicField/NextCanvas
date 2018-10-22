@@ -1,5 +1,4 @@
 ﻿using NextCanvas.Models.Content;
-using System;
 using System.IO;
 
 namespace NextCanvas.ViewModels.Content
