@@ -202,6 +202,14 @@ namespace NextCanvas.ViewModels
 
             SelectedTool = tool;
         }
+
+        public void SelectionHandler(object sender, InkCanvasSelectionChangingEventArgs e)
+        {
+            if (e.GetSelectedElements().Count + e.GetSelectedStrokes().Count > 0)
+            {
+                SwitchToSelectTool();
+            }
+        }
         private ToolViewModel GetSelectTool()
         {
             return !IsThereAnySelectTools() ? null : Tools.First(t => t.Mode == InkCanvasEditingMode.Select);

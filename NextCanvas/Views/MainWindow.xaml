@@ -9,6 +9,7 @@
         xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:local1="clr-namespace:NextCanvas.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         x:Class="NextCanvas.Views.MainWindow"
         UseLayoutRounding="True"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:MainWindowViewModel}}"
@@ -49,8 +50,8 @@
                                 Cursor="{Binding SelectedTool.Cursor}" DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}" 
                                 ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding SwitchToSelectToolCommand}"/>
+                                    <i:EventTrigger EventName="SelectionChanging">
+                                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="SelectionHandler"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </local:NextInkCanvas>
@@ -210,7 +211,7 @@
                         </fluent:Button>
                     </fluent:RibbonGroupBox>
                 </fluent:RibbonTabItem>
-                <fluent:RibbonTabItem Header="Insert" IsSelected="True">
+                <fluent:RibbonTabItem Header="Insert">
                     <fluent:RibbonGroupBox Header="Text">
                         <fluent:Button Header="Text box" LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/NewTextBox.png" Click="InsertClick_GoToHome"
                                        Command="{Binding CreateTextBoxCommand}" CommandParameter="{Binding CreationContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
