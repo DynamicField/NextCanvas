@@ -2,7 +2,7 @@
 {
     public class ViewModelBase<T> : PropertyChangedObject, IViewModel<T> where T : new()
     {
-        public T Model { get; }
+        public T Model { get; protected set; }
         public ViewModelBase(T model)
         {
             Model = model;

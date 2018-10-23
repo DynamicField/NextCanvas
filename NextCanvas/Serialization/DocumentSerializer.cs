@@ -1,4 +1,4 @@
-﻿using Ionic.Crc;
+﻿
 using Ionic.Zip;
 using Newtonsoft.Json;
 using NextCanvas.Models;
@@ -58,7 +58,7 @@ namespace NextCanvas.Serialization
                 {
                     ProcessDataCopying(zipFile, resource); // Copy the deeta to the resources.
                 }
-                AttachResources(doc); // Attach them to all the elements.
+                // AttachResources(doc); // Attach them to all the elements.
                 return doc; // Yeah we're done :) dope nah?
             }
         }

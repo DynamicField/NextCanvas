@@ -1,6 +1,7 @@
 ﻿using System.Windows.Ink;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
+using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels.Content;
 
 namespace NextCanvas.ViewModels
@@ -11,15 +12,64 @@ namespace NextCanvas.ViewModels
         {
             Initialize();
         }
-
         public PageViewModel(Page model) : base(model)
         {
             Initialize();
         }
+        private IResourceViewModelLocator locator;
+
+        internal IResourceViewModelLocator Locator
+        {
+            get => locator;
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+                locator = value;
+                if (Elements != null)
+                {
+                    SetLocatorForCollection();
+                }
+            }
+        }
+
+        internal PageViewModel(Page model, IResourceViewModelLocator resourceLocator) : base(model)
+        {
+            Locator = resourceLocator;
+            Initialize();
+        }
+        private void UseLocator(ContentElementViewModel vm)
+        {
+            if (vm is ResourceElementViewModel resourceElement)
+            {
+                resourceElement.Resource = locator.GetResourceViewModelDataFor(resourceElement.Resource); // Get the deeta
+            }
+        }
         private void Initialize()
         {
-            Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements, e => ContentElementViewModel.GetViewModel(e));
+            if (Locator != null)
+            {
+                Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
+                    e => ContentElementViewModel.GetViewModel(e, Locator)); // With a locator.
+            }
+            else
+            {
+                Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
+                    ContentElementViewModel.GetViewModel); // With a locator.
+            }
+            if (locator != null)
+            {
+                SetLocatorForCollection();
+            }
         }
+
+        private void SetLocatorForCollection()
+        {
+            Elements.ItemAdded = UseLocator;
+        }
+
         public StrokeCollection Strokes
         {
             get => Model.Strokes;

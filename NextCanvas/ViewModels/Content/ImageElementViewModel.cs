@@ -1,19 +1,25 @@
 ﻿using System.Windows.Media.Imaging;
 using NextCanvas.Models.Content;
+using NextCanvas.Utilities.Content;
 
 namespace NextCanvas.ViewModels.Content
 {
-    public class ImageElementViewModel : ContentElementViewModel
+    public class ImageElementViewModel : ResourceElementViewModel
     {
         public new ImageElement Model => (ImageElement)base.Model;
 
-        public ImageElementViewModel()
+        public ImageElementViewModel() : base(new ImageElement())
         {
                 
         }
         public ImageElementViewModel(ImageElement model) : base(model)
         {
             
+        }
+
+        internal ImageElementViewModel(ImageElement model, IResourceLocator resource) : base(model, resource)
+        {
+
         }
 
         protected override ContentElement BuildDefaultModel()
@@ -36,34 +42,20 @@ namespace NextCanvas.ViewModels.Content
 
         private void CreateBitmapImage()
         {
-            ImageResource.Data.Position = 0;
+            if (Resource?.Data == null) return;
+            Resource.Data.Position = 0;
             image = new BitmapImage();
             image.BeginInit();
-            image.StreamSource = ImageResource.Data;
+            image.StreamSource = Resource.Data;
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.EndInit();
             image.Freeze();
         }
 
-        private ResourceViewModel imageResource;
-        public ResourceViewModel ImageResource
+        protected override void OnResourceChanged()
         {
-            get
-            {
-                if (imageResource == null)
-                {
-                    ImageResource = new ResourceViewModel(Model.Resource);
-                }
-                return imageResource;
-            }
-            set
-            {
-                imageResource = value;
-                Model.Resource = imageResource.Model;
-                CreateBitmapImage();               
-                OnPropertyChanged(nameof(Image));
-                OnPropertyChanged(nameof(ImageResource));
-            }
+            base.OnResourceChanged();            
+            CreateBitmapImage();
         }
     }
 }

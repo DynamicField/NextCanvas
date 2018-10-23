@@ -1,4 +1,5 @@
 ﻿using NextCanvas.Models.Content;
+using NextCanvas.Utilities.Content;
 
 namespace NextCanvas.ViewModels.Content
 {
@@ -59,6 +60,22 @@ namespace NextCanvas.ViewModels.Content
                 default:
                     return new ContentElementViewModel(model);
             }
+        }
+
+        internal static ContentElementViewModel GetViewModel(ContentElement model, IResourceLocator locator)
+        {
+            ContentElementViewModel tempReturnValue;
+            switch (model)
+            {
+                case ImageElement i:
+                    tempReturnValue = new ImageElementViewModel(i, locator);
+                    break;
+                default:
+                    tempReturnValue = null;
+                    break;
+            }
+
+            return tempReturnValue ?? GetViewModel(model);
         }
     }
 }

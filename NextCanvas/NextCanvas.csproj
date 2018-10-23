@@ -125,8 +125,12 @@
     <Compile Include="Serialization\DocumentSerializer.cs" />
     <Compile Include="Serialization\FileStreamExtensions.cs" />
     <Compile Include="ToolGroupCollection.cs" />
+    <Compile Include="Utilities\Content\BridgeResourceLocator.cs" />
+    <Compile Include="Utilities\Content\IResourceLocator.cs" />
+    <Compile Include="Utilities\Content\IResourceViewModelLocator.cs" />
     <Compile Include="ViewModels\Content\ContentElementViewModel.cs" />
     <Compile Include="ViewModels\Content\ImageElementViewModel.cs" />
+    <Compile Include="ViewModels\Content\ResourceElementViewModel.cs" />
     <Compile Include="ViewModels\Content\ResourceViewModel.cs" />
     <Compile Include="ViewModels\Content\TextBoxElementViewModel.cs" />
     <Compile Include="ViewModels\DocumentViewModel.cs" />
