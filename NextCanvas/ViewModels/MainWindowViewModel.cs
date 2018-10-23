@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Fluent;
 using NextCanvas.Controls.Content;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Progress;
