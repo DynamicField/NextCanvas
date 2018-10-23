@@ -32,6 +32,7 @@ namespace NextCanvas.ViewModels.Content
             set
             {
                 if (value == resource) return; // It's certainly given back on the second set.
+                resource?.Dispose();
                 resource = value;
                 Model.Resource = resource.Model;
                 OnResourceChanged();

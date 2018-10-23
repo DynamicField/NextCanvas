@@ -1,10 +1,11 @@
-﻿using NextCanvas.Models.Content;
+﻿using System;
+using NextCanvas.Models.Content;
 using System.IO;
 using NextCanvas.Utilities.Content;
 
 namespace NextCanvas.ViewModels.Content
 {
-    public class ResourceViewModel : ViewModelBase<Resource>
+    public class ResourceViewModel : ViewModelBase<Resource>, IDisposable
     {
         public ResourceViewModel(Resource model) : base(model)
         {
@@ -33,7 +34,7 @@ namespace NextCanvas.ViewModels.Content
             }
         }
 
-        public virtual Stream Data
+        public Stream Data
         {
             get => Model.Data;
             set
@@ -51,6 +52,11 @@ namespace NextCanvas.ViewModels.Content
                 Model.DataMD5Hash = value;
                 OnPropertyChanged(nameof(DataMD5Hash));
             }
+        }
+
+        public void Dispose()
+        {
+            Model.Dispose();
         }
     }
 }

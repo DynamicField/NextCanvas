@@ -1,11 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace NextCanvas.Models.Content
 {
-    public class Resource
+    public class Resource : IDisposable
     {
         public Resource()
         {
@@ -64,5 +65,10 @@ namespace NextCanvas.Models.Content
             DataMD5Hash = ComputeMD5(Data);
         }
         public string DataMD5Hash { get; set; }
+
+        public void Dispose()
+        {
+            stream?.Dispose();
+        }
     }
 }
