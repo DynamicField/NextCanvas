@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+using Fluent;
+using Newtonsoft.Json;
 
 namespace NextCanvas.Models
 {

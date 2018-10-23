@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows.Ink;
+using Newtonsoft.Json;
 using NextCanvas.Models.Content;
 
 namespace NextCanvas.Models

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Ionic.Zip;
+using Newtonsoft.Json;
 using NextCanvas.Interactivity.Progress;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;

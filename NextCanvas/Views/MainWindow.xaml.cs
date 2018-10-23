@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Media;
+using Fluent;
 using Microsoft.Win32;
 using NextCanvas.Controls.Content;
 using NextCanvas.Interactivity;
