@@ -153,7 +153,7 @@ namespace NextCanvas.ViewModels
             SetToolByNameCommand = new DelegateCommand(o => SetToolByName(o.ToString()), o => IsNameValid(o.ToString()));
             SwitchToSelectToolCommand = new DelegateCommand(o => SwitchToSelectTool(), o => IsThereAnySelectTools());
             SaveCommand = new DelegateCommand(async o => await SaveDocument(o));
-            OpenCommand = new DelegateCommand(o => OpenDocument(o));
+            OpenCommand = new DelegateCommand(OpenDocument);
             CreateTextBoxCommand = new DelegateCommand(CreateTextBox);
             CreateImageCommand = new DelegateCommand(CreateImage);
         }
