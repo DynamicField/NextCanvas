@@ -110,6 +110,10 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Ink\DrawingAttributesExtensions.cs" />
     <Compile Include="Ink\SquareStroke.cs" />
+    <Compile Include="Interactivity\DelegateInteractionProvider.cs" />
+    <Compile Include="Interactivity\IInteractionBase.cs" />
+    <Compile Include="Interactivity\IInteractionProvider.cs" />
+    <Compile Include="Interactivity\IProgressInteraction.cs" />
     <Compile Include="Models\Content\ContentElement.cs" />
     <Compile Include="Models\Content\ImageElement.cs" />
     <Compile Include="Models\Content\Resource.cs" />
@@ -143,6 +147,9 @@
     <Compile Include="Views\MultiCanvasExperimentWindow.xaml.cs">
       <DependentUpon>MultiCanvasExperimentWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ProgressWindow.xaml.cs">
+      <DependentUpon>ProgressWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StylusDebugWindow.xaml.cs">
       <DependentUpon>StylusDebugWindow.xaml</DependentUpon>
     </Compile>
@@ -174,6 +181,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\MultiCanvasExperimentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProgressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

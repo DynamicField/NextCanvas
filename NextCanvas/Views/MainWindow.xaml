@@ -82,10 +82,12 @@
                         </fluent:ApplicationMenu.RightPaneContent>
                         <fluent:MenuItem Header="New" Click="NewButton_Click" Icon="/NextCanvas;component/Images/Menu/NewFile.png"/>
                         <fluent:MenuItem Header="Open" Icon="/NextCanvas;component/Images/Menu/Open.png" x:Name="Open" Click="Open_Click" Command="{Binding OpenCommand}"/>
-                        <fluent:MenuItem Header="Save" Icon="/NextCanvas;component/Images/Menu/Save.png" x:Name="Save" Click="Save_Click" Command="{Binding SaveCommand}"/>
+                        <fluent:MenuItem Header="Save" Icon="/NextCanvas;component/Images/Menu/Save.png" x:Name="Save" Click="Save_Click" 
+                                         Command="{Binding SaveCommand}" CommandParameter="{Binding ProgressProvider, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}"/>
                         <!-- Events are executed before commands so ye -->
-                        <fluent:MenuItem Header="Save as..." Icon="/NextCanvas;component/Images/Menu/SaveAs.png" IsSplited="True" Click="Save_Click" Command="{Binding SaveCommand}">
-                            <!-- TODO: Create SaveAs command but this will require some undo redo oof things and since for some reason unexperienced people always use save as (why tho?)... -->
+                        <fluent:MenuItem Header="Save as..." Icon="/NextCanvas;component/Images/Menu/SaveAs.png" IsSplited="True" Click="Save_Click" 
+                                         Command="{Binding SaveCommand}" CommandParameter="{Binding ProgressProvider, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}">
+                            <!-- TODO: Create SaveAs command but this will require some undo redo oof things and since for some reason inexperienced people always use save as (why tho?)... -->
                             <fluent:MenuItem Header="Save as that format..." Description="something something" Icon="/NextCanvas;component/Images/Menu/Save.png"/>
                         </fluent:MenuItem>
                     </fluent:ApplicationMenu>

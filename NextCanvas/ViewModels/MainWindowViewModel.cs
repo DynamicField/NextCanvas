@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Ionic.Zip;
 using NextCanvas.Controls.Content;
+using NextCanvas.Interactivity;
 using NextCanvas.Models.Content;
 using NextCanvas.Serialization;
 namespace NextCanvas.ViewModels
@@ -137,8 +138,8 @@ namespace NextCanvas.ViewModels
             ExtendPageCommand = new DelegateCommand(o => ExtendPage(o.ToString()));
             SetToolByNameCommand = new DelegateCommand(o => SetToolByName(o.ToString()), o => IsNameValid(o.ToString()));
             SwitchToSelectToolCommand = new DelegateCommand(o => SwitchToSelectTool(), o => IsThereAnySelectTools());
-            SaveCommand = new DelegateCommand(o => SaveDocument());
-            OpenCommand = new DelegateCommand(o => OpenDocument());
+            SaveCommand = new DelegateCommand(o => SaveDocument(o));
+            OpenCommand = new DelegateCommand(o => OpenDocument(o));
             CreateTextBoxCommand = new DelegateCommand(CreateTextBox);
             CreateImageCommand = new DelegateCommand(CreateImage);
         }
@@ -220,7 +221,7 @@ namespace NextCanvas.ViewModels
         }
         // The following shall be replaced with some zippy archives and resources and isf and blah and wow and everything you need to be gud
         // Oh wait, it is now XD
-        private void SaveDocument()
+        private async void SaveDocument(object progress = null)
         {
             if (SavePath == null)
             {
@@ -228,14 +229,20 @@ namespace NextCanvas.ViewModels
             }
             try
             {
-                DocumentSerializer.SaveCompressedDocument(CurrentDocument.Model, SavePath);
+                IProgressInteraction progressInteractionProcessed = null;
+                if (progress is IInteractionProvider<IProgressInteraction> provider)
+                {
+                    progressInteractionProcessed = provider.CreateInteraction();
+                }
+                await DocumentSerializer.SaveCompressedDocument(CurrentDocument.Model, SavePath, progressInteractionProcessed);
+                progressInteractionProcessed?.Close();
             }
             finally
             {
                 SavePath = null;
             }
         }   
-        private void OpenDocument()
+        private void OpenDocument(object progress = null)
         {
             if (OpenPath == null)
             {

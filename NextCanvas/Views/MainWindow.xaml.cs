@@ -7,6 +7,7 @@ using System.Windows.Media;
 using Fluent;
 using Microsoft.Win32;
 using NextCanvas.Controls.Content;
+using NextCanvas.Interactivity;
 using NextCanvas.ViewModels;
 
 namespace NextCanvas.Views
@@ -44,6 +45,14 @@ namespace NextCanvas.Views
         {
             OnPropertyChanged(nameof(CreationContext));
         }
+        public DelegateInteractionProvider<IProgressInteraction> ProgressProvider => new DelegateInteractionProvider<IProgressInteraction>(() =>
+        {
+            var window =  new ProgressWindow
+            {
+                Owner = this
+            };
+            return window;
+        });
         private void ColorGallery_SelectedColorChanged(object sender, RoutedEventArgs e)
         {
             if (ColorGallery.SelectedColor is null)

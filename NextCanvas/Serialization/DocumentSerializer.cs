@@ -1,12 +1,14 @@
 ﻿
 using Ionic.Zip;
 using Newtonsoft.Json;
+using NextCanvas.Interactivity;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 
 namespace NextCanvas.Serialization
@@ -27,17 +29,15 @@ namespace NextCanvas.Serialization
             e.ErrorContext.Handled = true;
         }
         // TODO: Implement smart zip updating.
-        public void SaveCompressedDocument(Document document, string savePath)
+        public Task SaveCompressedDocument(Document document, string savePath, IProgressInteraction progress = null)
         {
-            CreateZipFile(document, savePath);
+            return Task.Run(() => CreateZipFile(document, savePath, progress));
         }
-
         private void CreateZipFile(Document document, string savePath)
         {
             using (var zip = new ZipFile())
             {
-                var mainJson = JsonConvert.SerializeObject(document, serializerSettings);
-                zip.AddEntry("document.json", mainJson);
+                AddDocumentJson(document, zip);
                 zip.AddDirectoryByName("resources");
                 foreach (var resource in document.Resources)
                 {
@@ -47,6 +47,45 @@ namespace NextCanvas.Serialization
 
                 zip.Save(savePath);
             }
+        }
+
+        private void AddDocumentJson(Document document, ZipFile zip)
+        {
+            var mainJson = JsonConvert.SerializeObject(document, serializerSettings);
+            zip.AddEntry("document.json", mainJson);
+        }
+
+        private void CreateZipFile(Document document, string savePath, IProgressInteraction progress)
+        {
+            using (var zip = new ZipFile())
+            {
+                progress.Show();
+                progress.ProgressText = "Writing document data...";
+                progress.Progress = 10;
+                AddDocumentJson(document, zip);
+                zip.AddDirectoryByName("resources");
+                var resourcesCount = document.Resources.Count;
+                var increment = (100 - progress.Progress) / resourcesCount;
+                if (resourcesCount == 0)
+                {
+                    FinalizeFile(savePath, zip);
+                    return;
+                }
+                foreach (var resource in document.Resources)
+                {
+                    progress.Progress += increment / 2;
+                    progress.ProgressText = $"Writing resource : {resource.Name}";
+                    resource.Data.Position = 0;
+                    zip.AddEntry($"resources\\{resource.Name}", resource.Data);
+                    progress.Progress += increment / 2;
+                }
+                FinalizeFile(savePath, zip);
+            }
+        }
+
+        private static void FinalizeFile(string savePath, ZipFile zip)
+        {
+            zip.Save(savePath);
         }
 
         public Document OpenCompressedFileFormat(Stream fileStream)
