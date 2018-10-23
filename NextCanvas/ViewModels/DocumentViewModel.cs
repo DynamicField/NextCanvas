@@ -16,16 +16,6 @@ namespace NextCanvas.ViewModels
         private DocumentResourceLocator locator;
         private int selectedIndex;
 
-        public DocumentViewModel()
-        {
-            Initialize();
-        }
-
-        public DocumentViewModel(Document model) : base(model)
-        {
-            Initialize();
-        }
-
         public ObservableViewModelCollection<PageViewModel, Page> Pages { get; private set; }
         public ObservableViewModelCollection<ResourceViewModel, Resource> Resources { get; set; }
 
@@ -34,7 +24,10 @@ namespace NextCanvas.ViewModels
             get => selectedIndex;
             set
             {
-                if (value > Pages.Count - 1) throw new IndexOutOfRangeException("ur out of range");
+                if (value > Pages.Count - 1)
+                {
+                    throw new IndexOutOfRangeException("ur out of range");
+                }
                 selectedIndex = value;
                 OnPropertyChanged(nameof(SelectedIndex));
                 OnPropertyChanged(nameof(SelectedPage));
@@ -45,13 +38,26 @@ namespace NextCanvas.ViewModels
 
         internal IResourceViewModelLocator ResourceLocator => locator;
 
+        public DocumentViewModel()
+        {
+            Initialize();
+        }
+
+        public DocumentViewModel(Document model) : base(model)
+        {
+            Initialize();
+        }
+
         private void Initialize()
         {
-            Resources = new ObservableViewModelCollection<ResourceViewModel, Resource>(Model.Resources,
+            Resources = new ObservableViewModelCollection<ResourceViewModel, Resource>(
+                Model.Resources,
                 r => new ResourceViewModel(r));
             locator = new DocumentResourceLocator(this);
-            Pages = new ObservableViewModelCollection<PageViewModel, Page>(Model.Pages,
-                m => new PageViewModel(m, locator), SetLocator); // set locator
+            Pages = new ObservableViewModelCollection<PageViewModel, Page>(
+                Model.Pages,
+                m => new PageViewModel(m, locator),
+                SetLocator); // set locator
             Pages.CollectionChanged += Pages_CollectionChanged;
         }
 
@@ -62,16 +68,22 @@ namespace NextCanvas.ViewModels
 
         private void Pages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (SelectedIndex > 0 && e.OldStartingIndex >= SelectedIndex) SelectedIndex = e.OldStartingIndex - 1;
+            if (SelectedIndex > 0 && e.OldStartingIndex >= SelectedIndex)
+            {
+                SelectedIndex = e.OldStartingIndex - 1;
+            }
         }
 
         public ResourceViewModel AddResource(FileStream fileStream)
         {
-            var testResource = Resources.FirstOrDefault(r => r.DataMD5Hash == fileStream.GetMD5FromFile());
-            if (testResource != null) return testResource;
-            var baseName = Path.GetFileNameWithoutExtension(fileStream.Name);
-            var extension = Path.GetExtension(fileStream.Name);
-            var fileName = baseName + Resources.Count + extension;
+            ResourceViewModel testResource = Resources.FirstOrDefault(r => r.DataMD5Hash == fileStream.GetMD5FromFile());
+            if (testResource != null)
+            {
+                return testResource;
+            }
+            string baseName = Path.GetFileNameWithoutExtension(fileStream.Name);
+            string extension = Path.GetExtension(fileStream.Name);
+            string fileName = baseName + Resources.Count + extension;
             var resource = new ResourceViewModel(new Resource(fileName, fileStream));
             Resources.Add(resource);
             return resource;
@@ -79,6 +91,8 @@ namespace NextCanvas.ViewModels
 
         private class DocumentResourceLocator : IResourceViewModelLocator
         {
+            private IEnumerable<ResourceViewModel> Resources { get; }
+
             public DocumentResourceLocator(IEnumerable<ResourceViewModel> resources)
             {
                 Resources = resources;
@@ -89,11 +103,10 @@ namespace NextCanvas.ViewModels
                 Resources = document.Resources;
             }
 
-            private IEnumerable<ResourceViewModel> Resources { get; }
-
             public Resource GetResourceDataFor(Resource resource)
             {
-                return GetResourceViewModelInternal(resource).Model;
+                return GetResourceViewModelInternal(resource)
+                    .Model;
             }
 
             public ResourceViewModel GetResourceViewModelDataFor(ResourceViewModel resource)
@@ -108,8 +121,8 @@ namespace NextCanvas.ViewModels
 
             public bool HasResourceGotValuableData(Resource dataResource)
             {
-                return dataResource.Data != null && Resources.Any(r =>
-                           r.Name == dataResource.Name && r.DataMD5Hash == dataResource.DataMD5Hash);
+                return dataResource.Data != null &&
+                       Resources.Any(r => r.Name == dataResource.Name && r.DataMD5Hash == dataResource.DataMD5Hash);
             }
 
             public bool HasResourceGotValuableData(ResourceViewModel dataResource)
@@ -119,20 +132,30 @@ namespace NextCanvas.ViewModels
 
             private ResourceViewModel GetResourceViewModelInternal(Resource resource)
             {
-                var matchingResource = Resources.FirstOrDefault(r => r.Name == resource.Name && r.Data != null);
-                if (matchingResource == null) throw new ArgumentException("Couldn't find any matching resource.");
+                ResourceViewModel matchingResource =
+                    Resources.FirstOrDefault(r => r.Name == resource.Name && r.Data != null);
+                if (matchingResource == null)
+                {
+                    throw new ArgumentException("Couldn't find any matching resource.");
+                }
                 return matchingResource;
             }
 
             private ResourceViewModel GetResourceCheck(ResourceViewModel resource)
             {
-                if (HasResourceGotValuableData(resource)) return resource; // Give the resource back.
+                if (HasResourceGotValuableData(resource))
+                {
+                    return resource; // Give the resource back.
+                }
                 return GetResourceViewModelInternal(resource.Model);
             }
 
             private ResourceViewModel GetResourceCheck(Resource resource)
             {
-                if (HasResourceGotValuableData(resource)) return new ResourceViewModel(resource); // Give a vm
+                if (HasResourceGotValuableData(resource))
+                {
+                    return new ResourceViewModel(resource); // Give a vm
+                }
                 return GetResourceViewModelInternal(resource);
             }
         }

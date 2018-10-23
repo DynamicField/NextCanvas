@@ -27,8 +27,11 @@ namespace NextCanvas.Views
         {
             Process.Start("https://github.com/jeuxjeux20/NextCanvas/issues");
             Clipboard.SetText(Info.Text);
-            MessageBox.Show("Error data has been succesfully copied to your clipboard.", "Error details copied",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(
+                "Error data has been succesfully copied to your clipboard.",
+                "Error details copied",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
             Close();
         }
     }

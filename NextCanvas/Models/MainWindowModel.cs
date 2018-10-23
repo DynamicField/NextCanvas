@@ -5,8 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
-using Fluent;
-using Newtonsoft.Json;
 
 namespace NextCanvas.Models
 {
@@ -15,6 +13,37 @@ namespace NextCanvas.Models
     /// </summary>
     public class MainWindowModel
     {
+        [JsonIgnore]
+        public Document Document { get; set; } = new Document();
+
+        public ToolGroupCollection Groups { get; set; } = new ToolGroupCollection
+        {
+            new ToolGroup
+            {
+                Name = "Brushes",
+                Color = Colors.Black
+            },
+            new ToolGroup
+            {
+                Name = "Highlighters",
+                Color = Color.FromRgb(255, 222, 5)
+            },
+            new ToolGroup
+            {
+                Name = "Erasers",
+                Color = Colors.Black,
+                HasGotColor = false
+            },
+            new ToolGroup
+            {
+                Name = "Other",
+                Color = Colors.Black
+            }
+        };
+
+        public ObservableCollection<Color> FavouriteColors { get; set; } = ColorGallery.RecentColors;
+        public List<Tool> Tools { get; set; }
+
         public MainWindowModel()
         {
             Tools = new List<Tool>
@@ -56,7 +85,6 @@ namespace NextCanvas.Models
                         Width = 11
                     }
                 },
-
                 new Tool
                 {
                     Name = "Select",
@@ -122,8 +150,8 @@ namespace NextCanvas.Models
                 {
                     Name = "Highlighter",
                     Group = Groups["Highlighters"],
-                    LargeIcon = new Uri(
-                        "pack://application:,,,/NextCanvas;component/Images/Ribbon/Shared/Highlighter_24.png"),
+                    LargeIcon =
+                        new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Shared/Highlighter_24.png"),
                     DrawingAttributes = new DrawingAttributes
                     {
                         Color = Colors.Yellow,
@@ -133,38 +161,10 @@ namespace NextCanvas.Models
                     }
                 }
             };
-            if (!FavouriteColors.Contains(Colors.Black)) FavouriteColors.Add(Colors.Black);
-        }
-
-        [JsonIgnore] public Document Document { get; set; } = new Document();
-
-        public ToolGroupCollection Groups { get; set; } = new ToolGroupCollection
-        {
-            new ToolGroup
+            if (!FavouriteColors.Contains(Colors.Black))
             {
-                Name = "Brushes",
-                Color = Colors.Black
-            },
-
-            new ToolGroup
-            {
-                Name = "Highlighters",
-                Color = Color.FromRgb(255, 222, 5)
-            },
-            new ToolGroup
-            {
-                Name = "Erasers",
-                Color = Colors.Black,
-                HasGotColor = false
-            },
-            new ToolGroup
-            {
-                Name = "Other",
-                Color = Colors.Black
+                FavouriteColors.Add(Colors.Black);
             }
-        };
-
-        public ObservableCollection<Color> FavouriteColors { get; set; } = ColorGallery.RecentColors;
-        public List<Tool> Tools { get; set; }
+        }
     }
 }

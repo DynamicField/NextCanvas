@@ -7,8 +7,11 @@ namespace NextCanvas.Controls
     public class NextDynamicRenderer : DynamicRenderer
     {
         // ReSharper disable once RedundantOverriddenMember
-        protected override void OnDraw(DrawingContext drawingContext, StylusPointCollection stylusPoints,
-            Geometry geometry, Brush fillBrush)
+        protected override void OnDraw(
+            DrawingContext drawingContext,
+            StylusPointCollection stylusPoints,
+            Geometry geometry,
+            Brush fillBrush)
         {
             //if (stylusPoints.Count >= 2)
             //{

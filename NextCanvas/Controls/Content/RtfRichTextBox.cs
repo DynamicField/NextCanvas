@@ -9,9 +9,11 @@ namespace NextCanvas.Controls.Content
     public class RtfRichTextBox : RichTextBox
     {
         // Using a DependencyProperty as the backing store for RtfText.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty RtfTextProperty =
-            DependencyProperty.Register("RtfText", typeof(string), typeof(RtfRichTextBox),
-                new FrameworkPropertyMetadata("", RtfChanged));
+        public static readonly DependencyProperty RtfTextProperty = DependencyProperty.Register(
+            "RtfText",
+            typeof(string),
+            typeof(RtfRichTextBox),
+            new FrameworkPropertyMetadata("", RtfChanged));
 
         private bool givingToBinding;
 
@@ -36,12 +38,14 @@ namespace NextCanvas.Controls.Content
 
                 textBox.SelectAll();
                 using (var stream = new MemoryStream())
-                using (var writer = new StreamWriter(stream))
                 {
-                    writer.Write(value);
-                    writer.Flush();
-                    stream.Position = 0;
-                    textBox.Selection.Load(stream, DataFormats.Rtf);
+                    using (var writer = new StreamWriter(stream))
+                    {
+                        writer.Write(value);
+                        writer.Flush();
+                        stream.Position = 0;
+                        textBox.Selection.Load(stream, DataFormats.Rtf);
+                    }
                 }
             }
         }
@@ -55,7 +59,7 @@ namespace NextCanvas.Controls.Content
                 mem.Position = 0;
                 using (var read = new StreamReader(mem, Encoding.UTF8, true))
                 {
-                    var result = read.ReadToEnd();
+                    string result = read.ReadToEnd();
                     RtfText = result;
                 }
             }
@@ -64,7 +68,10 @@ namespace NextCanvas.Controls.Content
         protected override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
-            if (updateNeeded) UpdateRtf();
+            if (updateNeeded)
+            {
+                UpdateRtf();
+            }
         }
 
         protected override void OnTextChanged(TextChangedEventArgs e)

@@ -5,10 +5,13 @@ namespace NextCanvas.Interactivity.Progress
     public class ProgressTask : IProgressData
     {
         private double progress;
-
-        public event EventHandler ProgressChanged;
-        public event EventHandler TaskComplete;
         private string progressText;
+
+        // The weight in the total manager.
+        // Like : 10, 50, 40 = 100 
+        public double ProgressWeight { get; }
+
+        public bool IsComplete { get; private set; }
 
         public ProgressTask(double weight = 50, string text = "Something goes there...")
         {
@@ -16,17 +19,16 @@ namespace NextCanvas.Interactivity.Progress
             ProgressText = text;
         }
 
-        // The weight in the total manager.
-        // Like : 10, 50, 40 = 100 
-        public double ProgressWeight { get; }
-
         public double Progress
         {
             get => progress;
             set
             {
-                if (IsComplete) return;
-                progress = Math.Min(100,value);
+                if (IsComplete)
+                {
+                    return;
+                }
+                progress = Math.Min(100, value);
                 if (progress >= 99.999)
                 {
                     Complete();
@@ -37,18 +39,23 @@ namespace NextCanvas.Interactivity.Progress
                 }
             }
         }
+
         public string ProgressText
         {
             get => progressText;
             set
             {
-                if (IsComplete) return;
+                if (IsComplete)
+                {
+                    return;
+                }
                 progressText = value;
                 ProgressChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public bool IsComplete { get; private set; }
+        public event EventHandler ProgressChanged;
+        public event EventHandler TaskComplete;
 
         public void Complete()
         {

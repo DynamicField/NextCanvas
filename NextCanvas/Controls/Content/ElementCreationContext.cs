@@ -2,8 +2,18 @@
 {
     public class ElementCreationContext
     {
-        public ElementCreationContext(SelectionWrapper s, double contentHorizontalOffset, double contentVerticalOffset,
-            double visibleWidth, double visibleHeight)
+        public SelectionWrapper Selection { get; }
+        public double ContentHorizontalOffset { get; }
+        public double ContentVerticalOffset { get; }
+        public double VisibleWidth { get; }
+        public double VisibleHeight { get; }
+
+        public ElementCreationContext(
+            SelectionWrapper s,
+            double contentHorizontalOffset,
+            double contentVerticalOffset,
+            double visibleWidth,
+            double visibleHeight)
         {
             Selection = s;
             ContentHorizontalOffset = contentHorizontalOffset;
@@ -11,11 +21,5 @@
             VisibleWidth = visibleWidth;
             VisibleHeight = visibleHeight;
         }
-
-        public SelectionWrapper Selection { get; }
-        public double ContentHorizontalOffset { get; }
-        public double ContentVerticalOffset { get; }
-        public double VisibleWidth { get; }
-        public double VisibleHeight { get; }
     }
 }

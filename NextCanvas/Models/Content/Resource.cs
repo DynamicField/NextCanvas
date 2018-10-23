@@ -2,31 +2,13 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace NextCanvas.Models.Content
 {
     public class Resource : IDisposable
     {
-        [JsonIgnore] private Stream stream;
-
-        public Resource()
-        {
-        }
-
-        /// <summary>
-        ///     Creates a resource with that name, and uses the stream to copy it inside the <see cref="Data" />
-        /// </summary>
-        /// <param name="name">The name, usually something like file.ext</param>
-        /// <param name="data">The deeta. Oh no, my system crashed, i lost my deeta !</param>
-        public Resource(string name, Stream data)
-        {
-            Name = name;
-            var memoryStream = new MemoryStream();
-            data.Position = 0;
-            data.CopyTo(memoryStream);
-            Data = memoryStream;
-        }
+        [JsonIgnore]
+        private Stream stream;
 
         public string Name { get; set; }
         public ResourceType Type { get; set; }
@@ -48,6 +30,24 @@ namespace NextCanvas.Models.Content
 
         public string DataMD5Hash { get; set; }
 
+        public Resource()
+        {
+        }
+
+        /// <summary>
+        ///     Creates a resource with that name, and uses the stream to copy it inside the <see cref="Data" />
+        /// </summary>
+        /// <param name="name">The name, usually something like file.ext</param>
+        /// <param name="data">The deeta. Oh no, my system crashed, i lost my deeta !</param>
+        public Resource(string name, Stream data)
+        {
+            Name = name;
+            var memoryStream = new MemoryStream();
+            data.Position = 0;
+            data.CopyTo(memoryStream);
+            Data = memoryStream;
+        }
+
         public void Dispose()
         {
             stream?.Dispose();
@@ -59,12 +59,15 @@ namespace NextCanvas.Models.Content
             {
                 stream.Position = 0;
                 md5.Initialize();
-                var hashBytes = md5.ComputeHash(stream);
+                byte[] hashBytes = md5.ComputeHash(stream);
                 stream.Position = 0;
                 // Convert the byte array to hexadecimal string
                 // https://stackoverflow.com/questions/11454004/calculate-a-md5-hash-from-a-string
                 var sb = new StringBuilder();
-                foreach (var bytey in hashBytes) sb.Append(bytey.ToString("X2"));
+                foreach (byte bytey in hashBytes)
+                {
+                    sb.Append(bytey.ToString("X2"));
+                }
                 return sb.ToString();
             }
         }

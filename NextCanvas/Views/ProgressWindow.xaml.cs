@@ -13,30 +13,36 @@ namespace NextCanvas.Views
     {
         // Using a DependencyProperty as the backing store for IsClosed.  This enables animation, styling, binding, etc...
         private static readonly DependencyPropertyKey IsClosedPropertyInternal =
-            DependencyProperty.RegisterReadOnly("IsClosed", typeof(bool), typeof(ProgressWindow),
+            DependencyProperty.RegisterReadOnly(
+                "IsClosed",
+                typeof(bool),
+                typeof(ProgressWindow),
                 new FrameworkPropertyMetadata(false));
+
+        public static DependencyProperty IsClosedProperty => IsClosedPropertyInternal.DependencyProperty;
 
         public ProgressWindow()
         {
             InitializeComponent();
             DataContext = Data;
             IsClosed = false;
-        }       
-
-        public static DependencyProperty IsClosedProperty => IsClosedPropertyInternal.DependencyProperty;
+        }
 
         Task IInteractionBase.Close()
         {
-            return Dispatcher.InvokeAsync(async () =>
-            {
-                await Task.Delay(75);
-                Close();
-            }).Task;
+            return Dispatcher.InvokeAsync(
+                async () =>
+                      {
+                          await Task.Delay(75);
+                          Close();
+                      })
+                             .Task;
         }
 
         Task IInteractionBase.Show()
         {
-            return Dispatcher.InvokeAsync(Show).Task;
+            return Dispatcher.InvokeAsync(Show)
+                             .Task;
         }
 
         public bool IsClosed
@@ -45,12 +51,12 @@ namespace NextCanvas.Views
             private set => SetValue(IsClosedPropertyInternal, value);
         }
 
+        public IProgressData Data { get; } = new ProgressDataContext();
+
         protected override void OnClosed(EventArgs e)
         {
             IsClosed = true;
             base.OnClosed(e);
         }
-
-        public IProgressData Data { get; } = new ProgressDataContext();
     }
 }

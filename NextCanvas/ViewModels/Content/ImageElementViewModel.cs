@@ -8,6 +8,22 @@ namespace NextCanvas.ViewModels.Content
     {
         private BitmapImage image;
 
+        public new ImageElement Model => (ImageElement) base.Model;
+
+        // TODO : Implement Image setter. 
+        public BitmapImage Image
+        {
+            get
+            {
+                if (image != null)
+                {
+                    return image;
+                }
+                CreateBitmapImage();
+                return image;
+            }
+        }
+
         public ImageElementViewModel() : base(new ImageElement())
         {
         }
@@ -20,19 +36,6 @@ namespace NextCanvas.ViewModels.Content
         {
         }
 
-        public new ImageElement Model => (ImageElement) base.Model;
-
-        // TODO : Implement Image setter. 
-        public BitmapImage Image
-        {
-            get
-            {
-                if (image != null) return image;
-                CreateBitmapImage();
-                return image;
-            }
-        }
-
         protected override ContentElement BuildDefaultModel()
         {
             return new ImageElement();
@@ -40,7 +43,10 @@ namespace NextCanvas.ViewModels.Content
 
         private void CreateBitmapImage()
         {
-            if (Resource?.Data == null) return;
+            if (Resource?.Data == null)
+            {
+                return;
+            }
             Resource.Data.Position = 0;
             image = new BitmapImage();
             image.BeginInit();

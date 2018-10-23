@@ -7,15 +7,6 @@ namespace NextCanvas.ViewModels.Content
 {
     public class ResourceViewModel : ViewModelBase<Resource>, IDisposable
     {
-        public ResourceViewModel(Resource model) : base(model)
-        {
-        }
-
-        internal ResourceViewModel(Resource model, IResourceLocator resourceLocator)
-        {
-            Model = resourceLocator.GetResourceDataFor(model);
-        }
-
         public string Name
         {
             get => Model.Name;
@@ -54,6 +45,15 @@ namespace NextCanvas.ViewModels.Content
                 Model.DataMD5Hash = value;
                 OnPropertyChanged(nameof(DataMD5Hash));
             }
+        }
+
+        public ResourceViewModel(Resource model) : base(model)
+        {
+        }
+
+        internal ResourceViewModel(Resource model, IResourceLocator resourceLocator)
+        {
+            Model = resourceLocator.GetResourceDataFor(model);
         }
 
         public void Dispose()

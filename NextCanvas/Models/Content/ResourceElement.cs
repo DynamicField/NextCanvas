@@ -2,6 +2,8 @@
 {
     public abstract class ResourceElement : ContentElement
     {
+        public Resource Resource { get; set; }
+
         protected ResourceElement()
         {
         }
@@ -10,7 +12,5 @@
         {
             Resource = resource;
         }
-
-        public Resource Resource { get; set; }
     }
 }

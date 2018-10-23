@@ -3,8 +3,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Ink;
 using System.Windows.Media;
-using Fluent;
 using Microsoft.Win32;
 using NextCanvas.Controls.Content;
 using NextCanvas.Interactivity;
@@ -18,6 +18,27 @@ namespace NextCanvas.Views
     /// </summary>
     public partial class MainWindow : RibbonWindow, INotifyPropertyChanged
     {
+        // Creation context for commands. Nice. Nice. Nice. Nice. Nice. Nice.
+        public ElementCreationContext CreationContext
+            =>
+                new ElementCreationContext(
+                    Canvas.SelectionHelper,
+                    ScrollParent.ContentHorizontalOffset,
+                    ScrollParent.ContentVerticalOffset,
+                    ScrollParent.ActualWidth,
+                    ScrollParent.ActualHeight);
+
+        public DelegateInteractionProvider<IProgressInteraction> ProgressProvider
+            => new DelegateInteractionProvider<IProgressInteraction>(
+                () =>
+                {
+                    var window = new ProgressWindow
+                    {
+                        Owner = this
+                    };
+                    return window;
+                });
+
         public MainWindow()
         {
             InitializeComponent();
@@ -26,21 +47,6 @@ namespace NextCanvas.Views
             ScrollParent.SizeChanged += ScrollParent_SizeChanged;
             ScrollParent.ScrollChanged += ScrollParent_ScrollChanged;
         }
-
-        // Creation context for commands. Nice. Nice. Nice. Nice. Nice. Nice.
-        public ElementCreationContext CreationContext => new ElementCreationContext(Canvas.SelectionHelper,
-            ScrollParent.ContentHorizontalOffset, ScrollParent.ContentVerticalOffset, ScrollParent.ActualWidth,
-            ScrollParent.ActualHeight);
-
-        public DelegateInteractionProvider<IProgressInteraction> ProgressProvider =>
-            new DelegateInteractionProvider<IProgressInteraction>(() =>
-            {
-                var window = new ProgressWindow
-                {
-                    Owner = this
-                };
-                return window;
-            });
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -61,11 +67,20 @@ namespace NextCanvas.Views
 
         private void ColorGallery_SelectedColorChanged(object sender, RoutedEventArgs e)
         {
-            if (ColorGallery.SelectedColor is null) return;
+            if (ColorGallery.SelectedColor is null)
+            {
+                return;
+            }
             Canvas.DefaultDrawingAttributes.Color = ColorGallery.SelectedColor ?? Colors.Black;
-            var strokes = Canvas.GetSelectedStrokes();
-            foreach (var item in strokes) item.DrawingAttributes.Color = ColorGallery.SelectedColor ?? Colors.Black;
-            if (strokes.Any()) ColorGallery.SelectedColor = null;
+            StrokeCollection strokes = Canvas.GetSelectedStrokes();
+            foreach (Stroke item in strokes)
+            {
+                item.DrawingAttributes.Color = ColorGallery.SelectedColor ?? Colors.Black;
+            }
+            if (strokes.Any())
+            {
+                ColorGallery.SelectedColor = null;
+            }
         }
 
         private void InRibbonGallery_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -80,14 +95,23 @@ namespace NextCanvas.Views
 
         private void Canvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (e.WidthChanged) ScrollParent.ScrollToRightEnd();
-            if (e.HeightChanged) ScrollParent.ScrollToBottom();
+            if (e.WidthChanged)
+            {
+                ScrollParent.ScrollToRightEnd();
+            }
+            if (e.HeightChanged)
+            {
+                ScrollParent.ScrollToBottom();
+            }
             Canvas.SizeChanged -= Canvas_SizeChanged;
         }
 
         private void DebugStylusXD_Click(object sender, RoutedEventArgs e)
         {
-            new StylusDebugWindow {Owner = this}.Show();
+            new StylusDebugWindow
+            {
+                Owner = this
+            }.Show();
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
@@ -103,9 +127,13 @@ namespace NextCanvas.Views
                 Filter = "NextCanvas document (*.ncd)|*.ncd"
             };
             if (dialog.ShowDialog() ?? false)
+            {
                 vm.SavePath = dialog.FileName;
+            }
             else
+            {
                 vm.SavePath = null;
+            }
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
@@ -116,9 +144,13 @@ namespace NextCanvas.Views
                 Filter = "NextCanvas document (*.ncd)|*.ncd"
             };
             if (dialog.ShowDialog() ?? false)
+            {
                 vm.OpenPath = dialog.FileName;
+            }
             else
+            {
                 vm.OpenPath = null;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -144,9 +176,13 @@ namespace NextCanvas.Views
                 Filter = "Image files (*.jpg, *.bmp, *.png)|*.jpg; *.bmp; *.png"
             };
             if (dialog.ShowDialog() ?? false)
+            {
                 vm.OpenImagePath = dialog.FileName;
+            }
             else
+            {
                 vm.OpenImagePath = null;
+            }
         }
     }
 }

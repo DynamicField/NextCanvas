@@ -40,7 +40,8 @@ namespace NextCanvas.Views
         {
             var str = "";
             str += $"Is in air : {e.InAir}";
-            var point = e.GetStylusPoints(this).FirstOrDefault();
+            StylusPoint point = e.GetStylusPoints(this)
+                                 .FirstOrDefault();
             str += "Oh PRESSURE !!!! : " + point.PressureFactor;
             MainInfo.Text = str;
         }

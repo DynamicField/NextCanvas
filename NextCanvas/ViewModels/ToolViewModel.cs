@@ -12,21 +12,6 @@ namespace NextCanvas.ViewModels
     {
         private ToolGroupViewModel group;
 
-        public ToolViewModel()
-        {
-        }
-
-        public ToolViewModel(Tool model) : base(model)
-        {
-            Initialize();
-            model.DrawingAttributes.FitToCurve = true;
-        }
-
-        public ToolViewModel(Tool model, Uri icon) : this(model)
-        {
-            LargeIcon = icon;
-        }
-
         public bool HasColor
         {
             get => Model.HasColor;
@@ -83,7 +68,10 @@ namespace NextCanvas.ViewModels
             get => group;
             set
             {
-                if (group != null) group.PropertyChanged -= Group_PropertyChanged;
+                if (group != null)
+                {
+                    group.PropertyChanged -= Group_PropertyChanged;
+                }
                 group = value;
                 Model.Group = group.Model;
                 group.PropertyChanged += Group_PropertyChanged;
@@ -96,11 +84,13 @@ namespace NextCanvas.ViewModels
 
         public StrokeCollection DemoStroke => new StrokeCollection
         {
-            new Stroke(new StylusPointCollection
-            {
-                new StylusPoint(15, 22),
-                new StylusPoint(75, 22)
-            }, DrawingAttributes)
+            new Stroke(
+                new StylusPointCollection
+                {
+                    new StylusPoint(15, 22),
+                    new StylusPoint(75, 22)
+                },
+                DrawingAttributes)
         };
 
         public bool IsDisplayed
@@ -154,12 +144,30 @@ namespace NextCanvas.ViewModels
             set
             {
                 DrawingAttributes.Height = value;
-                if (!DrawingAttributes.IsHighlighter) DrawingAttributes.Width = value;
+                if (!DrawingAttributes.IsHighlighter)
+                {
+                    DrawingAttributes.Width = value;
+                }
                 OnPropertyChanged(nameof(UniformSize));
                 OnPropertyChanged(nameof(EraserShape));
                 // Some kind of hack to make the cursor update. dunno why microsoft didnt do gr8 xd
                 UpdateCursorIfEraser(this);
             }
+        }
+
+        public ToolViewModel()
+        {
+        }
+
+        public ToolViewModel(Tool model) : base(model)
+        {
+            Initialize();
+            model.DrawingAttributes.FitToCurve = true;
+        }
+
+        public ToolViewModel(Tool model, Uri icon) : this(model)
+        {
+            LargeIcon = icon;
         }
 
         private void Initialize()
@@ -170,7 +178,10 @@ namespace NextCanvas.ViewModels
 
         private void Group_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ToolGroupViewModel.Name)) OnPropertyChanged(nameof(GroupName));
+            if (e.PropertyName == nameof(ToolGroupViewModel.Name))
+            {
+                OnPropertyChanged(nameof(GroupName));
+            }
         }
 
         private void InitDrawing(DrawingAttributes value)
@@ -186,14 +197,17 @@ namespace NextCanvas.ViewModels
         private void ColorChangeHandler(object sender, PropertyDataChangedEventArgs e)
         {
             OnPropertyChanged(nameof(DemoStroke));
-            if (e.NewValue is Color c) group.Color = c;
+            if (e.NewValue is Color c)
+            {
+                group.Color = c;
+            }
         }
 
         public static void UpdateCursorIfEraser(ToolViewModel t)
         {
             if (t.Mode == InkCanvasEditingMode.EraseByPoint || t.Mode == InkCanvasEditingMode.EraseByStroke)
             {
-                var previous = t.Mode;
+                InkCanvasEditingMode previous = t.Mode;
                 t.Mode = InkCanvasEditingMode.None;
                 t.Mode = previous;
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -21,60 +22,67 @@ namespace NextCanvas.Controls
     {
         // Using a DependencyProperty as the backing store for ScrollViewerReferent.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ScrollViewerReferentProperty =
-            DependencyProperty.Register("ScrollViewerReferent", typeof(ScrollViewer), typeof(NextInkCanvas),
+            DependencyProperty.Register(
+                "ScrollViewerReferent",
+                typeof(ScrollViewer),
+                typeof(NextInkCanvas),
                 new PropertyMetadata(null));
 
         // Using a DependencyProperty as the backing store for EraserShapeDP.  This enables animation, styling, binding, etc...
         // ReSharper disable once InconsistentNaming
-        public static readonly DependencyProperty EraserShapeDPProperty =
-            DependencyProperty.Register("EraserShapeDP", typeof(StylusShape), typeof(NextInkCanvas),
-                new PropertyMetadata((sender, e) =>
+        public static readonly DependencyProperty EraserShapeDPProperty = DependencyProperty.Register(
+            "EraserShapeDP",
+            typeof(StylusShape),
+            typeof(NextInkCanvas),
+            new PropertyMetadata(
+                (sender, e) =>
                 {
-                    ((NextInkCanvas) sender).EraserShape =
-                        e.NewValue as StylusShape ?? throw new InvalidOperationException();
+                    ((NextInkCanvas) sender).EraserShape = e.NewValue as StylusShape ??
+                                                           throw new InvalidOperationException();
                 }));
 
         // Using a DependencyProperty as the backing store for UseCustomCursorDP.  This enables animation, styling, binding, etc...
         // ReSharper disable once InconsistentNaming
         public static readonly DependencyProperty UseCustomCursorDPProperty =
-            DependencyProperty.Register("UseCustomCursorDP", typeof(bool), typeof(NextInkCanvas),
+            DependencyProperty.Register(
+                "UseCustomCursorDP",
+                typeof(bool),
+                typeof(NextInkCanvas),
                 new PropertyMetadata((sender, e) => { ((NextInkCanvas) sender).UseCustomCursor = (bool) e.NewValue; }));
 
         // Using a DependencyProperty as the backing store for ItemsSource.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(NextInkCanvas),
-                new FrameworkPropertyMetadata(null, (sender, e) =>
+        public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
+            "ItemsSource",
+            typeof(IEnumerable),
+            typeof(NextInkCanvas),
+            new FrameworkPropertyMetadata(
+                null,
+                (sender, e) =>
                 {
-                    if (e.OldValue == e.NewValue) return;
+                    if (e.OldValue == e.NewValue)
+                    {
+                        return;
+                    }
                     var casted = (NextInkCanvas) sender;
                     if (e.OldValue is INotifyCollectionChanged old)
+                    {
                         old.CollectionChanged -= casted.ItemsSourceItemChanged;
+                    }
                     casted.Children.Clear();
                     if (e.NewValue is INotifyCollectionChanged newish)
+                    {
                         newish.CollectionChanged += casted.ItemsSourceItemChanged;
-                    foreach (var item in (IEnumerable) e.NewValue) AddChild(casted, item);
+                    }
+                    foreach (object item in (IEnumerable) e.NewValue)
+                    {
+                        AddChild(casted, item);
+                    }
                 }));
 
         private bool isInternal;
 
         private MemoryStream lastDataObject;
         private double pasteDiff;
-
-        public NextInkCanvas()
-        {
-            DynamicRenderer = new NextDynamicRenderer();
-            SelectionHelper = new SelectionWrapper(SelectChildren);
-            PreferredPasteFormats = new List<InkCanvasClipboardFormat>
-            {
-                InkCanvasClipboardFormat.InkSerializedFormat,
-                InkCanvasClipboardFormat.Xaml,
-                InkCanvasClipboardFormat.Text
-            };
-            CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas),
-                new CommandBinding(ApplicationCommands.Delete, CommandExecuted, CanExecuteCommand));
-            CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas),
-                new CommandBinding(ApplicationCommands.Paste, CommandExecuted, CanExecuteCommand));
-        }
 
         public SelectionWrapper SelectionHelper { get; }
 
@@ -105,18 +113,43 @@ namespace NextCanvas.Controls
             set => SetValue(ItemsSourceProperty, value);
         }
 
+        public NextInkCanvas()
+        {
+            DynamicRenderer = new NextDynamicRenderer();
+            SelectionHelper = new SelectionWrapper(SelectChildren);
+            PreferredPasteFormats = new List<InkCanvasClipboardFormat>
+            {
+                InkCanvasClipboardFormat.InkSerializedFormat,
+                InkCanvasClipboardFormat.Xaml,
+                InkCanvasClipboardFormat.Text
+            };
+            CommandManager.RegisterClassCommandBinding(
+                typeof(NextInkCanvas),
+                new CommandBinding(ApplicationCommands.Delete, CommandExecuted, CanExecuteCommand));
+            CommandManager.RegisterClassCommandBinding(
+                typeof(NextInkCanvas),
+                new CommandBinding(ApplicationCommands.Paste, CommandExecuted, CanExecuteCommand));
+        }
+
         public void SelectChildren(object dataContext)
         {
-            Select(new[] {GetElementFromDataContext(this, dataContext)});
+            Select(
+                new[]
+                {
+                    GetElementFromDataContext(this, dataContext)
+                });
         }
 
         protected override void OnSelectionChanged(EventArgs e)
         {
-            var elements = GetSelectedElements();
+            ReadOnlyCollection<UIElement> elements = GetSelectedElements();
             if (elements.Count == 1)
             {
                 elements[0].Focus();
-                if (elements[0] is ContentElementRenderer render) render.FocusChild();
+                if (elements[0] is ContentElementRenderer render)
+                {
+                    render.FocusChild();
+                }
             }
 
             base.OnSelectionChanged(e);
@@ -125,9 +158,15 @@ namespace NextCanvas.Controls
         private static void CommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             var canvas = (NextInkCanvas) sender;
-            if (e.Command == ApplicationCommands.Delete) canvas.DeleteSelection();
+            if (e.Command == ApplicationCommands.Delete)
+            {
+                canvas.DeleteSelection();
+            }
 
-            if (e.Command == ApplicationCommands.Paste) canvas.Paste();
+            if (e.Command == ApplicationCommands.Paste)
+            {
+                canvas.Paste();
+            }
         }
 
         /// <summary>
@@ -136,7 +175,10 @@ namespace NextCanvas.Controls
         public new void Paste()
         {
             UpdatePasteDifference();
-            if (!CanPaste()) return;
+            if (!CanPaste())
+            {
+                return;
+            }
             double horizontalOffset = 0, verticalOffset = 0;
             double width = ActualWidth, height = ActualHeight;
             if (ScrollViewerReferent != null) // sees if there is any useful scroll viewers.
@@ -165,11 +207,15 @@ namespace NextCanvas.Controls
                 return;
             }
 
-            if (data.Length == lastDataObject.Length
-            ) // It's less heavier than having to create two stream readers and blah blah blah
+            if (data.Length == lastDataObject.Length)
+                // It's less heavier than having to create two stream readers and blah blah blah
+            {
                 pasteDiff += 5;
+            }
             else
+            {
                 pasteDiff = 0;
+            }
             lastDataObject = data;
         }
 
@@ -177,19 +223,30 @@ namespace NextCanvas.Controls
         {
             var canvas = (NextInkCanvas) sender;
             if (e.Command == ApplicationCommands.Delete)
-                e.CanExecute = canvas.GetSelectedElements().Any() || canvas.GetSelectedStrokes().Any();
+            {
+                e.CanExecute = canvas.GetSelectedElements()
+                                     .Any() || canvas.GetSelectedStrokes()
+                                                     .Any();
+            }
 
-            if (e.Command == ApplicationCommands.Paste) e.CanExecute = canvas.CanPaste();
+            if (e.Command == ApplicationCommands.Paste)
+            {
+                e.CanExecute = canvas.CanPaste();
+            }
         }
 
         public void DeleteSelection()
         {
-            var list = GetSelectedStrokes();
+            StrokeCollection list = GetSelectedStrokes();
             Strokes.Remove(list);
-            var elements = GetSelectedElements();
+            ReadOnlyCollection<UIElement> elements = GetSelectedElements();
             if (elements.Any())
-                for (var i = elements.Count - 1; i >= 0; i--)
+            {
+                for (int i = elements.Count - 1; i >= 0; i--)
+                {
                     RemoveChild(this, ((FrameworkElement) elements[i]).DataContext);
+                }
+            }
         }
 
         // ReSharper disable once RedundantOverriddenMember
@@ -209,7 +266,10 @@ namespace NextCanvas.Controls
 
         protected override void OnStrokeErasing(InkCanvasStrokeErasingEventArgs e)
         {
-            if (e.Stroke is SquareStroke stroke) stroke.DisableSquare = true;
+            if (e.Stroke is SquareStroke stroke)
+            {
+                stroke.DisableSquare = true;
+            }
             base.OnStrokeErasing(e);
         }
 
@@ -231,7 +291,8 @@ namespace NextCanvas.Controls
 
         private static FrameworkElement GetElementFromDataContext(NextInkCanvas canvas, object item)
         {
-            return canvas.Children.Cast<FrameworkElement>().First(e => e.DataContext == item);
+            return canvas.Children.Cast<FrameworkElement>()
+                         .First(e => e.DataContext == item);
         }
 
         private static void RemoveVisualChild(NextInkCanvas canvas, UIElement item)
@@ -247,14 +308,26 @@ namespace NextCanvas.Controls
         private void ItemsSourceItemChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-                foreach (var item in e.NewItems)
+            {
+                foreach (object item in e.NewItems)
+                {
                     AddChild(this, item);
+                }
+            }
             if (e.OldItems != null)
-                foreach (var item in e.OldItems)
+            {
+                foreach (object item in e.OldItems)
+                {
                     if (isInternal)
+                    {
                         RemoveVisualChild(this, item);
+                    }
                     else
+                    {
                         RemoveChild(this, item);
+                    }
+                }
+            }
 
             isInternal = false;
         }

@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Ionic.Zip;
-using Newtonsoft.Json;
 using NextCanvas.Interactivity.Progress;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
@@ -27,7 +24,9 @@ namespace NextCanvas.Serialization
         {
             if (e.CurrentObject is Page p &&
                 Regex.IsMatch(e.ErrorContext.Path, @"Pages\.\$values\[[0-9]+\]\.Elements\.\$type")) // If type is wrong
+            {
                 p.Elements.Add(new ContentElement()); // oh no
+            }
             e.ErrorContext.Handled = true;
         }
 
@@ -43,7 +42,7 @@ namespace NextCanvas.Serialization
             {
                 AddDocumentJson(document, zip);
                 zip.AddDirectoryByName("resources");
-                foreach (var resource in document.Resources)
+                foreach (Resource resource in document.Resources)
                 {
                     resource.Data.Position = 0;
                     zip.AddEntry($"resources\\{resource.Name}", resource.Data);
@@ -63,7 +62,12 @@ namespace NextCanvas.Serialization
         {
             using (var zip = new ZipFile())
             {
-                var writingTask = CreateTasksInitialization(document, progress, out var resourceTasks, out var count, out var finalizingTask);
+                ProgressTask writingTask = CreateTasksInitialization(
+                    document,
+                    progress,
+                    out List<ProgressTask> resourceTasks,
+                    out int count,
+                    out ProgressTask finalizingTask);
                 await progress.Show();
                 writingTask.Progress = 25;
                 AddDocumentJson(document, zip);
@@ -76,24 +80,26 @@ namespace NextCanvas.Serialization
                 }
                 for (var index = 0; index < document.Resources.Count; index++)
                 {
-                    var task = resourceTasks[index];
+                    ProgressTask task = resourceTasks[index];
                     if (index == 0)
                     {
                         zip.AddProgress += (sender, args) =>
-                        {
-                            if (args.BytesTransferred == 0 || args.TotalBytesToTransfer == 0)
-                            {
-                                return;
-                            }
-                            var percentage = args.BytesTransferred + 0.01 / args.TotalBytesToTransfer + 0.01;
-                            var percentageString = percentage.ToString("P");
-                            task.Progress = percentage * 100;
-                            task.ProgressText = percentageString;
-                            Debug.WriteLine($"percentage : {percentageString}");
-                        };
+                                           {
+                                               if (args.BytesTransferred == 0 || args.TotalBytesToTransfer == 0)
+                                               {
+                                                   return;
+                                               }
+                                               double percentage = args.BytesTransferred +
+                                                                   0.01 / args.TotalBytesToTransfer +
+                                                                   0.01;
+                                               string percentageString = percentage.ToString("P");
+                                               task.Progress = percentage * 100;
+                                               task.ProgressText = percentageString;
+                                               Debug.WriteLine($"percentage : {percentageString}");
+                                           };
                     }
-                    var resource = document.Resources[index];
-                    
+                    Resource resource = document.Resources[index];
+
                     task.Progress = 50;
                     resource.Data.Position = 0;
                     zip.AddEntry($"resources\\{resource.Name}", resource.Data);
@@ -104,17 +110,21 @@ namespace NextCanvas.Serialization
             }
         }
 
-        private static ProgressTask CreateTasksInitialization(Document document, IProgressInteraction progress,
-            out List<ProgressTask> resourceTasks, out int count, out ProgressTask finalizingTask)
+        private static ProgressTask CreateTasksInitialization(
+            Document document,
+            IProgressInteraction progress,
+            out List<ProgressTask> resourceTasks,
+            out int count,
+            out ProgressTask finalizingTask)
         {
             var writingTask = new ProgressTask(10, "Writing document base data...");
-            var tasks = new List<ProgressTask>
+            List<ProgressTask> tasks = new List<ProgressTask>
             {
                 writingTask
             };
             resourceTasks = new List<ProgressTask>();
             count = document.Resources.Count;
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var progressTask = new ProgressTask(80, $"Writing resource : {document.Resources[i].Name}...");
                 tasks.Add(progressTask);
@@ -123,7 +133,7 @@ namespace NextCanvas.Serialization
 
             finalizingTask = new ProgressTask(5, "Saving to file...");
             tasks.Add(finalizingTask);
-            var taskManager = new TaskManager<IProgressInteraction>(progress, tasks);
+            TaskManager<IProgressInteraction> taskManager = new TaskManager<IProgressInteraction>(progress, tasks);
             return writingTask;
         }
 
@@ -155,9 +165,11 @@ namespace NextCanvas.Serialization
         {
             using (var zipFile = ZipFile.Read(fileStream))
             {
-                var doc = GetDocumentJson(zipFile);
-                foreach (var resource in doc.Resources)
+                Document doc = GetDocumentJson(zipFile);
+                foreach (Resource resource in doc.Resources)
+                {
                     ProcessDataCopying(zipFile, resource); // Copy the deeta to the resources.
+                }
                 // AttachResources(doc); // Attach them to all the elements.
                 return doc; // Yeah we're done :) dope nah?
             }
@@ -188,8 +200,9 @@ namespace NextCanvas.Serialization
 
         private static void ProcessDataCopying(ZipFile zipFile, Resource resource)
         {
-            var data = zipFile.Entries.First(e =>
-                e.FileName.Equals($"resources/{resource.Name}", StringComparison.InvariantCultureIgnoreCase));
+            var data =
+                zipFile.Entries.First(
+                    e => e.FileName.Equals($"resources/{resource.Name}", StringComparison.InvariantCultureIgnoreCase));
             var stream = new MemoryStream();
             data.Extract(stream);
             resource.Data = stream;
@@ -205,7 +218,7 @@ namespace NextCanvas.Serialization
 
         private Document ReadDocumentJson(TextReader streamyStream)
         {
-            var value = streamyStream.ReadToEnd();
+            string value = streamyStream.ReadToEnd();
             var deserialized = JsonConvert.DeserializeObject<Document>(value, serializerSettings);
             return deserialized;
         }

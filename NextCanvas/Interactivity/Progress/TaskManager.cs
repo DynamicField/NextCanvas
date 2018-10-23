@@ -10,16 +10,19 @@ namespace NextCanvas.Interactivity.Progress
     {
         private readonly T progress;
         public ProgressTask CurrentTask { get; private set; }
+
+        public ObservableCollection<ProgressTask> Tasks { get; }
+
         public TaskManager(T progress, IEnumerable<ProgressTask> tasks)
         {
             this.progress = progress;
-            var progressTasks = tasks.ToList();
+            List<ProgressTask> progressTasks = tasks.ToList();
             if (!progressTasks.Any())
             {
                 throw new ArgumentException("There are no tasks for me to do something actually useful. :'(");
             }
             Tasks = new ObservableCollection<ProgressTask>(progressTasks);
-            foreach (var task in Tasks)
+            foreach (ProgressTask task in Tasks)
             {
                 AttachEvents(task);
             }
@@ -36,7 +39,7 @@ namespace NextCanvas.Interactivity.Progress
 
         private void Task_TaskComplete(object sender, EventArgs e)
         {
-            var index = Tasks.IndexOf(CurrentTask) + 1;
+            int index = Tasks.IndexOf(CurrentTask) + 1;
             if (index == Tasks.Count)
             {
                 progress.Close();
@@ -51,6 +54,7 @@ namespace NextCanvas.Interactivity.Progress
             task.ProgressChanged -= Task_ProgressChanged;
             task.TaskComplete -= Task_TaskComplete;
         }
+
         private void Task_ProgressChanged(object sender, EventArgs e)
         {
             UpdateProgress();
@@ -58,7 +62,8 @@ namespace NextCanvas.Interactivity.Progress
 
         private void UpdateProgress()
         {
-            var name = Tasks.First(t => !t.IsComplete).ProgressText;
+            string name = Tasks.First(t => !t.IsComplete)
+                               .ProgressText;
             progress.Data.ProgressText = name;
             // Let's do some quick maths
             ProcessProgress();
@@ -66,9 +71,9 @@ namespace NextCanvas.Interactivity.Progress
 
         private void ProcessProgress()
         {
-            var totalProgress = Tasks.Sum(t => t.ProgressWeight);
-            var completedProgress = Tasks.Sum(t => t.ProgressWeight * (t.Progress / 100));
-            var percentage = (completedProgress / totalProgress) * 100;
+            double totalProgress = Tasks.Sum(t => t.ProgressWeight);
+            double completedProgress = Tasks.Sum(t => t.ProgressWeight * (t.Progress / 100));
+            double percentage = completedProgress / totalProgress * 100;
             progress.Data.Progress = percentage;
         }
 
@@ -76,21 +81,19 @@ namespace NextCanvas.Interactivity.Progress
         {
             if (e.NewItems != null)
             {
-                foreach (var item in e.NewItems)
+                foreach (object item in e.NewItems)
                 {
-                    AttachEvents((ProgressTask)item);
+                    AttachEvents((ProgressTask) item);
                 }
             }
 
             if (e.OldItems != null)
             {
-                foreach (var item in e.OldItems)
+                foreach (object item in e.OldItems)
                 {
-                    DetachEvents((ProgressTask)item);
+                    DetachEvents((ProgressTask) item);
                 }
             }
         }
-
-        public ObservableCollection<ProgressTask> Tasks { get; }
     }
 }

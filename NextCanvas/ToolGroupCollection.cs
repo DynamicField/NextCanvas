@@ -13,8 +13,7 @@ namespace NextCanvas
             get => Groups.First(t => t.Name.Equals(index, StringComparison.InvariantCultureIgnoreCase));
             set
             {
-                Groups[Groups.FindIndex(t => t.Name.Equals(index, StringComparison.InvariantCultureIgnoreCase))] =
-                    value;
+                Groups[Groups.FindIndex(t => t.Name.Equals(index, StringComparison.InvariantCultureIgnoreCase))] = value;
             }
         }
 

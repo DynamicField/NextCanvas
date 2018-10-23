@@ -5,14 +5,6 @@ namespace NextCanvas.ViewModels
 {
     public class ToolGroupViewModel : ViewModelBase<ToolGroup>
     {
-        public ToolGroupViewModel()
-        {
-        }
-
-        public ToolGroupViewModel(ToolGroup model) : base(model)
-        {
-        }
-
         public string Name
         {
             get => Model.Name;
@@ -52,6 +44,14 @@ namespace NextCanvas.ViewModels
                 Model.HasDemo = value;
                 OnPropertyChanged(nameof(Color));
             }
+        }
+
+        public ToolGroupViewModel()
+        {
+        }
+
+        public ToolGroupViewModel(ToolGroup model) : base(model)
+        {
         }
     }
 }

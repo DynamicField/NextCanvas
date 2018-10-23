@@ -8,12 +8,6 @@ namespace NextCanvas.Models
     {
         private bool? hasDemo;
 
-        public Tool()
-        {
-            DrawingAttributes.FitToCurve = true;
-            DrawingAttributes.Color = Group.Color;
-        }
-
         public DrawingAttributes DrawingAttributes { get; set; } = new DrawingAttributes();
         public bool HasColor { get; set; } = true;
         public string Name { get; set; } = "Tool";
@@ -31,5 +25,11 @@ namespace NextCanvas.Models
 
         public bool HasSize => Mode != InkCanvasEditingMode.None && Mode != InkCanvasEditingMode.Select;
         public InkCanvasEditingMode Mode { get; set; } = InkCanvasEditingMode.Ink;
+
+        public Tool()
+        {
+            DrawingAttributes.FitToCurve = true;
+            DrawingAttributes.Color = Group.Color;
+        }
     }
 }

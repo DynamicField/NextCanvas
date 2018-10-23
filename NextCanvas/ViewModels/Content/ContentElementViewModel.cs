@@ -6,14 +6,6 @@ namespace NextCanvas.ViewModels.Content
     // oof that's one complicated class 😓
     public class ContentElementViewModel : ViewModelBase<ContentElement>
     {
-        public ContentElementViewModel()
-        {
-        }
-
-        public ContentElementViewModel(ContentElement model) : base(model)
-        {
-        }
-
         public virtual double Left
         {
             get => Model.Left;
@@ -72,6 +64,14 @@ namespace NextCanvas.ViewModels.Content
                 Model.Height = value;
                 OnPropertyChanged(nameof(Height));
             }
+        }
+
+        public ContentElementViewModel()
+        {
+        }
+
+        public ContentElementViewModel(ContentElement model) : base(model)
+        {
         }
 
         public static ContentElementViewModel GetViewModel(ContentElement model)
