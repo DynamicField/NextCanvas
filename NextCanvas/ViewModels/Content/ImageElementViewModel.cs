@@ -6,28 +6,21 @@ namespace NextCanvas.ViewModels.Content
 {
     public class ImageElementViewModel : ResourceElementViewModel
     {
-        public new ImageElement Model => (ImageElement)base.Model;
+        private BitmapImage image;
 
         public ImageElementViewModel() : base(new ImageElement())
         {
-                
         }
+
         public ImageElementViewModel(ImageElement model) : base(model)
         {
-            
         }
 
         internal ImageElementViewModel(ImageElement model, IResourceLocator resource) : base(model, resource)
         {
-
         }
 
-        protected override ContentElement BuildDefaultModel()
-        {
-            return new ImageElement();
-        }
-
-        private BitmapImage image;
+        public new ImageElement Model => (ImageElement) base.Model;
 
         // TODO : Implement Image setter. 
         public BitmapImage Image
@@ -38,6 +31,11 @@ namespace NextCanvas.ViewModels.Content
                 CreateBitmapImage();
                 return image;
             }
+        }
+
+        protected override ContentElement BuildDefaultModel()
+        {
+            return new ImageElement();
         }
 
         private void CreateBitmapImage()
@@ -54,7 +52,7 @@ namespace NextCanvas.ViewModels.Content
 
         protected override void OnResourceChanged()
         {
-            base.OnResourceChanged();            
+            base.OnResourceChanged();
             CreateBitmapImage();
         }
     }

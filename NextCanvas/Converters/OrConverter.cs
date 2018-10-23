@@ -10,12 +10,8 @@ namespace NextCanvas.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             foreach (var item in values)
-            {
                 if (item is bool b && b)
-                {
                     return Visibility.Visible;
-                }
-            }
             return Visibility.Collapsed;
         }
 

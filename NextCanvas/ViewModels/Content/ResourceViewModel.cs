@@ -1,6 +1,6 @@
 ﻿using System;
-using NextCanvas.Models.Content;
 using System.IO;
+using NextCanvas.Models.Content;
 using NextCanvas.Utilities.Content;
 
 namespace NextCanvas.ViewModels.Content
@@ -10,10 +10,12 @@ namespace NextCanvas.ViewModels.Content
         public ResourceViewModel(Resource model) : base(model)
         {
         }
+
         internal ResourceViewModel(Resource model, IResourceLocator resourceLocator)
         {
             Model = resourceLocator.GetResourceDataFor(model);
         }
+
         public string Name
         {
             get => Model.Name;
@@ -60,4 +62,3 @@ namespace NextCanvas.ViewModels.Content
         }
     }
 }
-

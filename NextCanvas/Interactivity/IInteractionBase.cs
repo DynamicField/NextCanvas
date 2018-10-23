@@ -1,11 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System.Threading.Tasks;
 
 namespace NextCanvas.Interactivity
 {
     public interface IInteractionBase
     {
-        void Show();
-        void Close();
         bool IsClosed { get; }
+        Task Show();
+        Task Close();
     }
 }

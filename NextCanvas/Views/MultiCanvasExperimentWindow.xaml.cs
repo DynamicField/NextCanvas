@@ -4,7 +4,7 @@ using System.Windows.Controls;
 namespace NextCanvas.Views
 {
     /// <summary>
-    /// Logique d'interaction pour MultiCanvasExperimentWindow.xaml
+    ///     Logique d'interaction pour MultiCanvasExperimentWindow.xaml
     /// </summary>
     public partial class MultiCanvasExperimentWindow : Window
     {

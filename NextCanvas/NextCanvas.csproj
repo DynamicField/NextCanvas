@@ -113,7 +113,11 @@
     <Compile Include="Interactivity\DelegateInteractionProvider.cs" />
     <Compile Include="Interactivity\IInteractionBase.cs" />
     <Compile Include="Interactivity\IInteractionProvider.cs" />
-    <Compile Include="Interactivity\IProgressInteraction.cs" />
+    <Compile Include="Interactivity\Progress\IProgressData.cs" />
+    <Compile Include="Interactivity\Progress\IProgressInteraction.cs" />
+    <Compile Include="Interactivity\Progress\ProgressDataContext.cs" />
+    <Compile Include="Interactivity\Progress\ProgressTask.cs" />
+    <Compile Include="Interactivity\Progress\TaskManager.cs" />
     <Compile Include="Models\Content\ContentElement.cs" />
     <Compile Include="Models\Content\ImageElement.cs" />
     <Compile Include="Models\Content\Resource.cs" />

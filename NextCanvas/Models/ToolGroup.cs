@@ -4,9 +4,9 @@ namespace NextCanvas.Models
 {
     public class ToolGroup
     {
+        private bool? hasDemo;
         public string Name { get; set; } = "Unknown";
         public bool HasGotColor { get; set; } = true;
-        private bool? hasDemo;
 
         public bool HasDemo
         {
@@ -14,10 +14,11 @@ namespace NextCanvas.Models
             set => hasDemo = value;
         }
 
+        public Color Color { get; set; } = Colors.Black;
+
         public override string ToString()
         {
             return Name;
         }
-        public Color Color { get; set; } = Colors.Black;
     }
 }

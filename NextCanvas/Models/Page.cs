@@ -8,8 +8,8 @@ namespace NextCanvas.Models
 {
     public class Page
     {
-        [JsonIgnore]
-        public StrokeCollection Strokes { get; set; } = new StrokeCollection();
+        [JsonIgnore] public StrokeCollection Strokes { get; set; } = new StrokeCollection();
+
         public byte[] StrokesSerialized
         {
             get
@@ -24,10 +24,11 @@ namespace NextCanvas.Models
             {
                 using (var memory = new MemoryStream(value))
                 {
-                    Strokes = new StrokeCollection(memory); 
+                    Strokes = new StrokeCollection(memory);
                 }
             }
         }
+
         public List<ContentElement> Elements { get; set; } = new List<ContentElement>();
         public int Width { get; set; } = 1720;
         public int Height { get; set; } = 1420;

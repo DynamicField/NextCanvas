@@ -5,7 +5,7 @@ using System.Windows.Input;
 namespace NextCanvas.Views
 {
     /// <summary>
-    /// Logique d'interaction pour StylusDebugWindow.xaml
+    ///     Logique d'interaction pour StylusDebugWindow.xaml
     /// </summary>
     public partial class StylusDebugWindow : Window
     {

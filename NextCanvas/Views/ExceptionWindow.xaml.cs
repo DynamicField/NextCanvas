@@ -4,7 +4,7 @@ using System.Windows;
 namespace NextCanvas.Views
 {
     /// <summary>
-    /// Logique d'interaction pour ExceptionWindow.xaml
+    ///     Logique d'interaction pour ExceptionWindow.xaml
     /// </summary>
     public partial class ExceptionWindow : Window
     {
@@ -12,6 +12,7 @@ namespace NextCanvas.Views
         {
             InitializeComponent();
         }
+
         public ExceptionWindow(string exception) : this()
         {
             Info.Text = exception;
@@ -26,7 +27,8 @@ namespace NextCanvas.Views
         {
             Process.Start("https://github.com/jeuxjeux20/NextCanvas/issues");
             Clipboard.SetText(Info.Text);
-            MessageBox.Show("Error data has been succesfully copied to your clipboard.", "Error details copied", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Error data has been succesfully copied to your clipboard.", "Error details copied",
+                MessageBoxButton.OK, MessageBoxImage.Information);
             Close();
         }
     }

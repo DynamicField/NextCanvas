@@ -16,22 +16,42 @@ namespace NextCanvas.ViewModels
         public string Name
         {
             get => Model.Name;
-            set { Model.Name = value; OnPropertyChanged(nameof(Name)); }
+            set
+            {
+                Model.Name = value;
+                OnPropertyChanged(nameof(Name));
+            }
         }
+
         public Color Color
         {
             get => Model.Color;
-            set { Model.Color = value; OnPropertyChanged(nameof(Color)); }
+            set
+            {
+                Model.Color = value;
+                OnPropertyChanged(nameof(Color));
+            }
         }
+
         public bool HasGotColor
         {
             get => Model.HasGotColor;
-            set { Model.HasGotColor = value; OnPropertyChanged(nameof(HasGotColor)); OnPropertyChanged(nameof(HasDemo)); }
+            set
+            {
+                Model.HasGotColor = value;
+                OnPropertyChanged(nameof(HasGotColor));
+                OnPropertyChanged(nameof(HasDemo));
+            }
         }
+
         public bool HasDemo
         {
             get => Model.HasDemo;
-            set { Model.HasDemo = value; OnPropertyChanged(nameof(Color)); }
+            set
+            {
+                Model.HasDemo = value;
+                OnPropertyChanged(nameof(Color));
+            }
         }
     }
 }

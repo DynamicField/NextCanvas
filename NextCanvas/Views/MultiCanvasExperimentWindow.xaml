@@ -7,14 +7,14 @@
         Title="MultiCanvasExperimentWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="2">Multi canvas experiment :v</TextBlock>
         <Border Grid.Row="1" Margin="5" BorderBrush="DarkGray" BorderThickness="4" x:Name="Canvas">
             <Grid>
-                <InkCanvas x:Name="ForegroundCanvas" Background="{x:Null}" Panel.ZIndex="1" >
+                <InkCanvas x:Name="ForegroundCanvas" Background="{x:Null}" Panel.ZIndex="1">
                     <TextBlock Margin="1" Background="Cyan">I'm in that nice foreground canvas !!!</TextBlock>
                 </InkCanvas>
                 <InkCanvas x:Name="BackgroundCanvas" Background="LightCyan" Panel.ZIndex="0">
@@ -23,8 +23,8 @@
             </Grid>
         </Border>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="6" Grid.Row="2">
-            <Button Content="Select" Margin="5" Padding="5" Click="Button_Click_1"/>
-            <Button Content="Write" Margin="5" Padding="5" Click="Button_Click"/>
+            <Button Content="Select" Margin="5" Padding="5" Click="Button_Click_1" />
+            <Button Content="Write" Margin="5" Padding="5" Click="Button_Click" />
         </StackPanel>
     </Grid>
 </Window>

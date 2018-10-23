@@ -8,7 +8,7 @@ namespace NextCanvas
 {
     /// <inheritdoc />
     /// <summary>
-    /// Logique d'interaction pour App.xaml
+    ///     Logique d'interaction pour App.xaml
     /// </summary>
     public partial class App : Application
     {
@@ -20,7 +20,7 @@ namespace NextCanvas
 
         private static void RestInPeperonies(object sender, UnhandledExceptionEventArgs e)
         {
-            var exception = (Exception)e.ExceptionObject;
+            var exception = (Exception) e.ExceptionObject;
             new ExceptionWindow(exception.ToString()).ShowDialog();
             Current.Shutdown(1);
         }

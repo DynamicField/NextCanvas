@@ -7,9 +7,9 @@
         Title="StylusDebugWindow" Height="295.851" Width="340.426" ResizeMode="NoResize">
     <Grid Margin="3">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" Margin="5">Really great stylus tests</TextBlock>
         <TextBlock FontSize="14" Margin="10" Grid.Row="1" x:Name="MainInfo" TextWrapping="Wrap">

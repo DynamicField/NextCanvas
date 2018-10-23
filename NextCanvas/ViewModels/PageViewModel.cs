@@ -8,31 +8,16 @@ namespace NextCanvas.ViewModels
 {
     public class PageViewModel : ViewModelBase<Page>
     {
+        private IResourceViewModelLocator locator;
+
         public PageViewModel()
         {
             Initialize();
         }
+
         public PageViewModel(Page model) : base(model)
         {
             Initialize();
-        }
-        private IResourceViewModelLocator locator;
-
-        internal IResourceViewModelLocator Locator
-        {
-            get => locator;
-            set
-            {
-                if (value == null)
-                {
-                    return;
-                }
-                locator = value;
-                if (Elements != null)
-                {
-                    SetLocatorForCollection();
-                }
-            }
         }
 
         internal PageViewModel(Page model, IResourceViewModelLocator resourceLocator) : base(model)
@@ -40,34 +25,16 @@ namespace NextCanvas.ViewModels
             Locator = resourceLocator;
             Initialize();
         }
-        private void UseLocator(ContentElementViewModel vm)
-        {
-            if (vm is ResourceElementViewModel resourceElement)
-            {
-                resourceElement.Resource = locator.GetResourceViewModelDataFor(resourceElement.Resource); // Get the deeta
-            }
-        }
-        private void Initialize()
-        {
-            if (Locator != null)
-            {
-                Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
-                    e => ContentElementViewModel.GetViewModel(e, Locator)); // With a locator.
-            }
-            else
-            {
-                Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
-                    ContentElementViewModel.GetViewModel); // With a locator.
-            }
-            if (locator != null)
-            {
-                SetLocatorForCollection();
-            }
-        }
 
-        private void SetLocatorForCollection()
+        internal IResourceViewModelLocator Locator
         {
-            Elements.ItemAdded = UseLocator;
+            get => locator;
+            set
+            {
+                if (value == null) return;
+                locator = value;
+                if (Elements != null) SetLocatorForCollection();
+            }
         }
 
         public StrokeCollection Strokes
@@ -76,13 +43,12 @@ namespace NextCanvas.ViewModels
             set
             {
                 Model.Strokes.Clear();
-                foreach (var item in value)
-                {
-                    Model.Strokes.Add(item);
-                }
+                foreach (var item in value) Model.Strokes.Add(item);
             }
         }
-        public ObservableViewModelCollection<ContentElementViewModel, ContentElement> Elements { get; set; } 
+
+        public ObservableViewModelCollection<ContentElementViewModel, ContentElement> Elements { get; set; }
+
         public int Width
         {
             get => Model.Width;
@@ -92,6 +58,7 @@ namespace NextCanvas.ViewModels
                 OnPropertyChanged(nameof(Width));
             }
         }
+
         public int Height
         {
             get => Model.Height;
@@ -100,6 +67,29 @@ namespace NextCanvas.ViewModels
                 Model.Height = value;
                 OnPropertyChanged(nameof(Height));
             }
+        }
+
+        private void UseLocator(ContentElementViewModel vm)
+        {
+            if (vm is ResourceElementViewModel resourceElement)
+                resourceElement.Resource =
+                    locator.GetResourceViewModelDataFor(resourceElement.Resource); // Get the deeta
+        }
+
+        private void Initialize()
+        {
+            if (Locator != null)
+                Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
+                    e => ContentElementViewModel.GetViewModel(e, Locator)); // With a locator.
+            else
+                Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
+                    ContentElementViewModel.GetViewModel); // With a locator.
+            if (locator != null) SetLocatorForCollection();
+        }
+
+        private void SetLocatorForCollection()
+        {
+            Elements.ItemAdded = UseLocator;
         }
     }
 }

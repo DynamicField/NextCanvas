@@ -4,7 +4,6 @@
     {
         protected ResourceElement()
         {
-            
         }
 
         protected ResourceElement(Resource resource)

@@ -13,24 +13,27 @@ namespace NextCanvas.Controls.Content
             DependencyProperty.Register("RtfText", typeof(string), typeof(RtfRichTextBox),
                 new FrameworkPropertyMetadata("", RtfChanged));
 
+        private bool givingToBinding;
+
+        private bool updateNeeded;
+
         public string RtfText
         {
-            get => (string)GetValue(RtfTextProperty);
+            get => (string) GetValue(RtfTextProperty);
             set => SetValue(RtfTextProperty, value);
         }
 
-        private bool updateNeeded;
-        private bool givingToBinding;
         private static void RtfChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is string value)
             {
-                var textBox = (RtfRichTextBox)d;
+                var textBox = (RtfRichTextBox) d;
                 if (textBox.givingToBinding)
                 {
                     textBox.givingToBinding = false;
                     return;
                 }
+
                 textBox.SelectAll();
                 using (var stream = new MemoryStream())
                 using (var writer = new StreamWriter(stream))
@@ -57,13 +60,11 @@ namespace NextCanvas.Controls.Content
                 }
             }
         }
+
         protected override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
-            if (updateNeeded)
-            {
-                UpdateRtf();
-            }
+            if (updateNeeded) UpdateRtf();
         }
 
         protected override void OnTextChanged(TextChangedEventArgs e)

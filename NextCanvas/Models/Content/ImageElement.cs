@@ -4,7 +4,6 @@
     {
         public ImageElement()
         {
-            
         }
 
         public ImageElement(Resource resource) : base(resource)

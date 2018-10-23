@@ -3,16 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NextCanvas.Views"
+        xmlns:vm="clr-namespace:NextCanvas.Interactivity.Progress"
         x:Name="CurrentWindow"
         mc:Ignorable="d"
-        Title="ProgressWindow" Height="200" Width="500" WindowStartupLocation="CenterOwner">
+        Title="ProgressWindow" Height="200" Width="500" WindowStartupLocation="CenterOwner"
+        d:DataContext="{d:DesignInstance vm:ProgressDataContext}">
     <Grid Margin="15">
         <Grid.RowDefinitions>
-            <RowDefinition Height="73*"/>
-            <RowDefinition Height="96*"/>
+            <RowDefinition Height="73*" />
+            <RowDefinition Height="96*" />
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding ProgressText, ElementName=CurrentWindow, FallbackValue=Loading...}" FontSize="20" VerticalAlignment="Center" TextWrapping="Wrap"/>
-        <ProgressBar Grid.Row="1" Value="{Binding Progress, ElementName=CurrentWindow}" Margin="0,20"/>
+        <TextBlock Text="{Binding ProgressText}" FontSize="20"
+                   VerticalAlignment="Center" TextWrapping="Wrap" />
+        <ProgressBar Grid.Row="1" Value="{Binding Progress}" Margin="0,20" />
     </Grid>
 </Window>
