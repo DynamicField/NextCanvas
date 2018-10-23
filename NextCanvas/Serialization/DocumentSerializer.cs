@@ -32,25 +32,9 @@ namespace NextCanvas.Serialization
         }
 
         // TODO: Implement smart zip updating.
-        public Task SaveCompressedDocument(Document document, string savePath, IProgressInteraction progress = null)
+        public Task SaveCompressedDocument(Document document, string savePath, IProgressInteraction progress)
         {
             return CreateZipFile(document, savePath, progress);
-        }
-
-        private void CreateZipFile(Document document, string savePath)
-        {
-            using (var zip = new ZipFile(Encoding.UTF8))
-            {
-                AddDocumentJson(document, zip);
-                zip.AddDirectoryByName("resources");
-                foreach (var resource in document.Resources)
-                {
-                    resource.Data.Position = 0;
-                    zip.AddEntry($"resources\\{resource.Name}", resource.Data);
-                }
-
-                zip.Save(savePath);
-            }
         }
 
         private void AddDocumentJson(Document document, ZipFile zip)
@@ -64,7 +48,7 @@ namespace NextCanvas.Serialization
             using (var zip = new ZipFile())
             {
                 var writingTask = CreateTasksInitialization(document, progress, out var resourceTasks, out var count, out var finalizingTask);
-                await progress.Show();
+                await progress.ShowAsync();
                 writingTask.Progress = 25;
                 AddDocumentJson(document, zip);
                 zip.AddDirectoryByName("resources");

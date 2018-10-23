@@ -6,14 +6,14 @@ namespace NextCanvas.Interactivity
     {
         public DelegateInteractionProvider(Func<T> creator)
         {
-            Create = creator;
+            CreateMethod = creator;
         }
 
-        private Func<T> Create { get; }
+        private Func<T> CreateMethod { get; }
 
         public T CreateInteraction()
         {
-            return Create();
+            return CreateMethod();
         }
     }
 }

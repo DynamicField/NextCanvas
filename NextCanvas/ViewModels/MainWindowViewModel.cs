@@ -234,10 +234,16 @@ namespace NextCanvas.ViewModels
             {
                 IProgressInteraction progressInteractionProcessed = null;
                 if (progress is IInteractionProvider<IProgressInteraction> provider)
+                {
                     progressInteractionProcessed = provider.CreateInteraction();
+                }
+                else
+                {
+                    throw new ArgumentNullException(nameof(progress));
+                }
                 await DocumentSerializer.SaveCompressedDocument(CurrentDocument.Model, SavePath,
                     progressInteractionProcessed);
-                progressInteractionProcessed?.Close();
+                progressInteractionProcessed?.CloseAsync();
             }
             finally
             {

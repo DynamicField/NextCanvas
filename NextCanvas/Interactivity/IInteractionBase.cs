@@ -4,8 +4,7 @@ namespace NextCanvas.Interactivity
 {
     public interface IInteractionBase
     {
-        bool IsClosed { get; }
-        Task Show();
-        Task Close();
+        Task ShowAsync();
+        Task CloseAsync();
     }
 }

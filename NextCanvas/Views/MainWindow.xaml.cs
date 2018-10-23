@@ -33,14 +33,7 @@ namespace NextCanvas.Views
             ScrollParent.ActualHeight);
 
         public DelegateInteractionProvider<IProgressInteraction> ProgressProvider =>
-            new DelegateInteractionProvider<IProgressInteraction>(() =>
-            {
-                var window = new ProgressWindow
-                {
-                    Owner = this
-                };
-                return window;
-            });
+            new DelegateInteractionProvider<IProgressInteraction>(() => new ProgressWindow(this));
 
         public event PropertyChangedEventHandler PropertyChanged;
 

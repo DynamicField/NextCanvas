@@ -39,7 +39,7 @@ namespace NextCanvas.Interactivity.Progress
             var index = Tasks.IndexOf(CurrentTask) + 1;
             if (index == Tasks.Count)
             {
-                progress.Close();
+                progress.CloseAsync();
                 return;
             }
             CurrentTask = Tasks[index];

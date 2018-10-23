@@ -16,25 +16,29 @@ namespace NextCanvas.Views
             DependencyProperty.RegisterReadOnly("IsClosed", typeof(bool), typeof(ProgressWindow),
                 new FrameworkPropertyMetadata(false));
 
-        public ProgressWindow()
+        public ProgressWindow(Window owner = null)
         {
             InitializeComponent();
+            if (owner != null)
+            {
+                Owner = owner;
+            }
             DataContext = Data;
             IsClosed = false;
-        }       
-
+        }
         public static DependencyProperty IsClosedProperty => IsClosedPropertyInternal.DependencyProperty;
 
-        Task IInteractionBase.Close()
+        Task IInteractionBase.CloseAsync()
         {
             return Dispatcher.InvokeAsync(async () =>
             {
-                await Task.Delay(75);
+                Data.Progress = 100;
+                await Task.Delay(200);
                 Close();
             }).Task;
         }
 
-        Task IInteractionBase.Show()
+        Task IInteractionBase.ShowAsync()
         {
             return Dispatcher.InvokeAsync(Show).Task;
         }
