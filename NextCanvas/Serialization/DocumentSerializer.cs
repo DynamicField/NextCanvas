@@ -63,18 +63,7 @@ namespace NextCanvas.Serialization
                     var task = resourceTasks[index];
                     if (index == 0)
                     {
-                        zip.AddProgress += (sender, args) =>
-                        {
-                            if (args.BytesTransferred == 0 || args.TotalBytesToTransfer == 0)
-                            {
-                                return;
-                            }
-                            var percentage = args.BytesTransferred + 0.01 / args.TotalBytesToTransfer + 0.01;
-                            var percentageString = percentage.ToString("P");
-                            task.Progress = percentage * 100;
-                            task.ProgressText = percentageString;
-                            Debug.WriteLine($"percentage : {percentageString}");
-                        };
+                        zip.AddProgress += ProgressUpdate(task);
                     }
                     var resource = document.Resources[index];
                     
@@ -86,6 +75,22 @@ namespace NextCanvas.Serialization
                 }
                 FinalizeFileTask(savePath, finalizingTask, zip);
             }
+        }
+
+        private static EventHandler<AddProgressEventArgs> ProgressUpdate(ProgressTask task)
+        {
+            return (sender, args) =>
+            {
+                if (args.BytesTransferred == 0 || args.TotalBytesToTransfer == 0)
+                {
+                    return;
+                }
+                var percentage = args.BytesTransferred / args.TotalBytesToTransfer;
+                var percentageString = percentage.ToString("P");
+                task.Progress = percentage * 100;
+                task.ProgressText = percentageString;
+                Debug.WriteLine($"percentage : {percentageString}");
+            };
         }
 
         private static ProgressTask CreateTasksInitialization(Document document, IProgressInteraction progress,
