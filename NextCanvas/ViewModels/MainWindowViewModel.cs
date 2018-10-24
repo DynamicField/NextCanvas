@@ -232,15 +232,7 @@ namespace NextCanvas.ViewModels
             if (SavePath == null) return;
             try
             {
-                IProgressInteraction progressInteractionProcessed = null;
-                if (progress is IInteractionProvider<IProgressInteraction> provider)
-                {
-                    progressInteractionProcessed = provider.CreateInteraction();
-                }
-                else
-                {
-                    throw new ArgumentNullException(nameof(progress));
-                }
+                var progressInteractionProcessed = GetProgressInteraction(progress);
                 await DocumentSerializer.SaveCompressedDocument(CurrentDocument.Model, SavePath,
                     progressInteractionProcessed);
                 progressInteractionProcessed?.CloseAsync();
@@ -249,6 +241,21 @@ namespace NextCanvas.ViewModels
             {
                 SavePath = null;
             }
+        }
+
+        private static IProgressInteraction GetProgressInteraction(object progress)
+        {
+            IProgressInteraction progressInteractionProcessed;
+            if (progress is IInteractionProvider<IProgressInteraction> provider)
+            {
+                progressInteractionProcessed = provider.CreateInteraction();
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(progress));
+            }
+
+            return progressInteractionProcessed;
         }
 
         private void OpenDocument(object progress = null)
