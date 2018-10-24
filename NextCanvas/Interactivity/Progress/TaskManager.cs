@@ -58,7 +58,7 @@ namespace NextCanvas.Interactivity.Progress
 
         private void UpdateProgress()
         {
-            var name = Tasks.First(t => !t.IsComplete).ProgressText;
+            var name = Tasks.First(t => !t.IsComplete || Tasks.IndexOf(t) == Tasks.Count - 1).ProgressText;
             progress.Data.ProgressText = name;
             // Let's do some quick maths
             ProcessProgress();
@@ -68,7 +68,7 @@ namespace NextCanvas.Interactivity.Progress
         {
             var totalProgress = Tasks.Sum(t => t.ProgressWeight);
             var completedProgress = Tasks.Sum(t => t.ProgressWeight * (t.Progress / 100));
-            var percentage = (completedProgress / totalProgress) * 100;
+            var percentage = completedProgress / totalProgress * 100;
             progress.Data.Progress = percentage;
         }
 

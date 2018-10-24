@@ -21,7 +21,7 @@ namespace NextCanvas.Interactivity.Progress
 
         public double Progress
         {
-            get => progress;
+            get => IsComplete ? 100 : progress;
             set
             {
                 if (IsComplete) return;
@@ -54,6 +54,7 @@ namespace NextCanvas.Interactivity.Progress
         {
             IsComplete = true;
             Progress = 100;
+            OnPropertyChanged(nameof(Progress));
             TaskComplete?.Invoke(this, EventArgs.Empty);
         }
     }
