@@ -30,7 +30,7 @@ namespace NextCanvas.Interactivity.Progress
 
         private void AttachEvents(ProgressTask task)
         {
-            task.ProgressChanged += Task_ProgressChanged;
+            task.PropertyChanged += Task_ProgressChanged;
             task.TaskComplete += Task_TaskComplete;
         }
 
@@ -48,7 +48,7 @@ namespace NextCanvas.Interactivity.Progress
 
         private void DetachEvents(ProgressTask task)
         {
-            task.ProgressChanged -= Task_ProgressChanged;
+            task.PropertyChanged -= Task_ProgressChanged;
             task.TaskComplete -= Task_TaskComplete;
         }
         private void Task_ProgressChanged(object sender, EventArgs e)

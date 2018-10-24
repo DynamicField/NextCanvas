@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Progress;
 
@@ -24,8 +26,15 @@ namespace NextCanvas.Views
                 Owner = owner;
             }
             DataContext = Data;
+            Data.PropertyChanged += ProgressWindow_PropertyChanged;
             IsClosed = false;
         }
+
+        private void ProgressWindow_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle); // Wait for UI to refresh.
+        }
+
         public static DependencyProperty IsClosedProperty => IsClosedPropertyInternal.DependencyProperty;
 
         Task IInteractionBase.CloseAsync()

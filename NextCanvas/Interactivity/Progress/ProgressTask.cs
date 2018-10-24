@@ -2,11 +2,10 @@
 
 namespace NextCanvas.Interactivity.Progress
 {
-    public class ProgressTask : IProgressData
+    public class ProgressTask : PropertyChangedObject, IProgressData
     {
         private double progress;
 
-        public event EventHandler ProgressChanged;
         public event EventHandler TaskComplete;
         private string progressText;
 
@@ -29,11 +28,12 @@ namespace NextCanvas.Interactivity.Progress
                 progress = Math.Min(100,value);
                 if (progress >= 99.999)
                 {
-                    Complete();
+                    OnPropertyChanged();
+                    Complete();                   
                 }
                 else
                 {
-                    ProgressChanged?.Invoke(this, EventArgs.Empty);
+                    OnPropertyChanged();
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace NextCanvas.Interactivity.Progress
             {
                 if (IsComplete) return;
                 progressText = value;
-                ProgressChanged?.Invoke(this, EventArgs.Empty);
+                OnPropertyChanged();
             }
         }
 
