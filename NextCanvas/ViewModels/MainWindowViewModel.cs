@@ -103,7 +103,8 @@ namespace NextCanvas.ViewModels
 
         private bool CanDeletePage => CurrentDocument.Pages.Count > 1;
 
-        private DocumentSerializer DocumentSerializer { get; } = new DocumentSerializer();
+        private DocumentReader DocumentReader { get; } = new DocumentReader();
+        private DocumentSaver  DocumentSaver  { get; } = new DocumentSaver();
 
         private void Subscribe() // To my youtube channel XD
         {
@@ -198,6 +199,9 @@ namespace NextCanvas.ViewModels
             } // Release the file, we already copied it. 
 
             var element = new ImageElementViewModel(new ImageElement(resource.Model));
+            // Sets the width and the height to the image's default dimensions. Resizes if the page is too small.
+            element.Height = Math.Min(document.SelectedPage.Height - 250, element.Image.Height);
+            element.Width = Math.Min(document.SelectedPage.Width - 250, element.Image.Width);
             if (select != null && select is ElementCreationContext context) NewItemRoutine(element, context);
         }
 
@@ -233,9 +237,8 @@ namespace NextCanvas.ViewModels
             try
             {
                 var progressInteractionProcessed = GetProgressInteraction(progress);
-                await DocumentSerializer.SaveCompressedDocument(CurrentDocument.Model, SavePath,
+                await DocumentSaver.SaveCompressedDocument(CurrentDocument.Model, SavePath,
                     progressInteractionProcessed);
-                progressInteractionProcessed?.CloseAsync();
             }
             finally
             {
@@ -265,7 +268,7 @@ namespace NextCanvas.ViewModels
             {
                 using (var fileStream = File.Open(OpenPath, FileMode.Open))
                 {
-                    CurrentDocument = new DocumentViewModel(DocumentSerializer.TryOpenDocument(fileStream));
+                    CurrentDocument = new DocumentViewModel(DocumentReader.TryOpenDocument(fileStream));
                 }
             }
             finally

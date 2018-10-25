@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace NextCanvas.Interactivity.Progress
 {
@@ -91,6 +92,12 @@ namespace NextCanvas.Interactivity.Progress
             }
         }
 
+        public async Task WorkDone()
+        {
+            Tasks.Clear();
+            Tasks.CollectionChanged -= TasksOnCollectionChanged;
+            await progress.CloseAsync();
+        }
         public ObservableCollection<ProgressTask> Tasks { get; }
     }
 }
