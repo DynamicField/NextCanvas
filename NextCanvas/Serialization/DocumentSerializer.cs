@@ -49,31 +49,38 @@ namespace NextCanvas.Serialization
             {
                 var writingTask = CreateTasksInitialization(document, progress, out var resourceTasks, out var count, out var finalizingTask);
                 await progress.ShowAsync();
-                writingTask.Progress = 25;
-                AddDocumentJson(document, zip);
-                zip.AddDirectoryByName("resources");
-                writingTask.Complete();
+                InitializeZipStructure(document, zip, writingTask);
                 if (count == 0)
                 {
                     FinalizeFileTask(savePath, finalizingTask, zip);
                     return;
                 }
-                for (var index = 0; index < document.Resources.Count; index++)
-                {
-                    var task = resourceTasks[index];
-                    if (index == 0)
-                    {
-                        zip.AddProgress += ProgressUpdate(task);
-                    }
-                    var resource = document.Resources[index];
-                    
-                    task.Progress = 50;
-                    resource.Data.Position = 0;
-                    zip.AddEntry($"resources\\{resource.Name}", resource.Data);
-                    await Task.Delay(1);
-                    resourceTasks[index].Complete();
-                }
+                await ProcessResources(document, resourceTasks, zip);
                 FinalizeFileTask(savePath, finalizingTask, zip);
+            }
+        }
+
+        private void InitializeZipStructure(Document document, ZipFile zip, ProgressTask writingTask)
+        {
+            AddDocumentJson(document, zip);
+            zip.AddDirectoryByName("resources");
+            writingTask.Complete();
+        }
+
+        private static async Task ProcessResources(Document document, List<ProgressTask> resourceTasks, ZipFile zip)
+        {
+            for (var index = 0; index < document.Resources.Count; index++)
+            {
+                var task = resourceTasks[index];
+                if (index == 0)
+                {
+                    zip.AddProgress += ProgressUpdate(task);
+                }
+                var resource = document.Resources[index];
+                task.Progress = 50;
+                resource.Data.Position = 0;
+                zip.AddEntry($"resources\\{resource.Name}", resource.Data);
+                resourceTasks[index].Complete();
             }
         }
 
@@ -171,7 +178,6 @@ namespace NextCanvas.Serialization
             {
                 doc = ReadDocumentJson(streamReader);
             }
-
             return doc;
         }
 
