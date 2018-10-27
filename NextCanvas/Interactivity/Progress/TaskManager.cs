@@ -10,24 +10,22 @@ namespace NextCanvas.Interactivity.Progress
     public class TaskManager<T> where T : class, IProgressInteraction
     {
         private readonly T progress;
-        public ProgressTask CurrentTask { get; private set; }
+
         public TaskManager(T progress, IEnumerable<ProgressTask> tasks)
         {
             this.progress = progress;
             var progressTasks = tasks.ToList();
             if (!progressTasks.Any())
-            {
                 throw new ArgumentException("There are no tasks for me to do something actually useful. :'(");
-            }
             Tasks = new ObservableCollection<ProgressTask>(progressTasks);
-            foreach (var task in Tasks)
-            {
-                AttachEvents(task);
-            }
+            foreach (var task in Tasks) AttachEvents(task);
             Tasks.CollectionChanged += TasksOnCollectionChanged;
             CurrentTask = Tasks[0];
             UpdateProgress();
         }
+
+        public ProgressTask CurrentTask { get; private set; }
+        public ObservableCollection<ProgressTask> Tasks { get; }
 
         private void AttachEvents(ProgressTask task)
         {
@@ -43,6 +41,7 @@ namespace NextCanvas.Interactivity.Progress
                 progress.CloseAsync();
                 return;
             }
+
             CurrentTask = Tasks[index];
             UpdateProgress();
         }
@@ -52,6 +51,7 @@ namespace NextCanvas.Interactivity.Progress
             task.PropertyChanged -= Task_ProgressChanged;
             task.TaskComplete -= Task_TaskComplete;
         }
+
         private void Task_ProgressChanged(object sender, EventArgs e)
         {
             UpdateProgress();
@@ -76,20 +76,12 @@ namespace NextCanvas.Interactivity.Progress
         private void TasksOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-            {
                 foreach (var item in e.NewItems)
-                {
-                    AttachEvents((ProgressTask)item);
-                }
-            }
+                    AttachEvents((ProgressTask) item);
 
             if (e.OldItems != null)
-            {
                 foreach (var item in e.OldItems)
-                {
-                    DetachEvents((ProgressTask)item);
-                }
-            }
+                    DetachEvents((ProgressTask) item);
         }
 
         public async Task WorkDone()
@@ -98,6 +90,5 @@ namespace NextCanvas.Interactivity.Progress
             Tasks.CollectionChanged -= TasksOnCollectionChanged;
             await progress.CloseAsync();
         }
-        public ObservableCollection<ProgressTask> Tasks { get; }
     }
 }

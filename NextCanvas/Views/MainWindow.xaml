@@ -65,7 +65,7 @@
                         </Canvas>
                         <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Bottom"
                                 HorizontalAlignment="Center"
-                                Padding="5,2" Margin="2" Opacity="0.2" Style="{StaticResource OpacityOnHover}"
+                                Padding="5,2" Margin="2" Opacity="0.6" Style="{StaticResource OpacityOnHover}"
                                 Command="{Binding ExtendPageCommand}" CommandParameter="Bottom"
                                 Click="ResizeCanvasEvent" />
                     </Grid>
@@ -94,7 +94,9 @@
                         <fluent:MenuItem Header="New" Click="NewButton_Click"
                                          Icon="/NextCanvas;component/Images/Menu/NewFile.png" />
                         <fluent:MenuItem Header="Open" Icon="/NextCanvas;component/Images/Menu/Open.png" x:Name="Open"
-                                         Click="Open_Click" Command="{Binding OpenCommand}" />
+                                         Click="Open_Click"
+                                         Command="{Binding OpenCommand}"
+                                         CommandParameter="{Binding ProgressProvider, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}" />
                         <fluent:MenuItem Header="Save" Icon="/NextCanvas;component/Images/Menu/Save.png" x:Name="Save"
                                          Click="Save_Click"
                                          Command="{Binding SaveCommand}"
@@ -172,7 +174,6 @@
                                                 Header="Tool..." ResizeMode="Both" MinItemsInRow="3" MaxItemsInRow="13"
                                                 Orientation="Horizontal"
                                                 ItemHeight="54" ItemWidth="54" GroupBy="GroupName"
-                                                SelectionChanged="InRibbonGallery_SelectionChanged"
                                                 SizeDefinition="Large, Large, Large" x:Name="ToolsGallery">
                             <!--<fluent:InRibbonGallery.ItemContainerStyle>
                                 <Style TargetType="fluent:GalleryItem">
@@ -202,9 +203,10 @@
                             </MultiBinding>
                         </fluent:RibbonGroupBox.Visibility>
                         <StackPanel>
-                            <StackPanel Visibility="{Binding SelectedTool.HasSize, Mode=OneWay}"
-                                        Orientation="{Binding SelectedTool.HasDemo, Converter={StaticResource BoolToOrientationConverter}, Mode=OneWay}"
-                                        Margin="0,1,0,0">
+                            <StackPanel
+                                Visibility="{Binding SelectedTool.HasSize, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Orientation="{Binding SelectedTool.HasDemo, Converter={StaticResource BoolToOrientationConverter}, Mode=OneWay}"
+                                Margin="0,1,0,0">
                                 <TextBlock HorizontalAlignment="Center" Margin="1" FontSize="12"
                                            VerticalAlignment="Center">
                                     <Run Text="Size :" />
@@ -282,15 +284,17 @@
                         <fluent:Button Header="Text box"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/NewTextBox.png"
                                        Click="InsertClick_GoToHome"
-                                       Command="{Binding CreateTextBoxCommand}"
-                                       CommandParameter="{Binding CreationContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}" />
+                                       Command="{Binding CreateTextBoxCommand}" />
                     </fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox Header="Images">
                         <fluent:Button Header="Image"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/NewImage.png"
                                        Click="NewImage_Click"
-                                       Command="{Binding CreateImageCommand}"
-                                       CommandParameter="{Binding CreationContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}" />
+                                       Command="{Binding CreateImageCommand}" />
+                        <fluent:Button Header="Screenshot"
+                                       LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/Screenshot.png"
+                                       Command="{Binding CreateScreenshotCommand}"
+                                       CommandParameter="{Binding ScreenshotProvider, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}" />
                     </fluent:RibbonGroupBox>
                 </fluent:RibbonTabItem>
                 <fluent:RibbonTabItem Header="Page">
@@ -319,9 +323,9 @@
                 </fluent:RibbonTabItem>
                 <fluent:RibbonTabItem Header="Debug">
                     <fluent:RibbonGroupBox Header="Stylus">
-                        <fluent:Button LargeIcon="pack://application:,,,/Nextcanvas;component/Images/NextCanvas.png"
+                        <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/NextCanvas.png"
                                        Header="Stylus Debug" Click="DebugStylusXD_Click" x:Name="DebugStylusXd" />
-                        <fluent:Button LargeIcon="pack://application:,,,/Nextcanvas;component/Images/Menu/Open.png"
+                        <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/Menu/Open.png"
                                        Header="Multi Canvas" Click="Button_Click" />
                     </fluent:RibbonGroupBox>
                 </fluent:RibbonTabItem>

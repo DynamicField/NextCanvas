@@ -48,6 +48,7 @@ namespace NextCanvas.ViewModels.Content
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.EndInit();
             image.Freeze();
+            OnPropertyChanged(nameof(Image));
         }
 
         protected override void OnResourceChanged()

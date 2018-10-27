@@ -1,9 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
-using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Progress;
 
 namespace NextCanvas.Views
@@ -11,25 +8,17 @@ namespace NextCanvas.Views
     /// <summary>
     ///     Logique d'interaction pour ProgressWindow.xaml
     /// </summary>
-    public partial class ProgressWindow : Window, IProgressInteraction
+    public partial class ProgressWindow : InteractionWindow, IProgressInteraction
     {
         public ProgressWindow(Window owner = null)
         {
             InitializeComponent();
-            if (owner != null)
-            {
-                Owner = owner;
-            }
+            if (owner != null) Owner = owner;
             DataContext = Data;
             Data.PropertyChanged += ProgressWindow_PropertyChanged;
         }
 
-        private void ProgressWindow_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle); // Wait for UI to refresh.
-        }
-
-        Task IInteractionBase.CloseAsync()
+        public override Task CloseAsync()
         {
             return Dispatcher.InvokeAsync(async () =>
             {
@@ -39,10 +28,11 @@ namespace NextCanvas.Views
             }).Task;
         }
 
-        Task IInteractionBase.ShowAsync()
-        {
-            return Dispatcher.InvokeAsync(Show).Task;
-        }
         public IProgressData Data { get; } = new ProgressDataContext();
+
+        private void ProgressWindow_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            RefreshUI();
+        }
     }
 }

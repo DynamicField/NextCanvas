@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using Ionic.Zip;
-using Newtonsoft.Json;
+using NextCanvas.Interactivity.Progress;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
 
@@ -12,11 +12,11 @@ namespace NextCanvas.Serialization
     {
         // TODO: Implement smart zip updating.
 
-        public Document TryOpenDocument(FileStream fileStream)
+        public Document TryOpenDocument(FileStream fileStream, IProgressInteraction interaction)
         {
             try
             {
-                return OpenCompressedFileFormat(fileStream);
+                return OpenCompressedFileFormat(fileStream, interaction);
             }
             catch (ZipException) // Try reading as json
             {
@@ -24,39 +24,17 @@ namespace NextCanvas.Serialization
             }
         }
 
-        public Document OpenCompressedFileFormat(Stream fileStream)
+        public Document OpenCompressedFileFormat(Stream fileStream, IProgressInteraction interaction)
         {
             using (var zipFile = ZipFile.Read(fileStream))
             {
                 var doc = GetDocumentJson(zipFile);
                 foreach (var resource in doc.Resources)
                     ProcessDataCopying(zipFile, resource); // Copy the deeta to the resources.
-                // AttachResources(doc); // Attach them to all the elements.
                 return doc; // Yeah we're done :) dope nah?
             }
         }
 
-        private Document GetDocumentJson(ZipFile zipFile)
-        {
-            var documentJson = zipFile.Entries.First(e => e.FileName == "document.json");
-            Document doc;
-            using (var docReader = documentJson.OpenReader())
-            {
-                doc = GetBaseDocumentJson(docReader);
-            }
-
-            return doc;
-        }
-
-        private Document GetBaseDocumentJson(Stream docReader)
-        {
-            Document doc;
-            using (var streamReader = new StreamReader(docReader))
-            {
-                doc = ReadDocumentJson(streamReader);
-            }
-            return doc;
-        }
 
         private static void ProcessDataCopying(ZipFile zipFile, Resource resource)
         {
@@ -73,13 +51,6 @@ namespace NextCanvas.Serialization
             {
                 return ReadDocumentJson(streamyStream);
             }
-        }
-
-        private Document ReadDocumentJson(TextReader streamyStream)
-        {
-            var value = streamyStream.ReadToEnd();
-            var deserialized = JsonConvert.DeserializeObject<Document>(value, SerializerSettings);
-            return deserialized;
         }
     }
 }

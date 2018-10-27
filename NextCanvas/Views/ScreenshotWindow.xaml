@@ -1,0 +1,36 @@
+﻿<local:InteractionWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:NextCanvas" xmlns:local1="clr-namespace:NextCanvas.Views"
+    x:Class="NextCanvas.Views.ScreenshotWindow"
+    Background="Transparent" KeyDown="ScreenshotWindow_OnKeyDown" ResizeMode="NoResize"
+    ContentRendered="ScreenshotWindow_OnContentRendered"
+    mc:Ignorable="d" WindowState="Maximized" WindowStyle="None" AllowsTransparency="True" BorderThickness="0"
+    Title="ScreenshotWindow" Height="450" Width="800" x:Name="Window">
+    <Grid MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseMove="CropCanvas_OnMouseMove" x:Name="MainGrid"
+          MouseLeftButtonUp="MainGrid_OnMouseLeftButtonUp">
+        <Grid ZIndex="0">
+            <Image x:Name="ScreenshotBackgroundImage"
+                   Source="{Binding FullScreenshot, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:ScreenshotWindow}}}" />
+            <Rectangle Fill="Black" Opacity="0.25" />
+            <Image x:Name="ScreenshotForegroundImage"
+                   Source="{Binding FullScreenshot, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:ScreenshotWindow}}}"
+                   Panel.ZIndex="4">
+                <Image.Clip>
+                    <RectangleGeometry x:Name="Geometry" />
+                </Image.Clip>
+            </Image>
+        </Grid>
+        <Canvas x:Name="CropCanvas" ZIndex="2">
+            <Rectangle x:Name="SelectionRectangle" Width="1" Height="1" Stroke="Red" StrokeThickness="2"
+                       StrokeDashArray="6 3" StrokeDashOffset="1" />
+        </Canvas>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" ZIndex="3"
+                    x:Name="ScreenshotOptions">
+            <Button Content="Cancel screenshot" Padding="25,5" Margin="5" Click="CancelClick" />
+            <Button Content="Capture whole screen" Padding="25,5" Margin="5" Click="CaptureWholeScreenClick" />
+        </StackPanel>
+    </Grid>
+</local:InteractionWindow>

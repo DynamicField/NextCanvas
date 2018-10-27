@@ -22,6 +22,12 @@ namespace NextCanvas.Models.Content
         public Resource(string name, Stream data)
         {
             Name = name;
+            if (data is MemoryStream memory)
+            {
+                Data = memory;
+                return;
+            }
+
             var memoryStream = new MemoryStream();
             data.Position = 0;
             data.CopyTo(memoryStream);

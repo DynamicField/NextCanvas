@@ -1,13 +1,14 @@
-﻿<Window x:Class="NextCanvas.Views.ProgressWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:NextCanvas.Interactivity.Progress"
-        x:Name="CurrentWindow"
-        mc:Ignorable="d"
-        Title="ProgressWindow" Height="200" Width="500" WindowStartupLocation="CenterOwner"
-        d:DataContext="{d:DesignInstance vm:ProgressDataContext}">
+﻿<next:InteractionWindow x:Class="NextCanvas.Views.ProgressWindow"
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                        xmlns:vm="clr-namespace:NextCanvas.Interactivity.Progress"
+                        xmlns:next="clr-namespace:NextCanvas"
+                        x:Name="CurrentWindow"
+                        mc:Ignorable="d"
+                        Title="ProgressWindow" Height="200" Width="500" WindowStartupLocation="CenterOwner"
+                        d:DataContext="{d:DesignInstance vm:ProgressDataContext}">
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="73*" />
@@ -17,4 +18,4 @@
                    VerticalAlignment="Center" TextWrapping="Wrap" />
         <ProgressBar Grid.Row="1" Value="{Binding Progress}" Margin="0,20" />
     </Grid>
-</Window>
+</next:InteractionWindow>

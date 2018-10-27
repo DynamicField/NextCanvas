@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 using Ionic.Zip;
+using Ionic.Zlib;
 using Newtonsoft.Json;
 using NextCanvas.Interactivity.Progress;
 using NextCanvas.Models;
@@ -23,9 +24,11 @@ namespace NextCanvas.Serialization
 
         private async Task CreateZipFile(Document document, string savePath, IProgressInteraction progress)
         {
-            using (var zip = new ZipFile())
+            using (var zip = new ZipFile
+                {CompressionLevel = (CompressionLevel) SettingsManager.Settings.FileCompressionLevel})
             {
-                var task = CreateSavingTasksInitialization(document, progress, out var writingTask, out var resourceTasks, out var count, out var finalizingTask);
+                var task = CreateSavingTasksInitialization(document, progress, out var writingTask,
+                    out var resourceTasks, out var count, out var finalizingTask);
                 await progress.ShowAsync();
                 InitializeZipStructure(document, zip, writingTask);
                 if (count == 0)
@@ -33,6 +36,7 @@ namespace NextCanvas.Serialization
                     FinalizeFileTask(savePath, finalizingTask, zip);
                     return;
                 }
+
                 ProcessResources(document, resourceTasks, zip);
                 FinalizeFileTask(savePath, finalizingTask, zip);
                 await task.WorkDone();
@@ -59,9 +63,10 @@ namespace NextCanvas.Serialization
             }
         }
 
-        private static TaskManager<IProgressInteraction> CreateSavingTasksInitialization(Document document, IProgressInteraction progress, out ProgressTask writingTask,
+        private static TaskManager<IProgressInteraction> CreateSavingTasksInitialization(Document document,
+            IProgressInteraction progress, out ProgressTask writingTask,
             out List<ProgressTask> resourceTasks, out int count, out ProgressTask finalizingTask)
-        {           
+        {
             writingTask = new ProgressTask(10, "Writing document base data...");
             var tasks = new List<ProgressTask>
             {
@@ -69,12 +74,13 @@ namespace NextCanvas.Serialization
             };
             resourceTasks = new List<ProgressTask>();
             count = document.Resources.Count;
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var progressTask = new ProgressTask(10, $"Writing resource : {document.Resources[i].Name}...");
                 tasks.Add(progressTask);
                 resourceTasks.Add(progressTask);
             }
+
             finalizingTask = new ProgressTask(5, "Saving to file...");
             tasks.Add(finalizingTask);
             return new TaskManager<IProgressInteraction>(progress, tasks);

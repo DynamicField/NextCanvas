@@ -67,12 +67,34 @@ namespace NextCanvas.ViewModels
 
         public ResourceViewModel AddResource(FileStream fileStream)
         {
-            var testResource = Resources.FirstOrDefault(r => r.DataMD5Hash == fileStream.GetMD5FromFile());
+            var testResource = GetExistingResource(fileStream);
             if (testResource != null) return testResource;
-            var baseName = Path.GetFileNameWithoutExtension(fileStream.Name);
-            var extension = Path.GetExtension(fileStream.Name);
-            var fileName = baseName + Resources.Count + extension;
+            var fileName = CreateResourceName(fileStream.Name);
             var resource = new ResourceViewModel(new Resource(fileName, fileStream));
+            Resources.Add(resource);
+            return resource;
+        }
+
+        private string CreateResourceName(string name)
+        {
+            var baseName = Path.GetFileNameWithoutExtension(name);
+            var extension = Path.GetExtension(name);
+            var fileName = baseName + Resources.Count + extension;
+            return fileName;
+        }
+
+        private ResourceViewModel GetExistingResource(Stream fileStream)
+        {
+            var testResource = Resources.FirstOrDefault(r => r.DataMD5Hash == fileStream.GetMD5FromFile());
+            return testResource;
+        }
+
+        public ResourceViewModel AddResource(MemoryStream stream, string name)
+        {
+            var existing = GetExistingResource(stream);
+            if (existing != null) return existing;
+            var fileName = CreateResourceName(name);
+            var resource = new ResourceViewModel(new Resource(fileName, stream));
             Resources.Add(resource);
             return resource;
         }

@@ -78,6 +78,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -106,7 +107,9 @@
       <DependentUpon>ElementRecognitionError.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Content\RtfRichTextBox.cs" />
-    <Compile Include="Controls\Content\ElementCreationContext.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
+    <Compile Include="SettingsManager.cs" />
+    <Compile Include="Utilities\Content\ElementCreationContext.cs" />
     <Compile Include="Controls\NextDynamicRenderer.cs" />
     <Compile Include="Controls\NextInkCanvas.cs" />
     <Compile Include="Controls\SelectionWrapper.cs" />
@@ -120,6 +123,9 @@
     <Compile Include="Interactivity\DelegateInteractionProvider.cs" />
     <Compile Include="Interactivity\IInteractionBase.cs" />
     <Compile Include="Interactivity\IInteractionProvider.cs" />
+    <Compile Include="Interactivity\IUserInteraction.cs" />
+    <Compile Include="Interactivity\Multimedia\IScreenshotInteraction.cs" />
+    <Compile Include="Interactivity\Multimedia\ScreenshotTakenEventArgs.cs" />
     <Compile Include="Interactivity\Progress\IProgressData.cs" />
     <Compile Include="Interactivity\Progress\IProgressInteraction.cs" />
     <Compile Include="Interactivity\Progress\ProgressDataContext.cs" />
@@ -145,6 +151,8 @@
     <Compile Include="Utilities\Content\BridgeResourceLocator.cs" />
     <Compile Include="Utilities\Content\IResourceLocator.cs" />
     <Compile Include="Utilities\Content\IResourceViewModelLocator.cs" />
+    <Compile Include="Utilities\MathExtensions.cs" />
+    <Compile Include="Utilities\Multimedia\ScreenshotHelper.cs" />
     <Compile Include="ViewModels\Content\ContentElementViewModel.cs" />
     <Compile Include="ViewModels\Content\ImageElementViewModel.cs" />
     <Compile Include="ViewModels\Content\ResourceElementViewModel.cs" />
@@ -154,14 +162,19 @@
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ToolGroupViewModel.cs" />
     <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="InteractionWindow.cs" />
     <Compile Include="Views\MultiCanvasExperimentWindow.xaml.cs">
       <DependentUpon>MultiCanvasExperimentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScreenshotWindow.xaml.cs">
+      <DependentUpon>ScreenshotWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StylusDebugWindow.xaml.cs">
       <DependentUpon>StylusDebugWindow.xaml</DependentUpon>
@@ -198,6 +211,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProgressWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScreenshotWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -313,6 +330,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Ribbon\Insert\NewImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Insert\Screenshot.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

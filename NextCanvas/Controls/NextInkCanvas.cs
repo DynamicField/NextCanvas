@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using NextCanvas.Controls.Content;
 using NextCanvas.Ink;
+using NextCanvas.ViewModels.Content;
 
 namespace NextCanvas.Controls
 {
@@ -42,16 +44,20 @@ namespace NextCanvas.Controls
 
         // Using a DependencyProperty as the backing store for ItemsSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(NextInkCanvas),
+            DependencyProperty.Register("ItemsSource", typeof(ObservableCollection<ContentElementViewModel>),
+                typeof(NextInkCanvas),
                 new FrameworkPropertyMetadata(null, (sender, e) =>
                 {
                     if (e.OldValue == e.NewValue) return;
+
                     var casted = (NextInkCanvas) sender;
                     if (e.OldValue is INotifyCollectionChanged old)
                         old.CollectionChanged -= casted.ItemsSourceItemChanged;
+
                     casted.Children.Clear();
                     if (e.NewValue is INotifyCollectionChanged newish)
                         newish.CollectionChanged += casted.ItemsSourceItemChanged;
+
                     foreach (var item in (IEnumerable) e.NewValue) AddChild(casted, item);
                 }));
 
@@ -66,9 +72,7 @@ namespace NextCanvas.Controls
             SelectionHelper = new SelectionWrapper(SelectChildren);
             PreferredPasteFormats = new List<InkCanvasClipboardFormat>
             {
-                InkCanvasClipboardFormat.InkSerializedFormat,
-                InkCanvasClipboardFormat.Xaml,
-                InkCanvasClipboardFormat.Text
+                InkCanvasClipboardFormat.InkSerializedFormat
             };
             CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas),
                 new CommandBinding(ApplicationCommands.Delete, CommandExecuted, CanExecuteCommand));
@@ -137,6 +141,7 @@ namespace NextCanvas.Controls
         {
             UpdatePasteDifference();
             if (!CanPaste()) return;
+
             double horizontalOffset = 0, verticalOffset = 0;
             double width = ActualWidth, height = ActualHeight;
             if (ScrollViewerReferent != null) // sees if there is any useful scroll viewers.
@@ -170,6 +175,7 @@ namespace NextCanvas.Controls
                 pasteDiff += 5;
             else
                 pasteDiff = 0;
+
             lastDataObject = data;
         }
 
@@ -210,6 +216,7 @@ namespace NextCanvas.Controls
         protected override void OnStrokeErasing(InkCanvasStrokeErasingEventArgs e)
         {
             if (e.Stroke is SquareStroke stroke) stroke.DisableSquare = true;
+
             base.OnStrokeErasing(e);
         }
 
@@ -249,6 +256,7 @@ namespace NextCanvas.Controls
             if (e.NewItems != null)
                 foreach (var item in e.NewItems)
                     AddChild(this, item);
+
             if (e.OldItems != null)
                 foreach (var item in e.OldItems)
                     if (isInternal)

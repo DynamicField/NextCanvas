@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Fluent;
-using NextCanvas.Controls.Content;
 using NextCanvas.Interactivity;
+using NextCanvas.Interactivity.Multimedia;
 using NextCanvas.Interactivity.Progress;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
 using NextCanvas.Serialization;
+using NextCanvas.Utilities;
+using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels.Content;
 
 namespace NextCanvas.ViewModels
@@ -21,6 +23,8 @@ namespace NextCanvas.ViewModels
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>
     {
         private DocumentViewModel document;
+
+        private ElementCreationContext elementCreationContext;
         private int selectedToolIndex;
 
         public MainWindowViewModel()
@@ -83,28 +87,49 @@ namespace NextCanvas.ViewModels
                 var color = tool.DrawingAttributes.Color;
                 if (!ColorGallery.StandardThemeColors.Contains(color) && !FavoriteColors.Contains(color))
                     FavoriteColors.Add(color);
+
                 return tool;
             }
             set => SelectedToolIndex = Tools.IndexOf(value);
         }
 
+        public ElementCreationContext ElementCreationContext
+        {
+            get => elementCreationContext;
+            set
+            {
+                elementCreationContext = value;
+                OnPropertyChanged(nameof(ElementCreationContext));
+            }
+        }
+
+        // Pages
         public DelegateCommand PreviousPageCommand { get; private set; }
         public DelegateCommand NextPageCommand { get; private set; }
         public DelegateCommand NewPageCommand { get; private set; }
         public DelegateCommand DeletePageCommand { get; private set; }
+
         public DelegateCommand ExtendPageCommand { get; private set; }
+
+        // Tools
         public DelegateCommand SetToolByNameCommand { get; private set; }
+
+        // File saving
         public DelegateCommand SaveCommand { get; private set; }
+
         public DelegateCommand OpenCommand { get; private set; }
+
+        // Content
         public DelegateCommand CreateTextBoxCommand { get; private set; }
         public DelegateCommand SwitchToSelectToolCommand { get; private set; }
         public DelegateCommand CreateImageCommand { get; private set; }
+        public DelegateCommand CreateScreenshotCommand { get; private set; }
         public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
 
         private bool CanDeletePage => CurrentDocument.Pages.Count > 1;
 
         private DocumentReader DocumentReader { get; } = new DocumentReader();
-        private DocumentSaver  DocumentSaver  { get; } = new DocumentSaver();
+        private DocumentSaver DocumentSaver { get; } = new DocumentSaver();
 
         private void Subscribe() // To my youtube channel XD
         {
@@ -152,8 +177,9 @@ namespace NextCanvas.ViewModels
             SwitchToSelectToolCommand = new DelegateCommand(o => SwitchToSelectTool(), o => IsThereAnySelectTools());
             SaveCommand = new DelegateCommand(async o => await SaveDocument(o));
             OpenCommand = new DelegateCommand(o => OpenDocument(o));
-            CreateTextBoxCommand = new DelegateCommand(CreateTextBox);
-            CreateImageCommand = new DelegateCommand(CreateImage);
+            CreateTextBoxCommand = new DelegateCommand(o => CreateTextBox());
+            CreateImageCommand = new DelegateCommand(o => CreateImage());
+            CreateScreenshotCommand = new DelegateCommand(async o => await CreateScreenShot(o));
         }
 
         private void CenterElement(ContentElementViewModel v, ElementCreationContext context)
@@ -172,46 +198,87 @@ namespace NextCanvas.ViewModels
             return context.ContentVerticalOffset + context.VisibleHeight / 2 - height / 2;
         }
 
-        private void CreateTextBox(object select = null)
+        private void CreateTextBox()
         {
             var element = new TextBoxElementViewModel();
-            if (select != null && select is ElementCreationContext context)
-                NewItemRoutine(element, context);
-            else
-                CurrentDocument.SelectedPage.Elements.Add(element);
+            ProcessItem(element);
         }
 
-        private void NewItemRoutine(ContentElementViewModel element, ElementCreationContext context)
+        private void ProcessItem(ContentElementViewModel element)
         {
-            CenterElement(element, context);
-            CurrentDocument.SelectedPage.Elements.Add(element);
+            if (ElementCreationContext == null)
+            {
+                AddElementToSelectedPage(element);
+                return;
+            }
+
+            CenterElement(element, ElementCreationContext);
+            AddElementToSelectedPage(element);
             SelectedTool = GetSelectTool();
-            context.Selection.Select(element);
+            ElementCreationContext.Selection.Select(element);
         }
 
-        private void CreateImage(object select = null)
+        private void CreateImage()
         {
             if (OpenImagePath == null) return;
+
             ResourceViewModel resource;
             using (var fileStream = File.Open(OpenImagePath, FileMode.Open, FileAccess.Read))
             {
                 resource = CurrentDocument.AddResource(fileStream);
             } // Release the file, we already copied it. 
 
+            AddImage(resource);
+        }
+
+        private void AddImage(ResourceViewModel resource)
+        {
             var element = new ImageElementViewModel(new ImageElement(resource.Model));
-            // Sets the width and the height to the image's default dimensions. Resizes if the page is too small.
-            element.Height = Math.Min(document.SelectedPage.Height - 250, element.Image.Height);
-            element.Width = Math.Min(document.SelectedPage.Width - 250, element.Image.Width);
-            if (select != null && select is ElementCreationContext context) NewItemRoutine(element, context);
+            if (ElementCreationContext != null)
+            {
+                // Sets the width and the height to the image's default dimensions. Resizes if the page or visible height is too small.
+                // Tries to :
+                // 1. Stretch the whole visible height.
+                // 2. Keeps image's max dimensions.
+                // 3. Tries to not exceed the page's dimensions.
+                var cappedHeight = (ElementCreationContext.VisibleHeight - 25).Cap(100);
+                element.Height = Math.Min(Math.Min(cappedHeight, document.SelectedPage.Height),
+                    element.Image.PixelHeight);
+                var cappedWidth = (ElementCreationContext.VisibleWidth - 25).Cap(100);
+                element.Width = Math.Min(Math.Min(cappedWidth, document.SelectedPage.Width), element.Image.PixelWidth);
+            }
+
+            ProcessItem(element);
+        }
+
+        private async Task CreateScreenShot(object interaction)
+        {
+            if (!(interaction is IInteractionProvider<IScreenshotInteraction> interact)) return;
+            var screenshotter = interact.CreateInteraction();
+            await screenshotter.ShowAsync();
+            screenshotter.ActionComplete += Screenshotter_ActionComplete;
+            // yes.
+        }
+
+        private void Screenshotter_ActionComplete(object sender, ScreenshotTakenEventArgs e)
+        {
+            var resource = CurrentDocument.AddResource(e.ImageData, "Screenshot" + e.ImageExtension);
+            AddImage(resource);
+        }
+
+        private void AddElementToSelectedPage(ContentElementViewModel element)
+        {
+            CurrentDocument.SelectedPage.Elements.Add(element);
         }
 
         private void SwitchToSelectTool()
         {
             if (SelectedTool.Mode == InkCanvasEditingMode.Select) return;
-            var tool = GetSelectTool();
-            if (tool is null) throw new InvalidOperationException("There isn't any select tool in the list. Wait why?");
 
-            SelectedTool = tool;
+            var tool = GetSelectTool();
+
+            SelectedTool =
+                tool ?? throw new InvalidOperationException("There isn't any select tool in the list. Wait why?");
         }
 
         public void SelectionHandler(object sender, InkCanvasSelectionChangingEventArgs e)
@@ -234,6 +301,7 @@ namespace NextCanvas.ViewModels
         private async Task SaveDocument(object progress = null)
         {
             if (SavePath == null) return;
+
             try
             {
                 var progressInteractionProcessed = GetProgressInteraction(progress);
@@ -250,13 +318,9 @@ namespace NextCanvas.ViewModels
         {
             IProgressInteraction progressInteractionProcessed;
             if (progress is IInteractionProvider<IProgressInteraction> provider)
-            {
                 progressInteractionProcessed = provider.CreateInteraction();
-            }
             else
-            {
                 throw new ArgumentNullException(nameof(progress));
-            }
 
             return progressInteractionProcessed;
         }
@@ -264,12 +328,16 @@ namespace NextCanvas.ViewModels
         private void OpenDocument(object progress = null)
         {
             if (OpenPath == null) return;
+
             try
             {
-                using (var fileStream = File.Open(OpenPath, FileMode.Open))
-                {
-                    CurrentDocument = new DocumentViewModel(DocumentReader.TryOpenDocument(fileStream));
-                }
+                if (progress is IInteractionProvider<IProgressInteraction> provider)
+                    using (var fileStream = File.Open(OpenPath, FileMode.Open))
+                    {
+                        CurrentDocument =
+                            new DocumentViewModel(DocumentReader.TryOpenDocument(fileStream,
+                                provider.CreateInteraction()));
+                    }
             }
             finally
             {
@@ -281,6 +349,7 @@ namespace NextCanvas.ViewModels
         private void SetToolByName(string name)
         {
             if (!IsNameValid(name)) return;
+
             SelectedTool = Tools.First(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
@@ -304,6 +373,7 @@ namespace NextCanvas.ViewModels
         {
             if (direction.Equals("Right", StringComparison.InvariantCultureIgnoreCase))
                 CurrentDocument.SelectedPage.Width += 350;
+
             if (direction.Equals("Bottom", StringComparison.InvariantCultureIgnoreCase))
                 CurrentDocument.SelectedPage.Height += 350;
         }
