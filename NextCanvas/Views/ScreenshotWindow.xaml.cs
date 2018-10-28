@@ -35,14 +35,14 @@ namespace NextCanvas.Views
             Owner = owner;
             owner.WindowState = WindowState.Minimized;
             owner.Hide();
-            FullScreenshot = ScreenshotHelper.TakeScreenshot(owner);
+            FullScreenshot = ScreenshotHelper.TakeScreenshot(true);
             owner.Show();
             InitializeComponent();
         }
 
         public ScreenshotWindow()
         {
-            FullScreenshot = ScreenshotHelper.TakeScreenshot();
+            FullScreenshot = ScreenshotHelper.TakeScreenshot(true);
             InitializeComponent();
         }
 

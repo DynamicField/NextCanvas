@@ -45,29 +45,17 @@ namespace NextCanvas.Utilities.Multimedia
         }
 
         /// <summary>
-        ///     Takes a screenshot on the screen showing the most of the window.
+        ///     Takes a screenshot on the screen.
         /// </summary>
-        /// <param name="windowCoordinates">The window to compare to.</param>
+        /// <param name="basedOnCursorPosition">Chooses whether or not the screenshot is taken on the screen the cursor is pointing at</param>
         /// <returns>Your DAMN SCREENSHOT YOU WAITED FOR !!</returns>
-        public static BitmapSource TakeScreenshot(Window windowCoordinates)
+        public static BitmapSource TakeScreenshot(bool basedOnCursorPosition = false)
         {
-            if (Screen.AllScreens.Length == 1) return TakeScreenshot(); // Primary screen
-            var screenPortions = new Dictionary<Screen, double>();
-            foreach (var screen in Screen.AllScreens.OrderBy(s => s.Bounds.Left)) // 0 --> max
-            {
-                // TODO: Better math.
-                double score = 0;
-                score += windowCoordinates.ActualWidth + windowCoordinates.Left;
-                score += screen.Bounds.Right - windowCoordinates.Left;
-                screenPortions.Add(screen, score);
-            }
-
-            return TakeScreenshot(screenPortions.OrderByDescending(k => k.Value).First().Key);
-        }
-
-        public static BitmapSource TakeScreenshot()
-        {
-            return TakeScreenshot(Screen.PrimaryScreen);
+            if (Screen.AllScreens.Length == 1 || !basedOnCursorPosition) return TakeScreenshot(Screen.PrimaryScreen); // Primary screen
+            var cursorPosition = Cursor.Position;
+            var cursorScreen = Screen.AllScreens.First(screen =>
+                screen.Bounds.X >= cursorPosition.X && screen.Bounds.Right <= cursorPosition.X);
+            return TakeScreenshot(cursorScreen);
         }
     }
 }
