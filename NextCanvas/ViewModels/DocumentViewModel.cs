@@ -84,6 +84,7 @@ namespace NextCanvas.ViewModels
                 .Select(e => e.Resource);
             foreach (var resource in Resources.Where(r => usedResources.All(used => used != r)).ToList())
             {
+                resource.Dispose();
                 Resources.Remove(resource);
             }
         }
