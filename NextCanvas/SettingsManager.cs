@@ -11,6 +11,7 @@ namespace NextCanvas
     {
         static SettingsManager()
         {
+            Directory.CreateDirectory(ApplicationDataPath);
             try
             {
                 using (var streamReader = new StreamReader(FilePath, Encoding.UTF8))
@@ -26,15 +27,16 @@ namespace NextCanvas
             }
         }
 
+        private static string ApplicationDataPath =>
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\NextCanvas\\");
         private static string FilePath =>
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "NextCanvas\\settings.json");
+            Path.Combine(ApplicationDataPath, "settings.json");
 
         public static SettingsViewModel Settings { get; }
 
         public static void SaveSettings()
-        {
-            using (var file = File.Open(FilePath, FileMode.OpenOrCreate, FileAccess.Write))
+        {          
+            using (var file = new FileStream(FilePath, FileMode.Create, FileAccess.Write))
             {
                 using (var streamWriter = new StreamWriter(file, Encoding.UTF8))
                 {

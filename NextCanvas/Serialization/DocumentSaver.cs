@@ -27,19 +27,19 @@ namespace NextCanvas.Serialization
             using (var zip = new ZipFile
                 {CompressionLevel = (CompressionLevel) SettingsManager.Settings.FileCompressionLevel})
             {
-                var task = CreateSavingTasksInitialization(document, progress, out var writingTask,
+                var taskManager = CreateSavingTasksInitialization(document, progress, out var writingTask,
                     out var resourceTasks, out var count, out var finalizingTask);
                 await progress.ShowAsync();
                 InitializeZipStructure(document, zip, writingTask);
                 if (count == 0)
                 {
                     FinalizeFileTask(savePath, finalizingTask, zip);
+                    await taskManager.WorkDone();
                     return;
                 }
-
                 ProcessResources(document, resourceTasks, zip);
                 FinalizeFileTask(savePath, finalizingTask, zip);
-                await task.WorkDone();
+                await taskManager.WorkDone();
             }
         }
 

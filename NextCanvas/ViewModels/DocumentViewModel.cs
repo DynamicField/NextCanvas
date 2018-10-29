@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Management.Instrumentation;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
 using NextCanvas.Serialization;
@@ -51,18 +52,44 @@ namespace NextCanvas.ViewModels
                 r => new ResourceViewModel(r));
             locator = new DocumentResourceLocator(this);
             Pages = new ObservableViewModelCollection<PageViewModel, Page>(Model.Pages,
-                m => new PageViewModel(m, locator), SetLocator); // set locator
+                GivePageViewModel, SetLocator); // set locator
             Pages.CollectionChanged += Pages_CollectionChanged;
+        }
+
+        private PageViewModel GivePageViewModel(Page m)
+        {
+            var page = new PageViewModel(m, locator);
+            SetLocator(page);
+            return page;
         }
 
         private void SetLocator(PageViewModel vm)
         {
             vm.Locator = locator;
+            vm.Elements.ItemRemoved += ElementRemoved;
         }
 
+        private void ElementRemoved(ContentElementViewModel obj)
+        {
+            if (obj is ResourceElementViewModel)
+            {
+                CleanupResources();
+            }
+        }
+        private void CleanupResources()
+        {
+            var usedResources = Pages.Select(p => p.Elements)
+                .SelectMany(o => o)
+                .OfType<ResourceElementViewModel>()
+                .Select(e => e.Resource);
+            foreach (var resource in Resources.Where(r => usedResources.All(used => used != r)).ToList())
+            {
+                Resources.Remove(resource);
+            }
+        }
         private void Pages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (SelectedIndex > 0 && e.OldStartingIndex >= SelectedIndex) SelectedIndex = e.OldStartingIndex - 1;
+            if (SelectedIndex > 0 && e.OldStartingIndex >= SelectedIndex) SelectedIndex = e.OldStartingIndex - 1; // To avoid 3/2 for example
         }
 
         public ResourceViewModel AddResource(FileStream fileStream)
@@ -142,20 +169,34 @@ namespace NextCanvas.ViewModels
             private ResourceViewModel GetResourceViewModelInternal(Resource resource)
             {
                 var matchingResource = Resources.FirstOrDefault(r => r.Name == resource.Name && r.Data != null);
-                if (matchingResource == null) throw new ArgumentException("Couldn't find any matching resource.");
+                if (matchingResource == null) throw new InstanceNotFoundException();
                 return matchingResource;
             }
 
             private ResourceViewModel GetResourceCheck(ResourceViewModel resource)
             {
                 if (HasResourceGotValuableData(resource)) return resource; // Give the resource back.
-                return GetResourceViewModelInternal(resource.Model);
+                try
+                {
+                    return GetResourceViewModelInternal(resource.Model);
+                }
+                catch (InstanceNotFoundException)
+                {
+                    return null;
+                }
             }
 
             private ResourceViewModel GetResourceCheck(Resource resource)
             {
                 if (HasResourceGotValuableData(resource)) return new ResourceViewModel(resource); // Give a vm
-                return GetResourceViewModelInternal(resource);
+                try
+                {
+                    return GetResourceViewModelInternal(resource);
+                }
+                catch (InstanceNotFoundException)
+                {
+                    return null;
+                }
             }
         }
     }

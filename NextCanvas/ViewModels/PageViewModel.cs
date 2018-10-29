@@ -73,17 +73,19 @@ namespace NextCanvas.ViewModels
         {
             if (vm is ResourceElementViewModel resourceElement)
                 resourceElement.Resource =
-                    locator.GetResourceViewModelDataFor(resourceElement.Resource); // Get the deeta
+                    locator.GetResourceViewModelDataFor(resourceElement.Resource); // Get the deeta from the json.
         }
 
         private void Initialize()
         {
-            if (Locator != null)
-                Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
-                    e => ContentElementViewModel.GetViewModel(e, Locator)); // With a locator.
-            else
+            if (Locator == null)
                 Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
                     ContentElementViewModel.GetViewModel); // With a locator.
+            else
+            {
+                Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
+                    e => ContentElementViewModel.GetViewModel(e, Locator)); // With a locator.
+            }
             if (locator != null) SetLocatorForCollection();
         }
 
