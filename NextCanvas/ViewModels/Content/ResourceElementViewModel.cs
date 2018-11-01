@@ -8,12 +8,9 @@ namespace NextCanvas.ViewModels.Content
         private readonly IResourceLocator locator = new BridgeResourceLocator();
         private ResourceViewModel resource;
 
-        internal ResourceElementViewModel(ResourceElement model) : base(model)
+        internal ResourceElementViewModel(ResourceElement model, IResourceLocator locator = null) : base(model)
         {
-        }
-
-        internal ResourceElementViewModel(ResourceElement model, IResourceLocator locator) : base(model)
-        {
+            if (locator == null) return;
             this.locator = locator;
         }
 

@@ -12,7 +12,7 @@
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     x:Class="NextCanvas.Views.MainWindow"
     UseLayoutRounding="True"
-    mc:Ignorable="d"
+    mc:Ignorable="d" ResizeBorderThickness="2"
     d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:MainWindowViewModel}}"
     Title="NextCanvas" Height="720" Width="1202">
     <fluent:RibbonWindow.Resources>
@@ -45,11 +45,11 @@
                         <Canvas Width="{Binding CurrentDocument.SelectedPage.Width}"
                                 Height="{Binding CurrentDocument.SelectedPage.Height}">
                             <local:NextInkCanvas
-                                x:Name="Canvas" EditingMode="{Binding SelectedTool.Mode, Mode=TwoWay}"
+                                x:Name="Canvas" EditingMode="{Binding SelectedTool.Mode, Mode=OneWay}"
                                 EraserShapeDP="{Binding SelectedTool.EraserShape}"
                                 Width="{Binding CurrentDocument.SelectedPage.Width}"
                                 Height="{Binding CurrentDocument.SelectedPage.Height}"
-                                Strokes="{Binding CurrentDocument.SelectedPage.Strokes}"
+                                Strokes="{Binding CurrentDocument.SelectedPage.Strokes, UpdateSourceTrigger=PropertyChanged}"
                                 Canvas.Left="0" Canvas.Top="0"
                                 UseCustomCursorDP="{Binding SelectedTool.UseCursor}"
                                 ItemsSource="{Binding CurrentDocument.SelectedPage.Elements}"
@@ -110,6 +110,8 @@
                             <fluent:MenuItem Header="Save as that format..." Description="something something"
                                              Icon="/NextCanvas;component/Images/Menu/Save.png" />
                         </fluent:MenuItem>
+                        <Separator/>
+                        <fluent:MenuItem Header="Settings" Click="SettingsClick"/>
                     </fluent:ApplicationMenu>
                 </fluent:Ribbon.Menu>
                 <fluent:Ribbon.ToolBarItems>
@@ -251,7 +253,8 @@
                         </ScrollViewer>
                     </fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox Header="Pages" x:Name="Pages"
-                                           Icon="/NextCanvas;component/Images/Ribbon/Home/NewPage-Big.png">
+                                           Icon="/NextCanvas;component/Images/Ribbon/Home/NewPage-Big.png"
+                                           IsLauncherVisible="True" LauncherClick="PagesTabLauncherClick">
                         <fluent:Button Header="Go Left"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Shared/Arrow.png"
                                        Command="{Binding PreviousPageCommand}" SizeDefinition="Large, Large, Large" />
@@ -293,6 +296,7 @@
                                        Command="{Binding CreateImageCommand}" />
                         <fluent:Button Header="Screenshot"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/Screenshot.png"
+                                       Click="InsertClick_GoToHome"
                                        Command="{Binding CreateScreenshotCommand}"
                                        CommandParameter="{Binding ScreenshotProvider, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}" />
                     </fluent:RibbonGroupBox>

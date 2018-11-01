@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -54,7 +53,7 @@ namespace NextCanvas.Utilities.Multimedia
             if (Screen.AllScreens.Length == 1 || !basedOnCursorPosition) return TakeScreenshot(Screen.PrimaryScreen); // Primary screen
             var cursorPosition = Cursor.Position;
             var cursorScreen = Screen.AllScreens.First(screen =>
-                screen.Bounds.X >= cursorPosition.X && screen.Bounds.Right <= cursorPosition.X);
+                screen.Bounds.X <= cursorPosition.X && screen.Bounds.Right >= cursorPosition.X);
             return TakeScreenshot(cursorScreen);
         }
     }

@@ -8,15 +8,7 @@ namespace NextCanvas.ViewModels.Content
     {
         private BitmapImage image;
 
-        public ImageElementViewModel() : base(new ImageElement())
-        {
-        }
-
-        public ImageElementViewModel(ImageElement model) : base(model)
-        {
-        }
-
-        internal ImageElementViewModel(ImageElement model, IResourceLocator resource) : base(model, resource)
+        internal ImageElementViewModel(ImageElement model, IResourceLocator resource = null) : base(model, resource)
         {
         }
 
@@ -38,6 +30,35 @@ namespace NextCanvas.ViewModels.Content
             return new ImageElement();
         }
 
+        public override double Width
+        {
+            get => base.Width;
+            set
+            {            
+                base.Width = FixWidth(value);
+            }
+        }
+
+        public override double Height
+        {
+            get => base.Height;
+            set { base.Height = FixHeight(value); }
+        }
+
+        private double FixWidth(double width)
+        {
+            if ((int)width == Image.PixelWidth) return width;
+            var ratio = (double) Image.PixelWidth / Image.PixelHeight;
+            base.Height = width / ratio;
+            return width;
+        }
+        private double FixHeight(double height)
+        {
+            if ((int)height == Image.PixelHeight) return height;
+            var ratio = (double)Image.PixelWidth / Image.PixelHeight;
+            base.Width = height * ratio;
+            return height;
+        }
         private void CreateBitmapImage()
         {
             if (Resource?.Data == null) return;
@@ -50,7 +71,6 @@ namespace NextCanvas.ViewModels.Content
             image.Freeze();
             OnPropertyChanged(nameof(Image));
         }
-
         protected override void OnResourceChanged()
         {
             base.OnResourceChanged();

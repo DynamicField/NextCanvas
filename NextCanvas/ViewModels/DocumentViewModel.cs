@@ -12,11 +12,11 @@ using NextCanvas.ViewModels.Content;
 
 namespace NextCanvas.ViewModels
 {
-    public class DocumentViewModel : ViewModelBase<Document>
+    public class DocumentViewModel : ViewModelBase<Document>, IDisposable
     {
         private DocumentResourceLocator locator;
         private int selectedIndex;
-
+        public bool CanDeletePage => Pages.Count > 1;
         public DocumentViewModel()
         {
             Initialize();
@@ -37,12 +37,21 @@ namespace NextCanvas.ViewModels
             {
                 if (value > Pages.Count - 1) throw new IndexOutOfRangeException("ur out of range");
                 selectedIndex = value;
-                OnPropertyChanged(nameof(SelectedIndex));
-                OnPropertyChanged(nameof(SelectedPage));
+                UpdateSelectedPage();
             }
         }
 
-        public PageViewModel SelectedPage => Pages[SelectedIndex];
+        private void UpdateSelectedPage()
+        {
+            if (selectedIndex >= Pages.Count)
+            {
+                selectedIndex = Pages.Count - 1;
+            }
+            OnPropertyChanged(nameof(SelectedIndex));
+            OnPropertyChanged(nameof(SelectedPage));
+        }
+
+        public PageViewModel SelectedPage => Pages[selectedIndex];
 
         internal IResourceViewModelLocator ResourceLocator => locator;
 
@@ -52,7 +61,7 @@ namespace NextCanvas.ViewModels
                 r => new ResourceViewModel(r));
             locator = new DocumentResourceLocator(this);
             Pages = new ObservableViewModelCollection<PageViewModel, Page>(Model.Pages,
-                GivePageViewModel, SetLocator); // set locator
+                GivePageViewModel, SetLocator, PageRemoved); // set locator
             Pages.CollectionChanged += Pages_CollectionChanged;
         }
 
@@ -68,7 +77,10 @@ namespace NextCanvas.ViewModels
             vm.Locator = locator;
             vm.Elements.ItemRemoved += ElementRemoved;
         }
-
+        private void PageRemoved(PageViewModel p)
+        {
+            CleanupResources();
+        }
         private void ElementRemoved(ContentElementViewModel obj)
         {
             if (obj is ResourceElementViewModel)
@@ -91,6 +103,8 @@ namespace NextCanvas.ViewModels
         private void Pages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (SelectedIndex > 0 && e.OldStartingIndex >= SelectedIndex) SelectedIndex = e.OldStartingIndex - 1; // To avoid 3/2 for example
+            OnPropertyChanged(nameof(CanDeletePage));
+            UpdateSelectedPage();
         }
 
         public ResourceViewModel AddResource(FileStream fileStream)
@@ -198,6 +212,14 @@ namespace NextCanvas.ViewModels
                 {
                     return null;
                 }
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (var resource in Resources)
+            {
+                resource.Dispose(); // Good bye memory streams.
             }
         }
     }

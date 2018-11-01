@@ -1,13 +1,15 @@
-﻿using System.Linq;
-using System.Windows;
-using System.Windows.Media;
-using Fluent;
+﻿using Fluent;
 using Microsoft.Win32;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Multimedia;
 using NextCanvas.Interactivity.Progress;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Media;
+using NextCanvas.Utilities;
 
 namespace NextCanvas.Views
 {
@@ -19,10 +21,12 @@ namespace NextCanvas.Views
         public MainWindow()
         {
             InitializeComponent();
+            PropertyChangedObject.Contexts.Add(Thread.CurrentThread, SynchronizationContext.Current);
             DataContext = new MainWindowViewModel
             {
                 ElementCreationContext = CreationContext
             };
+            pageViewerFactory = new UniqueWindowFactory<PageCollectionViewer>(() => new PageCollectionViewer((MainWindowViewModel)DataContext));
             Canvas.DefaultDrawingAttributes.FitToCurve = true;
         }
 
@@ -37,11 +41,22 @@ namespace NextCanvas.Views
 
         private void ColorGallery_SelectedColorChanged(object sender, RoutedEventArgs e)
         {
-            if (ColorGallery.SelectedColor is null) return;
+            if (ColorGallery.SelectedColor is null)
+            {
+                return;
+            }
+
             Canvas.DefaultDrawingAttributes.Color = ColorGallery.SelectedColor ?? Colors.Black;
             var strokes = Canvas.GetSelectedStrokes();
-            foreach (var item in strokes) item.DrawingAttributes.Color = ColorGallery.SelectedColor ?? Colors.Black;
-            if (strokes.Any()) ColorGallery.SelectedColor = null;
+            foreach (var item in strokes)
+            {
+                item.DrawingAttributes.Color = ColorGallery.SelectedColor ?? Colors.Black;
+            }
+
+            if (strokes.Any())
+            {
+                ColorGallery.SelectedColor = null;
+            }
         }
 
 
@@ -52,14 +67,22 @@ namespace NextCanvas.Views
 
         private void Canvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (e.WidthChanged) ScrollParent.ScrollToRightEnd();
-            if (e.HeightChanged) ScrollParent.ScrollToBottom();
+            if (e.WidthChanged)
+            {
+                ScrollParent.ScrollToRightEnd();
+            }
+
+            if (e.HeightChanged)
+            {
+                ScrollParent.ScrollToBottom();
+            }
+
             Canvas.SizeChanged -= Canvas_SizeChanged;
         }
 
         private void DebugStylusXD_Click(object sender, RoutedEventArgs e)
         {
-            new StylusDebugWindow {Owner = this}.Show();
+            new StylusDebugWindow { Owner = this }.Show();
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
@@ -69,28 +92,36 @@ namespace NextCanvas.Views
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            var vm = (MainWindowViewModel) DataContext;
+            var vm = (MainWindowViewModel)DataContext;
             var dialog = new SaveFileDialog
             {
                 Filter = "NextCanvas document (*.ncd)|*.ncd"
             };
             if (dialog.ShowDialog() ?? false)
+            {
                 vm.SavePath = dialog.FileName;
+            }
             else
+            {
                 vm.SavePath = null;
+            }
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
-            var vm = (MainWindowViewModel) DataContext;
+            var vm = (MainWindowViewModel)DataContext;
             var dialog = new OpenFileDialog
             {
                 Filter = "NextCanvas document (*.ncd)|*.ncd"
             };
             if (dialog.ShowDialog() ?? false)
+            {
                 vm.OpenPath = dialog.FileName;
+            }
             else
+            {
                 vm.OpenPath = null;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -100,20 +131,41 @@ namespace NextCanvas.Views
 
         private void InsertClick_GoToHome(object sender, RoutedEventArgs e)
         {
+            GoHome();
+        }
+
+        private void GoHome()
+        {
             Ribbon.SelectedTabIndex = 0;
         }
 
         private void NewImage_Click(object sender, RoutedEventArgs e)
         {
-            var vm = (MainWindowViewModel) DataContext;
+            var vm = (MainWindowViewModel)DataContext;
             var dialog = new OpenFileDialog
             {
                 Filter = "Image files (*.jpg, *.bmp, *.png)|*.jpg; *.bmp; *.png"
             };
             if (dialog.ShowDialog() ?? false)
+            {
                 vm.OpenImagePath = dialog.FileName;
+            }
             else
+            {
                 vm.OpenImagePath = null;
+            }
+            GoHome();
+        }
+
+        private void SettingsClick(object sender, RoutedEventArgs e)
+        {
+            new SettingsWindow { Owner = this }.ShowDialog();
+        }
+
+        private readonly UniqueWindowFactory<PageCollectionViewer> pageViewerFactory;
+        private void PagesTabLauncherClick(object sender, RoutedEventArgs e)
+        {
+            pageViewerFactory.TryShowWindow();
         }
     }
 }

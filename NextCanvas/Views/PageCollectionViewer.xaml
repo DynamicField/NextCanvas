@@ -1,0 +1,81 @@
+﻿<Window x:Class="NextCanvas.Views.PageCollectionViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:NextCanvas.ViewModels"
+        xmlns:convert="clr-namespace:NextCanvas.Converters"
+        xmlns:controls="clr-namespace:NextCanvas.Controls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Name="Window"
+        mc:Ignorable="d" d:DataContext="{x:Static vm:PageCollectionViewerViewModel.SampleViewModel}"
+        Title="Page manager" Height="450" Width="800">
+    <Window.Resources>
+        <convert:WidthToScaleMultiConverter x:Key="ScaleMultiConverter"/>
+        <convert:AlternationIndexConverter x:Key="IndexConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="369*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <ListBox ItemsSource="{Binding WindowViewModel.CurrentDocument.Pages}" SelectionMode="Extended" 
+                 x:Name="ListBox" SelectionChanged="ListBox_OnSelectionChanged" 
+                 AlternationCount="{x:Static sys:Int32.MaxValue}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="vm:PageViewModel">
+                    <StackPanel HorizontalAlignment="Left" Margin="5">
+                        <Border BorderThickness="1" BorderBrush="Black">
+                            <controls:NextInkCanvas
+                                x:Name="Canvas" EditingMode="None"
+                                Width="{Binding Width}"
+                                Height="{Binding Height}"
+                                Strokes="{Binding Strokes}"
+                                ItemsSource="{Binding Elements}"
+                                HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0,0">
+                                <controls:NextInkCanvas.LayoutTransform>
+                                    <ScaleTransform>
+                                        <ScaleTransform.ScaleX>
+                                            <MultiBinding Converter="{StaticResource ScaleMultiConverter}">
+                                                <Binding Path="Width"/>
+                                                <Binding ElementName="Window" Path="DataContext.WantedWidth"/>
+                                            </MultiBinding>
+                                        </ScaleTransform.ScaleX>
+                                        <ScaleTransform.ScaleY>
+                                            <MultiBinding Converter="{StaticResource ScaleMultiConverter}">
+                                                <Binding Path="Height"/>
+                                                <Binding ElementName="Window" Path="DataContext.WantedHeight"/>
+                                            </MultiBinding>
+                                        </ScaleTransform.ScaleY>
+                                    </ScaleTransform>
+                                </controls:NextInkCanvas.LayoutTransform>
+                            </controls:NextInkCanvas>
+                        </Border>
+                        <TextBlock HorizontalAlignment="Center" x:Name="Number">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource IndexConverter}" StringFormat="{}{0}">
+                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}" />
+                                    <Binding Path="."/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Border Grid.Row="1" Background="#DADADA">
+            <Grid Margin="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Content="Delete selected pages" Padding="5,0" Command="{Binding DeletePagesCommand}" CommandParameter="{Binding SelectedItems, ElementName=ListBox}" x:Name="DeleteButton"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

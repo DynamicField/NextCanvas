@@ -107,6 +107,10 @@
       <DependentUpon>ElementRecognitionError.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Content\RtfRichTextBox.cs" />
+    <Compile Include="Converters\AlternationIndexConverter.cs" />
+    <Compile Include="Converters\WidthToScaleConverter.cs" />
+    <Compile Include="Interactivity\Dialogs\IUserRequestInteraction.cs" />
+    <Compile Include="Interactivity\Dialogs\MessageBoxRequest.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="SettingsManager.cs" />
     <Compile Include="Utilities\Content\ElementCreationContext.cs" />
@@ -153,6 +157,7 @@
     <Compile Include="Utilities\Content\IResourceViewModelLocator.cs" />
     <Compile Include="Utilities\MathExtensions.cs" />
     <Compile Include="Utilities\Multimedia\ScreenshotHelper.cs" />
+    <Compile Include="Utilities\UniqueWindowFactory.cs" />
     <Compile Include="ViewModels\Content\ContentElementViewModel.cs" />
     <Compile Include="ViewModels\Content\ImageElementViewModel.cs" />
     <Compile Include="ViewModels\Content\ResourceElementViewModel.cs" />
@@ -161,6 +166,7 @@
     <Compile Include="ViewModels\DocumentViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\PageCollectionViewerViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ToolGroupViewModel.cs" />
@@ -170,11 +176,17 @@
     <Compile Include="Views\MultiCanvasExperimentWindow.xaml.cs">
       <DependentUpon>MultiCanvasExperimentWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PageCollectionViewer.xaml.cs">
+      <DependentUpon>PageCollectionViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScreenshotWindow.xaml.cs">
       <DependentUpon>ScreenshotWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StylusDebugWindow.xaml.cs">
       <DependentUpon>StylusDebugWindow.xaml</DependentUpon>
@@ -210,11 +222,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PageCollectionViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ProgressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScreenshotWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

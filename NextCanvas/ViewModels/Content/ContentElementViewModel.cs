@@ -74,6 +74,16 @@ namespace NextCanvas.ViewModels.Content
             }
         }
 
+        public int ZIndex
+        {
+            get => Model.ZIndex;
+            set
+            {
+                Model.ZIndex = value;
+                OnPropertyChanged(nameof(ZIndex));
+            }
+        }
+
         public static ContentElementViewModel GetViewModel(ContentElement model)
         {
             switch (model)

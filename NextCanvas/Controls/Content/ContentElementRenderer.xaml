@@ -8,14 +8,14 @@
              xmlns:vm="clr-namespace:NextCanvas.ViewModels.Content"
              mc:Ignorable="d" Width="{Binding Width}" Height="{Binding Height}"
              InkCanvas.Bottom="{Binding Bottom}" InkCanvas.Left="{Binding Left}" InkCanvas.Right="{Binding Right}"
-             InkCanvas.Top="{Binding Top}"
+             InkCanvas.Top="{Binding Top}" Panel.ZIndex="{Binding ZIndex}"
              d:DataContext="{d:DesignInstance vm:TextBoxElementViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <ContentPresenter Content="{Binding}" x:Name="ElementContentPresenter">
             <ContentPresenter.Resources>
                 <DataTemplate DataType="{x:Type vm:ImageElementViewModel}">
-                    <Image Source="{Binding Image, Mode=OneWay}" />
+                    <Image Source="{Binding Image, Mode=OneWay}" Stretch="Uniform"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:TextBoxElementViewModel}">
                     <local:RtfRichTextBox RtfText="{Binding RtfText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"

@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:NextCanvas" xmlns:local1="clr-namespace:NextCanvas.Views"
     x:Class="NextCanvas.Views.ScreenshotWindow"
     Background="Transparent" KeyDown="ScreenshotWindow_OnKeyDown" ResizeMode="NoResize"
-    ContentRendered="ScreenshotWindow_OnContentRendered"
+    ContentRendered="ScreenshotWindow_OnContentRendered" Topmost="False"
     mc:Ignorable="d" WindowState="Maximized" WindowStyle="None" AllowsTransparency="True" BorderThickness="0"
     Title="ScreenshotWindow" Height="450" Width="800" x:Name="Window">
     <Grid MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseMove="CropCanvas_OnMouseMove" x:Name="MainGrid"

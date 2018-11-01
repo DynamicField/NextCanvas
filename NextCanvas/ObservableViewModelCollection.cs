@@ -35,7 +35,6 @@ namespace NextCanvas
         }
 
         public bool DisableSync { get; set; }
-
         public Action<TViewModel> ItemAdded { get; set; }
         public Action<TViewModel> ItemRemoved { get; set; }
 
@@ -47,7 +46,6 @@ namespace NextCanvas
             action();
             DisableSync = false;
         }
-
         private void Sync_Collection(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (DisableSync) return;

@@ -10,7 +10,6 @@ namespace NextCanvas
             ActionToExecute = action;
             if (canExecute != null) CanExecuteAction = canExecute;
         }
-
         public Action<object> ActionToExecute { get; set; }
         public Func<object, bool> CanExecuteAction { get; set; } = o => true;
         public event EventHandler CanExecuteChanged;

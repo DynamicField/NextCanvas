@@ -19,7 +19,8 @@
 
         public override string ToString()
         {
-            return Model.ToString();
+            var modelToString = Model.ToString();
+            return modelToString == Model.GetType().ToString() ? base.ToString() : modelToString;
         }
 
         protected virtual T BuildDefaultModel()

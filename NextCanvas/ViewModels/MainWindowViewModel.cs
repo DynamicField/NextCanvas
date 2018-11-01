@@ -124,9 +124,7 @@ namespace NextCanvas.ViewModels
         public DelegateCommand SwitchToSelectToolCommand { get; private set; }
         public DelegateCommand CreateImageCommand { get; private set; }
         public DelegateCommand CreateScreenshotCommand { get; private set; }
-        public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
-
-        private bool CanDeletePage => CurrentDocument.Pages.Count > 1;
+        public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;       
 
         private DocumentReader DocumentReader { get; } = new DocumentReader();
         private DocumentSaver DocumentSaver { get; } = new DocumentSaver();
@@ -153,6 +151,7 @@ namespace NextCanvas.ViewModels
         private void PagesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdatePageText();
+            UpdatePageManipulation();
         }
 
         private void UpdatePageText()
@@ -170,7 +169,7 @@ namespace NextCanvas.ViewModels
             NextPageCommand = new DelegateCommand(o => ChangePage(Direction.Forwards),
                 o => CanChangePage(Direction.Forwards));
             NewPageCommand = new DelegateCommand(o => CreateNewPage());
-            DeletePageCommand = new DelegateCommand(o => DeletePage(CurrentDocument.SelectedIndex), o => CanDeletePage);
+            DeletePageCommand = new DelegateCommand(o => DeletePage(CurrentDocument.SelectedIndex), o => CurrentDocument.CanDeletePage);
             ExtendPageCommand = new DelegateCommand(o => ExtendPage(o.ToString()));
             SetToolByNameCommand =
                 new DelegateCommand(o => SetToolByName(o.ToString()), o => IsNameValid(o.ToString()));
@@ -242,12 +241,11 @@ namespace NextCanvas.ViewModels
                 // 2. Keeps image's max dimensions.
                 // 3. Tries to not exceed the page's dimensions.
                 var cappedHeight = (ElementCreationContext.VisibleHeight - 25).Cap(100);
-                element.Height = Math.Min(Math.Min(cappedHeight, document.SelectedPage.Height),
-                    element.Image.PixelHeight);
                 var cappedWidth = (ElementCreationContext.VisibleWidth - 25).Cap(100);
                 element.Width = Math.Min(Math.Min(cappedWidth, document.SelectedPage.Width), element.Image.PixelWidth);
+                element.Height = Math.Min(Math.Min(cappedHeight, document.SelectedPage.Height),
+                    element.Image.PixelHeight);
             }
-
             ProcessItem(element);
         }
 
@@ -328,16 +326,16 @@ namespace NextCanvas.ViewModels
         private void OpenDocument(object progress = null)
         {
             if (OpenPath == null) return;
-
             try
             {
-                if (progress is IInteractionProvider<IProgressInteraction> provider)
-                    using (var fileStream = File.Open(OpenPath, FileMode.Open))
-                    {
-                        CurrentDocument =
-                            new DocumentViewModel(DocumentReader.TryOpenDocument(fileStream,
-                                provider.CreateInteraction()));
-                    }
+                if (!(progress is IInteractionProvider<IProgressInteraction> provider)) return;
+                using (var fileStream = File.Open(OpenPath, FileMode.Open))
+                {
+                    document.Dispose();
+                    CurrentDocument =
+                        new DocumentViewModel(DocumentReader.TryOpenDocument(fileStream,
+                            provider.CreateInteraction()));
+                }
             }
             finally
             {
@@ -360,12 +358,9 @@ namespace NextCanvas.ViewModels
 
         private void DeletePage(int index)
         {
-            if (CanDeletePage)
+            if (CurrentDocument.CanDeletePage)
             {
                 CurrentDocument.Pages.RemoveAt(index);
-                UpdatePageManipulation();
-                if (index == 0)
-                    CurrentDocument.SelectedIndex = CurrentDocument.SelectedIndex; // Update the deleted page :v
             }
         }
 
