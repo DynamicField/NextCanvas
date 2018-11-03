@@ -44,24 +44,6 @@ namespace NextCanvas.Controls.Content
                     var otherBinding = new Binding("Top") {Source = DataContext, Mode = BindingMode.TwoWay};
                     SetBinding(InkCanvas.TopProperty, otherBinding); // Update then
                 });
-            DependencyPropertyDescriptor.FromProperty(InkCanvas.BottomProperty, typeof(ContentElementRenderer))
-                .AddValueChanged(this, (s, e) =>
-                {
-                    if (GetBindingExpression(InkCanvas.BottomProperty) != null &&
-                        !double.IsNaN((double) GetValue(InkCanvas.BottomProperty))) return;
-                    data.Bottom = (double) GetValue(InkCanvas.BottomProperty);
-                    var otherBinding = new Binding("Bottom") {Source = DataContext, Mode = BindingMode.TwoWay};
-                    SetBinding(InkCanvas.BottomProperty, otherBinding); // Update then
-                });
-            DependencyPropertyDescriptor.FromProperty(InkCanvas.RightProperty, typeof(ContentElementRenderer))
-                .AddValueChanged(this, (s, e) =>
-                {
-                    if (GetBindingExpression(InkCanvas.RightProperty) != null &&
-                        !double.IsNaN((double) GetValue(InkCanvas.RightProperty))) return;
-                    data.Right = (double) GetValue(InkCanvas.RightProperty);
-                    var otherBinding = new Binding("Right") {Source = DataContext, Mode = BindingMode.TwoWay};
-                    SetBinding(InkCanvas.RightProperty, otherBinding); // Update then
-                });
             DependencyPropertyDescriptor.FromProperty(InkCanvas.LeftProperty, typeof(ContentElementRenderer))
                 .AddValueChanged(this, (s, e) =>
                 {
