@@ -162,7 +162,7 @@ namespace NextCanvas.ViewModels
         private void Initialize()
         {
             document = new DocumentViewModel(Model.Document);
-            Tools = new ObservableViewModelCollection<ToolViewModel, Tool>(Model.Tools, t => new ToolViewModel(t));
+            Tools = new ObservableViewModelCollection<ToolViewModel, Tool>(Model.Tools, ToolViewModel.GetViewModel);
             Subscribe();
             PreviousPageCommand = new DelegateCommand(o => ChangePage(Direction.Backwards),
                 o => CanChangePage(Direction.Backwards));

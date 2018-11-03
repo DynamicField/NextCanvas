@@ -14,6 +14,7 @@ namespace NextCanvas.ViewModels
 
         public ToolViewModel()
         {
+            Initialize();
         }
 
         public ToolViewModel(Tool model) : base(model)
@@ -161,7 +162,7 @@ namespace NextCanvas.ViewModels
                 UpdateCursorIfEraser(this);
             }
         }
-
+        
         private void Initialize()
         {
             Group = new ToolGroupViewModel(Model.Group);
@@ -198,5 +199,7 @@ namespace NextCanvas.ViewModels
                 t.Mode = previous;
             }
         }
+
+        public static ToolViewModel GetViewModel(Tool model) => new ToolViewModel(model);
     }
 }

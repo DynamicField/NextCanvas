@@ -1,5 +1,6 @@
 ﻿using NextCanvas.Controls.Content;
 using NextCanvas.Ink;
+using NextCanvas.Models;
 using NextCanvas.ViewModels.Content;
 using System;
 using System.Collections;
@@ -12,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
+using NextCanvas.Properties;
 
 namespace NextCanvas.Controls
 {
@@ -76,6 +78,18 @@ namespace NextCanvas.Controls
                     }
                 }));
 
+
+        public StrokeDelegate<Stroke> CustomStrokeInvocator
+        {
+            get => (StrokeDelegate<Stroke>)GetValue(CustomStrokeInvocatorProperty);
+            set => SetValue(CustomStrokeInvocatorProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for CustomStrokeInvocator.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CustomStrokeInvocatorProperty =
+            DependencyProperty.Register("CustomStrokeInvocator", typeof(StrokeDelegate<Stroke>), typeof(NextInkCanvas), new PropertyMetadata(null));
+
+
         private bool isInternal;
 
         private MemoryStream lastDataObject;
@@ -135,7 +149,7 @@ namespace NextCanvas.Controls
             if (elements.Count == 1)
             {
                 var element = elements[0];
-                var highestZIndex = Children.Cast<UIElement>().Select(el => (int) el.GetValue(Panel.ZIndexProperty))
+                var highestZIndex = Children.Cast<UIElement>().Select(el => (int)el.GetValue(Panel.ZIndexProperty))
                     .OrderByDescending(i => i).First();
                 var zIndex = (int)element.GetValue(Panel.ZIndexProperty);
                 if (highestZIndex == 0 || zIndex != highestZIndex)
@@ -244,22 +258,29 @@ namespace NextCanvas.Controls
                 }
             }
         }
-
-        // ReSharper disable once RedundantOverriddenMember
         protected override void OnStrokeCollected(InkCanvasStrokeCollectedEventArgs e)
         {
-            //// Remove the original stroke and add a custom stroke.
-            //this.Strokes.Remove(e.Stroke);
-            //var customStroke = new SquareStroke(e.Stroke.StylusPoints, e.Stroke.DrawingAttributes);
-            //this.Strokes.Add(customStroke);
+            if (CustomStrokeInvocator == null)
+            {
+                base.OnStrokeCollected(e);
+                return;
+            }
+            // Remove the original stroke and add a custom stroke.
+            Strokes.Remove(e.Stroke);
+            var customStroke = CustomStrokeInvocator(e.Stroke);
+            // Store the type name, UwU
+            var typeName = customStroke.GetType().FullName;
+            if (typeName != null)
+            {
+                customStroke.AddPropertyData(AssemblyInfo.Guid, typeName);
+            }
 
-            //// Pass the custom stroke to base class' OnStrokeCollected method.
-            //InkCanvasStrokeCollectedEventArgs args =
-            //    new InkCanvasStrokeCollectedEventArgs(customStroke);
-            //base.OnStrokeCollected(args);
-            base.OnStrokeCollected(e);
+            Strokes.Add(customStroke);
+            // Pass the custom stroke to base class' OnStrokeCollected method.
+            var args = new InkCanvasStrokeCollectedEventArgs(customStroke);
+            base.OnStrokeCollected(args);
+
         }
-
         protected override void OnStrokeErasing(InkCanvasStrokeErasingEventArgs e)
         {
             if (e.Stroke is SquareStroke stroke)

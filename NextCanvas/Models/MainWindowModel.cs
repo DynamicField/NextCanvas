@@ -131,6 +131,20 @@ namespace NextCanvas.Models
                         Height = 20,
                         IsHighlighter = true
                     }
+                },
+                new SquareTool
+                {
+                    Name = "Rectangle",
+                    Group = Groups["Shapes"],
+                    LargeIcon = new Uri(
+                        "pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Rectangle.png"),
+                    DrawingAttributes = new DrawingAttributes
+                    {
+                        Width = 5,
+                        Height = 5,
+                        FitToCurve = false,
+                        IgnorePressure = true
+                    }
                 }
             };
             if (!FavouriteColors.Contains(Colors.Black)) FavouriteColors.Add(Colors.Black);
@@ -145,7 +159,6 @@ namespace NextCanvas.Models
                 Name = "Brushes",
                 Color = Colors.Black
             },
-
             new ToolGroup
             {
                 Name = "Highlighters",
@@ -156,6 +169,11 @@ namespace NextCanvas.Models
                 Name = "Erasers",
                 Color = Colors.Black,
                 HasGotColor = false
+            },
+            new ToolGroup
+            {
+                Name = "Shapes",
+                Color = Colors.Black
             },
             new ToolGroup
             {

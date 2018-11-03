@@ -1,6 +1,8 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using NextCanvas.Properties;
 
 // Les informations générales relatives à un assembly dépendent de
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
@@ -51,3 +53,13 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: Guid(AssemblyInfo.GuidString)]
+
+namespace NextCanvas.Properties
+{
+    public static class AssemblyInfo
+    {
+        public const string GuidString = "572E9214-D38A-454A-A3F1-84714AC8C7C3";
+        public static readonly Guid Guid = new Guid(GuidString);
+    }
+}

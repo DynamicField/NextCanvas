@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Ink;
 using Newtonsoft.Json;
 using NextCanvas.Models.Content;
+using NextCanvas.Properties;
 
 namespace NextCanvas.Models
 {
@@ -24,7 +26,30 @@ namespace NextCanvas.Models
             {
                 using (var memory = new MemoryStream(value))
                 {
-                    Strokes = new StrokeCollection(memory);
+                    var strokeCollection = new StrokeCollection(memory);
+                    var toRemove = new StrokeCollection();
+                    var toAdd = new StrokeCollection();
+                    foreach (var stroke in strokeCollection)
+                    {
+                        if (!stroke.ContainsPropertyData(AssemblyInfo.Guid)) continue;
+                        try
+                        {
+                            var type = Type.GetType((string) stroke.GetPropertyData(AssemblyInfo.Guid));
+                            var customStroke = (Stroke) Activator.CreateInstance(type, stroke.StylusPoints,
+                                stroke.DrawingAttributes);
+                            toRemove.Add(stroke);
+                            toAdd.Add(customStroke);
+                        }
+                        catch (Exception e)
+                        {
+                            continue; // whatever
+                        }
+                    }
+
+                    strokeCollection.Remove(toRemove);
+                    strokeCollection.Add(toAdd);
+
+                    Strokes = strokeCollection;
                 }
             }
         }

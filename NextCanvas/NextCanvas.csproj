@@ -354,5 +354,11 @@
   <ItemGroup>
     <Resource Include="Images\Ribbon\Insert\Screenshot.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Menu\Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Home\Rectangle.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

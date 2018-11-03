@@ -55,7 +55,8 @@
                                 ItemsSource="{Binding CurrentDocument.SelectedPage.Elements}"
                                 Cursor="{Binding SelectedTool.Cursor}"
                                 DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}"
-                                ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}">
+                                ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"
+                                CustomStrokeInvocator="{Binding SelectedTool.Model.StrokeConstructor, FallbackValue={x:Null}}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanging">
                                         <ei:CallMethodAction TargetObject="{Binding}" MethodName="SelectionHandler" />
@@ -73,12 +74,7 @@
             </ScrollViewer>
         </Border>
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <fluent:Ribbon Grid.ColumnSpan="3" Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon">
+            <fluent:Ribbon Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon">
                 <fluent:Ribbon.Menu>
                     <fluent:ApplicationMenu>
                         <fluent:ApplicationMenu.Resources>
@@ -111,7 +107,8 @@
                                              Icon="/NextCanvas;component/Images/Menu/Save.png" />
                         </fluent:MenuItem>
                         <Separator/>
-                        <fluent:MenuItem Header="Settings" Click="SettingsClick"/>
+                        <fluent:MenuItem Header="Settings" Click="SettingsClick"
+                                         Icon="/NextCanvas;component/Images/Menu/Settings.png"/>
                     </fluent:ApplicationMenu>
                 </fluent:Ribbon.Menu>
                 <fluent:Ribbon.ToolBarItems>
@@ -176,7 +173,7 @@
                                                 Header="Tool..." ResizeMode="Both" MinItemsInRow="3" MaxItemsInRow="13"
                                                 Orientation="Horizontal"
                                                 ItemHeight="54" ItemWidth="54" GroupBy="GroupName"
-                                                SizeDefinition="Large, Large, Large" x:Name="ToolsGallery">
+                                                SizeDefinition="Large, Large, Large">
                             <!--<fluent:InRibbonGallery.ItemContainerStyle>
                                 <Style TargetType="fluent:GalleryItem">
                                     <Setter Property="Visibility" Value="{Binding IsDisplayed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
