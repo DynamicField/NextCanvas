@@ -107,11 +107,17 @@
       <DependentUpon>ElementRecognitionError.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Content\RtfRichTextBox.cs" />
+    <Compile Include="Controls\Editor\ToolEditorControl.xaml.cs">
+      <DependentUpon>ToolEditorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\AlternationIndexConverter.cs" />
     <Compile Include="Converters\WidthToScaleConverter.cs" />
+    <Compile Include="INamedObject.cs" />
     <Compile Include="Interactivity\Dialogs\IUserRequestInteraction.cs" />
     <Compile Include="Interactivity\Dialogs\MessageBoxRequest.cs" />
+    <Compile Include="Interactivity\IModifyObjectInteraction.cs" />
     <Compile Include="Models\SettingsModel.cs" />
+    <Compile Include="Models\SquareTool.cs" />
     <Compile Include="SettingsManager.cs" />
     <Compile Include="Utilities\Content\ElementCreationContext.cs" />
     <Compile Include="Controls\NextDynamicRenderer.cs" />
@@ -173,6 +179,9 @@
     <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="InteractionWindow.cs" />
+    <Compile Include="Views\Editor\ModifyObjectWindow.xaml.cs">
+      <DependentUpon>ModifyObjectWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MultiCanvasExperimentWindow.xaml.cs">
       <DependentUpon>MultiCanvasExperimentWindow.xaml</DependentUpon>
     </Compile>
@@ -196,6 +205,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Content\ElementRecognitionError.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Editor\ToolEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Editor\ModifyObjectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

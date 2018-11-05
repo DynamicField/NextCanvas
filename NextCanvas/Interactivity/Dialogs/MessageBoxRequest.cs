@@ -6,12 +6,12 @@ namespace NextCanvas.Interactivity.Dialogs
 {
     public class MessageBoxRequest : IUserRequestInteraction
     {
-        public Task ShowAsync()
+        public void ShowInteraction()
         {
-            return Task.Run(ProcessDialog);
+            Task.Run(ProcessDialog);
         }
 
-        public Task CloseAsync()
+        public void CloseInteraction()
         {
             throw new InvalidOperationException();
         }

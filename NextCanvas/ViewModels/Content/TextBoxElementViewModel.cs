@@ -2,7 +2,7 @@
 
 namespace NextCanvas.ViewModels.Content
 {
-    public class TextBoxElementViewModel : ContentElementViewModel, IViewModel<TextBoxElement>
+    public class TextBoxElementViewModel : ContentElementViewModel, IViewModel<TextBoxElement>, INamedObject
     {
         public TextBoxElementViewModel()
         {
@@ -28,5 +28,7 @@ namespace NextCanvas.ViewModels.Content
         {
             return new TextBoxElement();
         }
+
+        public string Name => "Text block";
     }
 }

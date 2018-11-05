@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace NextCanvas.Models
 {
-    public class Tool
+    public class Tool : INamedObject
     {
         private bool? hasDemo;
 
@@ -21,7 +21,6 @@ namespace NextCanvas.Models
         public object SmallIcon { get; set; }
         public ToolGroup Group { get; set; } = new ToolGroup();
         public Cursor Cursor { get; set; } = Cursors.Pen;
-        public bool IsDisplayed { get; set; } = true;
 
         public bool HasDemo
         {

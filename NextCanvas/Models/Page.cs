@@ -40,9 +40,9 @@ namespace NextCanvas.Models
                             toRemove.Add(stroke);
                             toAdd.Add(customStroke);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
-                            continue; // whatever
+                            // whatever
                         }
                     }
 

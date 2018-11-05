@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
+using Newtonsoft.Json;
 using NextCanvas.Views;
 
 namespace NextCanvas
@@ -25,9 +28,9 @@ namespace NextCanvas
             var exception = (Exception) e.ExceptionObject;
             foreach (var window in Current.Windows)
                 if (window is ScreenshotWindow win)
-                    win.Close(); // It's top most and your computer will be LOCKED IF THIS THING ISNT CLOSED SO BETTER CLOSE IT.
+                    win.CloseInteraction(); // It's top most and your computer will be LOCKED IF THIS THING ISNT CLOSED SO BETTER CLOSE IT.
             new ExceptionWindow(exception.ToString()).ShowDialog();
-            Current.Shutdown(1);
+            Environment.FailFast(exception.Message, exception);
         }
     }
 }

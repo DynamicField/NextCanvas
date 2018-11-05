@@ -6,6 +6,8 @@
         xmlns:vm="clr-namespace:NextCanvas.ViewModels"
         xmlns:convert="clr-namespace:NextCanvas.Converters"
         xmlns:controls="clr-namespace:NextCanvas.Controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Name="Window"
         mc:Ignorable="d" d:DataContext="{x:Static vm:PageCollectionViewerViewModel.SampleViewModel}"
         Title="Page manager" Height="450" Width="800">
@@ -21,6 +23,13 @@
         <ListBox ItemsSource="{Binding WindowViewModel.CurrentDocument.Pages}" SelectionMode="Extended" 
                  x:Name="ListBox" SelectionChanged="ListBox_OnSelectionChanged" 
                  AlternationCount="{x:Static sys:Int32.MaxValue}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" Handler="DoubleClick">
+                        
+                    </EventSetter>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel IsItemsHost="True" Orientation="Horizontal" />

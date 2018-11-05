@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
-using Fluent;
+﻿using Fluent;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Multimedia;
 using NextCanvas.Interactivity.Progress;
@@ -17,6 +8,16 @@ using NextCanvas.Serialization;
 using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels.Content;
+using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace NextCanvas.ViewModels
 {
@@ -124,7 +125,7 @@ namespace NextCanvas.ViewModels
         public DelegateCommand SwitchToSelectToolCommand { get; private set; }
         public DelegateCommand CreateImageCommand { get; private set; }
         public DelegateCommand CreateScreenshotCommand { get; private set; }
-        public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;       
+        public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
 
         private DocumentReader DocumentReader { get; } = new DocumentReader();
         private DocumentSaver DocumentSaver { get; } = new DocumentSaver();
@@ -168,17 +169,16 @@ namespace NextCanvas.ViewModels
                 o => CanChangePage(Direction.Backwards));
             NextPageCommand = new DelegateCommand(o => ChangePage(Direction.Forwards),
                 o => CanChangePage(Direction.Forwards));
-            NewPageCommand = new DelegateCommand(o => CreateNewPage());
+            NewPageCommand = new DelegateCommand(CreateNewPage);
             DeletePageCommand = new DelegateCommand(o => DeletePage(CurrentDocument.SelectedIndex), o => CurrentDocument.CanDeletePage);
-            ExtendPageCommand = new DelegateCommand(o => ExtendPage(o.ToString()));
-            SetToolByNameCommand =
-                new DelegateCommand(o => SetToolByName(o.ToString()), o => IsNameValid(o.ToString()));
-            SwitchToSelectToolCommand = new DelegateCommand(o => SwitchToSelectTool(), o => IsThereAnySelectTools());
+            ExtendPageCommand = new DelegateCommand(ExtendPage);
+            SetToolByNameCommand = new DelegateCommand(SetToolByName, IsNameValid);
+            SwitchToSelectToolCommand = new DelegateCommand(SwitchToSelectTool, IsThereAnySelectTools);
             SaveCommand = new DelegateCommand(async o => await SaveDocument(o));
-            OpenCommand = new DelegateCommand(o => OpenDocument(o));
-            CreateTextBoxCommand = new DelegateCommand(o => CreateTextBox());
-            CreateImageCommand = new DelegateCommand(o => CreateImage());
-            CreateScreenshotCommand = new DelegateCommand(async o => await CreateScreenShot(o));
+            OpenCommand = new DelegateCommand(OpenDocument);
+            CreateTextBoxCommand = new DelegateCommand(CreateTextBox);
+            CreateImageCommand = new DelegateCommand(CreateImage);
+            CreateScreenshotCommand = new DelegateCommand(CreateScreenShot);
         }
 
         private void CenterElement(ContentElementViewModel v, ElementCreationContext context)
@@ -210,7 +210,6 @@ namespace NextCanvas.ViewModels
                 AddElementToSelectedPage(element);
                 return;
             }
-
             CenterElement(element, ElementCreationContext);
             AddElementToSelectedPage(element);
             SelectedTool = GetSelectTool();
@@ -249,18 +248,18 @@ namespace NextCanvas.ViewModels
             ProcessItem(element);
         }
 
-        private async Task CreateScreenShot(object interaction)
+        private void CreateScreenShot(object interaction)
         {
             if (!(interaction is IInteractionProvider<IScreenshotInteraction> interact)) return;
             var screenshotter = interact.CreateInteraction();
-            await screenshotter.ShowAsync();
+            screenshotter.ShowInteraction();
             screenshotter.ActionComplete += Screenshotter_ActionComplete;
             // yes.
         }
 
         private void Screenshotter_ActionComplete(object sender, ScreenshotTakenEventArgs e)
         {
-            var resource = CurrentDocument.AddResource(e.ImageData, "Screenshot" + e.ImageExtension);
+            var resource = CurrentDocument.AddResource(e.ImageData, "Screenshot" + DateTime.Now.ToString("s").Replace(":", ".") + e.ImageExtension);
             AddImage(resource);
         }
 
@@ -343,7 +342,7 @@ namespace NextCanvas.ViewModels
             }
         }
 
-
+        private void SetToolByName(object name) => SetToolByName(name.ToString());
         private void SetToolByName(string name)
         {
             if (!IsNameValid(name)) return;
@@ -351,6 +350,7 @@ namespace NextCanvas.ViewModels
             SelectedTool = Tools.First(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
+        private bool IsNameValid(object name) => IsNameValid(name.ToString());
         private bool IsNameValid(string name)
         {
             return Tools.Any(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
@@ -364,6 +364,7 @@ namespace NextCanvas.ViewModels
             }
         }
 
+        private void ExtendPage(object direction) => ExtendPage(direction.ToString());
         private void ExtendPage(string direction)
         {
             if (direction.Equals("Right", StringComparison.InvariantCultureIgnoreCase))
@@ -375,10 +376,10 @@ namespace NextCanvas.ViewModels
 
         private void ChangePage(Direction direction)
         {
-            if (CanChangePage(direction)) document.SelectedIndex += (int) direction;
+            if (CanChangePage(direction)) document.SelectedIndex += (int)direction;
         }
 
-        private void ChangePage(int index)
+        public void ChangePage(int index)
         {
             if (CanChangePage(index)) document.SelectedIndex = index;
         }

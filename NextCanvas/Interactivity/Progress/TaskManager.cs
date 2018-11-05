@@ -38,7 +38,7 @@ namespace NextCanvas.Interactivity.Progress
             var index = Tasks.IndexOf(CurrentTask) + 1;
             if (index == Tasks.Count)
             {
-                progress.CloseAsync();
+                progress.CloseInteraction();
                 return;
             }
 
@@ -84,11 +84,11 @@ namespace NextCanvas.Interactivity.Progress
                     DetachEvents((ProgressTask) item);
         }
 
-        public async Task WorkDone()
+        public void WorkDone()
         {
             Tasks.Clear();
             Tasks.CollectionChanged -= TasksOnCollectionChanged;
-            await progress.CloseAsync();
+            progress.CloseInteraction();
         }
     }
 }

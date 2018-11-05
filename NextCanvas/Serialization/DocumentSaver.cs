@@ -22,24 +22,24 @@ namespace NextCanvas.Serialization
             zip.AddEntry("document.json", mainJson, Encoding.UTF8); // Fixes the things
         }
 
-        private async Task CreateZipFile(Document document, string savePath, IProgressInteraction progress)
+        private void CreateZipFile(Document document, string savePath, IProgressInteraction progress)
         {
             using (var zip = new ZipFile
                 {CompressionLevel = (CompressionLevel) SettingsManager.Settings.FileCompressionLevel})
             {
                 var taskManager = CreateSavingTasksInitialization(document, progress, out var writingTask,
                     out var resourceTasks, out var count, out var finalizingTask);
-                await progress.ShowAsync();
+                progress.ShowInteraction();
                 InitializeZipStructure(document, zip, writingTask);
                 if (count == 0)
                 {
                     FinalizeFileTask(savePath, finalizingTask, zip);
-                    await taskManager.WorkDone();
+                    taskManager.WorkDone();
                     return;
                 }
                 ProcessResources(document, resourceTasks, zip);
                 FinalizeFileTask(savePath, finalizingTask, zip);
-                await taskManager.WorkDone();
+                taskManager.WorkDone();
             }
         }
 

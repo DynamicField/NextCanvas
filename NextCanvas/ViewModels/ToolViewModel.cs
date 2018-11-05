@@ -4,14 +4,15 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+using NextCanvas.Interactivity;
 using NextCanvas.Models;
 
 namespace NextCanvas.ViewModels
 {
-    public class ToolViewModel : ViewModelBase<Tool>
+    public class ToolViewModel : ViewModelBase<Tool>, INamedObject
     {
         private ToolGroupViewModel group;
-
+        public DelegateCommand ModifyCommand { get; private set; }
         public ToolViewModel()
         {
             Initialize();
@@ -103,17 +104,6 @@ namespace NextCanvas.ViewModels
                 new StylusPoint(75, 22)
             }, DrawingAttributes)
         };
-
-        public bool IsDisplayed
-        {
-            get => Model.IsDisplayed;
-            set
-            {
-                Model.IsDisplayed = value;
-                OnPropertyChanged(nameof(IsDisplayed));
-            }
-        }
-
         public bool HasDemo
         {
             get => Model.HasDemo && Group.HasDemo;
@@ -167,8 +157,16 @@ namespace NextCanvas.ViewModels
         {
             Group = new ToolGroupViewModel(Model.Group);
             InitDrawing(DrawingAttributes);
+            ModifyCommand = new DelegateCommand(Modify);
         }
 
+        private void Modify(object provider)
+        {
+            if (!(provider is IInteractionProvider<IModifyObjectInteraction> interact)) return;
+            var modifyInteraction = interact.CreateInteraction();
+            modifyInteraction.ObjectToModify = this;
+            modifyInteraction.ShowInteraction();
+        }
         private void Group_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ToolGroupViewModel.Name)) OnPropertyChanged(nameof(GroupName));

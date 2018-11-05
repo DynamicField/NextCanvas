@@ -46,7 +46,7 @@ namespace NextCanvas.ViewModels
                     }
                 });
             };
-            dialog.ShowAsync();
+            dialog.ShowInteraction();
         }
 
         private bool CanDeletePages(object param)

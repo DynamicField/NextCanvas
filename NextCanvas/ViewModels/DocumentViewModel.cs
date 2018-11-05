@@ -51,7 +51,11 @@ namespace NextCanvas.ViewModels
             OnPropertyChanged(nameof(SelectedPage));
         }
 
-        public PageViewModel SelectedPage => Pages[selectedIndex];
+        public PageViewModel SelectedPage
+        {
+            get => Pages[selectedIndex];
+            set => SelectedIndex = Pages.IndexOf(value);
+        }
 
         internal IResourceViewModelLocator ResourceLocator => locator;
 
@@ -121,7 +125,7 @@ namespace NextCanvas.ViewModels
         {
             var baseName = Path.GetFileNameWithoutExtension(name);
             var extension = Path.GetExtension(name);
-            var fileName = baseName + Resources.Count + extension;
+            var fileName = baseName + "_" + random.Next(0, short.MaxValue) + "_" + Resources.Count + extension;
             return fileName;
         }
 
@@ -130,7 +134,7 @@ namespace NextCanvas.ViewModels
             var testResource = Resources.FirstOrDefault(r => r.DataMD5Hash == fileStream.GetMD5FromFile());
             return testResource;
         }
-
+        private Random random = new Random();
         public ResourceViewModel AddResource(MemoryStream stream, string name)
         {
             var existing = GetExistingResource(stream);

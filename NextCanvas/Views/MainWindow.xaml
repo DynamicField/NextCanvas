@@ -11,7 +11,7 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     x:Class="NextCanvas.Views.MainWindow"
-    UseLayoutRounding="True"
+    UseLayoutRounding="True" x:Name="Window"
     mc:Ignorable="d" ResizeBorderThickness="2"
     d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:MainWindowViewModel}}"
     Title="NextCanvas" Height="720" Width="1202">
@@ -122,9 +122,6 @@
                         <fluent:Button.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform ScaleY="1" ScaleX="-1" />
-                                <SkewTransform AngleY="0" AngleX="0" />
-                                <RotateTransform Angle="0" />
-                                <TranslateTransform />
                             </TransformGroup>
                         </fluent:Button.RenderTransform>
                     </fluent:Button>
@@ -168,7 +165,7 @@
                             </CollectionViewSource>
                         </fluent:RibbonGroupBox.Resources>
                         <fluent:InRibbonGallery ItemsSource="{Binding Source={StaticResource ToolsSource}}"
-                                                Selectable="True"
+                                                Selectable="True" 
                                                 SelectedItem="{Binding SelectedTool}"
                                                 Header="Tool..." ResizeMode="Both" MinItemsInRow="3" MaxItemsInRow="13"
                                                 Orientation="Horizontal"
@@ -182,6 +179,13 @@
                             <fluent:InRibbonGallery.ItemTemplate>
                                 <DataTemplate DataType="{x:Type vm:ToolViewModel}">
                                     <StackPanel>
+                                        <StackPanel.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Modify..."
+                                                          Command="{Binding ModifyCommand}"
+                                                          CommandParameter="{Binding ModifyProvider, Source={x:Reference Window}}"/>
+                                            </ContextMenu>
+                                        </StackPanel.ContextMenu>
                                         <Image Source="{Binding LargeIcon}" Width="24" />
                                         <Viewbox StretchDirection="DownOnly">
                                             <TextBlock Text="{Binding Name}" TextWrapping="Wrap" TextAlignment="Center"

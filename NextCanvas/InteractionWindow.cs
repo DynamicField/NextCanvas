@@ -7,14 +7,14 @@ namespace NextCanvas
 {
     public class InteractionWindow : Window, IInteractionBase
     {
-        public virtual Task CloseAsync()
+        public virtual void CloseInteraction()
         {
-            return Dispatcher.InvokeAsync(Close).Task;
+            Dispatcher.Invoke(Close);
         }
 
-        public virtual Task ShowAsync()
+        public virtual void ShowInteraction()
         {
-            return Dispatcher.InvokeAsync(Show).Task;
+            Dispatcher.Invoke(Show);
         }
 
         protected void RefreshUI(DispatcherPriority priority = DispatcherPriority.ContextIdle)

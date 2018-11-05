@@ -10,6 +10,9 @@ namespace NextCanvas
             ActionToExecute = action;
             if (canExecute != null) CanExecuteAction = canExecute;
         }
+
+        public DelegateCommand(Action act, Func<object, bool> canExecute = null) : this(_ => act(), canExecute) { }
+        public DelegateCommand(Action act, Func<bool> canExecute) : this(act, _ => canExecute()) { }
         public Action<object> ActionToExecute { get; set; }
         public Func<object, bool> CanExecuteAction { get; set; } = o => true;
         public event EventHandler CanExecuteChanged;

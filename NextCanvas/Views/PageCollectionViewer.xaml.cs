@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Dialogs;
@@ -68,6 +69,12 @@ namespace NextCanvas.Views
         private void ListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             (DeleteButton.Command as DelegateCommand)?.RaiseCanExecuteChanged(); // It cannot be bound so we have no choice sadly :(
+        }
+
+        private void DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var vm = (PageCollectionViewerViewModel) DataContext;
+            vm.WindowViewModel.CurrentDocument.SelectedPage = ((sender) as ListBoxItem).DataContext as PageViewModel;
         }
     }
 }

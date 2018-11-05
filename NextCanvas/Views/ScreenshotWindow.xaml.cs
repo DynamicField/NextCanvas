@@ -82,7 +82,7 @@ namespace NextCanvas.Views
                 Owner.Focus();
             }
 
-            base.Close();
+            base.CloseInteraction();
         }
 
         private void CancelClick(object sender, RoutedEventArgs e)

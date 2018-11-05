@@ -4,7 +4,7 @@ using NextCanvas.Utilities.Content;
 
 namespace NextCanvas.ViewModels.Content
 {
-    public class ImageElementViewModel : ResourceElementViewModel
+    public class ImageElementViewModel : ResourceElementViewModel, INamedObject
     {
         private BitmapImage image;
 
@@ -76,5 +76,7 @@ namespace NextCanvas.ViewModels.Content
             base.OnResourceChanged();
             CreateBitmapImage();
         }
+
+        public string Name => "Image";
     }
 }

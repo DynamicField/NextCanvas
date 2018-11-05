@@ -1,15 +1,17 @@
-﻿using Fluent;
+﻿using System;
+using Fluent;
 using Microsoft.Win32;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Multimedia;
 using NextCanvas.Interactivity.Progress;
+using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels;
+using NextCanvas.Views.Editor;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
-using NextCanvas.Utilities;
 
 namespace NextCanvas.Views
 {
@@ -21,7 +23,11 @@ namespace NextCanvas.Views
         public MainWindow()
         {
             InitializeComponent();
-            PropertyChangedObject.Contexts.Add(Thread.CurrentThread, SynchronizationContext.Current);
+            try
+            {
+                PropertyChangedObject.Contexts.Add(Thread.CurrentThread, SynchronizationContext.Current);
+            }
+            catch (ArgumentException) { }
             DataContext = new MainWindowViewModel
             {
                 ElementCreationContext = CreationContext
@@ -38,6 +44,9 @@ namespace NextCanvas.Views
 
         public DelegateInteractionProvider<IScreenshotInteraction> ScreenshotProvider =>
             new DelegateInteractionProvider<IScreenshotInteraction>(() => new ScreenshotWindow(this));
+
+        public DelegateInteractionProvider<IModifyObjectInteraction> ModifyProvider => 
+            new DelegateInteractionProvider<IModifyObjectInteraction>(() => new ModifyObjectWindow(this));
 
         private void ColorGallery_SelectedColorChanged(object sender, RoutedEventArgs e)
         {

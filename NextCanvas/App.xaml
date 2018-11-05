@@ -8,7 +8,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
             <Style TargetType="{x:Type Paragraph}">
                 <Setter Property="LineHeight" Value="0.5" />
             </Style>

@@ -19,9 +19,7 @@ namespace NextCanvas.Interactivity.Multimedia
             var memoryStream = new MemoryStream();
             encoder.Save(memoryStream);
             ImageData = memoryStream;
-            ImageExtension =
-                encoder.CodecInfo.FileExtensions.Split(',')
-                    [0]; // First extension. Usually the best. But it doesn't matter much. Yes.
+            ImageExtension = encoder.CodecInfo.FileExtensions.Split(',')[0]; // First extension. Usually the best. But it doesn't matter much. Yes.
         }
 
         public MemoryStream ImageData { get; }

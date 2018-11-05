@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using NextCanvas.Interactivity.Progress;
@@ -18,14 +19,14 @@ namespace NextCanvas.Views
             Data.PropertyChanged += ProgressWindow_PropertyChanged;
         }
 
-        public override Task CloseAsync()
+        public override void CloseInteraction()
         {
-            return Dispatcher.InvokeAsync(async () =>
+            Dispatcher.BeginInvoke((Action)(async () =>
             {
                 Data.Progress = 100;
-                await Task.Delay(200);
+                await Task.Delay(100);
                 Close();
-            }).Task;
+            }));
         }
 
         public IProgressData Data { get; } = new ProgressDataContext();
