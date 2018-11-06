@@ -35,16 +35,15 @@
         </Grid.RowDefinitions>
         <Border Background="Gray">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" x:Name="ScrollParent">
-                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Grid>
-                        <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Center"
+                <Grid>
+                    <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Padding="5,2" Margin="2" Opacity="0.2" Style="{StaticResource OpacityOnHover}"
                                 Command="{Binding ExtendPageCommand}" CommandParameter="Right"
                                 Click="ResizeCanvasEvent" />
-                        <Canvas Width="{Binding CurrentDocument.SelectedPage.Width}"
+                    <Canvas Width="{Binding CurrentDocument.SelectedPage.Width}"
                                 Height="{Binding CurrentDocument.SelectedPage.Height}">
-                            <local:NextInkCanvas
+                        <local:NextInkCanvas
                                 x:Name="Canvas" EditingMode="{Binding SelectedTool.Mode, Mode=OneWay}"
                                 EraserShapeDP="{Binding SelectedTool.EraserShape}"
                                 Width="{Binding CurrentDocument.SelectedPage.Width}"
@@ -56,21 +55,20 @@
                                 Cursor="{Binding SelectedTool.Cursor}"
                                 DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}"
                                 ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"
-                                CustomStrokeInvocator="{Binding SelectedTool.Model.StrokeConstructor, FallbackValue={x:Null}}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanging">
-                                        <ei:CallMethodAction TargetObject="{Binding}" MethodName="SelectionHandler" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </local:NextInkCanvas>
-                        </Canvas>
-                        <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Bottom"
+                                CustomStrokeInvocator="{Binding SelectedTool.Model.StrokeConstructor, FallbackValue={x:Null}, PresentationTraceSources.TraceLevel=None}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanging">
+                                    <ei:CallMethodAction TargetObject="{Binding}" MethodName="SelectionHandler" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </local:NextInkCanvas>
+                    </Canvas>
+                    <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Bottom"
                                 HorizontalAlignment="Center"
                                 Padding="5,2" Margin="2" Opacity="0.6" Style="{StaticResource OpacityOnHover}"
                                 Command="{Binding ExtendPageCommand}" CommandParameter="Bottom"
                                 Click="ResizeCanvasEvent" />
-                    </Grid>
-                </Border>
+                </Grid>
             </ScrollViewer>
         </Border>
         <Grid Grid.Row="1">
@@ -171,21 +169,23 @@
                                                 Orientation="Horizontal"
                                                 ItemHeight="54" ItemWidth="54" GroupBy="GroupName"
                                                 SizeDefinition="Large, Large, Large">
-                            <!--<fluent:InRibbonGallery.ItemContainerStyle>
+                            <fluent:InRibbonGallery.ItemContainerStyle>
                                 <Style TargetType="fluent:GalleryItem">
-                                    <Setter Property="Visibility" Value="{Binding IsDisplayed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    <Setter Property="ContextMenu">
+                                        <Setter.Value>
+                                            <ContextMenu d:DataContext="{d:DesignInstance vm:ToolViewModel}">
+                                                <MenuItem Header="Edit..."
+                                                          Command="{Binding ModifyCommand}"
+                                                          CommandParameter="{x:Static local1:MainWindow.ModifyProvider}"/>
+                                                <!-- x reference is broken for some reason-->
+                                            </ContextMenu>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Style>
-                            </fluent:InRibbonGallery.ItemContainerStyle>-->
+                            </fluent:InRibbonGallery.ItemContainerStyle>
                             <fluent:InRibbonGallery.ItemTemplate>
                                 <DataTemplate DataType="{x:Type vm:ToolViewModel}">
                                     <StackPanel>
-                                        <StackPanel.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Modify..."
-                                                          Command="{Binding ModifyCommand}"
-                                                          CommandParameter="{Binding ModifyProvider, Source={x:Reference Window}}"/>
-                                            </ContextMenu>
-                                        </StackPanel.ContextMenu>
                                         <Image Source="{Binding LargeIcon}" Width="24" />
                                         <Viewbox StretchDirection="DownOnly">
                                             <TextBlock Text="{Binding Name}" TextWrapping="Wrap" TextAlignment="Center"

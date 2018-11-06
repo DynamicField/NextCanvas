@@ -20,36 +20,32 @@ namespace NextCanvas.Views.Editor
     /// </summary>
     public partial class ModifyObjectWindow : InteractionWindow, IModifyObjectInteraction
     {
+        private ModifierData data = new ModifierData();
         public ModifyObjectWindow()
         {
+            DataContext = data;
             InitializeComponent();
         }
 
         public ModifyObjectWindow(Window owner)
         {
+            DataContext = data;
             InitializeComponent();
             Owner = owner;
         }
 
-        private void SetHeader(object data)
-        {
-            if (data is INamedObject named)
-            {
-                HeaderText = $"Modifying {named.Name}";
-            }
-        }
-
         public string HeaderText
         {
-            get => (string)GetValue(HeaderTextProperty);
-            set => SetValue(HeaderTextProperty, value);
+            get => data.HeaderText;
+            set => data.HeaderText = value;
+        }
+        public string HeaderStart
+        {
+            get => data.HeaderStart;
+            set => data.HeaderStart = value;
         }
 
-        // Using a DependencyProperty as the backing store for HeaderText.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty HeaderTextProperty =
-            DependencyProperty.Register("HeaderText", typeof(string), typeof(ModifyObjectWindow), new FrameworkPropertyMetadata("Modifying object..."));
-
-
+    
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             ActionComplete?.Invoke(this, EventArgs.Empty);
@@ -64,11 +60,41 @@ namespace NextCanvas.Views.Editor
 
         public event EventHandler<EventArgs> ActionComplete;
         public event EventHandler ActionCanceled;
-        private object objectToModify = new object();
         public object ObjectToModify
         {
-            get => objectToModify;
-            set => Dispatcher.Invoke(() => { DataContext = objectToModify = value; SetHeader(value); });
+            get => data.ObjectToModify;
+            set => data.ObjectToModify = value;
+        }
+
+        private class ModifierData : PropertyChangedObject
+        {
+            private object objectToModify;
+
+            public object ObjectToModify
+            {
+                get => objectToModify;
+                set { objectToModify = value; OnPropertyChanged(nameof(ObjectToModify)); SetHeader(); }
+            }
+            private string headerText;
+            private string _headerStart = "Modifying";
+
+            public string HeaderText
+            {
+                get => headerText;
+                set { headerText = value; OnPropertyChanged(nameof(HeaderText)); }
+            }
+            public string HeaderStart
+            {
+                get => _headerStart;
+                set { _headerStart = value; SetHeader(); }
+            }
+            private void SetHeader()
+            {
+                if (objectToModify is INamedObject named)
+                {
+                    HeaderText = $"{HeaderStart} {named.Name}";
+                }
+            }
         }
     }
 }

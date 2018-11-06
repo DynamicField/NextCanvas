@@ -70,6 +70,7 @@ namespace NextCanvas.Views
 
         private void CancelScreenshot()
         {
+            isCapturing = true; // to not focus after autoclose
             ActionCanceled?.Invoke(this, EventArgs.Empty);
             Close();
         }

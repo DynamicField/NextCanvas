@@ -7,7 +7,7 @@
         xmlns:root="clr-namespace:NextCanvas"
         xmlns:vmroot="clr-namespace:NextCanvas.ViewModels"
         xmlns:controls="clr-namespace:NextCanvas.Controls.Editor"
-        mc:Ignorable="d"
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance local:ModifyObjectWindow+ModifierData}"
         Title="ModifyObjectWindow" Height="450" Width="800">
     <Window.Resources>
         <SolidColorBrush Color="#E5E5E5" x:Key="BackgroundBrush"/>
@@ -19,12 +19,12 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <Border Background="{StaticResource BackgroundBrush}">
-            <TextBlock VerticalAlignment="Center" Margin="10" FontSize="18" Text="{Binding HeaderText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ModifyObjectWindow}}"/>
+            <TextBlock VerticalAlignment="Center" Margin="10" FontSize="18" Text="{Binding HeaderText}"/>
         </Border>
-        <ContentPresenter Grid.Row="1" Content="{Binding}">
+        <ContentPresenter Grid.Row="1" Content="{Binding ObjectToModify}">
             <ContentPresenter.Resources>
                 <DataTemplate DataType="{x:Type vmroot:ToolViewModel}">
-                    <controls:ToolEditorControl DataContext="{Binding}"/>
+                    <controls:ToolEditorControl/>
                 </DataTemplate>
             </ContentPresenter.Resources>
         </ContentPresenter>

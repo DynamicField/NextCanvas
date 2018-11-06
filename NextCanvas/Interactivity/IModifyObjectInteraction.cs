@@ -3,5 +3,7 @@
     public interface IModifyObjectInteraction : IUserInteraction
     {
         object ObjectToModify { get; set; }
+        string HeaderText { get; set; }
+        string HeaderStart { get; set; }
     }
 }

@@ -55,7 +55,7 @@ namespace NextCanvas.Models
         }
 
         public List<ContentElement> Elements { get; set; } = new List<ContentElement>();
-        public int Width { get; set; } = 1720;
-        public int Height { get; set; } = 1420;
+        public int Width { get; set; } = 1920;
+        public int Height { get; set; } = 1200;
     }
 }

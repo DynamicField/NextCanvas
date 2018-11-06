@@ -22,6 +22,7 @@ namespace NextCanvas.Views
     {
         public MainWindow()
         {
+            ModifyProvider = new DelegateInteractionProvider<IModifyObjectInteraction>(() => new ModifyObjectWindow(this));
             InitializeComponent();
             try
             {
@@ -45,8 +46,7 @@ namespace NextCanvas.Views
         public DelegateInteractionProvider<IScreenshotInteraction> ScreenshotProvider =>
             new DelegateInteractionProvider<IScreenshotInteraction>(() => new ScreenshotWindow(this));
 
-        public DelegateInteractionProvider<IModifyObjectInteraction> ModifyProvider => 
-            new DelegateInteractionProvider<IModifyObjectInteraction>(() => new ModifyObjectWindow(this));
+        public static DelegateInteractionProvider<IModifyObjectInteraction> ModifyProvider { get; private set; }
 
         private void ColorGallery_SelectedColorChanged(object sender, RoutedEventArgs e)
         {

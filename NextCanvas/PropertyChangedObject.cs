@@ -8,7 +8,7 @@ namespace NextCanvas
     public abstract class PropertyChangedObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        internal static Dictionary<Thread, SynchronizationContext> Contexts { get; set; } = new Dictionary<Thread, SynchronizationContext>();
+        internal static Dictionary<Thread, SynchronizationContext> Contexts { get; } = new Dictionary<Thread, SynchronizationContext>();
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             foreach (var context in Contexts)

@@ -8,7 +8,7 @@ namespace NextCanvas.ViewModels.Content
     {
         private BitmapImage image;
 
-        internal ImageElementViewModel(ImageElement model, IResourceLocator resource = null) : base(model, resource)
+        internal ImageElementViewModel(ResourceElement model, IResourceLocator resource = null) : base(model, resource)
         {
         }
 
