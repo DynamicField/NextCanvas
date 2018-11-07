@@ -6,10 +6,9 @@ using System;
 
 namespace NextCanvas.Interactivity.Dialogs
 {
-    public interface IUserRequestInteraction : IUserInteraction<DialogResultEventArgs>
+    public interface IUserRequestInteraction : IUserInteraction<DialogResultEventArgs>, IContentInteraction
     {
-        string Title { get; set; }
-        string Content { get; set; }
+       
     }
 
     public class DialogResultEventArgs : EventArgs

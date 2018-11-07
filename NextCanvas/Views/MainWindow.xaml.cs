@@ -1,10 +1,5 @@
 ﻿#region
 
-using System;
-using System.Linq;
-using System.Threading;
-using System.Windows;
-using System.Windows.Media;
 using Fluent;
 using Microsoft.Win32;
 using NextCanvas.Interactivity;
@@ -14,6 +9,11 @@ using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels;
 using NextCanvas.Views.Editor;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Media;
 
 #endregion
 
@@ -35,7 +35,8 @@ namespace NextCanvas.Views
             catch (ArgumentException) { }
             DataContext = new MainWindowViewModel
             {
-                ElementCreationContext = CreationContext
+                ElementCreationContext = CreationContext,
+                ErrorProvider = ErrorProvider
             };
             pageViewerFactory = new UniqueWindowFactory<PageCollectionViewer>(() => new PageCollectionViewer((MainWindowViewModel)DataContext));
             Canvas.DefaultDrawingAttributes.FitToCurve = true;
@@ -49,6 +50,9 @@ namespace NextCanvas.Views
 
         public DelegateInteractionProvider<IScreenshotInteraction> ScreenshotProvider =>
             new DelegateInteractionProvider<IScreenshotInteraction>(() => new ScreenshotWindow(this));
+
+        public DelegateInteractionProvider<IErrorInteraction> ErrorProvider =>
+            new DelegateInteractionProvider<IErrorInteraction>(() => new MessageBoxError(this));
 
         public static DelegateInteractionProvider<IModifyObjectInteraction> ModifyProvider { get; private set; }
 

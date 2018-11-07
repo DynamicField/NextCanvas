@@ -96,6 +96,8 @@ namespace NextCanvas.ViewModels.Content
                     return new TextBoxElementViewModel(t);
                 case ImageElement i:
                     return new ImageElementViewModel(i);
+                case WebBrowserElement w:
+                    return new WebBrowserElementViewModel(w);
                 default:
                     return new ContentElementViewModel(model);
             }

@@ -29,6 +29,7 @@ namespace NextCanvas.ViewModels
         private DocumentViewModel document;
 
         private ElementCreationContext elementCreationContext;
+        public IInteractionProvider<IErrorInteraction> ErrorProvider { get; set; }
         private int selectedToolIndex;
 
         public MainWindowViewModel()
@@ -128,6 +129,7 @@ namespace NextCanvas.ViewModels
         public DelegateCommand SwitchToSelectToolCommand { get; private set; }
         public DelegateCommand CreateImageCommand { get; private set; }
         public DelegateCommand CreateScreenshotCommand { get; private set; }
+        public DelegateCommand CreateWebBrowserCommand { get; private set; }
         public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
 
         private DocumentReader DocumentReader { get; } = new DocumentReader();
@@ -168,6 +170,7 @@ namespace NextCanvas.ViewModels
             document = new DocumentViewModel(Model.Document);
             Tools = new ObservableViewModelCollection<ToolViewModel, Tool>(Model.Tools, ToolViewModel.GetViewModel);
             Subscribe();
+            // Create commands
             PreviousPageCommand = new DelegateCommand(o => ChangePage(Direction.Backwards),
                 o => CanChangePage(Direction.Backwards));
             NextPageCommand = new DelegateCommand(o => ChangePage(Direction.Forwards),
@@ -182,6 +185,7 @@ namespace NextCanvas.ViewModels
             CreateTextBoxCommand = new DelegateCommand(CreateTextBox);
             CreateImageCommand = new DelegateCommand(CreateImage);
             CreateScreenshotCommand = new DelegateCommand(CreateScreenShot);
+            CreateWebBrowserCommand = new DelegateCommand(CreateWebBrowser);
         }
 
         private void CenterElement(ContentElementViewModel v, ElementCreationContext context)
@@ -266,6 +270,19 @@ namespace NextCanvas.ViewModels
             AddImage(resource);
         }
 
+        private void CreateWebBrowser(object interaction)
+        {
+            if (!(interaction is IInteractionProvider<IModifyObjectInteraction> interact)) return;
+            var editor = interact.CreateInteraction();
+            var browserInstance = new WebBrowserElementViewModel();
+            editor.ObjectToModify = browserInstance;
+            editor.HeaderText = "Creating a web browser...";
+            editor.ActionComplete += (sender, args) => { ProcessItem(browserInstance); };
+            editor.ShowInteraction();
+        }
+
+        // Pages things
+
         private void AddElementToSelectedPage(ContentElementViewModel element)
         {
             CurrentDocument.SelectedPage.Elements.Add(element);
@@ -308,6 +325,14 @@ namespace NextCanvas.ViewModels
                 await DocumentSaver.SaveCompressedDocument(CurrentDocument.Model, SavePath,
                     progressInteractionProcessed);
             }
+            catch (Exception e)
+            {
+                if (ErrorProvider == null) throw;
+                var error = ErrorProvider.CreateInteraction();
+                error.Content = "Sorry, we weren't able to save your file: " + e.Message;
+                error.Title = "Oops :(";
+                error.ShowInteraction();
+            }
             finally
             {
                 SavePath = null;
@@ -338,6 +363,14 @@ namespace NextCanvas.ViewModels
                         new DocumentViewModel(DocumentReader.TryOpenDocument(fileStream,
                             provider.CreateInteraction()));
                 }
+            }
+            catch (Exception e)
+            {
+                if (ErrorProvider == null) throw;
+                var error = ErrorProvider.CreateInteraction();
+                error.Content = "Sorry, we weren't able to open your file: " + e.Message;
+                error.Title = "Oops :(";
+                error.ShowInteraction();
             }
             finally
             {

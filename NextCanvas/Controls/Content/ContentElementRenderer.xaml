@@ -35,7 +35,9 @@
                     <local:ElementRecognitionError />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:WebBrowserElementViewModel}">
-                    <WebBrowser Source="{Binding Url}" />
+                    <Border BorderThickness="4" BorderBrush="LightGray" x:Name="Border">
+                        <WebBrowser local:WebBrowserHelper.Source="{Binding Url}" />
+                    </Border>
                 </DataTemplate>
             </ContentPresenter.Resources>
         </ContentPresenter>

@@ -302,6 +302,12 @@
                                        Command="{Binding CreateScreenshotCommand}"
                                        CommandParameter="{Binding ScreenshotProvider, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}" />
                     </fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox Header="Web">
+                        <fluent:Button Header="Web browser" 
+                                       LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/WebBrowser.png" 
+                                       Command="{Binding CreateWebBrowserCommand}"
+                                       CommandParameter="{x:Static local1:MainWindow.ModifyProvider}"/>
+                    </fluent:RibbonGroupBox>
                 </fluent:RibbonTabItem>
                 <fluent:RibbonTabItem Header="Page">
                     <fluent:RibbonGroupBox Header="Dimensions">

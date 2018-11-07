@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
+using NextCanvas.ViewModels.Content;
 using NextCanvas.Views;
 
 namespace NextCanvas
@@ -16,6 +17,7 @@ namespace NextCanvas
         public App()
         {
             // TODO: Add localization.
+            WebBrowserElementViewModel.SetHighestIEMode();
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             AppDomain.CurrentDomain.UnhandledException += RestInPeperonies;
             Current.Exit += (sender, args) => { SettingsManager.SaveSettings(); };

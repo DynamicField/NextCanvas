@@ -107,6 +107,7 @@
       <DependentUpon>ElementRecognitionError.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Content\RtfRichTextBox.cs" />
+    <Compile Include="Controls\Content\WebBrowserHelper.cs" />
     <Compile Include="Controls\Editor\ToolEditorControl.xaml.cs">
       <DependentUpon>ToolEditorControl.xaml</DependentUpon>
     </Compile>
@@ -118,7 +119,10 @@
     <Compile Include="INamedObject.cs" />
     <Compile Include="Interactivity\Dialogs\IUserRequestInteraction.cs" />
     <Compile Include="Interactivity\Dialogs\MessageBoxRequest.cs" />
+    <Compile Include="Interactivity\IContentInteraction.cs" />
+    <Compile Include="Interactivity\IErrorInteraction.cs" />
     <Compile Include="Interactivity\IModifyObjectInteraction.cs" />
+    <Compile Include="Interactivity\MessageBoxError.cs" />
     <Compile Include="Models\Content\WebBrowserElement.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SquareTool.cs" />
