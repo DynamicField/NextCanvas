@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿#region
+
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+
+#endregion
 
 namespace NextCanvas.Views
 {

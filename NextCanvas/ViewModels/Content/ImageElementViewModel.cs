@@ -1,6 +1,10 @@
-﻿using System.Windows.Media.Imaging;
+﻿#region
+
+using System.Windows.Media.Imaging;
 using NextCanvas.Models.Content;
 using NextCanvas.Utilities.Content;
+
+#endregion
 
 namespace NextCanvas.ViewModels.Content
 {

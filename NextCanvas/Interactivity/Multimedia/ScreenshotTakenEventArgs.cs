@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Media.Imaging;
+
+#endregion
 
 namespace NextCanvas.Interactivity.Multimedia
 {

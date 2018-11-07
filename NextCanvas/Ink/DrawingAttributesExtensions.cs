@@ -1,4 +1,8 @@
-﻿using System.Windows.Ink;
+﻿#region
+
+using System.Windows.Ink;
+
+#endregion
 
 namespace NextCanvas.Ink
 {

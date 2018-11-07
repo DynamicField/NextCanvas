@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,6 +10,8 @@ using System.Windows.Media;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Dialogs;
 using NextCanvas.ViewModels;
+
+#endregion
 
 namespace NextCanvas.Views
 {
@@ -33,7 +37,7 @@ namespace NextCanvas.Views
 
         private void ItemContainerGenerator_ItemsChanged(object sender, System.Windows.Controls.Primitives.ItemsChangedEventArgs e)
         {
-            for (int i = 0; i < ListBox.ItemContainerGenerator.Items.Count; i++)
+            for (var i = 0; i < ListBox.ItemContainerGenerator.Items.Count; i++)
             {
                 try
                 {
@@ -53,7 +57,7 @@ namespace NextCanvas.Views
         private T FindVisualChild<T>(DependencyObject obj)
             where T : DependencyObject
         {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 var child = VisualTreeHelper.GetChild(obj, i);
                 if (child is T variable)
@@ -74,7 +78,7 @@ namespace NextCanvas.Views
         private void DoubleClick(object sender, MouseButtonEventArgs e)
         {
             var vm = (PageCollectionViewerViewModel) DataContext;
-            vm.WindowViewModel.CurrentDocument.SelectedPage = ((sender) as ListBoxItem).DataContext as PageViewModel;
+            vm.WindowViewModel.CurrentDocument.SelectedPage = ((ListBoxItem)sender).DataContext as PageViewModel;
         }
     }
 }

@@ -7,11 +7,11 @@ using System.Windows.Controls;
 namespace NextCanvas.Controls.Editor
 {
     /// <summary>
-    /// Logique d'interaction pour ToolEditorControl.xaml
+    /// Logique d'interaction pour WebBrowserEditorControl.xaml
     /// </summary>
-    public partial class ToolEditorControl : UserControl
+    public partial class WebBrowserEditorControl : UserControl
     {
-        public ToolEditorControl()
+        public WebBrowserEditorControl()
         {
             InitializeComponent();
         }

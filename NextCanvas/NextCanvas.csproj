@@ -110,12 +110,16 @@
     <Compile Include="Controls\Editor\ToolEditorControl.xaml.cs">
       <DependentUpon>ToolEditorControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Editor\WebBrowserEditorControl.xaml.cs">
+      <DependentUpon>WebBrowserEditorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\AlternationIndexConverter.cs" />
     <Compile Include="Converters\WidthToScaleConverter.cs" />
     <Compile Include="INamedObject.cs" />
     <Compile Include="Interactivity\Dialogs\IUserRequestInteraction.cs" />
     <Compile Include="Interactivity\Dialogs\MessageBoxRequest.cs" />
     <Compile Include="Interactivity\IModifyObjectInteraction.cs" />
+    <Compile Include="Models\Content\WebBrowserElement.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SquareTool.cs" />
     <Compile Include="SettingsManager.cs" />
@@ -169,6 +173,7 @@
     <Compile Include="ViewModels\Content\ResourceElementViewModel.cs" />
     <Compile Include="ViewModels\Content\ResourceViewModel.cs" />
     <Compile Include="ViewModels\Content\TextBoxElementViewModel.cs" />
+    <Compile Include="ViewModels\Content\WebBrowserElementViewModel.cs" />
     <Compile Include="ViewModels\DocumentViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -209,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Editor\ToolEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Editor\WebBrowserEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -376,6 +385,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Ribbon\Home\Rectangle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Insert\WebBrowser.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

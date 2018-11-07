@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using NextCanvas.Models.Content;
+
+#endregion
 
 namespace NextCanvas.Models
 {

@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using NextCanvas.Interactivity.Progress;
+
+#endregion
 
 namespace NextCanvas.Views
 {

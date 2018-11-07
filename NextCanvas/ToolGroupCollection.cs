@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NextCanvas.Models;
+
+#endregion
 
 namespace NextCanvas
 {

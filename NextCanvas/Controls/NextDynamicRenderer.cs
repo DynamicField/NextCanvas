@@ -1,7 +1,10 @@
-﻿using System.Diagnostics;
+﻿#region
+
 using System.Windows.Input;
 using System.Windows.Input.StylusPlugIns;
 using System.Windows.Media;
+
+#endregion
 
 namespace NextCanvas.Controls
 {

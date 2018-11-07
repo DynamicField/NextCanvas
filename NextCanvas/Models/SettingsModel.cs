@@ -1,4 +1,8 @@
-﻿using Ionic.Zlib;
+﻿#region
+
+using Ionic.Zlib;
+
+#endregion
 
 namespace NextCanvas.Models
 {

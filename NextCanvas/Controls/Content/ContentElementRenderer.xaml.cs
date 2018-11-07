@@ -1,9 +1,13 @@
-﻿using System.ComponentModel;
+﻿#region
+
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using NextCanvas.ViewModels.Content;
+
+#endregion
 
 namespace NextCanvas.Controls.Content
 {

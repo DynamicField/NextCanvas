@@ -1,5 +1,9 @@
-﻿using NextCanvas.Models.Content;
+﻿#region
+
+using NextCanvas.Models.Content;
 using NextCanvas.ViewModels.Content;
+
+#endregion
 
 namespace NextCanvas.Utilities.Content
 {

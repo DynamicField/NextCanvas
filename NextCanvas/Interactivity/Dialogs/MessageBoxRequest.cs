@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Threading.Tasks;
 using System.Windows;
+
+#endregion
 
 namespace NextCanvas.Interactivity.Dialogs
 {

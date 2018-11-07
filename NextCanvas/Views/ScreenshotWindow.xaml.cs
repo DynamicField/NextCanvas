@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,6 +8,8 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using NextCanvas.Interactivity.Multimedia;
 using NextCanvas.Utilities.Multimedia;
+
+#endregion
 
 namespace NextCanvas.Views
 {
@@ -82,8 +86,7 @@ namespace NextCanvas.Views
                 Owner.WindowState = WindowState.Normal;
                 Owner.Focus();
             }
-
-            base.CloseInteraction();
+            CloseInteraction();
         }
 
         private void CancelClick(object sender, RoutedEventArgs e)

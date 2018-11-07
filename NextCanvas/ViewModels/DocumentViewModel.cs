@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -9,6 +11,8 @@ using NextCanvas.Models.Content;
 using NextCanvas.Serialization;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels.Content;
+
+#endregion
 
 namespace NextCanvas.ViewModels
 {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -8,6 +10,8 @@ using System.Windows.Forms;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using Size = System.Drawing.Size;
+
+#endregion
 
 namespace NextCanvas.Utilities.Multimedia
 {

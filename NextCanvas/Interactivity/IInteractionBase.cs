@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace NextCanvas.Interactivity
+﻿namespace NextCanvas.Interactivity
 {
     public interface IInteractionBase
     {

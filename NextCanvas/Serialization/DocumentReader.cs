@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
 using System.Linq;
 using Ionic.Zip;
 using NextCanvas.Interactivity.Progress;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
+
+#endregion
 
 namespace NextCanvas.Serialization
 {

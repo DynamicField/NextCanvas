@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -6,6 +8,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using NextCanvas.Interactivity;
 using NextCanvas.Models;
+
+#endregion
 
 namespace NextCanvas.ViewModels
 {

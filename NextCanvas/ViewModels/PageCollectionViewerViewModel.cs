@@ -1,9 +1,13 @@
-﻿using System.Collections;
+﻿#region
+
+using System.Collections;
 using System.Linq;
 using System.Windows;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Dialogs;
 using NextCanvas.Models;
+
+#endregion
 
 namespace NextCanvas.ViewModels
 {

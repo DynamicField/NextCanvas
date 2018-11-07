@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Ink;
 using Newtonsoft.Json;
 using NextCanvas.Models.Content;
 using NextCanvas.Properties;
+
+#endregion
 
 namespace NextCanvas.Models
 {
@@ -35,10 +39,13 @@ namespace NextCanvas.Models
                         try
                         {
                             var type = Type.GetType((string) stroke.GetPropertyData(AssemblyInfo.Guid));
-                            var customStroke = (Stroke) Activator.CreateInstance(type, stroke.StylusPoints,
-                                stroke.DrawingAttributes);
-                            toRemove.Add(stroke);
-                            toAdd.Add(customStroke);
+                            if (type != null)
+                            {
+                                var customStroke = (Stroke) Activator.CreateInstance(type, stroke.StylusPoints,
+                                    stroke.DrawingAttributes);
+                                toRemove.Add(stroke);
+                                toAdd.Add(customStroke);
+                            }
                         }
                         catch (Exception)
                         {

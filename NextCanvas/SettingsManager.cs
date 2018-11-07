@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using NextCanvas.Models;
 using NextCanvas.ViewModels;
+
+#endregion
 
 namespace NextCanvas
 {

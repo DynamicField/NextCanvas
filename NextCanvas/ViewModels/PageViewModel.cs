@@ -1,8 +1,12 @@
-﻿using System.Windows.Ink;
+﻿#region
+
+using System.Windows.Ink;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels.Content;
+
+#endregion
 
 namespace NextCanvas.ViewModels
 {

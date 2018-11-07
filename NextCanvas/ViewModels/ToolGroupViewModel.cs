@@ -1,5 +1,9 @@
-﻿using System.Windows.Media;
+﻿#region
+
+using System.Windows.Media;
 using NextCanvas.Models;
+
+#endregion
 
 namespace NextCanvas.ViewModels
 {

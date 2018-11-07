@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
+
+#endregion
 
 namespace NextCanvas.Converters
 {

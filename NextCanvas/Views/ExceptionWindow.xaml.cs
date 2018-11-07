@@ -1,5 +1,9 @@
-﻿using System.Diagnostics;
+﻿#region
+
+using System.Diagnostics;
 using System.Windows;
+
+#endregion
 
 namespace NextCanvas.Views
 {

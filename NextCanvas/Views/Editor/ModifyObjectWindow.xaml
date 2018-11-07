@@ -1,37 +1,41 @@
 ﻿<root:InteractionWindow x:Class="NextCanvas.Views.Editor.ModifyObjectWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NextCanvas.Views.Editor"
-        xmlns:root="clr-namespace:NextCanvas"
-        xmlns:vmroot="clr-namespace:NextCanvas.ViewModels"
-        xmlns:controls="clr-namespace:NextCanvas.Controls.Editor"
-        mc:Ignorable="d" d:DataContext="{d:DesignInstance local:ModifyObjectWindow+ModifierData}"
-        Title="ModifyObjectWindow" Height="450" Width="800">
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                        xmlns:local="clr-namespace:NextCanvas.Views.Editor"
+                        xmlns:root="clr-namespace:NextCanvas"
+                        xmlns:vmroot="clr-namespace:NextCanvas.ViewModels"
+                        xmlns:vmcontent="clr-namespace:NextCanvas.ViewModels.Content"
+                        xmlns:controls="clr-namespace:NextCanvas.Controls.Editor"
+                        mc:Ignorable="d" d:DataContext="{d:DesignInstance local:ModifyObjectWindow+ModifierData}"
+                        Title="ModifyObjectWindow" Height="450" Width="800">
     <Window.Resources>
-        <SolidColorBrush Color="#E5E5E5" x:Key="BackgroundBrush"/>
+        <SolidColorBrush Color="#E5E5E5" x:Key="BackgroundBrush" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="50" />
+            <RowDefinition />
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <Border Background="{StaticResource BackgroundBrush}">
-            <TextBlock VerticalAlignment="Center" Margin="10" FontSize="18" Text="{Binding HeaderText}"/>
+            <TextBlock VerticalAlignment="Center" Margin="10" FontSize="18" Text="{Binding HeaderText}" />
         </Border>
         <ContentPresenter Grid.Row="1" Content="{Binding ObjectToModify}">
             <ContentPresenter.Resources>
                 <DataTemplate DataType="{x:Type vmroot:ToolViewModel}">
-                    <controls:ToolEditorControl/>
+                    <controls:ToolEditorControl />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vmcontent:WebBrowserElementViewModel}">
+                    <controls:WebBrowserEditorControl />
                 </DataTemplate>
             </ContentPresenter.Resources>
         </ContentPresenter>
         <Border Grid.Row="2" Background="{StaticResource BackgroundBrush}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="OK" Margin="5" Width="80" Click="Ok_Click"/>
-                <Button Content="Cancel" Margin="5" Width="80" Click="Cancel_Click"></Button>
+                <Button Content="OK" Margin="5" Width="80" Click="Ok_Click" />
+                <Button Content="Cancel" Margin="5" Width="80" Click="Cancel_Click" />
             </StackPanel>
         </Border>
     </Grid>

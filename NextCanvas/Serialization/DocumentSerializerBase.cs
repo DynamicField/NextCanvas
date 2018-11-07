@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Ionic.Zip;
@@ -6,6 +8,8 @@ using Newtonsoft.Json;
 using NextCanvas.Models;
 using NextCanvas.Models.Content;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
+
+#endregion
 
 namespace NextCanvas.Serialization
 {

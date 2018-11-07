@@ -1,8 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace NextCanvas.Models
 {

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Ionic.Zip;
@@ -6,6 +8,8 @@ using Ionic.Zlib;
 using Newtonsoft.Json;
 using NextCanvas.Interactivity.Progress;
 using NextCanvas.Models;
+
+#endregion
 
 namespace NextCanvas.Serialization
 {

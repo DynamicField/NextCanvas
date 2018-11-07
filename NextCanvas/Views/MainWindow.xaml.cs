@@ -1,4 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Media;
 using Fluent;
 using Microsoft.Win32;
 using NextCanvas.Interactivity;
@@ -8,10 +14,8 @@ using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels;
 using NextCanvas.Views.Editor;
-using System.Linq;
-using System.Threading;
-using System.Windows;
-using System.Windows.Media;
+
+#endregion
 
 namespace NextCanvas.Views
 {

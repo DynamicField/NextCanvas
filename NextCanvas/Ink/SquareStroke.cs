@@ -1,7 +1,11 @@
-﻿using System.Linq;
+﻿#region
+
+using System.Linq;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+
+#endregion
 
 namespace NextCanvas.Ink
 {

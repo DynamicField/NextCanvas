@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
@@ -7,6 +9,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Fluent;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace NextCanvas.Models
 {

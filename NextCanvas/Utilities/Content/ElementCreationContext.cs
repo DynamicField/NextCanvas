@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Windows.Controls;
 using NextCanvas.Controls;
+
+#endregion
 
 namespace NextCanvas.Utilities.Content
 {

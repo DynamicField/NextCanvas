@@ -8,6 +8,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="UserControl" x:Key="DefaultUserControlStyle">
+                <Setter Property="Background" Value="White" />
+            </Style>
             <Style TargetType="{x:Type Paragraph}">
                 <Setter Property="LineHeight" Value="0.5" />
             </Style>

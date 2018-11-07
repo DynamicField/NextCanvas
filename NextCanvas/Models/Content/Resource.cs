@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace NextCanvas.Models.Content
 {

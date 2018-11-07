@@ -1,5 +1,9 @@
-﻿using System.Windows.Ink;
+﻿#region
+
+using System.Windows.Ink;
 using NextCanvas.Ink;
+
+#endregion
 
 namespace NextCanvas.Models
 {

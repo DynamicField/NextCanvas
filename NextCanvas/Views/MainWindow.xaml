@@ -37,25 +37,26 @@
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" x:Name="ScrollParent">
                 <Grid>
                     <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Center"
-                                HorizontalAlignment="Right"
-                                Padding="5,2" Margin="2" Opacity="0.2" Style="{StaticResource OpacityOnHover}"
-                                Command="{Binding ExtendPageCommand}" CommandParameter="Right"
-                                Click="ResizeCanvasEvent" />
+                            HorizontalAlignment="Right"
+                            Padding="5,2" Margin="2" Opacity="0.2" Style="{StaticResource OpacityOnHover}"
+                            Command="{Binding ExtendPageCommand}" CommandParameter="Right"
+                            Click="ResizeCanvasEvent" />
                     <Canvas Width="{Binding CurrentDocument.SelectedPage.Width}"
-                                Height="{Binding CurrentDocument.SelectedPage.Height}">
+                            Height="{Binding CurrentDocument.SelectedPage.Height}">
+                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <local:NextInkCanvas
-                                x:Name="Canvas" EditingMode="{Binding SelectedTool.Mode, Mode=OneWay}"
-                                EraserShapeDP="{Binding SelectedTool.EraserShape}"
-                                Width="{Binding CurrentDocument.SelectedPage.Width}"
-                                Height="{Binding CurrentDocument.SelectedPage.Height}"
-                                Strokes="{Binding CurrentDocument.SelectedPage.Strokes, UpdateSourceTrigger=PropertyChanged}"
-                                Canvas.Left="0" Canvas.Top="0"
-                                UseCustomCursorDP="{Binding SelectedTool.UseCursor}"
-                                ItemsSource="{Binding CurrentDocument.SelectedPage.Elements}"
-                                Cursor="{Binding SelectedTool.Cursor}"
-                                DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}"
-                                ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"
-                                CustomStrokeInvocator="{Binding SelectedTool.Model.StrokeConstructor, FallbackValue={x:Null}, PresentationTraceSources.TraceLevel=None}">
+                            x:Name="Canvas" EditingMode="{Binding SelectedTool.Mode, Mode=OneWay}"
+                            EraserShapeDP="{Binding SelectedTool.EraserShape}"
+                            Width="{Binding CurrentDocument.SelectedPage.Width}"
+                            Height="{Binding CurrentDocument.SelectedPage.Height}"
+                            Strokes="{Binding CurrentDocument.SelectedPage.Strokes, UpdateSourceTrigger=PropertyChanged}"
+                            Canvas.Left="0" Canvas.Top="0"
+                            UseCustomCursorDP="{Binding SelectedTool.UseCursor}"
+                            ItemsSource="{Binding CurrentDocument.SelectedPage.Elements}"
+                            Cursor="{Binding SelectedTool.Cursor}"
+                            DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}"
+                            ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"
+                            CustomStrokeInvocator="{Binding SelectedTool.Model.StrokeConstructor, FallbackValue={x:Null}, PresentationTraceSources.TraceLevel=None}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanging">
                                     <ei:CallMethodAction TargetObject="{Binding}" MethodName="SelectionHandler" />
@@ -64,10 +65,10 @@
                         </local:NextInkCanvas>
                     </Canvas>
                     <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Bottom"
-                                HorizontalAlignment="Center"
-                                Padding="5,2" Margin="2" Opacity="0.6" Style="{StaticResource OpacityOnHover}"
-                                Command="{Binding ExtendPageCommand}" CommandParameter="Bottom"
-                                Click="ResizeCanvasEvent" />
+                            HorizontalAlignment="Center"
+                            Padding="5,2" Margin="2" Opacity="0.6" Style="{StaticResource OpacityOnHover}"
+                            Command="{Binding ExtendPageCommand}" CommandParameter="Bottom"
+                            Click="ResizeCanvasEvent" />
                 </Grid>
             </ScrollViewer>
         </Border>
@@ -104,9 +105,9 @@
                             <fluent:MenuItem Header="Save as that format..." Description="something something"
                                              Icon="/NextCanvas;component/Images/Menu/Save.png" />
                         </fluent:MenuItem>
-                        <Separator/>
+                        <Separator />
                         <fluent:MenuItem Header="Settings" Click="SettingsClick"
-                                         Icon="/NextCanvas;component/Images/Menu/Settings.png"/>
+                                         Icon="/NextCanvas;component/Images/Menu/Settings.png" />
                     </fluent:ApplicationMenu>
                 </fluent:Ribbon.Menu>
                 <fluent:Ribbon.ToolBarItems>
@@ -163,7 +164,7 @@
                             </CollectionViewSource>
                         </fluent:RibbonGroupBox.Resources>
                         <fluent:InRibbonGallery ItemsSource="{Binding Source={StaticResource ToolsSource}}"
-                                                Selectable="True" 
+                                                Selectable="True"
                                                 SelectedItem="{Binding SelectedTool}"
                                                 Header="Tool..." ResizeMode="Both" MinItemsInRow="3" MaxItemsInRow="13"
                                                 Orientation="Horizontal"
@@ -176,7 +177,7 @@
                                             <ContextMenu d:DataContext="{d:DesignInstance vm:ToolViewModel}">
                                                 <MenuItem Header="Edit..."
                                                           Command="{Binding ModifyCommand}"
-                                                          CommandParameter="{x:Static local1:MainWindow.ModifyProvider}"/>
+                                                          CommandParameter="{x:Static local1:MainWindow.ModifyProvider}" />
                                                 <!-- x reference is broken for some reason-->
                                             </ContextMenu>
                                         </Setter.Value>

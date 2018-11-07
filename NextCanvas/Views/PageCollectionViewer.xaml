@@ -6,28 +6,24 @@
         xmlns:vm="clr-namespace:NextCanvas.ViewModels"
         xmlns:convert="clr-namespace:NextCanvas.Converters"
         xmlns:controls="clr-namespace:NextCanvas.Controls"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Name="Window"
         mc:Ignorable="d" d:DataContext="{x:Static vm:PageCollectionViewerViewModel.SampleViewModel}"
         Title="Page manager" Height="450" Width="800">
     <Window.Resources>
-        <convert:WidthToScaleMultiConverter x:Key="ScaleMultiConverter"/>
-        <convert:AlternationIndexConverter x:Key="IndexConverter"/>
+        <convert:WidthToScaleMultiConverter x:Key="ScaleMultiConverter" />
+        <convert:AlternationIndexConverter x:Key="IndexConverter" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="369*"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="369*" />
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <ListBox ItemsSource="{Binding WindowViewModel.CurrentDocument.Pages}" SelectionMode="Extended" 
-                 x:Name="ListBox" SelectionChanged="ListBox_OnSelectionChanged" 
+        <ListBox ItemsSource="{Binding WindowViewModel.CurrentDocument.Pages}" SelectionMode="Extended"
+                 x:Name="ListBox" SelectionChanged="ListBox_OnSelectionChanged"
                  AlternationCount="{x:Static sys:Int32.MaxValue}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <EventSetter Event="MouseDoubleClick" Handler="DoubleClick">
-                        
-                    </EventSetter>
+                    <EventSetter Event="MouseDoubleClick" Handler="DoubleClick" />
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemsPanel>
@@ -50,14 +46,14 @@
                                     <ScaleTransform>
                                         <ScaleTransform.ScaleX>
                                             <MultiBinding Converter="{StaticResource ScaleMultiConverter}">
-                                                <Binding Path="Width"/>
-                                                <Binding ElementName="Window" Path="DataContext.WantedWidth"/>
+                                                <Binding Path="Width" />
+                                                <Binding ElementName="Window" Path="DataContext.WantedWidth" />
                                             </MultiBinding>
                                         </ScaleTransform.ScaleX>
                                         <ScaleTransform.ScaleY>
                                             <MultiBinding Converter="{StaticResource ScaleMultiConverter}">
-                                                <Binding Path="Height"/>
-                                                <Binding ElementName="Window" Path="DataContext.WantedHeight"/>
+                                                <Binding Path="Height" />
+                                                <Binding ElementName="Window" Path="DataContext.WantedHeight" />
                                             </MultiBinding>
                                         </ScaleTransform.ScaleY>
                                     </ScaleTransform>
@@ -67,8 +63,9 @@
                         <TextBlock HorizontalAlignment="Center" x:Name="Number">
                             <TextBlock.Text>
                                 <MultiBinding Converter="{StaticResource IndexConverter}" StringFormat="{}{0}">
-                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}" />
-                                    <Binding Path="."/>
+                                    <Binding
+                                        RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}" />
+                                    <Binding Path="." />
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
@@ -83,7 +80,8 @@
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Button Content="Delete selected pages" Padding="5,0" Command="{Binding DeletePagesCommand}" CommandParameter="{Binding SelectedItems, ElementName=ListBox}" x:Name="DeleteButton"/>
+                <Button Content="Delete selected pages" Padding="5,0" Command="{Binding DeletePagesCommand}"
+                        CommandParameter="{Binding SelectedItems, ElementName=ListBox}" x:Name="DeleteButton" />
             </Grid>
         </Border>
     </Grid>

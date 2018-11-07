@@ -1,5 +1,9 @@
-﻿using Ionic.Zlib;
+﻿#region
+
+using Ionic.Zlib;
 using NextCanvas.Models;
+
+#endregion
 
 namespace NextCanvas.ViewModels
 {

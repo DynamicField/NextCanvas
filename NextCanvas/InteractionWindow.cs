@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿#region
+
 using System.Windows;
 using System.Windows.Threading;
 using NextCanvas.Interactivity;
+
+#endregion
 
 namespace NextCanvas
 {

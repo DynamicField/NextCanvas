@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿#region
+
+using System.Windows;
+
+#endregion
 
 namespace NextCanvas.Views
 {

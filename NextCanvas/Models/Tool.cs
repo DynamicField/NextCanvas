@@ -1,6 +1,10 @@
-﻿using System.Windows.Controls;
+﻿#region
+
+using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
+
+#endregion
 
 namespace NextCanvas.Models
 {

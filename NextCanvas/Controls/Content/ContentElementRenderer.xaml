@@ -15,7 +15,7 @@
         <ContentPresenter Content="{Binding}" x:Name="ElementContentPresenter">
             <ContentPresenter.Resources>
                 <DataTemplate DataType="{x:Type vm:ImageElementViewModel}">
-                    <Image Source="{Binding Image, Mode=OneWay}" Stretch="Uniform"/>
+                    <Image Source="{Binding Image, Mode=OneWay}" Stretch="Uniform" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:TextBoxElementViewModel}">
                     <local:RtfRichTextBox RtfText="{Binding RtfText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -33,6 +33,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:ContentElementViewModel}">
                     <local:ElementRecognitionError />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:WebBrowserElementViewModel}">
+                    <WebBrowser Source="{Binding Url}" />
                 </DataTemplate>
             </ContentPresenter.Resources>
         </ContentPresenter>

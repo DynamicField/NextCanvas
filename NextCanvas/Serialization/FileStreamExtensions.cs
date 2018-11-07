@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
 using NextCanvas.Models.Content;
+
+#endregion
 
 namespace NextCanvas.Serialization
 {

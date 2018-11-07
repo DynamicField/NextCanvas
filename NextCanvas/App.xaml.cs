@@ -1,12 +1,10 @@
-﻿using System;
-using System.Diagnostics;
+﻿
+using System;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
-using System.Windows.Input;
-using Newtonsoft.Json;
 using NextCanvas.Views;
-
+
 namespace NextCanvas
 {
     /// <inheritdoc />
