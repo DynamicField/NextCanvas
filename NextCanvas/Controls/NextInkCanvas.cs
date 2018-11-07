@@ -136,9 +136,9 @@ namespace NextCanvas.Controls
             set => SetValue(UseCustomCursorDPProperty, value);
         }
 
-        public IEnumerable ItemsSource
+        public ObservableCollection<ContentElementViewModel> ItemsSource
         {
-            get => (IEnumerable)GetValue(ItemsSourceProperty);
+            get => (ObservableCollection<ContentElementViewModel>)GetValue(ItemsSourceProperty);
             set => SetValue(ItemsSourceProperty, value);
         }
 
@@ -167,6 +167,28 @@ namespace NextCanvas.Controls
                 }
             }
             base.OnSelectionChanged(e);
+        }
+
+        protected override void OnSelectionMoving(InkCanvasSelectionEditingEventArgs e)
+        {
+            var elements = GetSelectedElements().OfType<FrameworkElement>();
+            var browsers = elements.Select(GetDataContextFromElement).OfType<WebBrowserElementViewModel>();
+            var models = browsers as WebBrowserElementViewModel[] ?? browsers.ToArray();
+            if (!models.Any())
+            {
+                base.OnSelectionMoving(e);
+                return;
+            }
+            // Don't make a web browser overflow or the window will be covered with it and it's ugly :c
+            var highest = models.OrderByDescending(w => w.Top + w.Height).First();
+            var bottom = highest.Top + highest.Height - e.OldRectangle.Y + e.NewRectangle.Y;
+            if (bottom > ActualHeight)
+            {
+                var rect = e.NewRectangle;
+                rect.Y -= bottom - ActualHeight;
+                e.NewRectangle = rect;
+            }
+            base.OnSelectionMoving(e);
         }
 
         private static void CommandExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -315,7 +337,12 @@ namespace NextCanvas.Controls
         {
             return canvas.Children.Cast<FrameworkElement>().First(e => e.DataContext == item);
         }
+        private static object GetDataContextFromElement(NextInkCanvas canvas, FrameworkElement element)
+        {
+            return canvas.ItemsSource.First(e => element.DataContext == e);
+        }
 
+        private object GetDataContextFromElement(FrameworkElement element) => GetDataContextFromElement(this, element);
         private static void RemoveVisualChild(NextInkCanvas canvas, UIElement item)
         {
             canvas.Children.Remove(item);

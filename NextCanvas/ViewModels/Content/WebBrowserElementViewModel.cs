@@ -2,6 +2,7 @@
 
 using Microsoft.Win32;
 using NextCanvas.Models.Content;
+using NextCanvas.Utilities;
 
 #endregion
 
@@ -38,6 +39,12 @@ namespace NextCanvas.ViewModels.Content
                 Model.Url = value;
                 OnPropertyChanged(nameof(Url));
             }
+        }
+
+        public override double Top
+        {
+            get => base.Top;
+            set => base.Top = value.Cap(0);
         }
 
         public new WebBrowserElement Model => (WebBrowserElement)base.Model;

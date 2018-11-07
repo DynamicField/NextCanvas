@@ -11,7 +11,7 @@ namespace NextCanvas.Interactivity
     {
         public void ShowInteraction()
         {
-            Task.Run(ShowMessageBox);
+            Task.Run(ShowMessageBox); // Let the thing continue, no need to stop the thread or else it won't respond. (I think it's how it works nah?)
         }
 
         public void CloseInteraction()

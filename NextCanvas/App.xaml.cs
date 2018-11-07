@@ -5,7 +5,8 @@ using System.Threading;
 using System.Windows;
 using NextCanvas.ViewModels.Content;
 using NextCanvas.Views;
-
+
+
 namespace NextCanvas
 {
     /// <inheritdoc />
