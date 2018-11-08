@@ -8,11 +8,11 @@ namespace NextCanvas.ViewModels.Content
 {
     public class TextBoxElementViewModel : ContentElementViewModel, IViewModel<TextBoxElement>, INamedObject
     {
-        public TextBoxElementViewModel()
+        public TextBoxElementViewModel(TextBoxElement model = null) : base(model)
         {
         }
 
-        public TextBoxElementViewModel(TextBoxElement model) : base(model)
+        public TextBoxElementViewModel() : this(null)
         {
         }
 

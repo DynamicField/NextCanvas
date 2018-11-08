@@ -1,5 +1,10 @@
 ﻿#region
 
+using NextCanvas.Controls.Content;
+using NextCanvas.Ink;
+using NextCanvas.Models;
+using NextCanvas.Properties;
+using NextCanvas.ViewModels.Content;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,11 +16,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
-using NextCanvas.Controls.Content;
-using NextCanvas.Ink;
-using NextCanvas.Models;
-using NextCanvas.Properties;
-using NextCanvas.ViewModels.Content;
 
 #endregion
 
@@ -94,8 +94,64 @@ namespace NextCanvas.Controls
             DependencyProperty.Register("CustomStrokeInvocator", typeof(StrokeDelegate<Stroke>), typeof(NextInkCanvas), new PropertyMetadata(null));
 
 
-        private bool isInternal;
+        public ObservableCollection<ContentElementViewModel> SelectedItems
+        {
+            get => (ObservableCollection<ContentElementViewModel>)GetValue(SelectedItemsProperty);
+            set => SetValue(SelectedItemsProperty, value);
+        }
 
+        // Using a DependencyProperty as the backing store for SelectedItems.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedItemsProperty =
+            DependencyProperty.Register("SelectedItems", typeof(ObservableCollection<ContentElementViewModel>), typeof(NextInkCanvas), new FrameworkPropertyMetadata(new ObservableCollection<ContentElementViewModel>(),
+                (o, e) =>
+                {
+                    void SelectedItemsChangedExternally(object sender, NotifyCollectionChangedEventArgs args)
+                    {
+                        ((NextInkCanvas)o).UpdateSelection();
+                    }
+                    if (e.OldValue is ObservableCollection<ContentElementViewModel> old)
+                    {
+                        old.CollectionChanged -= SelectedItemsChangedExternally;
+                    }
+                    var collection = (ObservableCollection<ContentElementViewModel>)e.NewValue;
+                    var canvas = (NextInkCanvas)o;
+                    UpdateSelection(canvas, collection);
+                    collection.CollectionChanged += SelectedItemsChangedExternally;
+                }));
+
+
+
+        private static void UpdateSelection(NextInkCanvas canvas, ObservableCollection<ContentElementViewModel> c)
+        {
+            if (canvas.isSelectionInternal)
+            {
+                canvas.isSelectionInternal = canvas.shouldAutoSet;
+                canvas.shouldAutoSet = false;
+                return;
+            }
+            var elements = new List<FrameworkElement>();
+            foreach (var element in c)
+            {
+                var item = GetElementFromDataContext(canvas, element);
+                if (item != null)
+                {
+                    elements.Add(item);
+                }
+            }
+            canvas.isSelectionInternal = true;
+            canvas.shouldAutoSet = true;
+            if (elements.Any())
+            canvas.Select(elements);
+        }
+
+        private void UpdateSelection()
+        {
+            UpdateSelection(this, SelectedItems);
+        }
+
+        private bool isInternal;
+        private bool isSelectionInternal;
+        private bool shouldAutoSet;
         private MemoryStream lastDataObject;
         private double pasteDiff;
 
@@ -150,6 +206,19 @@ namespace NextCanvas.Controls
         protected override void OnSelectionChanged(EventArgs e)
         {
             var elements = GetSelectedElements();
+            SelectedItems.Clear();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    shouldAutoSet = false;
+                    isSelectionInternal = true;
+                    if (GetDataContextFromElement(element as FrameworkElement) is ContentElementViewModel item)
+                    {
+                        SelectedItems.Add(item);
+                    }
+                }
+            }
             if (elements.Count == 1)
             {
                 var element = elements[0];
@@ -335,14 +404,18 @@ namespace NextCanvas.Controls
 
         private static FrameworkElement GetElementFromDataContext(NextInkCanvas canvas, object item)
         {
-            return canvas.Children.Cast<FrameworkElement>().First(e => e.DataContext == item);
+            return canvas.Children.Cast<FrameworkElement>().FirstOrDefault(e => e.DataContext == item);
         }
         private static object GetDataContextFromElement(NextInkCanvas canvas, FrameworkElement element)
         {
             return canvas.ItemsSource.First(e => element.DataContext == e);
         }
 
-        private object GetDataContextFromElement(FrameworkElement element) => GetDataContextFromElement(this, element);
+        private object GetDataContextFromElement(FrameworkElement element)
+        {
+            return GetDataContextFromElement(this, element);
+        }
+
         private static void RemoveVisualChild(NextInkCanvas canvas, UIElement item)
         {
             canvas.Children.Remove(item);

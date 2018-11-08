@@ -30,16 +30,17 @@ namespace NextCanvas.ViewModels
 
         private ElementCreationContext elementCreationContext;
         public IInteractionProvider<IErrorInteraction> ErrorProvider { get; set; }
+        public IInteractionProvider<IModifyObjectInteraction> ModifyProvider { get; set; }
         private int selectedToolIndex;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(MainWindowModel model = null) : base(model)
         {
             Initialize();
         }
 
-        public MainWindowViewModel(MainWindowModel model) : base(model)
+        public MainWindowViewModel() : this(null)
         {
-            Initialize();
+
         }
 
         public DocumentViewModel CurrentDocument
@@ -64,6 +65,7 @@ namespace NextCanvas.ViewModels
 
         public ObservableCollection<Color> FavoriteColors => Model.FavouriteColors;
         public ObservableViewModelCollection<ToolViewModel, Tool> Tools { get; set; }
+        public ObservableCollection<ContentElementViewModel> SelectedElements { get; set; } = new ObservableCollection<ContentElementViewModel>();
         public string SavePath { get; set; }
         public string OpenPath { get; set; }
         public string OpenImagePath { get; set; }
@@ -274,7 +276,8 @@ namespace NextCanvas.ViewModels
         {
             if (!(interaction is IInteractionProvider<IModifyObjectInteraction> interact)) return;
             var editor = interact.CreateInteraction();
-            var browserInstance = new WebBrowserElementViewModel();
+            var browserInstance =
+                new WebBrowserElementViewModel(SettingsManager.Settings.GetDefaultValue<WebBrowserElement>());
             editor.ObjectToModify = browserInstance;
             editor.HeaderText = "Creating a web browser...";
             editor.ActionComplete += (sender, args) => { ProcessItem(browserInstance); };

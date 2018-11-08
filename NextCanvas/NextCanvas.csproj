@@ -126,6 +126,7 @@
     <Compile Include="Models\Content\WebBrowserElement.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SquareTool.cs" />
+    <Compile Include="ObservableModelCollection.cs" />
     <Compile Include="SettingsManager.cs" />
     <Compile Include="Utilities\Content\ElementCreationContext.cs" />
     <Compile Include="Controls\NextDynamicRenderer.cs" />

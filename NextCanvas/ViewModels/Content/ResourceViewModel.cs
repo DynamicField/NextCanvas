@@ -11,7 +11,7 @@ namespace NextCanvas.ViewModels.Content
 {
     public class ResourceViewModel : ViewModelBase<Resource>, IDisposable
     {
-        public ResourceViewModel(Resource model) : base(model)
+        public ResourceViewModel(Resource model = null) : base(model)
         {
         }
 

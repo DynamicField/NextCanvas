@@ -17,20 +17,19 @@ namespace NextCanvas.ViewModels
     {
         private ToolGroupViewModel group;
         public DelegateCommand ModifyCommand { get; private set; }
-        public ToolViewModel()
-        {
-            Initialize();
-        }
-
-        public ToolViewModel(Tool model) : base(model)
+        public ToolViewModel(Tool model = null) : base(model)
         {
             Initialize();
             model.DrawingAttributes.FitToCurve = true;
         }
-
+        
         public ToolViewModel(Tool model, Uri icon) : this(model)
         {
             LargeIcon = icon;
+        }
+
+        public ToolViewModel()
+        {
         }
 
         public bool HasColor

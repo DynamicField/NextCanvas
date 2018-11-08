@@ -56,7 +56,8 @@
                             Cursor="{Binding SelectedTool.Cursor}"
                             DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}"
                             ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"
-                            CustomStrokeInvocator="{Binding SelectedTool.Model.StrokeConstructor, FallbackValue={x:Null}, PresentationTraceSources.TraceLevel=None}">
+                            CustomStrokeInvocator="{Binding SelectedTool.Model.StrokeConstructor, FallbackValue={x:Null}, PresentationTraceSources.TraceLevel=None}"
+                            SelectedItems="{Binding SelectedElements}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanging">
                                     <ei:CallMethodAction TargetObject="{Binding}" MethodName="SelectionHandler" />

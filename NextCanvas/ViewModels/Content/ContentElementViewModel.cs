@@ -10,11 +10,11 @@ namespace NextCanvas.ViewModels.Content
     // oof that's one complicated class 😓
     public class ContentElementViewModel : ViewModelBase<ContentElement>
     {
-        public ContentElementViewModel()
+        public ContentElementViewModel() : this(null)
         {
         }
 
-        public ContentElementViewModel(ContentElement model) : base(model)
+        public ContentElementViewModel(ContentElement model = null) : base(model)
         {
         }
 

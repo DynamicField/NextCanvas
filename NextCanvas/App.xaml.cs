@@ -31,7 +31,11 @@ namespace NextCanvas
                 if (window is ScreenshotWindow win)
                     win.CloseInteraction(); // It's top most and your computer will be LOCKED IF THIS THING ISNT CLOSED SO BETTER CLOSE IT.
             new ExceptionWindow(exception.ToString()).ShowDialog();
+#if !DEBUG
             Environment.FailFast(exception.Message, exception);
+#else
+            Current.Shutdown(42);
+#endif
         }
     }
 }

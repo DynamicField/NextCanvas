@@ -36,7 +36,8 @@ namespace NextCanvas.Views
             DataContext = new MainWindowViewModel
             {
                 ElementCreationContext = CreationContext,
-                ErrorProvider = ErrorProvider
+                ErrorProvider = ErrorProvider,
+                ModifyProvider = ModifyProvider
             };
             pageViewerFactory = new UniqueWindowFactory<PageCollectionViewer>(() => new PageCollectionViewer((MainWindowViewModel)DataContext));
             Canvas.DefaultDrawingAttributes.FitToCurve = true;

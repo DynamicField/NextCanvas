@@ -9,11 +9,7 @@ namespace NextCanvas.ViewModels
 {
     public class ToolGroupViewModel : ViewModelBase<ToolGroup>
     {
-        public ToolGroupViewModel()
-        {
-        }
-
-        public ToolGroupViewModel(ToolGroup model) : base(model)
+        public ToolGroupViewModel(ToolGroup model = null) : base(model)
         {
         }
 

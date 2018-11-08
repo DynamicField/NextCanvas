@@ -14,12 +14,7 @@ namespace NextCanvas.ViewModels
     {
         private IResourceViewModelLocator locator;
 
-        public PageViewModel()
-        {
-            Initialize();
-        }
-
-        public PageViewModel(Page model) : base(model)
+        public PageViewModel(Page model = null) : base(model)
         {
             Initialize();
         }

@@ -1,22 +1,13 @@
 ﻿namespace NextCanvas.ViewModels
 {
-    public class ViewModelBase<T> : PropertyChangedObject, IViewModel<T> where T : new()
+    public class ViewModelBase<T> : PropertyChangedObject, IViewModel<T> where T : class, new()
     {
-        public ViewModelBase(T model)
+        public ViewModelBase(T model = null)
         {
-            Model = model;
+            Model = model ?? BuildDefaultModel();
         }
-
-        public ViewModelBase()
-        {
-            // ReSharper disable once VirtualMemberCallInConstructor
-            // I know this isn't the best :c
-            // but it's not bad according that it's the effect we want
-            Model = BuildDefaultModel();
-        }
-
-        public T Model { get; protected set; }
-
+        public ViewModelBase() : this(null) { }
+        public T Model { get; protected set; }        
         public override string ToString()
         {
             var modelToString = Model.ToString();

@@ -1,5 +1,8 @@
 ﻿#region
 
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Ionic.Zlib;
 using NextCanvas.Models;
 
@@ -9,14 +12,19 @@ namespace NextCanvas.ViewModels
 {
     public class SettingsViewModel : ViewModelBase<SettingsModel>
     {
-        public SettingsViewModel()
+        public SettingsViewModel(SettingsModel model = null) : base(model)
         {
+            DefaultValues = new ObservableModelCollection<object>(Model.DefaultValues);
         }
-
-        public SettingsViewModel(SettingsModel model) : base(model)
+        public ObservableModelCollection<object> DefaultValues { get; }
+        public T GetDefaultValue<T>() where T : class, new()
         {
+            var tryResult = DefaultValues.OfType<T>().FirstOrDefault();
+            if (tryResult != null) return tryResult;
+            var itemToAdd = new T();
+            DefaultValues.Add(itemToAdd);
+            return itemToAdd;
         }
-
         public int FileCompressionLevel
         {
             get => (int) Model.FileCompressionLevel;
@@ -25,6 +33,6 @@ namespace NextCanvas.ViewModels
                 Model.FileCompressionLevel = (CompressionLevel) value;
                 OnPropertyChanged(nameof(FileCompressionLevel));
             }
-        }
+        }     
     }
 }

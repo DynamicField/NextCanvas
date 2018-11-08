@@ -10,12 +10,7 @@ namespace NextCanvas.ViewModels.Content
 {
     public class WebBrowserElementViewModel : ContentElementViewModel
     {
-        public WebBrowserElementViewModel()
-        {
-
-        }
-
-        public WebBrowserElementViewModel(WebBrowserElement model) : base(model)
+        public WebBrowserElementViewModel(WebBrowserElement model = null) : base(model)
         {
 
         }
