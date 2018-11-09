@@ -243,7 +243,7 @@ namespace NextCanvas.Controls
             var elements = GetSelectedElements().OfType<FrameworkElement>();
             var browsers = elements.Select(GetDataContextFromElement).OfType<WebBrowserElementViewModel>();
             var models = browsers as WebBrowserElementViewModel[] ?? browsers.ToArray();
-            if (!models.Any())
+            if (!models.Any() || e.OldRectangle.Y > e.NewRectangle.Y)
             {
                 base.OnSelectionMoving(e);
                 return;
@@ -251,10 +251,11 @@ namespace NextCanvas.Controls
             // Don't make a web browser overflow or the window will be covered with it and it's ugly :c
             var highest = models.OrderByDescending(w => w.Top + w.Height).First();
             var bottom = highest.Top + highest.Height - e.OldRectangle.Y + e.NewRectangle.Y;
-            if (bottom > ActualHeight)
+            var height = (ScrollViewerReferent?.ActualHeight ?? ActualHeight);
+            if (bottom > height)
             {
                 var rect = e.NewRectangle;
-                rect.Y -= bottom - ActualHeight;
+                rect.Y -= bottom - height;
                 e.NewRectangle = rect;
             }
             base.OnSelectionMoving(e);

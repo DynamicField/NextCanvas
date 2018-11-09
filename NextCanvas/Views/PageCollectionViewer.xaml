@@ -35,14 +35,15 @@
                 <DataTemplate DataType="vm:PageViewModel">
                     <StackPanel HorizontalAlignment="Left" Margin="5">
                         <Border BorderThickness="1" BorderBrush="Black">
-                            <controls:NextInkCanvas
-                                x:Name="Canvas" EditingMode="None"
-                                Width="{Binding Width}"
-                                Height="{Binding Height}"
-                                Strokes="{Binding Strokes}"
-                                ItemsSource="{Binding Elements}"
-                                HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0,0">
-                                <controls:NextInkCanvas.LayoutTransform>
+                            <Viewbox Stretch="Fill" StretchDirection="Both" Width="{Binding Path=DataContext.WantedWidth, ElementName=Window}" Height="{Binding Path=DataContext.WantedHeight, ElementName=Window}">
+                                <controls:NextInkCanvas
+                                    x:Name="Canvas" EditingMode="None"
+                                    Width="{Binding Width}"
+                                    Height="{Binding Height}"
+                                    Strokes="{Binding Strokes}"
+                                    ItemsSource="{Binding Elements}"
+                                    HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0,0">
+                                    <!--<controls:NextInkCanvas.LayoutTransform>
                                     <ScaleTransform>
                                         <ScaleTransform.ScaleX>
                                             <MultiBinding Converter="{StaticResource ScaleMultiConverter}">
@@ -57,8 +58,8 @@
                                             </MultiBinding>
                                         </ScaleTransform.ScaleY>
                                     </ScaleTransform>
-                                </controls:NextInkCanvas.LayoutTransform>
-                            </controls:NextInkCanvas>
+                                </controls:NextInkCanvas.LayoutTransform>-->
+                                </controls:NextInkCanvas></Viewbox>
                         </Border>
                         <TextBlock HorizontalAlignment="Center" x:Name="Number">
                             <TextBlock.Text>

@@ -164,7 +164,7 @@
                                 </CollectionViewSource.SortDescriptions>
                             </CollectionViewSource>
                         </fluent:RibbonGroupBox.Resources>
-                        <fluent:InRibbonGallery ItemsSource="{Binding Source={StaticResource ToolsSource}}"
+                        <fluent:InRibbonGallery ItemsSource="{Binding Source={StaticResource ToolsSource}, TargetNullValue={x:Static DependencyProperty.UnsetValue}}"
                                                 Selectable="True"
                                                 SelectedItem="{Binding SelectedTool}"
                                                 Header="Tool..." ResizeMode="Both" MinItemsInRow="3" MaxItemsInRow="13"
