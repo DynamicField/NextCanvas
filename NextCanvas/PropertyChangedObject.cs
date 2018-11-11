@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
@@ -13,6 +14,7 @@ namespace NextCanvas
     {
         public event PropertyChangedEventHandler PropertyChanged;
         internal static Dictionary<Thread, SynchronizationContext> Contexts { get; } = new Dictionary<Thread, SynchronizationContext>();
+        [DebuggerStepThrough]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             foreach (var context in Contexts)

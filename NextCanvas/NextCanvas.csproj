@@ -115,6 +115,7 @@
       <DependentUpon>WebBrowserEditorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AlternationIndexConverter.cs" />
+    <Compile Include="Converters\ToolToConstructorConverter.cs" />
     <Compile Include="Converters\WidthToScaleConverter.cs" />
     <Compile Include="INamedObject.cs" />
     <Compile Include="Interactivity\Dialogs\IUserRequestInteraction.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Interactivity\IModifyObjectInteraction.cs" />
     <Compile Include="Interactivity\MessageBoxError.cs" />
     <Compile Include="Models\Content\WebBrowserElement.cs" />
+    <Compile Include="Models\IStrokeTool.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SquareTool.cs" />
     <Compile Include="ObservableModelCollection.cs" />
@@ -185,6 +187,8 @@
     <Compile Include="ViewModels\PageCollectionViewerViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\SquareToolViewModel.cs" />
+    <Compile Include="ViewModels\StrokeToolViewModel.cs" />
     <Compile Include="ViewModels\ToolGroupViewModel.cs" />
     <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

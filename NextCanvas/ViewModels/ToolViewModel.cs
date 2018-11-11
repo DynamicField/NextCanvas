@@ -17,18 +17,16 @@ namespace NextCanvas.ViewModels
     {
         private ToolGroupViewModel group;
         public DelegateCommand ModifyCommand { get; private set; }
-        public ToolViewModel(Tool model = null) : base(model)
+
+        public ToolViewModel(Tool model = null, Uri icon = null) : base(model)
         {
             Initialize();
             model.DrawingAttributes.FitToCurve = true;
-        }
-        
-        public ToolViewModel(Tool model, Uri icon) : this(model)
-        {
+            if (icon == null) return;
             LargeIcon = icon;
         }
 
-        public ToolViewModel()
+        public ToolViewModel() : this(null)
         {
         }
 
@@ -65,7 +63,7 @@ namespace NextCanvas.ViewModels
 
         public object SmallIcon
         {
-            get => Model.SmallIcon;
+            get => Model.SmallIcon ?? Model.LargeIcon;
             set
             {
                 Model.SmallIcon = value;
@@ -99,7 +97,7 @@ namespace NextCanvas.ViewModels
 
         public string GroupName => Group.Name;
 
-        public StrokeCollection DemoStroke => new StrokeCollection
+        public virtual StrokeCollection DemoStroke => new StrokeCollection
         {
             new Stroke(new StylusPointCollection
             {
@@ -107,6 +105,31 @@ namespace NextCanvas.ViewModels
                 new StylusPoint(75, 22)
             }, DrawingAttributes)
         };
+        private int demoWidth = 90;
+
+        public int DemoWidth
+        {
+            get => demoWidth;
+            set
+            {
+                demoWidth = value;
+                OnPropertyChanged(nameof(DemoWidth));
+                OnPropertyChanged(nameof(DemoStroke));
+            }
+        }
+
+        private int demoHeight = 44;
+
+        public int DemoHeight
+        {
+            get => demoHeight;
+            set
+            {
+                demoHeight = value;
+                OnPropertyChanged(nameof(DemoHeight));
+                OnPropertyChanged(nameof(DemoStroke));
+            }
+        }
         public bool HasDemo
         {
             get => Model.HasDemo && Group.HasDemo;
@@ -127,10 +150,10 @@ namespace NextCanvas.ViewModels
                 OnPropertyChanged(nameof(UseCursor));
             }
         }
-
         public bool UseCursor => Cursor != null; // ah yes is
         public bool HasSize => Mode != InkCanvasEditingMode.None && Mode != InkCanvasEditingMode.Select;
         public StylusShape EraserShape => new RectangleStylusShape(DrawingAttributes.Width, DrawingAttributes.Height);
+        public bool IsCustomStrokeTool => this is StrokeToolViewModel;
 
         public DrawingAttributes DrawingAttributes
         {
@@ -201,6 +224,17 @@ namespace NextCanvas.ViewModels
             }
         }
 
-        public static ToolViewModel GetViewModel(Tool model) => new ToolViewModel(model);
+        public static ToolViewModel GetViewModel(Tool model)
+        {
+            switch (model)
+            {
+                case SquareTool s:
+                    return new SquareToolViewModel(s);
+                case StrokeTool st:
+                    return new StrokeToolViewModel(st);
+                default:
+                    return new ToolViewModel(model);
+            }
+        }
     }
 }

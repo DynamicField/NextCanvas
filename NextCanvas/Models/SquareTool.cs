@@ -9,7 +9,7 @@ namespace NextCanvas.Models
 {
     public class SquareTool : StrokeTool<SquareStroke>
     {
-        public override StrokeDelegate<SquareStroke> StrokeConstructor => GetStroke;
+        protected override StrokeDelegate<SquareStroke> StrokeImplementation => GetStroke;
 
         private static SquareStroke GetStroke(Stroke s)
         {

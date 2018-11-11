@@ -16,6 +16,7 @@
     d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:MainWindowViewModel}}"
     Title="NextCanvas" Height="720" Width="1202">
     <fluent:RibbonWindow.Resources>
+        <converters:ToolToConstructorConverter x:Key="ToolToConstructorConverter"/>
         <converters:BoolToOrientationConverter x:Key="BoolToOrientationConverter" />
         <converters:IsEqualToConverter x:Key="IsEqualToConverter" />
         <converters:OrConverter x:Key="OrConverter" />
@@ -55,9 +56,8 @@
                             ItemsSource="{Binding CurrentDocument.SelectedPage.Elements}"
                             Cursor="{Binding SelectedTool.Cursor}"
                             DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}"
-                            ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"
-                            CustomStrokeInvocator="{Binding SelectedTool.Model.StrokeConstructor, FallbackValue={x:Null}, PresentationTraceSources.TraceLevel=None}"
-                            SelectedItems="{Binding SelectedElements}">
+                            ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"     
+                            SelectedItems="{Binding SelectedElements}" CustomStrokeInvocator="{Binding SelectedTool, Converter={StaticResource ToolToConstructorConverter}}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanging">
                                     <ei:CallMethodAction TargetObject="{Binding}" MethodName="SelectionHandler" />
@@ -173,8 +173,24 @@
                                                 SizeDefinition="Large, Large, Large">
                             <fluent:InRibbonGallery.ItemContainerStyle>
                                 <Style TargetType="fluent:GalleryItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasDemo}" Value="True">
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip d:DataContext="{d:DesignInstance vm:ToolViewModel}">
+                                                        <InkCanvas VerticalAlignment="Top" 
+                                                                   Height="{Binding DemoHeight}" EditingMode="None" 
+                                                                   Strokes="{Binding DemoStroke}" 
+                                                                   Width="{Binding DemoWidth}"/>
+                                                    </ToolTip>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTipService.InitialShowDelay" Value="100"/>
+                                            <Setter Property="ToolTipService.BetweenShowDelay" Value="75"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
                                     <Setter Property="ContextMenu">
-                                        <Setter.Value>
+                                        <Setter.Value >
                                             <ContextMenu d:DataContext="{d:DesignInstance vm:ToolViewModel}">
                                                 <MenuItem Header="Edit..."
                                                           Command="{Binding ModifyCommand}"
@@ -183,6 +199,7 @@
                                             </ContextMenu>
                                         </Setter.Value>
                                     </Setter>
+
                                 </Style>
                             </fluent:InRibbonGallery.ItemContainerStyle>
                             <fluent:InRibbonGallery.ItemTemplate>
@@ -233,8 +250,10 @@
                             </StackPanel>
                             <Border BorderBrush="Gray" BorderThickness="1" Margin="1,1,0,0"
                                     Visibility="{Binding SelectedTool.HasDemo, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <InkCanvas VerticalAlignment="Top" Height="44" EditingMode="None" x:Name="Preview"
-                                           Strokes="{Binding SelectedTool.DemoStroke}" Width="90" />
+                                <Viewbox StretchDirection="Both" Width="90" Height="44">
+                                    <InkCanvas VerticalAlignment="Top" Height="{Binding SelectedTool.DemoHeight}" EditingMode="None" x:Name="Preview"
+                                               Strokes="{Binding SelectedTool.DemoStroke}" Width="{Binding SelectedTool.DemoWidth}" Background="White" />
+                                </Viewbox>
                             </Border>
                         </StackPanel>
                     </fluent:RibbonGroupBox>

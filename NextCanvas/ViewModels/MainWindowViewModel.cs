@@ -75,13 +75,11 @@ namespace NextCanvas.ViewModels
             get => selectedToolIndex;
             set
             {
-                if (value >= 0 && value < Tools.Count || Tools.Count == 0)
-                {
-                    selectedToolIndex = value;
-                    OnPropertyChanged(nameof(SelectedToolIndex));
-                    OnPropertyChanged(nameof(SelectedTool));
-                    ToolViewModel.UpdateCursorIfEraser(SelectedTool);
-                }
+                if ((value < 0 || value >= Tools.Count) && Tools.Count != 0) return;
+                selectedToolIndex = value;
+                OnPropertyChanged(nameof(SelectedToolIndex));
+                OnPropertyChanged(nameof(SelectedTool));
+                ToolViewModel.UpdateCursorIfEraser(SelectedTool);
             }
         }
 
@@ -99,6 +97,7 @@ namespace NextCanvas.ViewModels
             }
             set => SelectedToolIndex = Tools.IndexOf(value);
         }
+
 
         public ElementCreationContext ElementCreationContext
         {
