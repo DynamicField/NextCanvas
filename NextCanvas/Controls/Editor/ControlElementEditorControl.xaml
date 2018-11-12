@@ -8,21 +8,11 @@
              xmlns:fluent="urn:fluent-ribbon"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ContentElementViewModel}"
              d:DesignHeight="381.064" d:DesignWidth="200.638">
-    <Grid Margin="1">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="42"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.Resources>
+    <UniformGrid Margin="1" Columns="2" Rows="5" VerticalAlignment="Top">
+        <UniformGrid.Resources>
             <Style TargetType="TextBlock">
                 <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="Margin" Value="5,0"/>
             </Style>
@@ -35,18 +25,19 @@
                 <Setter Property="Format" Value="F0"/>
                 <Setter Property="Interval" Value="100"/>
                 <Setter Property="Delay" Value="210"/>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
             </Style>
-        </Grid.Resources>
+        </UniformGrid.Resources>
         <TextBlock Text="X:"/>
         <!-- ReSharper disable Xaml.MissingGridIndex -->
-        <fluent:Spinner Grid.Row="0" Value="{Binding Left}"/>
-        <TextBlock Text="Y:" Grid.Row="1"/>
-        <fluent:Spinner Grid.Row="1" Value="{Binding Bottom}"/>
-        <TextBlock Text="Width:" Grid.Row="2"/>
-        <fluent:Spinner Grid.Row="2" Value="{Binding Width}" Interval="25" Increment="10"/>
-        <TextBlock Text="Height:" Grid.Row="3"/>
-        <fluent:Spinner Grid.Row="3" Value="{Binding Height}" Interval="25" Increment="10"/>
-        <TextBlock Text="Layer:" Grid.Row="4"/>
-        <fluent:Spinner Grid.Row="4" Value="{Binding ZIndex}" Interval="780"/>
-    </Grid>
+        <fluent:Spinner Value="{Binding Left}"/>
+        <TextBlock Text="Y:" />
+        <fluent:Spinner Value="{Binding Bottom}"/>
+        <TextBlock Text="Width:" />
+        <fluent:Spinner Value="{Binding Width}" Interval="25" Increment="10"/>
+        <TextBlock Text="Height:" />
+        <fluent:Spinner Value="{Binding Height}" Interval="25" Increment="10"/>
+        <TextBlock Text="Layer:" />
+        <fluent:Spinner Value="{Binding ZIndex}" Interval="780"/>
+    </UniformGrid>
 </UserControl>
