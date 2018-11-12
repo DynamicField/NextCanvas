@@ -13,6 +13,10 @@ namespace NextCanvas
 {
     public static class SettingsManager
     {
+        private static JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
         static SettingsManager()
         {
             Directory.CreateDirectory(ApplicationDataPath);
@@ -21,7 +25,7 @@ namespace NextCanvas
                 using (var streamReader = new StreamReader(FilePath, Encoding.UTF8))
                 {
                     Settings = new SettingsViewModel(
-                        JsonConvert.DeserializeObject<SettingsModel>(streamReader.ReadToEnd()));
+                        JsonConvert.DeserializeObject<SettingsModel>(streamReader.ReadToEnd(), _serializerSettings));
                 }
             }
             catch (Exception)
@@ -44,7 +48,7 @@ namespace NextCanvas
             {
                 using (var streamWriter = new StreamWriter(file, Encoding.UTF8))
                 {
-                    streamWriter.WriteLine(JsonConvert.SerializeObject(Settings.Model));
+                    streamWriter.WriteLine(JsonConvert.SerializeObject(Settings.Model, _serializerSettings));
                 }
             }
         }
