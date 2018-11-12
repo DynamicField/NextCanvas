@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:NextCanvas.ViewModels.Content"
+             xmlns:local="clr-namespace:NextCanvas.Controls.Editor"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:WebBrowserElementViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -12,5 +13,6 @@
             <TextBlock Text="URL:" />
             <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
+        <local:ControlElementEditorControl HorizontalAlignment="Left" VerticalAlignment="Bottom"></local:ControlElementEditorControl>
     </Grid>
 </UserControl>

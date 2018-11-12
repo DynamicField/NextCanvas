@@ -76,7 +76,7 @@
         <Grid Grid.Row="1">
             <fluent:Ribbon Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon">
                 <fluent:Ribbon.Menu>
-                    <fluent:ApplicationMenu>
+                    <fluent:ApplicationMenu Header="File">
                         <fluent:ApplicationMenu.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="0" />
@@ -257,11 +257,11 @@
                             </Border>
                         </StackPanel>
                     </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox Header="Colors"
+                    <fluent:RibbonGroupBox Header="Colors" 
                                            Visibility="{Binding SelectedTool.Group.HasGotColor, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <fluent:ColorGallery SelectedColorChanged="ColorGallery_SelectedColorChanged"
-                                                 x:Name="ColorGallery"
+                                                 x:Name="ColorGallery" 
                                                  SelectedColor="{Binding SelectedTool.DrawingAttributes.Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsMoreColorsButtonVisible="True" IsNoColorButtonVisible="False"
                                                  Mode="ThemeColors" ChipHeight="14" ChipWidth="14"
@@ -277,7 +277,7 @@
                     <fluent:RibbonGroupBox Header="Pages" x:Name="Pages"
                                            Icon="/NextCanvas;component/Images/Ribbon/Home/NewPage-Big.png"
                                            IsLauncherVisible="True" LauncherClick="PagesTabLauncherClick">
-                        <fluent:Button Header="Go Left"
+                        <fluent:Button Header="Go Left" 
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Shared/Arrow.png"
                                        Command="{Binding PreviousPageCommand}" SizeDefinition="Large, Large, Large" />
                         <fluent:Button Header="New page"

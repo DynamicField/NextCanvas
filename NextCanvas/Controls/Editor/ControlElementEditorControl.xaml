@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="NextCanvas.Controls.Editor.ControlElementEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NextCanvas.Controls.Editor"
+             xmlns:vm="clr-namespace:NextCanvas.ViewModels.Content"
+             xmlns:fluent="urn:fluent-ribbon"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ContentElementViewModel}"
+             d:DesignHeight="381.064" d:DesignWidth="200.638">
+    <Grid Margin="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="42"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Margin" Value="5,0"/>
+            </Style>
+            <Style TargetType="{x:Type fluent:Spinner}">
+                <Setter Property="Template" Value="{StaticResource SpinnerTemplate}"/>
+                <Setter Property="Grid.Column" Value="1"/>
+                <Setter Property="Margin" Value="2,0"/>
+                <Setter Property="BorderBrush" Value="LightGray"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Format" Value="F0"/>
+                <Setter Property="Interval" Value="100"/>
+                <Setter Property="Delay" Value="210"/>
+            </Style>
+        </Grid.Resources>
+        <TextBlock Text="X:"/>
+        <!-- ReSharper disable Xaml.MissingGridIndex -->
+        <fluent:Spinner Grid.Row="0" Value="{Binding Left}"/>
+        <TextBlock Text="Y:" Grid.Row="1"/>
+        <fluent:Spinner Grid.Row="1" Value="{Binding Bottom}"/>
+        <TextBlock Text="Width:" Grid.Row="2"/>
+        <fluent:Spinner Grid.Row="2" Value="{Binding Width}" Interval="25" Increment="10"/>
+        <TextBlock Text="Height:" Grid.Row="3"/>
+        <fluent:Spinner Grid.Row="3" Value="{Binding Height}" Interval="25" Increment="10"/>
+        <TextBlock Text="Layer:" Grid.Row="4"/>
+        <fluent:Spinner Grid.Row="4" Value="{Binding ZIndex}" Interval="780"/>
+    </Grid>
+</UserControl>

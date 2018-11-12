@@ -108,6 +108,9 @@
     </Compile>
     <Compile Include="Controls\Content\RtfRichTextBox.cs" />
     <Compile Include="Controls\Content\WebBrowserHelper.cs" />
+    <Compile Include="Controls\Editor\ControlElementEditorControl.xaml.cs">
+      <DependentUpon>ControlElementEditorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Editor\ToolEditorControl.xaml.cs">
       <DependentUpon>ToolEditorControl.xaml</DependentUpon>
     </Compile>
@@ -219,6 +222,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Content\ElementRecognitionError.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Editor\ControlElementEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

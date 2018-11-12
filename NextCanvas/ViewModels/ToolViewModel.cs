@@ -21,7 +21,7 @@ namespace NextCanvas.ViewModels
         public ToolViewModel(Tool model = null, Uri icon = null) : base(model)
         {
             Initialize();
-            model.DrawingAttributes.FitToCurve = true;
+            Model.DrawingAttributes.FitToCurve = true;
             if (icon == null) return;
             LargeIcon = icon;
         }

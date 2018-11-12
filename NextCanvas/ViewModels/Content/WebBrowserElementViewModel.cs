@@ -14,7 +14,7 @@ namespace NextCanvas.ViewModels.Content
         {
 
         }
-
+        public WebBrowserElementViewModel() : this(null) { }
         public static void SetHighestIEMode()
         {
             var appName = System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".exe";

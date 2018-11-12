@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:NextCanvas.ViewModels"
         xmlns:convert="clr-namespace:NextCanvas.Converters"
         xmlns:controls="clr-namespace:NextCanvas.Controls"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Name="Window"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Name="Window" WindowStyle="ToolWindow"
         mc:Ignorable="d" d:DataContext="{x:Static vm:PageCollectionViewerViewModel.SampleViewModel}"
         Title="Page manager" Height="450" Width="800">
     <Window.Resources>
@@ -19,7 +19,7 @@
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <ListBox ItemsSource="{Binding WindowViewModel.CurrentDocument.Pages}" SelectionMode="Extended"
-                 x:Name="ListBox" SelectionChanged="ListBox_OnSelectionChanged"
+                 x:Name="ListBox" SelectionChanged="ListBox_OnSelectionChanged" BorderThickness="0"
                  AlternationCount="{x:Static sys:Int32.MaxValue}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">

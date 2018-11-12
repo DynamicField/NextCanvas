@@ -4,7 +4,11 @@
     {
         public ViewModelBase(T model = null)
         {
-            Model = model ?? BuildDefaultModel();
+            if (model == null)
+            {
+                model = BuildDefaultModel();
+            }
+            Model = model;
         }
         public ViewModelBase() : this(null) { }
         public T Model { get; protected set; }        
