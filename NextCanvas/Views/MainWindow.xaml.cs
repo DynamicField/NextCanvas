@@ -162,7 +162,7 @@ namespace NextCanvas.Views
             var vm = (MainWindowViewModel)DataContext;
             var dialog = new OpenFileDialog
             {
-                Filter = "Image files (*.jpg, *.bmp, *.png)|*.jpg; *.bmp; *.png"
+                Filter = "Image files (*.jpg, *.bmp, *.png, *.gif, *.tiff)|*.jpg; *.jpeg; *.bmp; *.png; *.gif; *.tif; *.tiff"
             };
             if (dialog.ShowDialog() ?? false)
             {
