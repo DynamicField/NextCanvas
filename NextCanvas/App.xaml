@@ -16,18 +16,18 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel x:Name="stackPanel" Grid.ColumnSpan="1" HorizontalAlignment="Left"
-                                            Orientation="Horizontal">
+                                Orientation="Horizontal">
                         <ContentPresenter x:Name="iconImage" />
                         <Grid>
                             <TextBlock x:Name="textBlock" TextWrapping="Wrap"
-                                                   Text="{TemplateBinding Header}" VerticalAlignment="Center" />
+                                       Text="{TemplateBinding Header}" VerticalAlignment="Center" />
                         </Grid>
                     </StackPanel>
                     <Border x:Name="PART_ContentBorder" BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        Background="{DynamicResource Fluent.Ribbon.Brushes.TextBox.Background}"
-                                        Grid.Column="1" HorizontalAlignment="Right" Height="{TemplateBinding Height}"
-                                        Width="{TemplateBinding InputWidth}">
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{DynamicResource Fluent.Ribbon.Brushes.TextBox.Background}"
+                            Grid.Column="1" HorizontalAlignment="Right" Height="{TemplateBinding Height}"
+                            Width="{TemplateBinding InputWidth}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -38,38 +38,38 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <TextBox x:Name="PART_TextBox" BorderThickness="0"
-                                                 Background="{DynamicResource Fluent.Ribbon.Brushes.TextBox.Background}"
-                                                 Grid.Column="0" Foreground="{TemplateBinding Foreground}" Margin="0"
-                                                 Padding="2,0" Grid.RowSpan="2"
-                                                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                     Background="{DynamicResource Fluent.Ribbon.Brushes.TextBox.Background}"
+                                     Grid.Column="0" Foreground="{TemplateBinding Foreground}" Margin="0"
+                                     Padding="2,0" Grid.RowSpan="2"
+                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
                             <Path x:Name="path" Grid.Column="1" Data="M0,0L0,1"
-                                              Fill="{DynamicResource BlackBrush}" HorizontalAlignment="Left"
-                                              Margin="0,-1" Grid.Row="0" Grid.RowSpan="2" Stretch="Fill"
-                                              Stroke="{DynamicResource Fluent.Ribbon.Brushes.TextBox.MouseOver.BorderBrush}"
-                                              StrokeThickness="1" Visibility="Collapsed" Width="1" />
+                                  Fill="{DynamicResource BlackBrush}" HorizontalAlignment="Left"
+                                  Margin="0,-1" Grid.Row="0" Grid.RowSpan="2" Stretch="Fill"
+                                  Stroke="{DynamicResource Fluent.Ribbon.Brushes.TextBox.MouseOver.BorderBrush}"
+                                  StrokeThickness="1" Visibility="Collapsed" Width="1" />
                             <Path x:Name="path1" Grid.Column="1" Data="M0,0L1,0"
-                                              Fill="{DynamicResource BlackBrush}" HorizontalAlignment="Left" Height="1"
-                                              Margin="0,0,-1,0" Grid.Row="0" Stretch="Fill"
-                                              Stroke="{DynamicResource Fluent.Ribbon.Brushes.TextBox.MouseOver.BorderBrush}"
-                                              StrokeThickness="1" Visibility="Collapsed" VerticalAlignment="Bottom"
-                                              Width="Auto" />
+                                  Fill="{DynamicResource BlackBrush}" HorizontalAlignment="Left" Height="1"
+                                  Margin="0,0,-1,0" Grid.Row="0" Stretch="Fill"
+                                  Stroke="{DynamicResource Fluent.Ribbon.Brushes.TextBox.MouseOver.BorderBrush}"
+                                  StrokeThickness="1" Visibility="Collapsed" VerticalAlignment="Bottom"
+                                  Width="Auto" />
                             <RepeatButton x:Name="PART_ButtonUp" Grid.Column="1"
-                                                      HorizontalAlignment="Stretch" Grid.Row="0"
-                                                      RenderTransformOrigin="0,0.5"
-                                                      Style="{DynamicResource SpinnerButtonStyle}">
+                                          HorizontalAlignment="Stretch" Grid.Row="0"
+                                          RenderTransformOrigin="0,0.5"
+                                          Style="{DynamicResource SpinnerButtonStyle}">
                                 <Path Data="M0,0L1,-1 2,0" RenderOptions.EdgeMode="Aliased"
-                                                  Fill="{DynamicResource BlackBrush}" HorizontalAlignment="Center"
-                                                  Height="3" Margin="1,2,0,1" Stretch="Fill"
-                                                  Stroke="{DynamicResource BlackBrush}" StrokeThickness="0"
-                                                  VerticalAlignment="Center" Width="5" />
+                                      Fill="{DynamicResource BlackBrush}" HorizontalAlignment="Center"
+                                      Height="3" Margin="1,2,0,1" Stretch="Fill"
+                                      Stroke="{DynamicResource BlackBrush}" StrokeThickness="0"
+                                      VerticalAlignment="Center" Width="5" />
                             </RepeatButton>
                             <RepeatButton x:Name="PART_ButtonDown" Grid.Column="1" Grid.Row="1"
-                                                      Style="{DynamicResource SpinnerButtonStyle}">
+                                          Style="{DynamicResource SpinnerButtonStyle}">
                                 <Path Data="M0,0L1,1 2,0" RenderOptions.EdgeMode="Aliased"
-                                                  Fill="{DynamicResource BlackBrush}" HorizontalAlignment="Center"
-                                                  Height="3" Margin="1,-1,0,0" Stretch="Fill"
-                                                  Stroke="{DynamicResource BlackBrush}" StrokeThickness="0"
-                                                  VerticalAlignment="Center" Width="5" />
+                                      Fill="{DynamicResource BlackBrush}" HorizontalAlignment="Center"
+                                      Height="3" Margin="1,-1,0,0" Stretch="Fill"
+                                      Stroke="{DynamicResource BlackBrush}" StrokeThickness="0"
+                                      VerticalAlignment="Center" Width="5" />
                             </RepeatButton>
                         </Grid>
                     </Border>
@@ -80,16 +80,16 @@
                     </Trigger>
                     <Trigger Property="InputWidth" Value="NaN">
                         <Setter Property="HorizontalAlignment" TargetName="PART_ContentBorder"
-                                            Value="Stretch" />
+                                Value="Stretch" />
                     </Trigger>
                     <Trigger Property="IsEnabled" Value="False">
                         <Setter Property="IsEnabled" TargetName="PART_TextBox" Value="False" />
                         <Setter Property="Background" TargetName="PART_ContentBorder"
-                                            Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.Disabled.Background}" />
+                                Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.Disabled.Background}" />
                         <Setter Property="BorderBrush" TargetName="PART_ContentBorder"
-                                            Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.Disabled.BorderBrush}" />
+                                Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.Disabled.BorderBrush}" />
                         <Setter Property="Background" TargetName="PART_TextBox"
-                                            Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.Disabled.Background}" />
+                                Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.Disabled.Background}" />
                         <Setter Property="Opacity" TargetName="iconImage" Value="0.5" />
                         <Setter Property="Opacity" TargetName="textBlock" Value="0.5" />
                         <Setter Property="Effect" TargetName="iconImage">
@@ -101,22 +101,22 @@
                     <Trigger Property="Size" Value="Middle">
                         <Setter Property="Visibility" TargetName="textBlock" Value="Collapsed" />
                         <Setter Property="HorizontalAlignment" TargetName="PART_ContentBorder"
-                                            Value="Stretch" />
+                                Value="Stretch" />
                     </Trigger>
                     <Trigger Property="Size" Value="Small">
                         <Setter Property="Visibility" TargetName="stackPanel" Value="Collapsed" />
                         <Setter Property="HorizontalAlignment" TargetName="PART_ContentBorder"
-                                            Value="Stretch" />
+                                Value="Stretch" />
                     </Trigger>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Visibility" TargetName="path" Value="Visible" />
                         <Setter Property="Visibility" TargetName="path1" Value="Visible" />
                         <Setter Property="BorderBrush" TargetName="PART_ContentBorder"
-                                            Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.MouseOver.BorderBrush}" />
+                                Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.MouseOver.BorderBrush}" />
                         <Setter Property="Background" TargetName="PART_ContentBorder"
-                                            Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.MouseOver.Background}" />
+                                Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.MouseOver.Background}" />
                         <Setter Property="Background" TargetName="PART_TextBox"
-                                            Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.MouseOver.Background}" />
+                                Value="{DynamicResource Fluent.Ribbon.Brushes.TextBox.MouseOver.Background}" />
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>

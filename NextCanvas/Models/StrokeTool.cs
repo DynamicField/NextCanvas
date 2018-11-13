@@ -3,7 +3,6 @@
 using System;
 using System.Windows.Ink;
 using Newtonsoft.Json;
-using NextCanvas.Ink;
 
 #endregion
 

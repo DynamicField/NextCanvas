@@ -1,10 +1,5 @@
 ﻿#region
 
-using NextCanvas.Controls.Content;
-using NextCanvas.Ink;
-using NextCanvas.Models;
-using NextCanvas.Properties;
-using NextCanvas.ViewModels.Content;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +11,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
+using NextCanvas.Controls.Content;
+using NextCanvas.Ink;
+using NextCanvas.Models;
+using NextCanvas.Properties;
+using NextCanvas.ViewModels.Content;
 
 #endregion
 

@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using NextCanvas.Interactivity.Multimedia;
-using NextCanvas.Utilities;
 using NextCanvas.Utilities.Multimedia;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;

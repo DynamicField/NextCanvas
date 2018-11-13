@@ -20,7 +20,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="17*" />
                 <RowDefinition Height="48*" />
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackPanel>
                 <TextBlock Text="Name:" Margin="0,2" />
@@ -29,7 +29,7 @@
             <StackPanel Grid.Row="1" Visibility="{Binding HasSize, Converter={StaticResource VisibilityConverter}}">
                 <TextBlock Text="Size:" Margin="0,2" />
                 <fluent:Spinner BorderThickness="1" BorderBrush="Gray" Template="{DynamicResource SpinnerTemplate}"
-                                Value="{Binding UniformSize}" Minimum="1"/>
+                                Value="{Binding UniformSize}" Minimum="1" />
             </StackPanel>
         </Grid>
         <Image Grid.Column="1" Source="{Binding LargeIcon, FallbackValue={x:Null}}" HorizontalAlignment="Right"

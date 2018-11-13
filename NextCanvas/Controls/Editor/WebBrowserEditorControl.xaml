@@ -13,6 +13,6 @@
             <TextBlock Text="URL:" />
             <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
-        <local:ControlElementEditorControl HorizontalAlignment="Left" VerticalAlignment="Bottom"></local:ControlElementEditorControl>
+        <local:ControlElementEditorControl HorizontalAlignment="Left" VerticalAlignment="Bottom" />
     </Grid>
 </UserControl>

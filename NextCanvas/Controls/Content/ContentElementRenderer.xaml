@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:NextCanvas.Controls.Content"
              xmlns:vm="clr-namespace:NextCanvas.ViewModels.Content"
              mc:Ignorable="d" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"
-              InkCanvas.Left="{Binding Left, Mode=TwoWay}"
+             InkCanvas.Left="{Binding Left, Mode=TwoWay}"
              InkCanvas.Top="{Binding Top, Mode=TwoWay}" Panel.ZIndex="{Binding ZIndex}"
              d:DataContext="{d:DesignInstance vm:TextBoxElementViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -36,7 +36,8 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:WebBrowserElementViewModel}">
                     <Border BorderThickness="4" BorderBrush="LightGray" x:Name="Border">
-                        <WebBrowser local:WebBrowserHelper.Source="{Binding Url}" />
+                        <WebBrowser local:WebBrowserHelper.Source="{Binding Url}"
+                                    local:WebBrowserHelper.IgnoreErrors="True" />
                     </Border>
                 </DataTemplate>
             </ContentPresenter.Resources>

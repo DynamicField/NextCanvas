@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using Ionic.Zlib;
-using NextCanvas.ViewModels;
 
 #endregion
 

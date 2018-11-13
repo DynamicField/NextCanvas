@@ -34,8 +34,8 @@
         </ContentPresenter>
         <Border Grid.Row="2" Background="{StaticResource BackgroundBrush}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="OK" Margin="5" Width="80" Click="Ok_Click" IsDefault="True"/>
-                <Button Content="Cancel" Margin="5" Width="80" Click="Cancel_Click" IsCancel="True"/>
+                <Button Content="OK" Margin="5" Width="80" Click="Ok_Click" IsDefault="True" />
+                <Button Content="Cancel" Margin="5" Width="80" Click="Cancel_Click" IsCancel="True" />
             </StackPanel>
         </Border>
     </Grid>

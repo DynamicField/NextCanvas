@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="NextCanvas.Controls.Editor.ControlElementEditorControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:NextCanvas.Controls.Editor"
              xmlns:vm="clr-namespace:NextCanvas.ViewModels.Content"
              xmlns:fluent="urn:fluent-ribbon"
@@ -11,33 +11,33 @@
     <UniformGrid Margin="1" Columns="2" Rows="5" VerticalAlignment="Top">
         <UniformGrid.Resources>
             <Style TargetType="TextBlock">
-                <Setter Property="HorizontalAlignment" Value="Right"/>
-                <Setter Property="VerticalAlignment" Value="Center"></Setter>
-                <Setter Property="FontSize" Value="16"/>
-                <Setter Property="Margin" Value="5,0"/>
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="Margin" Value="5,0" />
             </Style>
             <Style TargetType="{x:Type fluent:Spinner}">
-                <Setter Property="Template" Value="{StaticResource SpinnerTemplate}"/>
-                <Setter Property="Grid.Column" Value="1"/>
-                <Setter Property="Margin" Value="2,0"/>
-                <Setter Property="BorderBrush" Value="LightGray"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Format" Value="F0"/>
-                <Setter Property="Interval" Value="100"/>
-                <Setter Property="Delay" Value="210"/>
-                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="Template" Value="{StaticResource SpinnerTemplate}" />
+                <Setter Property="Grid.Column" Value="1" />
+                <Setter Property="Margin" Value="2,0" />
+                <Setter Property="BorderBrush" Value="LightGray" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Format" Value="F0" />
+                <Setter Property="Interval" Value="100" />
+                <Setter Property="Delay" Value="210" />
+                <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
         </UniformGrid.Resources>
-        <TextBlock Text="X:"/>
+        <TextBlock Text="X:" />
         <!-- ReSharper disable Xaml.MissingGridIndex -->
-        <fluent:Spinner Value="{Binding Left}"/>
+        <fluent:Spinner Value="{Binding Left}" />
         <TextBlock Text="Y:" />
-        <fluent:Spinner Value="{Binding Bottom}"/>
+        <fluent:Spinner Value="{Binding Bottom}" />
         <TextBlock Text="Width:" />
-        <fluent:Spinner Value="{Binding Width}" Interval="25" Increment="10"/>
+        <fluent:Spinner Value="{Binding Width}" Interval="25" Increment="10" />
         <TextBlock Text="Height:" />
-        <fluent:Spinner Value="{Binding Height}" Interval="25" Increment="10"/>
+        <fluent:Spinner Value="{Binding Height}" Interval="25" Increment="10" />
         <TextBlock Text="Layer:" />
-        <fluent:Spinner Value="{Binding ZIndex}" Interval="780"/>
+        <fluent:Spinner Value="{Binding ZIndex}" Interval="780" />
     </UniformGrid>
 </UserControl>

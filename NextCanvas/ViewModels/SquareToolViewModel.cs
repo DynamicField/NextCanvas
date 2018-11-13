@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
-using NextCanvas.Ink;
-using NextCanvas.Models;
-using System;
+﻿using System;
 using System.Windows.Ink;
 using System.Windows.Input;
+using NextCanvas.Ink;
+using NextCanvas.Models;
 
 namespace NextCanvas.ViewModels
 {

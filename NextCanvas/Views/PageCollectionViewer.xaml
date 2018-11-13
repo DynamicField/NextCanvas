@@ -35,7 +35,9 @@
                 <DataTemplate DataType="vm:PageViewModel">
                     <StackPanel HorizontalAlignment="Left" Margin="5">
                         <Border BorderThickness="1" BorderBrush="Black">
-                            <Viewbox Stretch="Fill" StretchDirection="Both" Width="{Binding Path=DataContext.WantedWidth, ElementName=Window}" Height="{Binding Path=DataContext.WantedHeight, ElementName=Window}">
+                            <Viewbox Stretch="Fill" StretchDirection="Both"
+                                     Width="{Binding Path=DataContext.WantedWidth, ElementName=Window}"
+                                     Height="{Binding Path=DataContext.WantedHeight, ElementName=Window}">
                                 <controls:NextInkCanvas
                                     x:Name="Canvas" EditingMode="None"
                                     Width="{Binding Width}"
@@ -59,7 +61,8 @@
                                         </ScaleTransform.ScaleY>
                                     </ScaleTransform>
                                 </controls:NextInkCanvas.LayoutTransform>-->
-                                </controls:NextInkCanvas></Viewbox>
+                                </controls:NextInkCanvas>
+                            </Viewbox>
                         </Border>
                         <TextBlock HorizontalAlignment="Center" x:Name="Number">
                             <TextBlock.Text>

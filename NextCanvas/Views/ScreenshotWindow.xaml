@@ -28,7 +28,7 @@
                        StrokeDashArray="6 3" StrokeDashOffset="1" />
         </Canvas>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" ZIndex="3"
-                    x:Name="ScreenshotOptions" Cursor="Arrow" ForceCursor="True" >
+                    x:Name="ScreenshotOptions" Cursor="Arrow" ForceCursor="True">
             <Button Content="Cancel screenshot" Padding="25,5" Margin="5" Click="CancelClick" />
             <Button Content="Capture whole screen" Padding="25,5" Margin="5" Click="CaptureWholeScreenClick" />
         </StackPanel>

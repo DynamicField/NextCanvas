@@ -1,7 +1,5 @@
 ﻿#region
 
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Ionic.Zlib;
 using NextCanvas.Models;

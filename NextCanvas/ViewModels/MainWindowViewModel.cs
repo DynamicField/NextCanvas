@@ -1,5 +1,14 @@
 ﻿#region
 
+using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
 using Fluent;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Multimedia;
@@ -10,15 +19,6 @@ using NextCanvas.Serialization;
 using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels.Content;
-using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
 
 #endregion
 
