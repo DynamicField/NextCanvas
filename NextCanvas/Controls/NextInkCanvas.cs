@@ -167,6 +167,8 @@ namespace NextCanvas.Controls
                 new CommandBinding(ApplicationCommands.Delete, CommandExecuted, CanExecuteCommand));
             CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas),
                 new CommandBinding(ApplicationCommands.Paste, CommandExecuted, CanExecuteCommand));
+            CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas),
+                new CommandBinding(ApplicationCommands.SelectAll, CommandExecuted, CanExecuteCommand));
         }
 
         public SelectionWrapper SelectionHelper { get; }
@@ -273,6 +275,13 @@ namespace NextCanvas.Controls
             {
                 canvas.Paste();
             }
+
+            if (e.Command == ApplicationCommands.SelectAll)
+            {
+                var elements = canvas.Children;
+                var strokes = canvas.Strokes;
+                canvas.Select(strokes, elements.OfType<UIElement>());
+            }
         }
 
         /// <summary>
@@ -338,6 +347,11 @@ namespace NextCanvas.Controls
             if (e.Command == ApplicationCommands.Paste)
             {
                 e.CanExecute = canvas.CanPaste();
+            }
+
+            if (e.Command == ApplicationCommands.SelectAll)
+            {
+                e.CanExecute = true;
             }
         }
 

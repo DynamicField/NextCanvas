@@ -55,10 +55,25 @@ namespace NextCanvas.Utilities.Multimedia
         public static BitmapSource TakeScreenshot(bool basedOnCursorPosition = false)
         {
             if (Screen.AllScreens.Length == 1 || !basedOnCursorPosition) return TakeScreenshot(Screen.PrimaryScreen); // Primary screen
+            return TakeScreenshot(GetScreen());
+        }
+        public static BitmapSource TakeScreenshot(bool basedOnCursorPosition, out Screen s)
+        {
+            if (Screen.AllScreens.Length == 1 || !basedOnCursorPosition)
+            {
+                s = Screen.PrimaryScreen;
+                return TakeScreenshot(s); // Primary screen
+            }
+            s = GetScreen();
+            return TakeScreenshot(s);
+        }
+
+        private static Screen GetScreen()
+        {
             var cursorPosition = Cursor.Position;
             var cursorScreen = Screen.AllScreens.First(screen =>
                 screen.Bounds.X <= cursorPosition.X && screen.Bounds.Right >= cursorPosition.X);
-            return TakeScreenshot(cursorScreen);
+            return cursorScreen;
         }
     }
 }

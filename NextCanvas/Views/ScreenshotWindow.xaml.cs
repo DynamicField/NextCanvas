@@ -4,10 +4,14 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using NextCanvas.Interactivity.Multimedia;
+using NextCanvas.Utilities;
 using NextCanvas.Utilities.Multimedia;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 #endregion
 
@@ -36,20 +40,34 @@ namespace NextCanvas.Views
 
         public ScreenshotWindow(Window owner)
         {
-            Owner = owner;
-            owner.WindowState = WindowState.Minimized;
-            owner.Hide();
-            FullScreenshot = ScreenshotHelper.TakeScreenshot(true);
-            owner.Show();
+            Initialize(owner);
             InitializeComponent();
         }
 
         public ScreenshotWindow()
         {
-            FullScreenshot = ScreenshotHelper.TakeScreenshot(true);
+            Initialize();
             InitializeComponent();
         }
 
+        private void Initialize(Window owner = null)
+        {
+            if (owner != null)
+            {
+                Owner = owner;
+                owner.WindowState = WindowState.Minimized;
+                owner.Hide();
+                FullScreenshot = ScreenshotHelper.TakeScreenshot(true, out usedScreen);
+                owner.Show();
+            }
+            else
+            {
+                FullScreenshot = ScreenshotHelper.TakeScreenshot(true, out usedScreen);
+            }
+            Left = usedScreen.Bounds.Left;
+            Top = 0;
+        }
+        private Screen usedScreen;
         public BitmapSource FullScreenshot
         {
             get => (BitmapSource) GetValue(FullScreenshotProperty);
@@ -127,21 +145,21 @@ namespace NextCanvas.Views
         {
             var rect = new Int32Rect
             {
-                X = (int) Canvas.GetLeft(SelectionRectangle),
-                Y = (int) Canvas.GetTop(SelectionRectangle),
-                Width = (int) Math.Max(SelectionRectangle.Width, 1),
-                Height = (int) Math.Max(SelectionRectangle.Height, 1)
+                X = (int) (Canvas.GetLeft(SelectionRectangle) * DpiRatio),
+                Y = (int) (Canvas.GetTop(SelectionRectangle) * DpiRatio),
+                Width = (int) (Math.Max(SelectionRectangle.Width, 1) * DpiRatio),
+                Height = (int) (Math.Max(SelectionRectangle.Height, 1) * DpiRatio)
             };
             Geometry.Rect = new Rect
             {
-                X = rect.X,
-                Y = rect.Y,
-                Width = rect.Width,
-                Height = rect.Height
+                X = rect.X / DpiRatio,
+                Y = rect.Y / DpiRatio,
+                Width = rect.Width / DpiRatio,
+                Height = rect.Height / DpiRatio
             };
             RectangleCrop = rect;
         }
-
+        private double DpiRatio => FullScreenshot.PixelHeight / ActualHeight;
         private void MainGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (!isCapturing) return;

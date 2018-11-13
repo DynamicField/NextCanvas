@@ -46,7 +46,7 @@
                             Height="{Binding CurrentDocument.SelectedPage.Height}">
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <local:NextInkCanvas
-                            x:Name="Canvas" EditingMode="{Binding SelectedTool.Mode, Mode=OneWay}"
+                            x:Name="Canvas" EditingMode="{Binding SelectedTool.Mode, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
                             EraserShapeDP="{Binding SelectedTool.EraserShape}"
                             Width="{Binding CurrentDocument.SelectedPage.Width}"
                             Height="{Binding CurrentDocument.SelectedPage.Height}"
@@ -54,7 +54,7 @@
                             Canvas.Left="0" Canvas.Top="0"
                             UseCustomCursorDP="{Binding SelectedTool.UseCursor}"
                             ItemsSource="{Binding CurrentDocument.SelectedPage.Elements}"
-                            Cursor="{Binding SelectedTool.Cursor}"
+                            Cursor="{Binding SelectedTool.Cursor}" 
                             DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}"
                             ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"     
                             SelectedItems="{Binding SelectedElements}" CustomStrokeInvocator="{Binding SelectedTool, Converter={StaticResource ToolToConstructorConverter}}">
@@ -126,18 +126,18 @@
                         </fluent:Button.RenderTransform>
                     </fluent:Button>
                 </fluent:Ribbon.ToolBarItems>
-                <fluent:RibbonTabItem Header="Home" IsSelected="True" ReduceOrder="Selection, Pages, Pages, Pages">
+                <fluent:RibbonTabItem Header="Home" IsSelected="True" ReduceOrder="Pages, Selection">
                     <fluent:RibbonGroupBox Header="Selection" x:Name="Selection">
-                        <fluent:ToggleButton Header="Select" GroupName="Tool"
+                        <fluent:SplitButton Header="Select"
                                              LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Select.png"
-                                             SizeDefinition="Large"
-                                             Command="{Binding SwitchToSelectToolCommand}"
-                                             IsChecked="{Binding SelectedTool.Name, ConverterParameter=Select, Converter={StaticResource IsEqualToConverter}, Mode=OneWay}" />
-                        <fluent:Button Header="Select All"
-                                       LargeIcon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png"
-                                       Icon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png"
-                                       SizeDefinition="large, large, small" Command="ApplicationCommands.SelectAll"
-                                       CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}" />
+                                             SizeDefinition="Large" x:Name="SelectButton" IsCheckable="True"
+                                             IsChecked="{Binding IsSelectTool, Mode=TwoWay}">
+                            <fluent:MenuItem Header="Select All"
+                                             Icon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png"
+                                             SizeDefinition="large, large, small" Command="ApplicationCommands.SelectAll"
+                                             CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}" IsEnabled="True"/>
+                        </fluent:SplitButton>
+
                         <fluent:Button SizeDefinition="middle, small, small" Header="Copy"
                                        Icon="/NextCanvas;component/Images/Ribbon/Shared/Copy-Small.png"
                                        x:Name="CopyButton" Command="ApplicationCommands.Copy"

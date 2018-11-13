@@ -6,9 +6,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:NextCanvas.Controls.Content"
              xmlns:vm="clr-namespace:NextCanvas.ViewModels.Content"
-             mc:Ignorable="d" Width="{Binding Width}" Height="{Binding Height}"
-             InkCanvas.Bottom="{Binding Bottom}" InkCanvas.Left="{Binding Left}" InkCanvas.Right="{Binding Right}"
-             InkCanvas.Top="{Binding Top}" Panel.ZIndex="{Binding ZIndex}"
+             mc:Ignorable="d" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"
+              InkCanvas.Left="{Binding Left, Mode=TwoWay}"
+             InkCanvas.Top="{Binding Top, Mode=TwoWay}" Panel.ZIndex="{Binding ZIndex}"
              d:DataContext="{d:DesignInstance vm:TextBoxElementViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>

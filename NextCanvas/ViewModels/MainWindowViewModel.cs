@@ -1,14 +1,5 @@
 ﻿#region
 
-using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
 using Fluent;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Multimedia;
@@ -19,6 +10,15 @@ using NextCanvas.Serialization;
 using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels.Content;
+using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 #endregion
 
@@ -79,6 +79,7 @@ namespace NextCanvas.ViewModels
                 selectedToolIndex = value;
                 OnPropertyChanged(nameof(SelectedToolIndex));
                 OnPropertyChanged(nameof(SelectedTool));
+                OnPropertyChanged(nameof(IsSelectTool));
                 ToolViewModel.UpdateCursorIfEraser(SelectedTool);
             }
         }
@@ -98,6 +99,15 @@ namespace NextCanvas.ViewModels
             set => SelectedToolIndex = Tools.IndexOf(value);
         }
 
+        public bool IsSelectTool
+        {
+            get => SelectedTool.Mode == InkCanvasEditingMode.Select;
+            set
+            {
+                if (value)
+                    SwitchToSelectTool();
+            }
+        }
 
         public ElementCreationContext ElementCreationContext
         {
@@ -304,7 +314,6 @@ namespace NextCanvas.ViewModels
         {
             if (e.GetSelectedElements().Count + e.GetSelectedStrokes().Count > 0) SwitchToSelectTool();
         }
-
         private ToolViewModel GetSelectTool()
         {
             return !IsThereAnySelectTools() ? null : Tools.First(t => t.Mode == InkCanvasEditingMode.Select);
@@ -380,7 +389,11 @@ namespace NextCanvas.ViewModels
             }
         }
 
-        private void SetToolByName(object name) => SetToolByName(name.ToString());
+        private void SetToolByName(object name)
+        {
+            SetToolByName(name.ToString());
+        }
+
         private void SetToolByName(string name)
         {
             if (!IsNameValid(name)) return;
@@ -388,7 +401,11 @@ namespace NextCanvas.ViewModels
             SelectedTool = Tools.First(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        private bool IsNameValid(object name) => IsNameValid(name.ToString());
+        private bool IsNameValid(object name)
+        {
+            return IsNameValid(name.ToString());
+        }
+
         private bool IsNameValid(string name)
         {
             return Tools.Any(t => t.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
@@ -402,7 +419,11 @@ namespace NextCanvas.ViewModels
             }
         }
 
-        private void ExtendPage(object direction) => ExtendPage(direction.ToString());
+        private void ExtendPage(object direction)
+        {
+            ExtendPage(direction.ToString());
+        }
+
         private void ExtendPage(string direction)
         {
             if (direction.Equals("Right", StringComparison.InvariantCultureIgnoreCase))

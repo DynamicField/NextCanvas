@@ -63,8 +63,8 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
+    <Reference Include="DotNetZip, Version=1.12.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.12.0\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
     <Reference Include="Fluent, Version=6.1.0.326, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Fluent.Ribbon.6.1.0.326\lib\net45\Fluent.dll</HintPath>
@@ -128,8 +128,10 @@
     <Compile Include="Interactivity\IErrorInteraction.cs" />
     <Compile Include="Interactivity\IModifyObjectInteraction.cs" />
     <Compile Include="Interactivity\MessageBoxError.cs" />
+    <Compile Include="LogManager.cs" />
     <Compile Include="Models\Content\WebBrowserElement.cs" />
     <Compile Include="Models\IStrokeTool.cs" />
+    <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SquareTool.cs" />
     <Compile Include="ObservableModelCollection.cs" />
@@ -187,6 +189,7 @@
     <Compile Include="ViewModels\Content\WebBrowserElementViewModel.cs" />
     <Compile Include="ViewModels\DocumentViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
+    <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PageCollectionViewerViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
