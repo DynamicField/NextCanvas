@@ -38,7 +38,12 @@ namespace NextCanvas.Views.Editor
             set => data.HeaderStart = value;
         }
 
-    
+        public bool IsObjectCreation
+        {
+            get => data.IsObjectCreation;
+            set => data.IsObjectCreation = value;
+        }
+
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             ActionComplete?.Invoke(this, EventArgs.Empty);
@@ -81,6 +86,15 @@ namespace NextCanvas.Views.Editor
                 get => _headerStart;
                 set { _headerStart = value; SetHeader(); }
             }
+            private bool isCreate;
+
+            public bool IsObjectCreation
+            {
+                get => isCreate;
+                set { isCreate = value; OnPropertyChanged(nameof(IsObjectCreation)); OnPropertyChanged(nameof(IsObjectCreationReversed));}
+            }
+
+            public bool IsObjectCreationReversed => !IsObjectCreation;
             private void SetHeader()
             {
                 if (objectToModify is INamedObject named)

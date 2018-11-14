@@ -5,5 +5,6 @@
         object ObjectToModify { get; set; }
         string HeaderText { get; set; }
         string HeaderStart { get; set; }
+        bool IsObjectCreation { get; set; }
     }
 }

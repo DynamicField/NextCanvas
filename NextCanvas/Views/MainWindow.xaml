@@ -12,7 +12,7 @@
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     x:Class="NextCanvas.Views.MainWindow"
     UseLayoutRounding="True" x:Name="Window"
-    mc:Ignorable="d" ResizeBorderThickness="2"
+    mc:Ignorable="d" ResizeBorderThickness="8" ResizeMode="CanResizeWithGrip"
     d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:MainWindowViewModel}}"
     Title="NextCanvas" Height="720" Width="1202">
     <fluent:RibbonWindow.InputBindings>

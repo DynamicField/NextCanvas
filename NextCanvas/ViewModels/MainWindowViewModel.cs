@@ -289,6 +289,7 @@ namespace NextCanvas.ViewModels
                 new WebBrowserElementViewModel(SettingsManager.Settings.GetDefaultValue<WebBrowserElement>());
             editor.ObjectToModify = browserInstance;
             editor.HeaderText = "Creating a web browser...";
+            editor.IsObjectCreation = true;
             editor.ActionComplete += (sender, args) => { ProcessItem(browserInstance); };
             editor.ShowInteraction();
         }
