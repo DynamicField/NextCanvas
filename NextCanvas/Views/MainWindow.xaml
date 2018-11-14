@@ -164,7 +164,7 @@
                                        CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"
                                        Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Self}}" />
                     </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox Header="Basic tools" x:Name="Tools" Icon="{Binding SelectedTool.LargeIcon}">
+                    <fluent:RibbonGroupBox Header="Basic tools" x:Name="Tools" Icon="{Binding SelectedTool.LargeIcon}" >
                         <fluent:RibbonGroupBox.Resources>
                             <CollectionViewSource x:Key="ToolsSource" Source="{Binding Tools}">
                                 <CollectionViewSource.SortDescriptions>
@@ -370,6 +370,10 @@
                                        Header="Stylus Debug" Click="DebugStylusXD_Click" x:Name="DebugStylusXd" />
                         <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/Menu/Open.png"
                                        Header="Multi Canvas" Click="Button_Click" />
+                    </fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox Header="Bugs">
+                        <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/Ribbon/Debug/Log.png"
+                                       Header="Log viewer" Click="LogViewerClick"></fluent:Button>
                     </fluent:RibbonGroupBox>
                 </fluent:RibbonTabItem>
             </fluent:Ribbon>

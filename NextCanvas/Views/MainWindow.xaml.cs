@@ -185,5 +185,11 @@ namespace NextCanvas.Views
         {
             pageViewerFactory.TryShowWindow();
         }
+
+        private readonly UniqueWindowFactory<LogViewerWindow> logViewerFactory = new UniqueWindowFactory<LogViewerWindow>(() => new LogViewerWindow());
+        private void LogViewerClick(object sender, RoutedEventArgs e)
+        {
+            logViewerFactory.TryShowWindow();
+        }
     }
 }

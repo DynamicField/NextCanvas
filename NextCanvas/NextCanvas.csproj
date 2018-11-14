@@ -204,6 +204,9 @@
     <Compile Include="Views\Editor\ModifyObjectWindow.xaml.cs">
       <DependentUpon>ModifyObjectWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LogViewerWindow.xaml.cs">
+      <DependentUpon>LogViewerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MultiCanvasExperimentWindow.xaml.cs">
       <DependentUpon>MultiCanvasExperimentWindow.xaml</DependentUpon>
     </Compile>
@@ -247,6 +250,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExceptionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LogViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -409,6 +416,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Ribbon\Insert\WebBrowser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\Debug\Log.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

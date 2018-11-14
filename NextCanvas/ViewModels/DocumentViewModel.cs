@@ -21,7 +21,7 @@ namespace NextCanvas.ViewModels
         private DocumentResourceLocator locator;
         private int selectedIndex;
         public bool CanDeletePage => Pages.Count > 1;
-
+        public const string LogSenderString = "Document";
         public DocumentViewModel(Document model = null) : base(model)
         {
             Initialize();
@@ -87,10 +87,9 @@ namespace NextCanvas.ViewModels
         }
         private void ElementRemoved(ContentElementViewModel obj)
         {
-            if (obj is ResourceElementViewModel)
-            {
-                CleanupResources();
-            }
+            if (!(obj is ResourceElementViewModel)) return;
+            LogManager.AddLogItem("Resource-using element has been deleted, running a resource cleanup.");
+            CleanupResources();
         }
         private void CleanupResources()
         {
@@ -100,6 +99,7 @@ namespace NextCanvas.ViewModels
                 .Select(e => e.Resource);
             foreach (var resource in Resources.Where(r => usedResources.All(used => used != r)).ToList())
             {
+                LogManager.AddLogItem($"Cleaned up unused resource: {resource.Name}, freeing {resource.Data.Length} bytes.");
                 resource.Dispose();
                 Resources.Remove(resource);
             }
@@ -111,14 +111,18 @@ namespace NextCanvas.ViewModels
             UpdateSelectedPage();
         }
 
-        public ResourceViewModel AddResource(FileStream fileStream)
+        public ResourceViewModel AddResource(FileStream stream)
         {
-            var testResource = GetExistingResource(fileStream);
-            if (testResource != null) return testResource;
-            var fileName = CreateResourceName(fileStream.Name);
-            var resource = new ResourceViewModel(new Resource(fileName, fileStream));
-            Resources.Add(resource);
-            return resource;
+            LogManager.AddLogItem($"Adding resource from file stream: {stream.Name}");
+            try
+            {
+                return AddResource(stream, stream.Name);
+            }
+            finally
+            {
+                stream.Dispose();
+                LogManager.AddLogItem("Done, file stream disposed.");
+            }
         }
 
         private string CreateResourceName(string name)
@@ -135,13 +139,25 @@ namespace NextCanvas.ViewModels
             return testResource;
         }
         private Random random = new Random();
+        public ResourceViewModel AddResource(Stream stream, string name)
+        {
+            var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            return AddResource(memoryStream, name);
+        }
         public ResourceViewModel AddResource(MemoryStream stream, string name)
         {
-            var existing = GetExistingResource(stream);
-            if (existing != null) return existing;
+            LogManager.AddLogItem($"Adding resource from stream: {name}");
+            var testResource = GetExistingResource(stream);
+            if (testResource != null)
+            {
+                LogManager.AddLogItem($"Resource already found: {testResource.Name} ; hash: {testResource.DataMD5Hash}");
+                return testResource;
+            }
             var fileName = CreateResourceName(name);
             var resource = new ResourceViewModel(new Resource(fileName, stream));
             Resources.Add(resource);
+            LogManager.AddLogItem($"Added new resource: {resource.Name}");
             return resource;
         }
 
