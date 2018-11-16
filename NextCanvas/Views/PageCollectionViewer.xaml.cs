@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Dialogs;
+using NextCanvas.Utilities;
 using NextCanvas.ViewModels;
 
 #endregion
@@ -43,31 +44,23 @@ namespace NextCanvas.Views
                 {
                     var element =
                         (FrameworkElement) ListBox.ItemContainerGenerator.ContainerFromIndex(i);
-                    var found = FindVisualChild<StackPanel>(element).FindName("Number");
-                    var textBlock = (found as TextBlock);
-                    var bindingExpression = BindingOperations.GetMultiBindingExpression(textBlock ?? throw new InvalidOperationException(), TextBlock.TextProperty);
+                    if (element == null)
+                        continue;
+                    object found;
+                    found = VisualTreeUtilities.FindVisualChild<StackPanel>(element).FindName("Number");
+                    var textBlock = found as TextBlock;
+                    if (textBlock == null)
+                        continue;
+                    var bindingExpression = BindingOperations.GetMultiBindingExpression(textBlock, TextBlock.TextProperty);
                     bindingExpression?.UpdateTarget();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Debug.WriteLine("Oh no");
+                    Debug.WriteLine("Oh no " + ex);
                 }
             }                          
         }
-        private T FindVisualChild<T>(DependencyObject obj)
-            where T : DependencyObject
-        {
-            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
-            {
-                var child = VisualTreeHelper.GetChild(obj, i);
-                if (child is T variable)
-                    return variable;
-                var childOfChild = FindVisualChild<T>(child);
-                if (childOfChild == null) continue;
-                return childOfChild;
-            }
-            return null;
-        }
+
         public IInteractionProvider<IUserRequestInteraction> DialogProvider => new DelegateInteractionProvider<IUserRequestInteraction>(() => new MessageBoxRequest(this));
 
         private void ListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

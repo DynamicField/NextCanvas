@@ -1,0 +1,101 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NextCanvas.Controls"
+             xmlns:content="clr-namespace:NextCanvas.Controls.Content"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             x:Class="NextCanvas.Controls.RtfRichTextEditor"
+             xmlns:collection="clr-namespace:System.Collections;assembly=mscorlib"
+             xmlns:converters="clr-namespace:NextCanvas.Converters"
+             xmlns:fluent="urn:fluent-ribbon"
+             xmlns:nextCanvas="clr-namespace:NextCanvas" Loaded="RtfRichTextEditor_OnLoaded"
+             mc:Ignorable="d" x:Name="Control" Focusable="True"
+             BorderThickness="0" BorderBrush="#FFE2E2E2" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding EditorFormatShown, ElementName=Control}" Value="True">
+                    <Setter Property="BorderThickness" Value="1"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+    <UserControl.Resources>
+        <converters:FamilyNamesCollectionConverter x:Key="FamilyConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <content:RtfRichTextBox
+            RtfText="{Binding RtfText, ElementName=Control, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"    
+            IsUndoEnabled="True" Background="{x:Null}" x:Name="TextBox" SelectionChanged="TextBox_OnSelectionChanged">
+            <content:RtfRichTextBox.Style>
+                <Style TargetType="{x:Type content:RtfRichTextBox}">
+                    <Setter Property="Margin" Value="0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding EditorFormatShown, ElementName=Control}" Value="False">
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Margin" Value="1"/>
+                        </DataTrigger>
+                        <Trigger Property="local:NextInkCanvas.IsHostedInLightweightRendering" Value="True">
+                            <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+                            <Setter Property="TextOptions.TextHintingMode" Value="Fixed"/>
+                            <Setter Property="Focusable" Value="False"/>
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </content:RtfRichTextBox.Style>
+        </content:RtfRichTextBox>
+
+        <Border x:Name="Border" VerticalAlignment="Bottom" Opacity="0.90">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding EditorFormatShown, ElementName=Control}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsFocused, ElementName=TextBox}">
+                            <Setter Property="BorderThickness" Value="1,0,0,0"/>
+                            <Setter Property="BorderBrush" Value="{Binding BorderBrush, ElementName=TextBox}"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Border Background="#FFECECEC" Padding="3">
+                <StackPanel  Orientation="Horizontal">
+                    <ComboBox HorizontalAlignment="Left" 
+                              Text="{Binding Path=DefaultFontSize, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}"
+                              VerticalAlignment="Top" Margin="2,0"
+                              IsEditable="True" TextBoxBase.TextChanged="FontSizeChanged" 
+                              x:Name="FontSizeBox">
+                        <system:Int32>8</system:Int32>
+                        <system:Int32>9</system:Int32>
+                        <system:Int32>10</system:Int32>
+                        <system:Int32>12</system:Int32>
+                        <system:Int32>16</system:Int32>
+                        <system:Int32>24</system:Int32>
+                        <system:Int32>32</system:Int32>
+                        <system:Int32>40</system:Int32>
+                        <system:Int32>56</system:Int32>
+                        <system:Int32>78</system:Int32>
+                        <system:Int32>86</system:Int32>
+                    </ComboBox>
+                    <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}, Path=(collection:ICollection.SyncRoot)}" x:Name="FontFamilyBox" 
+                              SelectedItem="{Binding DefaultFontFamily, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}" 
+                              SelectionChanged="FontBox_OnSelectionChanged" Margin="2,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type FontFamily}">
+                                <TextBlock FontSize="10" Text="{Binding Path=., Converter={StaticResource FamilyConverter}}" FontFamily="{Binding}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

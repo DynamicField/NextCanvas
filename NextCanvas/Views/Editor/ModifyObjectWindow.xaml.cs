@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Text;
 using System.Windows;
 using NextCanvas.Interactivity;
 
@@ -13,7 +14,7 @@ namespace NextCanvas.Views.Editor
     /// </summary>
     public partial class ModifyObjectWindow : InteractionWindow, IModifyObjectInteraction
     {
-        private ModifierData data = new ModifierData();
+        private readonly ModifierData data = new ModifierData();
         public ModifyObjectWindow()
         {
             DataContext = data;
@@ -74,7 +75,7 @@ namespace NextCanvas.Views.Editor
                 set { objectToModify = value; OnPropertyChanged(nameof(ObjectToModify)); SetHeader(); }
             }
             private string headerText;
-            private string _headerStart = "Modifying";
+            private string _headerStart = "Editing";
 
             public string HeaderText
             {
@@ -99,7 +100,14 @@ namespace NextCanvas.Views.Editor
             {
                 if (objectToModify is INamedObject named)
                 {
-                    HeaderText = $"{HeaderStart} {named.Name}";
+                    var processed = named.Name;
+                    var stringBuilder = new StringBuilder(processed);
+                    stringBuilder[0] = char.ToLower(stringBuilder[0]);
+                    HeaderText = $"{HeaderStart} {stringBuilder}";
+                }
+                else
+                {
+                    HeaderText = $"{HeaderStart} object...";
                 }
             }
         }

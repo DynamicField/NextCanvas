@@ -1,5 +1,10 @@
 ﻿#region
 
+using NextCanvas.Controls.Content;
+using NextCanvas.Ink;
+using NextCanvas.Models;
+using NextCanvas.Properties;
+using NextCanvas.ViewModels.Content;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,13 +14,12 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Input;
-using NextCanvas.Controls.Content;
-using NextCanvas.Ink;
-using NextCanvas.Models;
-using NextCanvas.Properties;
-using NextCanvas.ViewModels.Content;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using NextCanvas.Views.Editor;
 
 #endregion
 
@@ -82,7 +86,19 @@ namespace NextCanvas.Controls
                     }
                 }));
 
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.RegisterAttached("IsSelected", typeof(bool), 
+            typeof(NextInkCanvas),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits ));
 
+        public static bool GetIsSelected(DependencyObject o)
+        {
+            return (bool) o.GetValue(IsSelectedProperty);
+        }
+
+        public static void SetIsSelected(DependencyObject o, bool value)
+        {
+            o.SetValue(IsSelectedProperty, value);
+        }
         public StrokeDelegate<Stroke> CustomStrokeInvocator
         {
             get => (StrokeDelegate<Stroke>)GetValue(CustomStrokeInvocatorProperty);
@@ -120,6 +136,38 @@ namespace NextCanvas.Controls
                 }));
 
 
+        public static readonly DependencyProperty IsLightweightRenderingProperty = DependencyProperty.Register(
+            "IsLightweightRendering", typeof(bool), typeof(NextInkCanvas), new PropertyMetadata(false, LightweightRenderingChanged));
+
+        public bool IsLightweightRendering
+        {
+            get => (bool) GetValue(IsLightweightRenderingProperty);
+            set => SetValue(IsLightweightRenderingProperty, value);
+        }
+        public static readonly DependencyProperty IsHostedInLightweightRenderingProperty = DependencyProperty.RegisterAttached("IsHostedInLightweightRendering", typeof(bool),
+            typeof(NextInkCanvas),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
+
+        private static void LightweightRenderingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.OldValue == e.NewValue) return;
+            var canvas = (NextInkCanvas) d;
+            SetIsHostedInLightweightRendering(canvas, (bool) e.NewValue);
+            foreach (var uiElement in canvas.Children.OfType<UIElement>())
+            {
+                SetIsHostedInLightweightRendering(uiElement, (bool) e.NewValue);
+            }
+        }
+
+        public static bool GetIsHostedInLightweightRendering(DependencyObject o)
+        {
+            return (bool)o.GetValue(IsHostedInLightweightRenderingProperty);
+        }
+
+        public static void SetIsHostedInLightweightRendering(DependencyObject o, bool value)
+        {
+            o.SetValue(IsHostedInLightweightRenderingProperty, value);
+        }
 
         private static void UpdateSelection(NextInkCanvas canvas, ObservableCollection<ContentElementViewModel> c)
         {
@@ -141,7 +189,7 @@ namespace NextCanvas.Controls
             canvas.isSelectionInternal = true;
             canvas.shouldAutoSet = true;
             if (elements.Any())
-            canvas.Select(elements);
+                canvas.Select(elements);
         }
 
         private void UpdateSelection()
@@ -204,10 +252,29 @@ namespace NextCanvas.Controls
         {
             Select(new[] { GetElementFromDataContext(this, dataContext) });
         }
-
         protected override void OnSelectionChanged(EventArgs e)
         {
             var elements = GetSelectedElements();
+            foreach (var element in elements)
+            {
+                if (element is DependencyObject dp)
+                {
+                    SetIsHostedInLightweightRendering(dp, IsLightweightRendering);
+                }
+            }
+            foreach (var item in SelectedItems)
+            {
+                var element = GetElementFromDataContext(this, item);
+                if (element == null || elements.Contains(element)) continue;
+                SetIsSelected(element, false);
+                var adorner = AdornerLayer.GetAdornerLayer(element);
+                var array = adorner.GetAdorners(element);
+                if (array == null) continue;
+                foreach (var appliedAdorner in array)
+                {
+                    adorner.Remove(appliedAdorner);
+                }
+            }
             SelectedItems.Clear();
             if (elements.Any())
             {
@@ -215,31 +282,53 @@ namespace NextCanvas.Controls
                 {
                     shouldAutoSet = false;
                     isSelectionInternal = true;
-                    if (GetDataContextFromElement(element as FrameworkElement) is ContentElementViewModel item)
+                    if (element is FrameworkElement frameworkElement && GetDataContextFromElement(frameworkElement) is ContentElementViewModel item)
                     {
+                        SetIsSelected(frameworkElement, true);
                         SelectedItems.Add(item);
+                        var adornerLayer = AdornerLayer.GetAdornerLayer(frameworkElement);
+                        adornerLayer.Add(new ModifyElementAdorner(frameworkElement));
                     }
                 }
             }
+            SetZIndexes(elements);
+            base.OnSelectionChanged(e);
+        }
+
+        private void SetZIndexes(ReadOnlyCollection<UIElement> elements)
+        {
             if (elements.Count == 1)
             {
                 var element = elements[0];
-                var highestZIndex = Children.Cast<UIElement>().Select(el => (int)el.GetValue(Panel.ZIndexProperty))
+                var children = Children.Cast<UIElement>();
+                var uiElements = children as UIElement[] ?? children.ToArray();
+                var highestZIndex = uiElements.Select(el => (int) el.GetValue(Panel.ZIndexProperty))
                     .OrderByDescending(i => i).First();
-                var zIndex = (int)element.GetValue(Panel.ZIndexProperty);
+                var zIndex = (int) element.GetValue(Panel.ZIndexProperty);
                 if (highestZIndex == 0 || zIndex != highestZIndex)
                 {
                     element.SetValue(Panel.ZIndexProperty, highestZIndex + 1);
                 }
+
                 element.Focus();
                 if (element is ContentElementRenderer render)
                 {
                     render.FocusChild();
                 }
+
+                ReorderZIndexes(uiElements);
             }
-            base.OnSelectionChanged(e);
         }
 
+        private void ReorderZIndexes(IEnumerable<UIElement> elements)
+        {
+            var ordered = elements.OrderBy(u => (int) u.GetValue(Panel.ZIndexProperty));
+            var count = 0;
+            foreach (var element in ordered)
+            {
+                element.SetValue(Panel.ZIndexProperty, count++);
+            }
+        }
         protected override void OnSelectionMoving(InkCanvasSelectionEditingEventArgs e)
         {
             var elements = GetSelectedElements().OfType<FrameworkElement>();
@@ -467,6 +556,73 @@ namespace NextCanvas.Controls
             }
 
             isInternal = false;
+        }
+
+        private class ModifyElementAdorner : Adorner
+        {
+            private VisualCollection visuals;
+            private Button settingsButton;
+            public ModifyElementAdorner(UIElement adornedElement) : base(adornedElement)
+            {
+                visuals = new VisualCollection(this);
+                var image = new Image
+                {
+                    Width = 24
+                };
+                var bitmap =
+                    new BitmapImage(new Uri("pack://application:,,,/NextCanvas;component/Images/Menu/Settings.png"));
+                image.Source = bitmap;
+                settingsButton = new Button
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Children =
+                        {
+                            image,
+                            new TextBlock
+                            {
+                                Text = "Edit...",
+                                VerticalAlignment = VerticalAlignment.Center,
+                                Margin = new Thickness(3)
+                            }
+                        }
+                    },
+                    Margin = new Thickness(0),
+                    Padding = new Thickness(5)
+                };
+                settingsButton.Click += SettingsButton_Click;
+                visuals.Add(settingsButton);
+            }
+
+            private void SettingsButton_Click(object sender, RoutedEventArgs e)
+            {
+                if (!(AdornedElement is FrameworkElement frameworkElement)) return;
+                var window = new ModifyObjectWindow(Window.GetWindow(this))
+                {
+                    ObjectToModify = frameworkElement.DataContext
+                };
+                window.Show();
+            }
+
+            protected override Size ArrangeOverride(Size finalSize)
+            {
+                settingsButton.Arrange(new Rect(-3, -10 - finalSize.Height, finalSize.Width, finalSize.Height));
+                return settingsButton.RenderSize;
+            }
+
+            protected override Size MeasureOverride(Size constraint)
+            {
+                settingsButton.Measure(constraint);
+                return settingsButton.DesiredSize;
+            }
+            protected override Visual GetVisualChild(int index)
+            {
+                return visuals[index];
+            }
+
+            protected override int VisualChildrenCount => visuals.Count;
         }
     }
 }

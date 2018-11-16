@@ -107,6 +107,7 @@
     <Compile Include="Controls\Content\ElementRecognitionError.xaml.cs">
       <DependentUpon>ElementRecognitionError.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Content\LightweightDataTemplateSelector.cs" />
     <Compile Include="Controls\Content\RtfRichTextBox.cs" />
     <Compile Include="Controls\Content\WebBrowserHelper.cs" />
     <Compile Include="Controls\Editor\ControlElementEditorControl.xaml.cs">
@@ -118,7 +119,11 @@
     <Compile Include="Controls\Editor\WebBrowserEditorControl.xaml.cs">
       <DependentUpon>WebBrowserEditorControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\RtfRichTextEditor.xaml.cs">
+      <DependentUpon>RtfRichTextEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\AlternationIndexConverter.cs" />
+    <Compile Include="Converters\FamilyNamesCollectionConverter.cs" />
     <Compile Include="Converters\ToolToConstructorConverter.cs" />
     <Compile Include="Converters\WidthToScaleConverter.cs" />
     <Compile Include="INamedObject.cs" />
@@ -182,6 +187,7 @@
     <Compile Include="Utilities\MathExtensions.cs" />
     <Compile Include="Utilities\Multimedia\ScreenshotHelper.cs" />
     <Compile Include="Utilities\UniqueWindowFactory.cs" />
+    <Compile Include="Utilities\VisualTreeUtilities.cs" />
     <Compile Include="ViewModels\Content\ContentElementViewModel.cs" />
     <Compile Include="ViewModels\Content\ImageElementViewModel.cs" />
     <Compile Include="ViewModels\Content\ResourceElementViewModel.cs" />
@@ -242,6 +248,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Editor\WebBrowserEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\RtfRichTextEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

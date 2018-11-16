@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Linq;
+using System.Windows.Media;
 using Ionic.Zlib;
 using NextCanvas.Models;
 
@@ -31,6 +32,26 @@ namespace NextCanvas.ViewModels
                 Model.FileCompressionLevel = (CompressionLevel) value;
                 OnPropertyChanged(nameof(FileCompressionLevel));
             }
-        }     
+        }
+
+        public FontFamily DefaultFontFamily
+        {
+            get => Model.DefaultFontFamily;
+            set
+            {
+                Model.DefaultFontFamily = value;
+                OnPropertyChanged(nameof(DefaultFontFamily));
+            }
+        }
+
+        public double DefaultFontSize
+        {
+            get => Model.DefaultFontSize;
+            set
+            {
+                Model.DefaultFontSize = value;
+                OnPropertyChanged(nameof(DefaultFontSize));
+            }
+        }
     }
 }

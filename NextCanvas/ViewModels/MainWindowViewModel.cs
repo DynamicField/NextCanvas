@@ -154,8 +154,11 @@ namespace NextCanvas.ViewModels
 
         private void DocumentPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            UpdatePageText();
-            UpdatePageManipulation();
+            if (e.PropertyName == nameof(DocumentViewModel.SelectedIndex))
+            {
+                UpdatePageText();
+                UpdatePageManipulation();
+            }
         }
 
         private void UpdatePageManipulation()

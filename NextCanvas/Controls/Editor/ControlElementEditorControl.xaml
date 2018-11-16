@@ -46,7 +46,7 @@
         <!-- ReSharper disable Xaml.MissingGridIndex -->
         <fluent:Spinner Value="{Binding Left}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}"/>
         <TextBlock Text="Y:" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}"/>
-        <fluent:Spinner Value="{Binding Bottom}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}" />
+        <fluent:Spinner Value="{Binding Top}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}" />
         <TextBlock Text="Width:" />
         <fluent:Spinner Value="{Binding Width}" Interval="25" Increment="10" />
         <TextBlock Text="Height:" />

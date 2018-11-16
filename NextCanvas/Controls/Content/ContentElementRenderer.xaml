@@ -5,12 +5,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:NextCanvas.Controls.Content"
-             xmlns:vm="clr-namespace:NextCanvas.ViewModels.Content"
+             xmlns:controls="clr-namespace:NextCanvas.Controls"
+             xmlns:vm="clr-namespace:NextCanvas.ViewModels.Content" x:Name="RendererControl"
              mc:Ignorable="d" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"
              InkCanvas.Left="{Binding Left, Mode=TwoWay}"
-             InkCanvas.Top="{Binding Top, Mode=TwoWay}" Panel.ZIndex="{Binding ZIndex}"
+             InkCanvas.Top="{Binding Top, Mode=TwoWay}" Panel.ZIndex="{Binding ZIndex, Mode=TwoWay}"
              d:DataContext="{d:DesignInstance vm:TextBoxElementViewModel, IsDesignTimeCreatable=True}"
+             RenderOptions.BitmapScalingMode="HighQuality"
+             controls:NextInkCanvas.IsSelected="False"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <Trigger Property="controls:NextInkCanvas.IsHostedInLightweightRendering" Value="True">
+                    <Setter Property="RenderOptions.BitmapScalingMode" Value="LowQuality"/>
+                    <Setter Property="RenderOptions.EdgeMode" Value="Unspecified"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
     <Grid>
         <ContentPresenter Content="{Binding}" x:Name="ElementContentPresenter">
             <ContentPresenter.Resources>
@@ -18,27 +31,29 @@
                     <Image Source="{Binding Image, Mode=OneWay}" Stretch="Uniform" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:TextBoxElementViewModel}">
-                    <local:RtfRichTextBox RtfText="{Binding RtfText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                          IsUndoEnabled="True" Background="{x:Null}" FontSize="18">
-                        <local:RtfRichTextBox.Style>
-                            <Style TargetType="local:RtfRichTextBox">
-                                <Style.Triggers>
-                                    <Trigger Property="IsFocused" Value="False">
-                                        <Setter Property="BorderThickness" Value="0" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </local:RtfRichTextBox.Style>
-                    </local:RtfRichTextBox>
+                    <controls:RtfRichTextEditor RtfText="{Binding RtfText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                EditorFormatShown="{Binding Path=(controls:NextInkCanvas.IsSelected), ElementName=RendererControl, PresentationTraceSources.TraceLevel=High}"
+                                                Focusable="{Binding Path=(controls:NextInkCanvas.IsSelected), ElementName=RendererControl}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:ContentElementViewModel}">
                     <local:ElementRecognitionError />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:WebBrowserElementViewModel}">
-                    <Border BorderThickness="4" BorderBrush="LightGray" x:Name="Border">
-                        <WebBrowser local:WebBrowserHelper.Source="{Binding Url}"
-                                    local:WebBrowserHelper.IgnoreErrors="True" />
-                    </Border>
+                    <DataTemplate.Resources>
+                        <DataTemplate DataType="{x:Type vm:WebBrowserElementViewModel}" x:Key="NormalTemplate">
+                            <Border BorderThickness="4" BorderBrush="LightGray" x:Name="Border">
+                                <WebBrowser local:WebBrowserHelper.Source="{Binding Url}"
+                                            local:WebBrowserHelper.IgnoreErrors="True" />
+                            </Border>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:WebBrowserElementViewModel}" x:Key="LightweightTemplate">
+                            <Rectangle Fill="DodgerBlue"/>
+                        </DataTemplate>
+                        <local:LightweightDataTemplateSelector 
+                            LightweightRenderDataTemplate="{StaticResource LightweightTemplate}"
+                            NormalRenderDataTemplate="{StaticResource NormalTemplate}" x:Key="TemplateSelector"/>
+                    </DataTemplate.Resources>
+                    <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource TemplateSelector}"/>
                 </DataTemplate>
             </ContentPresenter.Resources>
         </ContentPresenter>

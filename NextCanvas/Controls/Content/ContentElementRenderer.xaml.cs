@@ -22,7 +22,6 @@ namespace NextCanvas.Controls.Content
         {
             ((UIElement) VisualTreeHelper.GetChild(ElementContentPresenter, 0)).Focus();
         }
-
         public void Initialize(object v)
         {
             DataContext = v;
