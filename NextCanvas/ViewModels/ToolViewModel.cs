@@ -223,7 +223,6 @@ namespace NextCanvas.ViewModels
                 t.Mode = previous;
             }
         }
-
         public static ToolViewModel GetViewModel(Tool model)
         {
             switch (model)

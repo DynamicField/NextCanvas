@@ -14,8 +14,7 @@ namespace NextCanvas.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return "";
-            var family = (FontFamily) value;
+            if (value is null || !(value is FontFamily family)) return "";
             var name = family.FamilyNames[XmlLanguage.GetLanguage(CultureInfo.CurrentUICulture.Name)];
             return string.IsNullOrEmpty(name) ? family.ToString() : name;
         }

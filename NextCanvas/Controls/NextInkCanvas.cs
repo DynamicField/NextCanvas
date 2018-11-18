@@ -255,13 +255,6 @@ namespace NextCanvas.Controls
         protected override void OnSelectionChanged(EventArgs e)
         {
             var elements = GetSelectedElements();
-            foreach (var element in elements)
-            {
-                if (element is DependencyObject dp)
-                {
-                    SetIsHostedInLightweightRendering(dp, IsLightweightRendering);
-                }
-            }
             foreach (var item in SelectedItems)
             {
                 var element = GetElementFromDataContext(this, item);
@@ -309,13 +302,11 @@ namespace NextCanvas.Controls
                 {
                     element.SetValue(Panel.ZIndexProperty, highestZIndex + 1);
                 }
-
                 element.Focus();
                 if (element is ContentElementRenderer render)
                 {
                     render.FocusChild();
                 }
-
                 ReorderZIndexes(uiElements);
             }
         }

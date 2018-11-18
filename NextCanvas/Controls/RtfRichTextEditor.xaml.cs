@@ -50,18 +50,12 @@ namespace NextCanvas.Controls
         private void TextBox_OnSelectionChanged(object sender, RoutedEventArgs e)
         {
             var selection = TextBox.Selection;
-            FontFamilyBox.SelectedItem = TextBox.Selection.GetPropertyValue(FontFamilyProperty); // Set font :)
+            var fontFamily = TextBox.Selection.GetPropertyValue(FontFamilyProperty); // Set font :)
             var fontSize = selection.GetPropertyValue(FontSizeProperty);
-            if (fontSize != DependencyProperty.UnsetValue)
-            {
-                FontSizeBox.Text = fontSize.ToString();
-            }
-            else
-            {
-                FontSizeBox.Text = "";
-            }
-        }
 
+            FontSizeBox.Text = fontSize != DependencyProperty.UnsetValue ? fontSize.ToString() : "";
+            FontFamilyBox.SelectedItem = fontFamily != DependencyProperty.UnsetValue ? fontFamily : null;
+        }
         private bool focus = false;
         private void FontSizeChanged(object sender, TextChangedEventArgs e)
         {
@@ -84,6 +78,7 @@ namespace NextCanvas.Controls
 
         private void FontBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (FontFamilyBox.SelectedItem == null) return;
             FocusTextBox();
             TextBox.Selection.ApplyPropertyValue(FontFamilyProperty, FontFamilyBox.SelectedItem); // Set font :)
             SettingsManager.Settings.DefaultFontFamily = (FontFamily)FontFamilyBox.SelectedItem;

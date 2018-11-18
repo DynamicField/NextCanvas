@@ -53,5 +53,7 @@ namespace NextCanvas.ViewModels
                 OnPropertyChanged(nameof(Color));
             }
         }
+        public static bool operator ==(ToolGroupViewModel t, ToolGroupViewModel other) => t?.Name == other?.Name;
+        public static bool operator !=(ToolGroupViewModel t, ToolGroupViewModel other) => t?.Name != other?.Name;
     }
 }

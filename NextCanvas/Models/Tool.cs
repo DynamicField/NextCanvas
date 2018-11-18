@@ -3,6 +3,7 @@
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -17,7 +18,6 @@ namespace NextCanvas.Models
             DrawingAttributes.FitToCurve = true;
             DrawingAttributes.Color = Group.Color;
         }
-
         public DrawingAttributes DrawingAttributes { get; set; } = new DrawingAttributes();
         public bool HasColor { get; set; } = true;
         public string Name { get; set; } = "Tool";

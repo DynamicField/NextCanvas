@@ -64,7 +64,7 @@ namespace NextCanvas.ViewModels
         }
 
         public ObservableCollection<Color> FavoriteColors => Model.FavouriteColors;
-        public ObservableViewModelCollection<ToolViewModel, Tool> Tools { get; set; }
+        public ObservableViewModelCollection<ToolViewModel, Tool> Tools => SettingsManager.Settings.Tools;
         public ObservableCollection<ContentElementViewModel> SelectedElements { get; set; } = new ObservableCollection<ContentElementViewModel>();
         public string SavePath { get; set; }
         public string OpenPath { get; set; }
@@ -83,7 +83,6 @@ namespace NextCanvas.ViewModels
                 ToolViewModel.UpdateCursorIfEraser(SelectedTool);
             }
         }
-
         // better use this tho
         public ToolViewModel SelectedTool
         {
@@ -182,7 +181,6 @@ namespace NextCanvas.ViewModels
         private void Initialize()
         {
             document = new DocumentViewModel(Model.Document);
-            Tools = new ObservableViewModelCollection<ToolViewModel, Tool>(Model.Tools, ToolViewModel.GetViewModel);
             Subscribe();
             // Create commands
             PreviousPageCommand = new DelegateCommand(o => ChangePage(Direction.Backwards),
@@ -201,7 +199,6 @@ namespace NextCanvas.ViewModels
             CreateScreenshotCommand = new DelegateCommand(CreateScreenShot);
             CreateWebBrowserCommand = new DelegateCommand(CreateWebBrowser);
         }
-
         private void CenterElement(ContentElementViewModel v, ElementCreationContext context)
         {
             v.Left = GetCenterLeft(context, v.Width);

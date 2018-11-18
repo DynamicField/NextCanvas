@@ -13,6 +13,7 @@ namespace NextCanvas.Models
         [JsonIgnore]
         public override Type StrokeType => typeof(T);
 
+        [JsonIgnore]
         public new StrokeDelegate<T> StrokeConstructor => (StrokeDelegate<T>)base.StrokeConstructor;
 
         protected sealed override StrokeDelegate<Stroke> GetStrokeConstructor() => StrokeImplementation;

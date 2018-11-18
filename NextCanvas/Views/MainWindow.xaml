@@ -10,6 +10,7 @@
     xmlns:local1="clr-namespace:NextCanvas.Views"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:nextCanvas="clr-namespace:NextCanvas"
     x:Class="NextCanvas.Views.MainWindow"
     UseLayoutRounding="True" x:Name="Window"
     mc:Ignorable="d" ResizeBorderThickness="8" ResizeMode="CanResizeWithGrip"
@@ -165,21 +166,14 @@
                                        Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Self}}" />
                     </fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox Header="Basic tools" x:Name="Tools" Icon="{Binding SelectedTool.LargeIcon}" >
-                        <fluent:RibbonGroupBox.Resources>
-                            <CollectionViewSource x:Key="ToolsSource" Source="{Binding Tools}">
-                                <CollectionViewSource.SortDescriptions>
-                                    <cm:SortDescription PropertyName="GroupName" />
-                                </CollectionViewSource.SortDescriptions>
-                            </CollectionViewSource>
-                        </fluent:RibbonGroupBox.Resources>
-                        <fluent:InRibbonGallery
-                            ItemsSource="{Binding Source={StaticResource ToolsSource}, TargetNullValue={x:Static DependencyProperty.UnsetValue}}"
+                        <local:BindableInRibbonGallery
+                            ItemsSource="{Binding Tools, TargetNullValue={x:Static DependencyProperty.UnsetValue}}"
                             Selectable="True"
                             SelectedItem="{Binding SelectedTool}"
-                            Header="Tool..." ResizeMode="Both" MinItemsInRow="3" MaxItemsInRow="13"
-                            Orientation="Horizontal"
-                            ItemHeight="54" ItemWidth="54" GroupBy="GroupName"
-                            SizeDefinition="Large, Large, Large">
+                            Header="Tool..." ResizeMode="Both" MinItemsInRow="3"
+                            Orientation="Horizontal"  SelectionChanged="Selector_OnSelectionChanged"
+                            ItemWidth="54" GroupBy="GroupName" ItemHeight="58"
+                            SizeDefinition="Large, Large, Large" MaxItemsInRowFix="{Binding MaxToolsDisplayed, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=TwoWay}">
                             <fluent:InRibbonGallery.ItemContainerStyle>
                                 <Style TargetType="fluent:GalleryItem">
                                     <Style.Triggers>
@@ -222,7 +216,7 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </fluent:InRibbonGallery.ItemTemplate>
-                        </fluent:InRibbonGallery>
+                        </local:BindableInRibbonGallery>
                         <fluent:Button LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Add.png"
                                        Header="Create tool" SizeDefinition="large" />
                     </fluent:RibbonGroupBox>

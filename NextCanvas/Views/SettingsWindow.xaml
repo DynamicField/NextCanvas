@@ -3,9 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:NextCanvas" DataContext="{x:Static vm:SettingsManager.Settings}"
+        xmlns:vm="clr-namespace:NextCanvas"
+        xmlns:viewModels="clr-namespace:NextCanvas.ViewModels"
+        xmlns:views="clr-namespace:NextCanvas.Views"
+        xmlns:converters="clr-namespace:NextCanvas.Converters"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:fluent="urn:fluent-ribbon"
+        x:Name="Window"
         mc:Ignorable="d" Background="White" WindowStartupLocation="CenterOwner"
         Title="Settings" Height="530" Width="812">
+    <Window.Resources>
+        <converters:DivideByConverter x:Key="DivideByConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <viewModels:SettingsWindowViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -25,6 +37,9 @@
             </TextBlock>
         </Border>
         <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="LightGray">
+            <Border.Resources>
+                <converters:DivideByConverter x:Key="DivideByConverter"/>
+            </Border.Resources>
             <TabControl TabStripPlacement="Left" BorderBrush="LightGray" BorderThickness="1,0,0,0">
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
@@ -61,6 +76,7 @@
                                 <Setter Property="FontSize" Value="16" />
                                 <Setter Property="Cursor" Value="Help" />
                                 <Setter Property="ToolTipService.InitialShowDelay" Value="375" />
+                                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
                             </Style>
                         </Grid.Resources>
                         <Grid.ColumnDefinitions>
@@ -68,6 +84,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
@@ -84,9 +101,40 @@
                             </TextBlock.ToolTip>
                         </TextBlock>
                         <StackPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="3">
-                            <Slider Width="150" Minimum="0" Maximum="9" Value="{Binding FileCompressionLevel}"
+                            <Slider Width="150" Minimum="0" Maximum="9" Value="{Binding Settings.FileCompressionLevel}"
                                     TickPlacement="BottomRight" HorizontalAlignment="Left" />
                         </StackPanel>
+                        <TextBlock Style="{StaticResource LeftPanelTextStyle}" Text="Tools: " Grid.Row="1"/>
+                        <StackPanel Grid.Column="1" Grid.Row="1" Margin="5">
+                            <StackPanel.Resources>
+                                <system:Double x:Key="Max">2.2</system:Double>
+                            </StackPanel.Resources>
+                            <ListBox ItemsSource="{Binding Settings.Tools}" HorizontalContentAlignment="Stretch" SelectionMode="Single"
+                                     MaxHeight="{Binding Height, ConverterParameter={StaticResource Max}, Converter={StaticResource DivideByConverter}, ElementName=Window}" >
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type viewModels:ToolViewModel}">
+                                        <DockPanel Margin="1">
+                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                                <Image Source="{Binding LargeIcon}" Width="20"/>
+                                                <TextBlock Text="{Binding Name}" Margin="5,0"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                                <Button Content="⬆" Padding="0,2" Margin="2,0" Width="20" FontSize="12" 
+                                                        CommandParameter="{Binding}" Command="{Binding DataContext.MoveUpCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:SettingsWindow}}}" />
+                                                <Button Content="⬇" Padding="0,2" Margin="2,0" Width="20" FontSize="12"
+                                                        CommandParameter="{Binding}" Command="{Binding DataContext.MoveDownCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:SettingsWindow}}}"/>
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Max items shown: " FontSize="13" VerticalAlignment="Center"/>
+                                <fluent:Spinner Template="{StaticResource SpinnerTemplate}" VerticalContentAlignment="Center" BorderThickness="1" BorderBrush="Gray" MinWidth="60"
+                                                Format="g" Value="{Binding Settings.MaxToolsDisplayed}" Minimum="4" Maximum="15"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
                     </Grid>
                 </TabItem>
                 <TabItem Header="Other" />

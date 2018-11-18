@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using Fluent;
 using Microsoft.Win32;
@@ -41,6 +42,7 @@ namespace NextCanvas.Views
             };
             pageViewerFactory = new UniqueWindowFactory<PageCollectionViewer>(() => new PageCollectionViewer((MainWindowViewModel)DataContext));
             Canvas.DefaultDrawingAttributes.FitToCurve = true;
+            ContentRendered += (sender, args) => scrollTest = VisualTreeUtilities.FindVisualChild<ScrollViewer>(Tools);
         }
 
         // Creation context for commands. Nice. Nice. Nice. Nice. Nice. Nice.
@@ -56,6 +58,7 @@ namespace NextCanvas.Views
             new DelegateInteractionProvider<IErrorInteraction>(() => new MessageBoxError(this));
 
         public static DelegateInteractionProvider<IModifyObjectInteraction> ModifyProvider { get; private set; }
+        private ScrollViewer scrollTest;
 
         private void ColorGallery_SelectedColorChanged(object sender, RoutedEventArgs e)
         {
@@ -190,6 +193,14 @@ namespace NextCanvas.Views
         private void LogViewerClick(object sender, RoutedEventArgs e)
         {
             logViewerFactory.TryShowWindow();
+        }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems?.OfType<ToolViewModel>().Any(t => t.Mode == InkCanvasEditingMode.Select) ?? false)
+            {
+                scrollTest.ScrollToTop();
+            }
         }
     }
 }

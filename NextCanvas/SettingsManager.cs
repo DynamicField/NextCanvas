@@ -15,7 +15,8 @@ namespace NextCanvas
     {
         private static JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {
-            TypeNameHandling = TypeNameHandling.Auto
+            TypeNameHandling = TypeNameHandling.Auto,
+            PreserveReferencesHandling = PreserveReferencesHandling.All
         };
         static SettingsManager()
         {
@@ -28,7 +29,7 @@ namespace NextCanvas
                         JsonConvert.DeserializeObject<SettingsModel>(streamReader.ReadToEnd(), _serializerSettings));
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 // It's fine we will save it later
                 Settings = new SettingsViewModel();
