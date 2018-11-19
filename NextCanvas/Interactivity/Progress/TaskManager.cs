@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Windows;
 
 #endregion
 
@@ -62,8 +63,9 @@ namespace NextCanvas.Interactivity.Progress
 
         private void UpdateProgress()
         {
+            if (!Tasks.Any()) return;
             var name = Tasks.First(t => !t.IsComplete || Tasks.IndexOf(t) == Tasks.Count - 1).ProgressText;
-            progress.Data.ProgressText = name;
+            Application.Current.Dispatcher.Invoke(() => progress.Data.ProgressText = name);
             // Let's do some quick maths
             ProcessProgress();
         }
@@ -73,7 +75,7 @@ namespace NextCanvas.Interactivity.Progress
             var totalProgress = Tasks.Sum(t => t.ProgressWeight);
             var completedProgress = Tasks.Sum(t => t.ProgressWeight * (t.Progress / 100));
             var percentage = completedProgress / totalProgress * 100;
-            progress.Data.Progress = percentage;
+            Application.Current.Dispatcher.Invoke(() => progress.Data.Progress = percentage);
         }
 
         private void TasksOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -92,6 +94,11 @@ namespace NextCanvas.Interactivity.Progress
             Tasks.Clear();
             Tasks.CollectionChanged -= TasksOnCollectionChanged;
             progress.CloseInteraction();
+        }
+    }
+    public class TaskManager : TaskManager<IProgressInteraction> {
+        public TaskManager(IProgressInteraction progress, IEnumerable<ProgressTask> tasks) : base(progress, tasks)
+        {
         }
     }
 }

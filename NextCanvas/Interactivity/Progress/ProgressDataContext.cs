@@ -4,7 +4,6 @@
     {
         private double _progress;
         private string _progressText;
-
         public double Progress
         {
             get => _progress;

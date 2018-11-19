@@ -29,11 +29,7 @@ namespace NextCanvas.Views
         {
             ModifyProvider = new DelegateInteractionProvider<IModifyObjectInteraction>(() => new ModifyObjectWindow(this));
             InitializeComponent();
-            try
-            {
-                PropertyChangedObject.Contexts.Add(Thread.CurrentThread, SynchronizationContext.Current);
-            }
-            catch (ArgumentException) { }
+            PropertyChangedObject.RegisterWindow(this);
             DataContext = new MainWindowViewModel
             {
                 ElementCreationContext = CreationContext,

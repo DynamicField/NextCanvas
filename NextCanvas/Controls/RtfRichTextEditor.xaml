@@ -10,8 +10,9 @@
              xmlns:collection="clr-namespace:System.Collections;assembly=mscorlib"
              xmlns:converters="clr-namespace:NextCanvas.Converters"
              xmlns:fluent="urn:fluent-ribbon"
+             xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              xmlns:nextCanvas="clr-namespace:NextCanvas" Loaded="RtfRichTextEditor_OnLoaded"
-             mc:Ignorable="d" x:Name="Control" Focusable="True"
+             mc:Ignorable="d po" x:Name="Control" Focusable="True"
              BorderThickness="0" BorderBrush="#FFE2E2E2" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Style>
@@ -33,6 +34,11 @@
         <content:RtfRichTextBox
             RtfText="{Binding RtfText, ElementName=Control, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"    
             IsUndoEnabled="True" Background="{x:Null}" x:Name="TextBox" SelectionChanged="TextBox_OnSelectionChanged">
+            <content:RtfRichTextBox.Resources>
+                <Style TargetType="List">
+                    <Setter Property="MarkerOffset" Value="7"/>
+                </Style>
+            </content:RtfRichTextBox.Resources>
             <content:RtfRichTextBox.Style>
                 <Style TargetType="{x:Type content:RtfRichTextBox}">
                     <Setter Property="Margin" Value="0"/>
@@ -68,6 +74,59 @@
             </Border.Style>
             <Border Background="#FFECECEC" Padding="3">
                 <StackPanel  Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="Width" Value="20"/>
+                            <Setter Property="FontFamily" Value="Georgia"/>
+                            <Setter Property="Margin" Value="2,0"/>
+                            <Setter Property="CommandTarget" Value="{Binding ElementName=TextBox}"></Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <ToggleButton x:Name="BoldButton" Command="EditingCommands.ToggleBold" Click="FocusTextBox">
+                        <Run Text="B" FontWeight="Bold"/>
+                    </ToggleButton>
+                    <ToggleButton x:Name="ItalicButton" Command="ToggleItalic" Click="FocusTextBox">
+                        <Run Text="I" FontStyle="Italic" FontFamily="Georgia"/>
+                    </ToggleButton>
+                    <ToggleButton x:Name="UnderlineButton" Command="ToggleUnderline" Click="FocusTextBox">
+                        <Run Text="U" FontFamily="Georgia" TextDecorations="Underline"/>
+                    </ToggleButton>
+                    <ToggleButton x:Name="BulletsListButton" Command="ToggleBullets">
+                        <StackPanel HorizontalAlignment="Left" Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <SolidColorBrush x:Key="BulletBrush" Color="Blue" po:Freeze="True"/>
+                                <SolidColorBrush x:Key="LineBrush" Color="Black" po:Freeze="True"/>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Margin" Value="0,1"/>
+                                    <Setter Property="Orientation" Value="Horizontal"/>
+                                </Style>
+                                <Style TargetType="Ellipse">
+                                    <Setter Property="Fill" Value="{StaticResource BulletBrush}"/>
+                                    <Setter Property="Width" Value="2"/>
+                                    <Setter Property="Height" Value="2"/>
+                                    <Setter Property="Margin" Value="0,0,1,0"/>
+                                </Style>
+                                <Style TargetType="Line">
+                                    <Setter Property="Stroke" Value="{StaticResource LineBrush}"/>
+                                    <Setter Property="X2" Value="10"/>
+                                    <Setter Property="Y2" Value="0"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <StackPanel>
+                                <Ellipse />
+                                <Line />
+                            </StackPanel>
+                            <StackPanel>
+                                <Ellipse />
+                                <Line />
+                            </StackPanel>
+                            <StackPanel>
+                                <Ellipse />
+                                <Line />
+                            </StackPanel>
+                        </StackPanel>
+                    </ToggleButton>
                     <ComboBox HorizontalAlignment="Left" 
                               Text="{Binding Path=DefaultFontSize, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}"
                               VerticalAlignment="Top" Margin="2,0"
@@ -87,12 +146,17 @@
                     </ComboBox>
                     <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}, Path=(collection:ICollection.SyncRoot)}" x:Name="FontFamilyBox" 
                               SelectedItem="{Binding DefaultFontFamily, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}" 
-                              SelectionChanged="FontBox_OnSelectionChanged" Margin="2,0" VerticalContentAlignment="Center">
+                              SelectionChanged="FontBox_OnSelectionChanged" Margin="2,0" VerticalContentAlignment="Center" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type FontFamily}">
                                 <TextBlock FontSize="10" Text="{Binding Path=., Converter={StaticResource FamilyConverter}}" FontFamily="{Binding}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling"/>
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
                     </ComboBox>
                 </StackPanel>
             </Border>

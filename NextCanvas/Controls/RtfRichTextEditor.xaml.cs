@@ -1,20 +1,9 @@
 ﻿using NextCanvas.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NextCanvas.Controls
 {
@@ -47,18 +36,47 @@ namespace NextCanvas.Controls
         public static readonly DependencyProperty RtfTextProperty =
             DependencyProperty.Register("RtfText", typeof(string), typeof(RtfRichTextEditor), new PropertyMetadata(""));
 
+        private bool doNotReact = false;
         private void TextBox_OnSelectionChanged(object sender, RoutedEventArgs e)
         {
+            doNotReact = true;
             var selection = TextBox.Selection;
             var fontFamily = TextBox.Selection.GetPropertyValue(FontFamilyProperty); // Set font :)
             var fontSize = selection.GetPropertyValue(FontSizeProperty);
-
+            bool? isBold;
+            bool? isUnderlined;
+            var fontStyle = (FontStyle)TextBox.Selection.GetPropertyValue(FontStyleProperty);
+            var fontDecorations = TextBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
+            var fontWeight = TextBox.Selection.GetPropertyValue(FontWeightProperty);
+            if (fontWeight == DependencyProperty.UnsetValue)
+            {
+                isBold = null;
+            }
+            else
+            {
+                isBold = fontWeight.Equals(FontWeights.Bold);
+            }
+            var isItalic = fontStyle.Equals(FontStyles.Italic);
+            if (fontDecorations == DependencyProperty.UnsetValue)
+            {
+                isUnderlined = null;
+            }
+            else
+            {
+                isUnderlined = fontDecorations.Equals(TextDecorations.Underline);
+            }
             FontSizeBox.Text = fontSize != DependencyProperty.UnsetValue ? fontSize.ToString() : "";
             FontFamilyBox.SelectedItem = fontFamily != DependencyProperty.UnsetValue ? fontFamily : null;
+            BoldButton.IsChecked = isBold;
+            ItalicButton.IsChecked = isItalic;
+            UnderlineButton.IsChecked = isUnderlined;
+            var list = VisualTreeUtilities.FindLogicalParent<List>(TextBox.Selection.Start.Parent);
+            BulletsListButton.IsChecked = list != null;
+            doNotReact = false;
         }
-        private bool focus = false;
         private void FontSizeChanged(object sender, TextChangedEventArgs e)
         {
+            if (doNotReact) return;
             SetFormatWhenNotChanged();
             var tempFix = FontSizeBox.Text;
             var processed = new string(tempFix.Where(char.IsDigit).ToArray());
@@ -78,7 +96,7 @@ namespace NextCanvas.Controls
 
         private void FontBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (FontFamilyBox.SelectedItem == null) return;
+            if (FontFamilyBox.SelectedItem == null || doNotReact) return;
             FocusTextBox();
             TextBox.Selection.ApplyPropertyValue(FontFamilyProperty, FontFamilyBox.SelectedItem); // Set font :)
             SettingsManager.Settings.DefaultFontFamily = (FontFamily)FontFamilyBox.SelectedItem;
@@ -107,11 +125,18 @@ namespace NextCanvas.Controls
             var result = SettingsManager.Settings.DefaultFontSize;
             double.TryParse(FontSizeBox.Text, out result);
             TextBox.CaretPosition.Paragraph?.Inlines.Clear();
-            TextBox.CaretPosition.Paragraph?.Inlines.Add(new Run("")
+            UpdateFormat(result);
+        }
+
+        private void UpdateFormat(double? result = null)
+        {
+            var inline = new Run("")
             {
-                FontFamily = (FontFamily) FontFamilyBox.SelectedItem,
-                FontSize = result
-            });
+                FontFamily = (FontFamily)FontFamilyBox.SelectedItem,
+                FontSize = result ?? (double)TextBox.Selection.GetPropertyValue(FontSizeProperty),
+                FontWeight = BoldButton.IsChecked ?? false ? FontWeights.Bold : FontWeights.Normal
+            };
+            TextBox.CaretPosition.Paragraph?.Inlines.Add(inline);
         }
 
         private void FocusTextBox()
@@ -120,6 +145,13 @@ namespace NextCanvas.Controls
             {
                 TextBox.Focus();
             }
+        }
+
+        private void FocusTextBox(object sender, RoutedEventArgs e)
+        {
+            if (doNotReact) return;
+            FocusTextBox();
+            UpdateFormat();
         }
     }
 }

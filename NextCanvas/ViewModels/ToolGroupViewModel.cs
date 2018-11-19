@@ -1,7 +1,7 @@
 ﻿#region
 
-using System.Windows.Media;
 using NextCanvas.Models;
+using System.Windows.Media;
 
 #endregion
 
@@ -53,7 +53,19 @@ namespace NextCanvas.ViewModels
                 OnPropertyChanged(nameof(Color));
             }
         }
-        public static bool operator ==(ToolGroupViewModel t, ToolGroupViewModel other) => t?.Name == other?.Name;
-        public static bool operator !=(ToolGroupViewModel t, ToolGroupViewModel other) => t?.Name != other?.Name;
+        public static bool operator ==(ToolGroupViewModel t, ToolGroupViewModel other)
+        {
+            return t?.Name == other?.Name;
+        }
+
+        public static bool operator !=(ToolGroupViewModel t, ToolGroupViewModel other)
+        {
+            return t?.Name != other?.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return new { Name, Color }.GetHashCode();
+        }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using NextCanvas.Interactivity.Progress;
 
 #endregion
@@ -21,6 +22,7 @@ namespace NextCanvas.Views
             if (owner != null) Owner = owner;
             DataContext = Data;
             Data.PropertyChanged += ProgressWindow_PropertyChanged;
+            PropertyChangedObject.RegisterWindow(this);
         }
 
         public override void CloseInteraction()

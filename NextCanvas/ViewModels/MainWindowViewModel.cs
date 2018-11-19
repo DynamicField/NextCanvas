@@ -383,6 +383,9 @@ namespace NextCanvas.ViewModels
                 error.Content = "Sorry, we weren't able to open your file: " + e.Message;
                 error.Title = "Oops :(";
                 error.ShowInteraction();
+#if DEBUG
+                throw;
+#endif
             }
             finally
             {

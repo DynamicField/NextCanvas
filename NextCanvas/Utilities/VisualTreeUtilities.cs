@@ -24,5 +24,18 @@ namespace NextCanvas.Utilities
             }
             return null;
         }
+
+        public static T FindLogicalParent<T>(DependencyObject d) where T : DependencyObject
+        {
+            while (!(d is T))
+            {
+                d = LogicalTreeHelper.GetParent(d);
+                if (d == null)
+                {
+                    return null;
+                }
+            }
+            return d as T;
+        }
     }
 }
