@@ -143,6 +143,11 @@
                         <system:Int32>56</system:Int32>
                         <system:Int32>78</system:Int32>
                         <system:Int32>86</system:Int32>
+                        <system:Int32>104</system:Int32>
+                        <system:Int32>120</system:Int32>
+                        <system:Int32>144</system:Int32>
+                        <system:Int32>160</system:Int32>
+                        <system:Int32>220</system:Int32>
                     </ComboBox>
                     <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}, Path=(collection:ICollection.SyncRoot)}" x:Name="FontFamilyBox" 
                               SelectedItem="{Binding DefaultFontFamily, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}" 

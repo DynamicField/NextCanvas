@@ -110,7 +110,7 @@
                                 <system:Double x:Key="Max">2.2</system:Double>
                             </StackPanel.Resources>
                             <ListBox ItemsSource="{Binding Settings.Tools}" HorizontalContentAlignment="Stretch" SelectionMode="Single"
-                                     MaxHeight="{Binding Height, ConverterParameter={StaticResource Max}, Converter={StaticResource DivideByConverter}, ElementName=Window}" >
+                                     MaxHeight="400" >
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type viewModels:ToolViewModel}">
                                         <DockPanel Margin="1">
