@@ -4,8 +4,8 @@
     {
         public TextBoxElement()
         {
-            Width = 250;
-            Height = 125;
+            Width = 425;
+            Height = 300;
         }
 
 

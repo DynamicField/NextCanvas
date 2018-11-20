@@ -12,24 +12,30 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Fluent;
 
 namespace NextCanvas.Views
 {
     /// <summary>
     /// Logique d'interaction pour SeparateTextEditorWindow.xaml
     /// </summary>
-    public partial class SeparateTextEditorWindow : Window
+    public partial class SeparateTextEditorWindow : RibbonWindow // For easier resizes or not, it just glows, its bootifool
     {
         public SeparateTextEditorWindow(RtfRichTextEditor editor)
         {
             InitializeComponent();
             this.editor = editor;
             Grid.Children.Add(editor);
-            Height = editor.Height + SystemParameters.ResizeFrameHorizontalBorderHeight * 2 + SystemParameters.WindowCaptionHeight + 5;
-            Width = editor.Width + SystemParameters.BorderWidth * 2 + SystemParameters.ResizeFrameVerticalBorderWidth + 5;
-            Loaded += (sender, args) => { };
+            lastHeight = editor.Height;
+            lastWidth = editor.Width;
+            Loaded += (sender, args) =>
+            {
+                Height = lastHeight + (ActualHeight - Grid.ActualHeight);
+                Width = lastWidth + (ActualWidth - Grid.ActualWidth);
+            };
         }
 
+        private double lastWidth, lastHeight;
         private readonly RtfRichTextEditor editor;
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {

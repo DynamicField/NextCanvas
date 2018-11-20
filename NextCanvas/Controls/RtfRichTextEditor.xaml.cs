@@ -38,18 +38,30 @@ namespace NextCanvas.Controls
                 var widthBind = new Binding(nameof(Width))
                 {
                     Source = this,
-                    Mode = BindingMode.TwoWay
+                    Mode = BindingMode.OneWay
                 };
                 var heightBind = new Binding(nameof(Height))
                 {
                     Source = this,
-                    Mode = BindingMode.TwoWay
+                    Mode = BindingMode.OneWay
                 };
                 rtfRichTextEditor.SetBinding(WidthProperty, widthBind);
                 rtfRichTextEditor.SetBinding(HeightProperty, heightBind);
                 window.Loaded += (o, args) =>
                 {
                     rtfRichTextEditor.TextBox.UpdateMode = UpdateMode.TextInput;
+                    var widthBindTwo = new Binding(nameof(Width))
+                    {
+                        Source = this,
+                        Mode = BindingMode.TwoWay
+                    };
+                    var heightBindTwo = new Binding(nameof(Height))
+                    {
+                        Source = this,
+                        Mode = BindingMode.TwoWay
+                    };
+                    rtfRichTextEditor.SetBinding(WidthProperty, widthBindTwo);
+                    rtfRichTextEditor.SetBinding(HeightProperty, heightBindTwo);
                     this.doNotReact = true;
                 };
                 return window;

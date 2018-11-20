@@ -24,7 +24,7 @@ namespace NextCanvas.Interactivity.Dialogs
         {
             var result = await owner.Dispatcher.InvokeAsync(() => MessageBox.Show(owner, Content, Title, MessageBoxButton.YesNo, MessageBoxImage.Question,
                 MessageBoxResult.No));
-            ActionComplete?.Invoke(this, new DialogResultEventArgs(result.ToString()));
+            ActionComplete?.Invoke(this, new DialogResultEventArgs(result.ToString(), result == MessageBoxResult.Yes || result == MessageBoxResult.OK));
         }
 
         public event EventHandler<DialogResultEventArgs> ActionComplete;

@@ -14,10 +14,11 @@ namespace NextCanvas.Interactivity.Dialogs
     public class DialogResultEventArgs : EventArgs
     {
         public string ChosenButtonText { get; }
-
-        public DialogResultEventArgs(string chosen)
+        public bool IsAccept { get; }
+        public DialogResultEventArgs(string chosen, bool isAccept)
         {
             ChosenButtonText = chosen;
+            IsAccept = isAccept;
         }
     }
 }

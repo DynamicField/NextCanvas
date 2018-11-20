@@ -172,7 +172,7 @@
                             Selectable="True"
                             SelectedItem="{Binding SelectedTool}"
                             Header="Tool..." ResizeMode="Both" MinItemsInRow="3"
-                            Orientation="Horizontal"  SelectionChanged="Selector_OnSelectionChanged"
+                            Orientation="Horizontal" 
                             ItemWidth="54" GroupBy="GroupName" ItemHeight="58"
                             SizeDefinition="Large, Large, Large" MaxItemsInRowFix="{Binding MaxToolsDisplayed, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=TwoWay}">
                             <fluent:InRibbonGallery.ItemContainerStyle>
@@ -291,7 +291,8 @@
                                        Command="{Binding NewPageCommand}" SizeDefinition="Large, Large, Large" />
                         <fluent:Button Header="Delete page"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Delete.png"
-                                       Command="{Binding DeletePageCommand}" SizeDefinition="Large, Large, Large" />
+                                       Command="{Binding DeletePageCommand}" SizeDefinition="Large, Large, Large" 
+                                       CommandParameter="{Binding DialogProvider, ElementName=Window}"/>
                         <fluent:Button Header="Go Right" Command="{Binding NextPageCommand}"
                                        SizeDefinition="Large, Large, Large">
                             <fluent:Button.LargeIcon>

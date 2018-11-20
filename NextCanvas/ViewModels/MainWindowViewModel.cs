@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using NextCanvas.Interactivity.Dialogs;
 
 #endregion
 
@@ -207,7 +208,7 @@ namespace NextCanvas.ViewModels
             NextPageCommand = new DelegateCommand(o => ChangePage(Direction.Forwards),
                 o => CanChangePage(Direction.Forwards));
             NewPageCommand = new DelegateCommand(CreateNewPage);
-            DeletePageCommand = new DelegateCommand(o => DeletePage(CurrentDocument.SelectedIndex), o => CurrentDocument.CanDeletePage);
+            DeletePageCommand = new DelegateCommand(DeletePage, o => CurrentDocument.CanDeletePage);
             ExtendPageCommand = new DelegateCommand(ExtendPage);
             SetToolByNameCommand = new DelegateCommand(SetToolByName, IsNameValid);
             SwitchToSelectToolCommand = new DelegateCommand(SwitchToSelectTool, CanSwitchToSelectTool);
@@ -435,6 +436,20 @@ namespace NextCanvas.ViewModels
             }
         }
 
+        private void DeletePage(object interaction)
+        {
+            if (!CurrentDocument.CanDeletePage) return;
+            if (!(interaction is IInteractionProvider<IUserRequestInteraction> userRequest)) return;
+            var interact = userRequest.CreateInteraction();
+            interact.Title = "Confirmation";
+            interact.Content = "Are you sure you want to delete this page?";
+            interact.ActionComplete += (sender, args) =>
+            {
+                if (!args.IsAccept) return;
+                DeletePage(CurrentDocument.SelectedIndex);
+            };
+            interact.ShowInteraction();
+        }
         private void ExtendPage(object direction)
         {
             ExtendPage(direction.ToString());
