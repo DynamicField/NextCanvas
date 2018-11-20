@@ -34,6 +34,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <InkCanvasEditingMode x:Key="NullMode">Select</InkCanvasEditingMode>
     </fluent:RibbonWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -53,7 +54,7 @@
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <local:NextInkCanvas
                             x:Name="Canvas"
-                            EditingMode="{Binding SelectedTool.Mode, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                            EditingMode="{Binding SelectedTool.Mode, Mode=TwoWay, UpdateSourceTrigger=Explicit, TargetNullValue={StaticResource NullMode}, FallbackValue={StaticResource NullMode}}"
                             EraserShapeDP="{Binding SelectedTool.EraserShape}"
                             Width="{Binding CurrentDocument.SelectedPage.Width}"
                             Height="{Binding CurrentDocument.SelectedPage.Height}"

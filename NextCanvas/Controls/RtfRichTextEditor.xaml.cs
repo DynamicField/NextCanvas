@@ -1,9 +1,13 @@
-﻿using NextCanvas.Utilities;
+﻿using System;
+using NextCanvas.Utilities;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
+using NextCanvas.Controls.Content;
+using NextCanvas.Views;
 
 namespace NextCanvas.Controls
 {
@@ -16,6 +20,40 @@ namespace NextCanvas.Controls
         {
             InitializeComponent();
             Unloaded += (sender, args) => { TextBox.UpdateRtf(); };
+            factory = new UniqueWindowFactory<SeparateTextEditorWindow>(() =>
+            {
+                var rtfRichTextEditor = new RtfRichTextEditor
+                {
+                    Width = ActualWidth,
+                    Height = ActualHeight,
+                };
+                rtfRichTextEditor.SetBinding(RtfTextProperty, new Binding
+                {
+                    Source = this,
+                    Path = new PropertyPath(nameof(RtfText)),
+                    Mode = BindingMode.TwoWay
+                });
+                rtfRichTextEditor.EditorFormatShown = true;
+                var window = new SeparateTextEditorWindow(rtfRichTextEditor);
+                var widthBind = new Binding(nameof(Width))
+                {
+                    Source = this,
+                    Mode = BindingMode.TwoWay
+                };
+                var heightBind = new Binding(nameof(Height))
+                {
+                    Source = this,
+                    Mode = BindingMode.TwoWay
+                };
+                rtfRichTextEditor.SetBinding(WidthProperty, widthBind);
+                rtfRichTextEditor.SetBinding(HeightProperty, heightBind);
+                window.Loaded += (o, args) =>
+                {
+                    rtfRichTextEditor.TextBox.UpdateMode = UpdateMode.TextInput;
+                    this.doNotReact = true;
+                };
+                return window;
+            });
         }
 
         public static readonly DependencyProperty EditorFormatShownProperty = DependencyProperty.Register(
@@ -130,13 +168,20 @@ namespace NextCanvas.Controls
 
         private void UpdateFormat(double? result = null)
         {
-            var inline = new Run("")
+            try
             {
-                FontFamily = (FontFamily)FontFamilyBox.SelectedItem,
-                FontSize = result ?? (double)TextBox.Selection.GetPropertyValue(FontSizeProperty),
-                FontWeight = BoldButton.IsChecked ?? false ? FontWeights.Bold : FontWeights.Normal
-            };
-            TextBox.CaretPosition.Paragraph?.Inlines.Add(inline);
+                var inline = new Run("")
+                {
+                    FontFamily = (FontFamily) FontFamilyBox.SelectedItem,
+                    FontSize = result ?? (double) TextBox.Selection.GetPropertyValue(FontSizeProperty),
+                    FontWeight = BoldButton.IsChecked ?? false ? FontWeights.Bold : FontWeights.Normal
+                };
+                TextBox.CaretPosition.Paragraph?.Inlines.Add(inline);
+            }
+            catch (Exception e)
+            {
+                LogManager.AddLogItem($"Couldn't update the empty text box: {e}", status: LogEntryStatus.Warning);
+            }
         }
 
         private void FocusTextBox()
@@ -152,6 +197,12 @@ namespace NextCanvas.Controls
             if (doNotReact) return;
             FocusTextBox();
             UpdateFormat();
+        }
+
+        private UniqueWindowFactory<SeparateTextEditorWindow> factory;
+        private void OpenInANewWindow(object sender, RoutedEventArgs e)
+        {
+            factory.TryShowWindow();
         }
     }
 }

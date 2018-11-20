@@ -42,15 +42,15 @@ namespace NextCanvas.Controls
             DependencyProperty.Register("EraserShapeDP", typeof(StylusShape), typeof(NextInkCanvas),
                 new PropertyMetadata((sender, e) =>
                 {
-                    ((NextInkCanvas)sender).EraserShape =
-                        e.NewValue as StylusShape ?? throw new InvalidOperationException();
+                    if (e.NewValue != null)
+                    ((NextInkCanvas) sender).EraserShape = e.NewValue as StylusShape ?? throw new InvalidOperationException();
                 }));
 
         // Using a DependencyProperty as the backing store for UseCustomCursorDP.  This enables animation, styling, binding, etc...
         // ReSharper disable once InconsistentNaming
         public static readonly DependencyProperty UseCustomCursorDPProperty =
             DependencyProperty.Register("UseCustomCursorDP", typeof(bool), typeof(NextInkCanvas),
-                new PropertyMetadata((sender, e) => { ((NextInkCanvas)sender).UseCustomCursor = (bool)e.NewValue; }));
+                new PropertyMetadata((sender, e) => { if (e.NewValue == null) return; ((NextInkCanvas)sender).UseCustomCursor = (bool)e.NewValue; }));
 
         // Using a DependencyProperty as the backing store for ItemsSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemsSourceProperty =
@@ -385,9 +385,15 @@ namespace NextCanvas.Controls
                 height = ScrollViewerReferent.ActualHeight;
             }
 
+            if (Clipboard.GetData(StrokeCollection.InkSerializedFormat) is MemoryStream stream)
+            {
+                SquareStroke.GetMinPoints(new StrokeCollection(stream).SelectMany(s => s.StylusPoints), out var minX,
+                    out var minY, out var maxX, out var maxY);
+                width -= maxX.X - minX.X;
+                height -= maxY.Y - minY.Y;
+            }
             Paste(new Point(horizontalOffset + width / 2 + pasteDiff, verticalOffset + height / 2 + pasteDiff));
         }
-
         private void UpdatePasteDifference()
         {
             if (!(Clipboard.GetData(StrokeCollection.InkSerializedFormat) is MemoryStream data))
@@ -448,6 +454,8 @@ namespace NextCanvas.Controls
                 }
             }
         }
+
+
         protected override void OnStrokeCollected(InkCanvasStrokeCollectedEventArgs e)
         {
             if (CustomStrokeInvocator == null)

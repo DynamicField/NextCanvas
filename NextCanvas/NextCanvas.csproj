@@ -228,6 +228,9 @@
     <Compile Include="Views\ScreenshotWindow.xaml.cs">
       <DependentUpon>ScreenshotWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SeparateTextEditorWindow.xaml.cs">
+      <DependentUpon>SeparateTextEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -298,6 +301,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScreenshotWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SeparateTextEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -432,6 +439,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Ribbon\Debug\Log.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TextEditor\OpenInANewWindow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

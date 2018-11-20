@@ -100,15 +100,6 @@ namespace NextCanvas.Models
                 },
                 new Tool
                 {
-                    Name = "Select",
-                    Group = Groups["Other"],
-                    LargeIcon = new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Select.png"),
-                    Mode = InkCanvasEditingMode.Select,
-                    HasDemo = false,
-                    Cursor = null
-                },
-                new Tool
-                {
                     Name = "Small Eraser",
                     Group = Groups["Erasers"],
                     LargeIcon = new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Eraser.png"),

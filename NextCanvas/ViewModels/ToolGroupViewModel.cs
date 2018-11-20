@@ -67,5 +67,10 @@ namespace NextCanvas.ViewModels
         {
             return new { Name, Color }.GetHashCode();
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj as ToolGroupViewModel == this;
+        }
     }
 }

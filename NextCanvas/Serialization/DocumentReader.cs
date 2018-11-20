@@ -18,11 +18,11 @@ namespace NextCanvas.Serialization
     {
         // TODO: Implement smart zip updating.
 
-        public Document TryOpenDocument(FileStream fileStream, IProgressInteraction interaction)
+        public async Task<Document> TryOpenDocument(FileStream fileStream, IProgressInteraction interaction)
         {
             try
             {
-                return OpenCompressedFileFormat(fileStream, interaction);
+                return await Task.Run(() => OpenCompressedFileFormat(fileStream, interaction));
             }
             catch (ZipException) // Try reading as json
             {

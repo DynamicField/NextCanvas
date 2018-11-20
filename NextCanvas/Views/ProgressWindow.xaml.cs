@@ -21,7 +21,6 @@ namespace NextCanvas.Views
             InitializeComponent();
             if (owner != null) Owner = owner;
             DataContext = Data;
-            Data.PropertyChanged += ProgressWindow_PropertyChanged;
             PropertyChangedObject.RegisterWindow(this);
         }
 
@@ -36,10 +35,5 @@ namespace NextCanvas.Views
         }
 
         public IProgressData Data { get; } = new ProgressDataContext();
-
-        private void ProgressWindow_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            RefreshUI();
-        }
     }
 }

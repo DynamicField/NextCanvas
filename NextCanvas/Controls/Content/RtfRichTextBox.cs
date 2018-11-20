@@ -23,25 +23,41 @@ namespace NextCanvas.Controls.Content
 
         public bool HasTextChangedOnce
         {
-            get { return (bool)GetValue(HasTextChangedOnceProperty); }
-            set { SetValue(HasTextChangedOnceProperty, value); }
+            get => (bool)GetValue(HasTextChangedOnceProperty);
+            set => SetValue(HasTextChangedOnceProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for HasTextChangedOnce.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty HasTextChangedOnceProperty =
             DependencyProperty.Register("HasTextChangedOnce", typeof(bool), typeof(RtfRichTextBox), new PropertyMetadata(false));
 
+        public static readonly DependencyProperty UpdateModeProperty = DependencyProperty.Register(
+            "UpdateMode", typeof(UpdateMode), typeof(RtfRichTextBox), new PropertyMetadata(UpdateMode.LostFocus));
+
+        public static readonly DependencyProperty XamlTextProperty = DependencyProperty.Register(
+            "XamlText", typeof(string), typeof(RtfRichTextBox), new PropertyMetadata(""));
+
+        public string XamlText
+        {
+            get { return (string) GetValue(XamlTextProperty); }
+            set { SetValue(XamlTextProperty, value); }
+        }
+        public UpdateMode UpdateMode
+        {
+            get => (UpdateMode)GetValue(UpdateModeProperty);
+            set => SetValue(UpdateModeProperty, value);
+        }
 
         private bool givingToBinding;
 
         public RtfRichTextBox()
         {
-            
+
         }
 
         public string RtfText
         {
-            get => (string) GetValue(RtfTextProperty);
+            get => (string)GetValue(RtfTextProperty);
             set => SetValue(RtfTextProperty, value);
         }
 
@@ -49,24 +65,30 @@ namespace NextCanvas.Controls.Content
         {
             if (e.NewValue is string value && value != string.Empty)
             {
-                var textBox = (RtfRichTextBox) d;
+                var textBox = (RtfRichTextBox)d;
                 if (textBox.givingToBinding)
                 {
                     textBox.givingToBinding = false;
                     return;
                 }
-
-                textBox.SelectAll();
+                if (textBox.isTextInput) return;
                 using (var stream = new MemoryStream())
                 using (var writer = new StreamWriter(stream))
                 {
                     writer.Write(value);
                     writer.Flush();
                     stream.Position = 0;
-                    textBox.Selection.Load(stream, DataFormats.Rtf);
-                    textBox.Selection.Select(textBox.Document.ContentStart, textBox.Document.ContentStart);
-                    textBox.CaretPosition = textBox.Document.ContentStart;
-                    Keyboard.ClearFocus();
+                    var textRange = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd);
+                    var previousCaret = textBox.CaretPosition;
+                    textRange.Load(stream, DataFormats.Rtf);
+                    try
+                    {
+                        textBox.CaretPosition = previousCaret;
+                    }
+                    catch
+                    {
+                        textBox.CaretPosition = textBox.Document.ContentStart;
+                    }
                 }
             }
         }
@@ -97,10 +119,24 @@ namespace NextCanvas.Controls.Content
             if (HasTextChangedOnce) UpdateRtf();
         }
 
+        private bool isTextInput;
         protected override void OnTextChanged(TextChangedEventArgs e)
-        {
+        {        
             base.OnTextChanged(e);
             HasTextChangedOnce = true;
+            if (UpdateMode == UpdateMode.TextInput)
+            {
+                isTextInput = true;
+                givingToBinding = true;
+                UpdateRtf();
+                isTextInput = false;
+            }      
         }
+    }
+
+    public enum UpdateMode
+    {
+        LostFocus,
+        TextInput
     }
 }

@@ -1,14 +1,5 @@
 ﻿#region
 
-using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
 using Fluent;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Multimedia;
@@ -19,6 +10,15 @@ using NextCanvas.Serialization;
 using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels.Content;
+using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 #endregion
 
@@ -88,6 +88,10 @@ namespace NextCanvas.ViewModels
         {
             get
             {
+                if (IsSelectTool)
+                {
+                    return null;
+                }
                 var tool = Tools[SelectedToolIndex];
                 var color = tool.DrawingAttributes.Color;
                 if (!ColorGallery.StandardThemeColors.Contains(color) && !FavoriteColors.Contains(color))
@@ -95,16 +99,31 @@ namespace NextCanvas.ViewModels
 
                 return tool;
             }
-            set => SelectedToolIndex = Tools.IndexOf(value);
-        }
-
-        public bool IsSelectTool
-        {
-            get => SelectedTool.Mode == InkCanvasEditingMode.Select;
             set
             {
-                if (value)
-                    SwitchToSelectTool();
+                if (value is null)
+                {
+                    IsSelectTool = true;
+                    return;
+                }
+                else
+                {
+                    IsSelectTool = false;
+                }
+                SelectedToolIndex = Tools.IndexOf(value);
+            }
+        }
+
+        private bool isSelectTool;
+        public bool IsSelectTool
+        {
+            get => isSelectTool;
+            set
+            {
+                isSelectTool = value;
+                OnPropertyChanged(nameof(IsSelectTool));
+                OnPropertyChanged(nameof(SelectedTool));
+                SwitchToSelectToolCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -191,9 +210,9 @@ namespace NextCanvas.ViewModels
             DeletePageCommand = new DelegateCommand(o => DeletePage(CurrentDocument.SelectedIndex), o => CurrentDocument.CanDeletePage);
             ExtendPageCommand = new DelegateCommand(ExtendPage);
             SetToolByNameCommand = new DelegateCommand(SetToolByName, IsNameValid);
-            SwitchToSelectToolCommand = new DelegateCommand(SwitchToSelectTool, IsThereAnySelectTools);
+            SwitchToSelectToolCommand = new DelegateCommand(SwitchToSelectTool, CanSwitchToSelectTool);
             SaveCommand = new DelegateCommand(async o => await SaveDocument(o));
-            OpenCommand = new DelegateCommand(OpenDocument);
+            OpenCommand = new DelegateCommand(async o => await OpenDocument(o));
             CreateTextBoxCommand = new DelegateCommand(CreateTextBox);
             CreateImageCommand = new DelegateCommand(CreateImage);
             CreateScreenshotCommand = new DelegateCommand(CreateScreenShot);
@@ -301,15 +320,8 @@ namespace NextCanvas.ViewModels
             CurrentDocument.SelectedPage.Elements.Add(element);
         }
 
-        private void SwitchToSelectTool()
-        {
-            if (SelectedTool.Mode == InkCanvasEditingMode.Select) return;
-
-            var tool = GetSelectTool();
-
-            SelectedTool =
-                tool ?? throw new InvalidOperationException("There isn't any select tool in the list. Wait why?");
-        }
+        private void SwitchToSelectTool() => IsSelectTool = true;
+        private bool CanSwitchToSelectTool() => !IsSelectTool;
 
         public void SelectionHandler(object sender, InkCanvasSelectionChangingEventArgs e)
         {
@@ -362,7 +374,7 @@ namespace NextCanvas.ViewModels
             return progressInteractionProcessed;
         }
 
-        private void OpenDocument(object progress = null)
+        private async Task OpenDocument(object progress = null)
         {
             if (OpenPath == null) return;
             try
@@ -372,7 +384,7 @@ namespace NextCanvas.ViewModels
                 {
                     document.Dispose();
                     CurrentDocument =
-                        new DocumentViewModel(DocumentReader.TryOpenDocument(fileStream,
+                        new DocumentViewModel(await DocumentReader.TryOpenDocument(fileStream,
                             provider.CreateInteraction()));
                 }
             }

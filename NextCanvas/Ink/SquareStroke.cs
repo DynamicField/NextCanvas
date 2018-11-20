@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Ink;
 using System.Windows.Input;
@@ -64,13 +65,14 @@ namespace NextCanvas.Ink
             if (populate) StylusPoints = okPoints;
         }
 
-        public static void GetMinPoints(StylusPointCollection c, out StylusPoint minX, out StylusPoint minY,
+        public static void GetMinPoints(IEnumerable<StylusPoint> c, out StylusPoint minX, out StylusPoint minY,
             out StylusPoint maxX, out StylusPoint maxY)
         {
-            minX = c.OrderBy(t => t.X).First();
-            minY = c.OrderBy(t => t.Y).First();
-            maxX = c.OrderBy(t => t.X).Last();
-            maxY = c.OrderBy(t => t.Y).Last();
+            var stylusPoints = c as StylusPoint[] ?? c.ToArray();
+            minX = stylusPoints.OrderBy(t => t.X).First();
+            minY = stylusPoints.OrderBy(t => t.Y).First();
+            maxX = stylusPoints.OrderBy(t => t.X).Last();
+            maxY = stylusPoints.OrderBy(t => t.Y).Last();
         }
     }
 }

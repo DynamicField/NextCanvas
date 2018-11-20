@@ -27,6 +27,9 @@
     <UserControl.Resources>
         <converters:FamilyNamesCollectionConverter x:Key="FamilyConverter"/>
     </UserControl.Resources>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded"/>
+    </UserControl.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -35,7 +38,7 @@
             RtfText="{Binding RtfText, ElementName=Control, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"    
             IsUndoEnabled="True" Background="{x:Null}" x:Name="TextBox" SelectionChanged="TextBox_OnSelectionChanged">
             <content:RtfRichTextBox.Resources>
-                <Style TargetType="List">
+                <Style TargetType="{x:Type List}">
                     <Setter Property="MarkerOffset" Value="7"/>
                 </Style>
             </content:RtfRichTextBox.Resources>
@@ -58,113 +61,126 @@
             </content:RtfRichTextBox.Style>
         </content:RtfRichTextBox>
 
-        <Border x:Name="Border" VerticalAlignment="Bottom" Opacity="0.90">
-            <Border.Style>
-                <Style TargetType="{x:Type Border}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding EditorFormatShown, ElementName=Control}" Value="False">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsFocused, ElementName=TextBox}">
-                            <Setter Property="BorderThickness" Value="1,0,0,0"/>
-                            <Setter Property="BorderBrush" Value="{Binding BorderBrush, ElementName=TextBox}"></Setter>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-            <Border Background="#FFECECEC" Padding="3">
-                <StackPanel  Orientation="Horizontal">
-                    <StackPanel.Resources>
-                        <Style TargetType="ToggleButton">
-                            <Setter Property="Width" Value="20"/>
-                            <Setter Property="FontFamily" Value="Georgia"/>
-                            <Setter Property="Margin" Value="2,0"/>
-                            <Setter Property="CommandTarget" Value="{Binding ElementName=TextBox}"></Setter>
-                        </Style>
-                    </StackPanel.Resources>
-                    <ToggleButton x:Name="BoldButton" Command="EditingCommands.ToggleBold" Click="FocusTextBox">
-                        <Run Text="B" FontWeight="Bold"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="ItalicButton" Command="ToggleItalic" Click="FocusTextBox">
-                        <Run Text="I" FontStyle="Italic" FontFamily="Georgia"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="UnderlineButton" Command="ToggleUnderline" Click="FocusTextBox">
-                        <Run Text="U" FontFamily="Georgia" TextDecorations="Underline"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="BulletsListButton" Command="ToggleBullets">
-                        <StackPanel HorizontalAlignment="Left" Orientation="Vertical">
+        <ScrollViewer VerticalAlignment="Bottom" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto">
+            <Border x:Name="Border" VerticalAlignment="Bottom" Opacity="0.90">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding EditorFormatShown, ElementName=Control}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsFocused, ElementName=TextBox}">
+                                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                                <Setter Property="BorderBrush" Value="{Binding BorderBrush, ElementName=TextBox}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Border Background="#FFECECEC" Padding="3">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                             <StackPanel.Resources>
-                                <SolidColorBrush x:Key="BulletBrush" Color="Blue" po:Freeze="True"/>
-                                <SolidColorBrush x:Key="LineBrush" Color="Black" po:Freeze="True"/>
-                                <Style TargetType="StackPanel">
-                                    <Setter Property="Margin" Value="0,1"/>
-                                    <Setter Property="Orientation" Value="Horizontal"/>
-                                </Style>
-                                <Style TargetType="Ellipse">
-                                    <Setter Property="Fill" Value="{StaticResource BulletBrush}"/>
-                                    <Setter Property="Width" Value="2"/>
-                                    <Setter Property="Height" Value="2"/>
-                                    <Setter Property="Margin" Value="0,0,1,0"/>
-                                </Style>
-                                <Style TargetType="Line">
-                                    <Setter Property="Stroke" Value="{StaticResource LineBrush}"/>
-                                    <Setter Property="X2" Value="10"/>
-                                    <Setter Property="Y2" Value="0"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Style TargetType="{x:Type ToggleButton}">
+                                    <Setter Property="Width" Value="20" />
+                                    <Setter Property="FontFamily" Value="Georgia" />
+                                    <Setter Property="Margin" Value="2,0" />
+                                    <Setter Property="CommandTarget" Value="{Binding ElementName=TextBox}" />
                                 </Style>
                             </StackPanel.Resources>
-                            <StackPanel>
-                                <Ellipse />
-                                <Line />
-                            </StackPanel>
-                            <StackPanel>
-                                <Ellipse />
-                                <Line />
-                            </StackPanel>
-                            <StackPanel>
-                                <Ellipse />
-                                <Line />
-                            </StackPanel>
+                            <ToggleButton x:Name="BoldButton" Command="EditingCommands.ToggleBold" Click="FocusTextBox">
+                                <Run Text="B" FontWeight="Bold" />
+                            </ToggleButton>
+                            <ToggleButton x:Name="ItalicButton" Command="ToggleItalic" Click="FocusTextBox">
+                                <Run Text="I" FontStyle="Italic" FontFamily="Georgia" />
+                            </ToggleButton>
+                            <ToggleButton x:Name="UnderlineButton" Command="ToggleUnderline" Click="FocusTextBox">
+                                <Run Text="U" FontFamily="Georgia" TextDecorations="Underline" />
+                            </ToggleButton>
+                            <ToggleButton x:Name="BulletsListButton" Command="ToggleBullets">
+                                <StackPanel HorizontalAlignment="Left" Orientation="Vertical">
+                                    <StackPanel.Resources>
+                                        <SolidColorBrush x:Key="BulletBrush" Color="Blue" po:Freeze="True" />
+                                        <SolidColorBrush x:Key="LineBrush" Color="Black" po:Freeze="True" />
+                                        <Style TargetType="{x:Type StackPanel}">
+                                            <Setter Property="Margin" Value="0,1" />
+                                            <Setter Property="Orientation" Value="Horizontal" />
+                                        </Style>
+                                        <Style TargetType="{x:Type Ellipse}">
+                                            <Setter Property="Fill" Value="{StaticResource BulletBrush}" />
+                                            <Setter Property="Width" Value="2" />
+                                            <Setter Property="Height" Value="2" />
+                                            <Setter Property="Margin" Value="0,0,1,0" />
+                                        </Style>
+                                        <Style TargetType="{x:Type Line}">
+                                            <Setter Property="Stroke" Value="{StaticResource LineBrush}" />
+                                            <Setter Property="X2" Value="10" />
+                                            <Setter Property="Y2" Value="0" />
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <StackPanel>
+                                        <Ellipse />
+                                        <Line />
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <Ellipse />
+                                        <Line />
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <Ellipse />
+                                        <Line />
+                                    </StackPanel>
+                                </StackPanel>
+                            </ToggleButton>
+                            <ComboBox HorizontalAlignment="Left"
+                                      Text="{Binding DefaultFontSize, Mode=OneTime, Source={x:Static nextCanvas:SettingsManager.Settings}}"
+                                      VerticalAlignment="Top" Margin="2,0"
+                                      IsEditable="True" TextBoxBase.TextChanged="FontSizeChanged"
+                                      x:Name="FontSizeBox">
+                                <system:Int32>8</system:Int32>
+                                <system:Int32>9</system:Int32>
+                                <system:Int32>10</system:Int32>
+                                <system:Int32>12</system:Int32>
+                                <system:Int32>16</system:Int32>
+                                <system:Int32>24</system:Int32>
+                                <system:Int32>32</system:Int32>
+                                <system:Int32>40</system:Int32>
+                                <system:Int32>56</system:Int32>
+                                <system:Int32>78</system:Int32>
+                                <system:Int32>86</system:Int32>
+                                <system:Int32>104</system:Int32>
+                                <system:Int32>120</system:Int32>
+                                <system:Int32>144</system:Int32>
+                                <system:Int32>160</system:Int32>
+                                <system:Int32>220</system:Int32>
+                            </ComboBox>
+                            <ComboBox
+                                ItemsSource="{Binding (collection:ICollection.SyncRoot), Source={x:Static Fonts.SystemFontFamilies}}"
+                                x:Name="FontFamilyBox"
+                                SelectedItem="{Binding DefaultFontFamily, Mode=OneTime, Source={x:Static nextCanvas:SettingsManager.Settings}}"
+                                SelectionChanged="FontBox_OnSelectionChanged" Margin="2,0"
+                                VerticalContentAlignment="Center">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type FontFamily}">
+                                        <TextBlock FontSize="10"
+                                                   Text="{Binding ., Converter={StaticResource FamilyConverter}}"
+                                                   FontFamily="{Binding}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel VirtualizingPanel.IsVirtualizing="True"
+                                                                VirtualizingPanel.VirtualizationMode="Recycling" />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
                         </StackPanel>
-                    </ToggleButton>
-                    <ComboBox HorizontalAlignment="Left" 
-                              Text="{Binding Path=DefaultFontSize, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}"
-                              VerticalAlignment="Top" Margin="2,0"
-                              IsEditable="True" TextBoxBase.TextChanged="FontSizeChanged" 
-                              x:Name="FontSizeBox">
-                        <system:Int32>8</system:Int32>
-                        <system:Int32>9</system:Int32>
-                        <system:Int32>10</system:Int32>
-                        <system:Int32>12</system:Int32>
-                        <system:Int32>16</system:Int32>
-                        <system:Int32>24</system:Int32>
-                        <system:Int32>32</system:Int32>
-                        <system:Int32>40</system:Int32>
-                        <system:Int32>56</system:Int32>
-                        <system:Int32>78</system:Int32>
-                        <system:Int32>86</system:Int32>
-                        <system:Int32>104</system:Int32>
-                        <system:Int32>120</system:Int32>
-                        <system:Int32>144</system:Int32>
-                        <system:Int32>160</system:Int32>
-                        <system:Int32>220</system:Int32>
-                    </ComboBox>
-                    <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}, Path=(collection:ICollection.SyncRoot)}" x:Name="FontFamilyBox" 
-                              SelectedItem="{Binding DefaultFontFamily, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}" 
-                              SelectionChanged="FontBox_OnSelectionChanged" Margin="2,0" VerticalContentAlignment="Center" >
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type FontFamily}">
-                                <TextBlock FontSize="10" Text="{Binding Path=., Converter={StaticResource FamilyConverter}}" FontFamily="{Binding}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                        <ComboBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling"/>
-                            </ItemsPanelTemplate>
-                        </ComboBox.ItemsPanel>
-                    </ComboBox>
-                </StackPanel>
-            </Border>
-        </Border>
+                        <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Width="26" Click="OpenInANewWindow">
+                            <Image Height="16" Source="/NextCanvas;component/Images/TextEditor/OpenInANewWindow.png"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,1,0" />
+                        </Button>
+                    </DockPanel>
+                </Border>
+            </Border></ScrollViewer>
     </Grid>
 </UserControl>

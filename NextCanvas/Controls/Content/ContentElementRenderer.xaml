@@ -33,7 +33,9 @@
                 <DataTemplate DataType="{x:Type vm:TextBoxElementViewModel}">
                     <controls:RtfRichTextEditor RtfText="{Binding RtfText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                 EditorFormatShown="{Binding Path=(controls:NextInkCanvas.IsSelected), ElementName=RendererControl, PresentationTraceSources.TraceLevel=High}"
-                                                Focusable="{Binding Path=(controls:NextInkCanvas.IsSelected), ElementName=RendererControl}"/>
+                                                Focusable="{Binding Path=(controls:NextInkCanvas.IsSelected), ElementName=RendererControl}"
+                                                Width="{Binding Width, Mode=TwoWay}"
+                                                Height="{Binding Height, Mode=TwoWay}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:ContentElementViewModel}">
                     <local:ElementRecognitionError />
