@@ -2,6 +2,7 @@
 
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 
 #endregion
 
@@ -16,6 +17,7 @@ namespace NextCanvas.Views
         {
             InitializeComponent();
         }
+
         private void CloseClick(object sender, RoutedEventArgs e)
         {
             Close();

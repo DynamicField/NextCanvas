@@ -10,6 +10,8 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:fluent="urn:fluent-ribbon"
         xmlns:properties="clr-namespace:NextCanvas.Properties"
+        xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
+        xmlns:threading="clr-namespace:System.Threading;assembly=mscorlib"
         x:Name="Window"
         mc:Ignorable="d" Background="White" WindowStartupLocation="CenterOwner"
         Title="{x:Static properties:RibbonResources.File_Settings}" Height="530" Width="812">
@@ -86,6 +88,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <TextBlock HorizontalAlignment="Right" Text="{x:Static properties:SettingsResources.FileCompression}" Margin="5,0"
                                    Style="{StaticResource LeftPanelTextStyle}">
@@ -127,7 +130,17 @@
                                                 Format="g" Value="{Binding Settings.MaxToolsDisplayed}" Minimum="4" Maximum="15"/>
                             </StackPanel>
                         </StackPanel>
-                        
+                        <TextBlock Style="{StaticResource LeftPanelTextStyle}" Grid.Row="2" Text="{x:Static properties:SettingsResources.Language}"/>
+                        <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0" ItemsSource="{x:Static vm:App.SupportedCultures}" 
+                                  SelectedItem="{Binding Settings.PreferredLanguage}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="globalization:CultureInfo">
+                                    <TextBlock>
+                                        <Run Text="{Binding DisplayName, Mode=OneWay}"/> (<Run Text="{Binding EnglishName, Mode=OneWay}"/>)
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
                 </TabItem>
                 <TabItem Header="{x:Static properties:SettingsResources.Other}" />

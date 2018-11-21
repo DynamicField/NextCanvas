@@ -1,6 +1,9 @@
 ﻿#region
 
+using System;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows.Media;
 using Ionic.Zlib;
 using NextCanvas.Models;
@@ -63,6 +66,22 @@ namespace NextCanvas.ViewModels
             {
                 Model.MaxToolsDisplayed = value;
                 OnPropertyChanged(nameof(MaxToolsDisplayed));
+            }
+        }
+
+        public static event EventHandler CultureChanged;
+        public CultureInfo PreferredLanguage
+        {
+            get => Model.PreferredLanguage ?? Thread.CurrentThread.CurrentUICulture;
+            set
+            {
+                if (value != null && !Equals(Model.PreferredLanguage, value))
+                {
+                    Model.PreferredLanguage = value;
+                    OnPropertyChanged(nameof(PreferredLanguage));
+                    Thread.CurrentThread.CurrentUICulture = value;
+                    CultureChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
         public ObservableViewModelCollection<ToolViewModel, Tool> Tools { get; set; }

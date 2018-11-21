@@ -90,6 +90,15 @@ namespace NextCanvas.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Language:.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Max tools shown:.
         /// </summary>
         public static string MaxToolsShown {

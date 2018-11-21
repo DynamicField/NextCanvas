@@ -137,4 +137,7 @@
 Avec la plus haute compression, le fichier est plus petit, mais prend plus de temps à être sauvegardé.
 Avec la plus basse compression, le fichier est plus gros, mais prend moins de temps à être sauvegardé.</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Langue :</value>
+  </data>
 </root>

@@ -1,7 +1,11 @@
 ﻿
 using System;
+using System.Globalization;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
+using NextCanvas.ViewModels;
 using NextCanvas.ViewModels.Content;
 using NextCanvas.Views;
 
@@ -17,9 +21,39 @@ namespace NextCanvas
         {
             LogManager.AddLogItem("Constructor app started :)", $"NextCanvas {Assembly.GetExecutingAssembly().GetName().Version}");
             WebBrowserElementViewModel.SetHighestIEMode();
-            // Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+            if (SettingsManager.Settings.PreferredLanguage != null)
+            {
+                Thread.CurrentThread.CurrentUICulture = SettingsManager.Settings.PreferredLanguage;
+            }
             AppDomain.CurrentDomain.UnhandledException += RestInPeperonies;
             Exit += (sender, args) => { SettingsManager.SaveSettings(); };
+            SettingsViewModel.CultureChanged += SettingsViewModel_CultureChanged;
+        }
+
+        private void SettingsViewModel_CultureChanged(object sender, EventArgs e)
+        {
+            var windows = Current.Windows.OfType<Window>();
+            var windowsArray = windows as Window[] ?? windows.ToArray();
+            if (!windowsArray.Any()) return;
+            var dataContexts = windowsArray.Select(w => new Tuple<object, Window>(w.DataContext, w));
+            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            foreach (var window in windowsArray)
+            {
+                window.Close();
+            }
+
+            foreach (var dataContext in dataContexts)
+            {
+                try
+                {
+                    var createWindow = (Window) Activator.CreateInstance(dataContext.Item2.GetType());
+                    createWindow.DataContext = dataContext.Item1;
+                    createWindow.Show();
+                }
+                catch { /* oops whatever */ }
+            }
+
+            Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -27,7 +61,11 @@ namespace NextCanvas
             LogManager.AddCustomLogItem("OnStartup started.", "Initialisation");
             base.OnStartup(e);
         }
-
+        public static CultureInfo[] SupportedCultures => new CultureInfo[]
+        {
+            CultureInfo.GetCultureInfo("en-US"),
+            CultureInfo.GetCultureInfo("fr-FR"), 
+        };
         private static void RestInPeperonies(object sender, UnhandledExceptionEventArgs e)
         {
             var exception = (Exception) e.ExceptionObject;

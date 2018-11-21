@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -155,7 +156,7 @@ namespace NextCanvas.Models
 
         public int MaxToolsDisplayed { get; set; } = 6;
         public List<Tool> Tools { get; set; } 
-
+        public CultureInfo PreferredLanguage { get; set; }
         [JsonProperty(Order = -2)]
         public ToolGroupCollection Groups { get; set; } = new ToolGroupCollection
         {
