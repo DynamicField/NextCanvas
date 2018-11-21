@@ -1,12 +1,14 @@
 ﻿#region
 
 using System;
+using System.Collections;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows.Media;
 using Ionic.Zlib;
 using NextCanvas.Models;
+using NextCanvas.Properties;
 
 #endregion
 
@@ -77,9 +79,25 @@ namespace NextCanvas.ViewModels
             {
                 if (value != null && !Equals(Model.PreferredLanguage, value))
                 {
+                    var previousResourceSet =
+                        DefaultObjectNamesResources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true,
+                            true);
                     Model.PreferredLanguage = value;
                     OnPropertyChanged(nameof(PreferredLanguage));
                     Thread.CurrentThread.CurrentUICulture = value;
+                    var resourceSet = DefaultObjectNamesResources.ResourceManager
+                        .GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+                    foreach (var tool in Tools)
+                    {
+                        foreach (DictionaryEntry entry in previousResourceSet)
+                        {
+                            if (entry.Value.ToString() == tool.Name)
+                            {
+                                tool.Name = resourceSet.GetString(entry.Key.ToString());
+                                break;
+                            }
+                        }
+                    }
                     CultureChanged?.Invoke(this, EventArgs.Empty);
                 }
             }

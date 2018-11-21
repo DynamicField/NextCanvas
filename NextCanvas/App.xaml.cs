@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using NextCanvas.Properties;
 using NextCanvas.ViewModels;
 using NextCanvas.ViewModels.Content;
 using NextCanvas.Views;
@@ -41,7 +42,6 @@ namespace NextCanvas
             {
                 window.Close();
             }
-
             foreach (var dataContext in dataContexts)
             {
                 try
@@ -52,7 +52,6 @@ namespace NextCanvas
                 }
                 catch { /* oops whatever */ }
             }
-
             Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
         }
 
