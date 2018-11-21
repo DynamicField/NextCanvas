@@ -37,7 +37,7 @@ namespace NextCanvas.Views
                 ErrorProvider = ErrorProvider,
                 ModifyProvider = ModifyProvider
             };
-            pageViewerFactory = new UniqueWindowFactory<PageCollectionViewer>(() => new PageCollectionViewer((MainWindowViewModel)DataContext));
+            pageViewerFactory = new UniqueWindowFactory<PageCollectionViewer>(() => new PageCollectionViewer((MainWindowViewModel)DataContext), this);
             Canvas.DefaultDrawingAttributes.FitToCurve = true;
         }
 

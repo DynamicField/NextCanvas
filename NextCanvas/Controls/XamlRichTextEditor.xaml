@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:NextCanvas.Controls"
              xmlns:content="clr-namespace:NextCanvas.Controls.Content"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             x:Class="NextCanvas.Controls.RtfRichTextEditor"
+             x:Class="NextCanvas.Controls.XamlRichTextEditor"
              xmlns:collection="clr-namespace:System.Collections;assembly=mscorlib"
              xmlns:converters="clr-namespace:NextCanvas.Converters"
              xmlns:fluent="urn:fluent-ribbon"
@@ -34,16 +34,16 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <content:RtfRichTextBox
-            RtfText="{Binding RtfText, ElementName=Control, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"    
+        <content:XamlRichTextBox
+            XamlText="{Binding XamlText, ElementName=Control, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"    
             IsUndoEnabled="True" Background="{x:Null}" x:Name="TextBox" SelectionChanged="TextBox_OnSelectionChanged">
-            <content:RtfRichTextBox.Resources>
+            <content:XamlRichTextBox.Resources>
                 <Style TargetType="{x:Type List}">
                     <Setter Property="MarkerOffset" Value="7"/>
                 </Style>
-            </content:RtfRichTextBox.Resources>
-            <content:RtfRichTextBox.Style>
-                <Style TargetType="{x:Type content:RtfRichTextBox}">
+            </content:XamlRichTextBox.Resources>
+            <content:XamlRichTextBox.Style>
+                <Style TargetType="{x:Type content:XamlRichTextBox}">
                     <Setter Property="Margin" Value="0"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding EditorFormatShown, ElementName=Control}" Value="False">
@@ -58,8 +58,8 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-            </content:RtfRichTextBox.Style>
-        </content:RtfRichTextBox>
+            </content:XamlRichTextBox.Style>
+        </content:XamlRichTextBox>
 
         <ScrollViewer VerticalAlignment="Bottom" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto">
             <Border x:Name="Border" VerticalAlignment="Bottom" Opacity="0.90">

@@ -19,26 +19,37 @@ namespace NextCanvas.Views
     /// <summary>
     /// Logique d'interaction pour SeparateTextEditorWindow.xaml
     /// </summary>
-    public partial class SeparateTextEditorWindow : RibbonWindow // For easier resizes or not, it just glows, its bootifool
+    public partial class SeparateTextEditorWindow : Window // For easier resizes or not, it just glows, its bootifool
     {
-        public SeparateTextEditorWindow(RtfRichTextEditor editor)
+        public SeparateTextEditorWindow(XamlRichTextEditor editor)
         {
             InitializeComponent();
             this.editor = editor;
             Grid.Children.Add(editor);
             lastHeight = editor.Height;
             lastWidth = editor.Width;
-            Loaded += (sender, args) =>
-            {
-                Height = lastHeight + (ActualHeight - Grid.ActualHeight);
-                Width = lastWidth + (ActualWidth - Grid.ActualWidth);
-            };
+            Loaded += (sender, args) => { UpdateWindowDimensions(); };
+            editor.SizeChanged += Editor_SizeChanged;
         }
 
+        private void Editor_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SizeToContent = SizeToContent.WidthAndHeight;
+            SizeToContent = SizeToContent.Manual;
+        }
+
+        private void UpdateWindowDimensions()
+        {
+            Height = lastHeight + (ActualHeight - Grid.ActualHeight);
+            Width = lastWidth + (ActualWidth - Grid.ActualWidth);
+        }
+
+        private int noResizeCount = 0;
         private double lastWidth, lastHeight;
-        private readonly RtfRichTextEditor editor;
+        private readonly XamlRichTextEditor editor;
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
+            noResizeCount = 1;
             editor.Width = Grid.ActualWidth;
             editor.Height = Grid.ActualHeight;
         }

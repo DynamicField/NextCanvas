@@ -110,7 +110,7 @@
       <DependentUpon>ElementRecognitionError.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Content\LightweightDataTemplateSelector.cs" />
-    <Compile Include="Controls\Content\RtfRichTextBox.cs" />
+    <Compile Include="Controls\Content\XamlRichTextBox.cs" />
     <Compile Include="Controls\Content\WebBrowserHelper.cs" />
     <Compile Include="Controls\Editor\ControlElementEditorControl.xaml.cs">
       <DependentUpon>ControlElementEditorControl.xaml</DependentUpon>
@@ -121,8 +121,8 @@
     <Compile Include="Controls\Editor\WebBrowserEditorControl.xaml.cs">
       <DependentUpon>WebBrowserEditorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RtfRichTextEditor.xaml.cs">
-      <DependentUpon>RtfRichTextEditor.xaml</DependentUpon>
+    <Compile Include="Controls\XamlRichTextEditor.xaml.cs">
+      <DependentUpon>XamlRichTextEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\AlternationIndexConverter.cs" />
     <Compile Include="Converters\FamilyNamesCollectionConverter.cs" />
@@ -257,7 +257,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\RtfRichTextEditor.xaml">
+    <Page Include="Controls\XamlRichTextEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

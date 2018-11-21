@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <TextBlock Text="Log viewer" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold" Margin="1"/>
         <TextBox Grid.Row="1" Margin="15" Text="{Binding LogString}" IsReadOnly="True" IsReadOnlyCaretVisible="True"
-                 FontFamily="Consolas" HorizontalScrollBarVisibility="Visible"/>
+                 FontFamily="Consolas" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto"/>
         <Button x:Name="CloseButton" Grid.Row="2" 
                 VerticalAlignment="Center" HorizontalAlignment="Center" 
                 Padding="25,5" Margin="8"

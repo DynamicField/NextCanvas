@@ -12,25 +12,25 @@ using NextCanvas.Views;
 namespace NextCanvas.Controls
 {
     /// <summary>
-    /// Logique d'interaction pour RtfRichTextEditor.xaml
+    /// Logique d'interaction pour XamlRichTextEditor.xaml
     /// </summary>
-    public partial class RtfRichTextEditor : UserControl
+    public partial class XamlRichTextEditor : UserControl
     {
-        public RtfRichTextEditor()
+        public XamlRichTextEditor()
         {
             InitializeComponent();
-            Unloaded += (sender, args) => { TextBox.UpdateRtf(); };
+            Unloaded += (sender, args) => { TextBox.UpdateXaml(); };
             factory = new UniqueWindowFactory<SeparateTextEditorWindow>(() =>
             {
-                var rtfRichTextEditor = new RtfRichTextEditor
+                var rtfRichTextEditor = new XamlRichTextEditor
                 {
                     Width = ActualWidth,
                     Height = ActualHeight,
                 };
-                rtfRichTextEditor.SetBinding(RtfTextProperty, new Binding
+                rtfRichTextEditor.SetBinding(XamlTextProperty, new Binding
                 {
                     Source = this,
-                    Path = new PropertyPath(nameof(RtfText)),
+                    Path = new PropertyPath(nameof(XamlText)),
                     Mode = BindingMode.TwoWay
                 });
                 rtfRichTextEditor.EditorFormatShown = true;
@@ -65,48 +65,70 @@ namespace NextCanvas.Controls
                     this.doNotReact = true;
                 };
                 return window;
-            });
+            }, this);
         }
 
         public static readonly DependencyProperty EditorFormatShownProperty = DependencyProperty.Register(
-            "EditorFormatShown", typeof(bool), typeof(RtfRichTextEditor), new UIPropertyMetadata(true));
+            "EditorFormatShown", typeof(bool), typeof(XamlRichTextEditor), new UIPropertyMetadata(true));
 
         public bool EditorFormatShown
         {
             get => (bool)GetValue(EditorFormatShownProperty);
             set => SetValue(EditorFormatShownProperty, value);
         }
-        public string RtfText
+
+        public string XamlText
         {
-            get => (string)GetValue(RtfTextProperty);
-            set => SetValue(RtfTextProperty, value);
+            get => (string)GetValue(XamlTextProperty);
+            set => SetValue(XamlTextProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for RtfText.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty RtfTextProperty =
-            DependencyProperty.Register("RtfText", typeof(string), typeof(RtfRichTextEditor), new PropertyMetadata(""));
+        // Using a DependencyProperty as the backing store for XamlText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty XamlTextProperty =
+            DependencyProperty.Register("XamlText", typeof(string), typeof(XamlRichTextEditor), new PropertyMetadata(""));
 
         private bool doNotReact = false;
         private void TextBox_OnSelectionChanged(object sender, RoutedEventArgs e)
         {
             doNotReact = true;
-            var selection = TextBox.Selection;
-            var fontFamily = TextBox.Selection.GetPropertyValue(FontFamilyProperty); // Set font :)
-            var fontSize = selection.GetPropertyValue(FontSizeProperty);
-            bool? isBold;
-            bool? isUnderlined;
-            var fontStyle = (FontStyle)TextBox.Selection.GetPropertyValue(FontStyleProperty);
-            var fontDecorations = TextBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
-            var fontWeight = TextBox.Selection.GetPropertyValue(FontWeightProperty);
-            if (fontWeight == DependencyProperty.UnsetValue)
-            {
-                isBold = null;
-            }
-            else
-            {
-                isBold = fontWeight.Equals(FontWeights.Bold);
-            }
+            UpdateBoldButton();
+            UpdateUnderlineButton();
+            UpdateItalicButton();
+            UpdateFontSizeComboBox();
+            UpdateFontFamilyComboBox();
+            UpdateBulletsListButton();
+            doNotReact = false;
+        }
+
+        private void UpdateBulletsListButton()
+        {
+            var list = VisualTreeUtilities.FindLogicalParent<List>(TextBox.Selection.Start.Parent);
+            BulletsListButton.IsChecked = list != null;
+        }
+
+        private void UpdateItalicButton()
+        {
+            var fontStyle = (FontStyle) TextBox.Selection.GetPropertyValue(FontStyleProperty);
             var isItalic = fontStyle.Equals(FontStyles.Italic);
+            ItalicButton.IsChecked = isItalic;
+        }
+
+        private void UpdateFontSizeComboBox()
+        {
+            var fontSize = TextBox.Selection.GetPropertyValue(FontSizeProperty);
+            FontSizeBox.Text = fontSize != DependencyProperty.UnsetValue ? fontSize.ToString() : "";
+        }
+
+        private void UpdateFontFamilyComboBox()
+        {
+            var fontFamily = TextBox.Selection.GetPropertyValue(FontFamilyProperty); // Set font :)
+            FontFamilyBox.SelectedItem = fontFamily != DependencyProperty.UnsetValue ? fontFamily : null;
+        }
+
+        private void UpdateUnderlineButton()
+        {
+            bool? isUnderlined;
+            var fontDecorations = TextBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
             if (fontDecorations == DependencyProperty.UnsetValue)
             {
                 isUnderlined = null;
@@ -115,15 +137,26 @@ namespace NextCanvas.Controls
             {
                 isUnderlined = fontDecorations.Equals(TextDecorations.Underline);
             }
-            FontSizeBox.Text = fontSize != DependencyProperty.UnsetValue ? fontSize.ToString() : "";
-            FontFamilyBox.SelectedItem = fontFamily != DependencyProperty.UnsetValue ? fontFamily : null;
-            BoldButton.IsChecked = isBold;
-            ItalicButton.IsChecked = isItalic;
+
             UnderlineButton.IsChecked = isUnderlined;
-            var list = VisualTreeUtilities.FindLogicalParent<List>(TextBox.Selection.Start.Parent);
-            BulletsListButton.IsChecked = list != null;
-            doNotReact = false;
         }
+
+        private void UpdateBoldButton()
+        {
+            var fontWeight = TextBox.Selection.GetPropertyValue(FontWeightProperty);
+            bool? isBold;
+            if (fontWeight == DependencyProperty.UnsetValue)
+            {
+                isBold = null;
+            }
+            else
+            {
+                isBold = fontWeight.Equals(FontWeights.Bold);
+            }
+
+            BoldButton.IsChecked = isBold;
+        }
+
         private void FontSizeChanged(object sender, TextChangedEventArgs e)
         {
             if (doNotReact) return;

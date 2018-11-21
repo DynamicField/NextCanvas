@@ -13,12 +13,12 @@ using System.Windows.Input;
 
 namespace NextCanvas.Controls.Content
 {
-    public class RtfRichTextBox : RichTextBox
+    public class XamlRichTextBox : RichTextBox
     {
-        // Using a DependencyProperty as the backing store for RtfText.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty RtfTextProperty =
-            DependencyProperty.Register("RtfText", typeof(string), typeof(RtfRichTextBox),
-                new FrameworkPropertyMetadata("", RtfChanged));
+        // Using a DependencyProperty as the backing store for XamlText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty XamlTextProperty =
+            DependencyProperty.Register("XamlText", typeof(string), typeof(XamlRichTextBox),
+                new FrameworkPropertyMetadata("", XamlChanged));
 
 
         public bool HasTextChangedOnce
@@ -29,19 +29,11 @@ namespace NextCanvas.Controls.Content
 
         // Using a DependencyProperty as the backing store for HasTextChangedOnce.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty HasTextChangedOnceProperty =
-            DependencyProperty.Register("HasTextChangedOnce", typeof(bool), typeof(RtfRichTextBox), new PropertyMetadata(false));
+            DependencyProperty.Register("HasTextChangedOnce", typeof(bool), typeof(XamlRichTextBox), new PropertyMetadata(false));
 
         public static readonly DependencyProperty UpdateModeProperty = DependencyProperty.Register(
-            "UpdateMode", typeof(UpdateMode), typeof(RtfRichTextBox), new PropertyMetadata(UpdateMode.LostFocus));
+            "UpdateMode", typeof(UpdateMode), typeof(XamlRichTextBox), new PropertyMetadata(UpdateMode.LostFocus));
 
-        public static readonly DependencyProperty XamlTextProperty = DependencyProperty.Register(
-            "XamlText", typeof(string), typeof(RtfRichTextBox), new PropertyMetadata(""));
-
-        public string XamlText
-        {
-            get { return (string) GetValue(XamlTextProperty); }
-            set { SetValue(XamlTextProperty, value); }
-        }
         public UpdateMode UpdateMode
         {
             get => (UpdateMode)GetValue(UpdateModeProperty);
@@ -50,22 +42,22 @@ namespace NextCanvas.Controls.Content
 
         private bool givingToBinding;
 
-        public RtfRichTextBox()
+        public XamlRichTextBox()
         {
 
         }
 
-        public string RtfText
+        public string XamlText
         {
-            get => (string)GetValue(RtfTextProperty);
-            set => SetValue(RtfTextProperty, value);
+            get => (string)GetValue(XamlTextProperty);
+            set => SetValue(XamlTextProperty, value);
         }
 
-        private static void RtfChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void XamlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is string value && value != string.Empty)
             {
-                var textBox = (RtfRichTextBox)d;
+                var textBox = (XamlRichTextBox)d;
                 if (textBox.givingToBinding)
                 {
                     textBox.givingToBinding = false;
@@ -80,7 +72,7 @@ namespace NextCanvas.Controls.Content
                     stream.Position = 0;
                     var textRange = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd);
                     var previousCaret = textBox.CaretPosition;
-                    textRange.Load(stream, DataFormats.Rtf);
+                    textRange.Load(stream, DataFormats.Xaml);
                     try
                     {
                         textBox.CaretPosition = previousCaret;
@@ -93,30 +85,30 @@ namespace NextCanvas.Controls.Content
             }
         }
 
-        public void UpdateRtf()
+        public void UpdateXaml()
         {
             HasTextChangedOnce = true;
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             using (var mem = new MemoryStream())
             {
-                new TextRange(Document.ContentStart, Document.ContentEnd).Save(mem, DataFormats.Rtf);
+                new TextRange(Document.ContentStart, Document.ContentEnd).Save(mem, DataFormats.Xaml);
                 givingToBinding = true;
                 mem.Position = 0;
                 using (var read = new StreamReader(mem, Encoding.UTF8, true))
                 {
                     var result = read.ReadToEnd();
-                    RtfText = result;
+                    XamlText = result;
                 }
             }
             stopwatch.Stop();
-            LogManager.AddLogItem($"Successfully updated the RTF text in {stopwatch.Elapsed:g}");
+            LogManager.AddLogItem($"Successfully updated the XAML text in {stopwatch.Elapsed:g}");
         }
 
         protected override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
-            if (HasTextChangedOnce) UpdateRtf();
+            if (HasTextChangedOnce) UpdateXaml();
         }
 
         private bool isTextInput;
@@ -128,7 +120,7 @@ namespace NextCanvas.Controls.Content
             {
                 isTextInput = true;
                 givingToBinding = true;
-                UpdateRtf();
+                UpdateXaml();
                 isTextInput = false;
             }      
         }
