@@ -97,31 +97,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ModifyObject_DefaultHeaderStart" xml:space="preserve">
-    <value>Editing</value>
+  <data name="CancelScreenshot" xml:space="preserve">
+    <value>Cancel screenshot</value>
   </data>
-  <data name="ModifyObject_DefaultHeaderText" xml:space="preserve">
-    <value>{0} object...</value>
-  </data>
-  <data name="ContentElementEditor_Layer" xml:space="preserve">
-    <value>Layer:</value>
-  </data>
-  <data name="ContentElementEditor_X" xml:space="preserve">
-    <value>X:</value>
-  </data>
-  <data name="ContentElementEditor_Y" xml:space="preserve">
-    <value>Y:</value>
-  </data>
-  <data name="ModifyObject_FallbackEditorText" xml:space="preserve">
-    <value>Oops! There is no edit dialog for this element. Sorry :(</value>
-  </data>
-  <data name="ModifyObject_CreateHeader" xml:space="preserve">
-    <value>Creating a</value>
-  </data>
-  <data name="ToolEditor_Name" xml:space="preserve">
-    <value>Name:</value>
-  </data>
-  <data name="WebBrowserEditor_Url" xml:space="preserve">
-    <value>URL:</value>
+  <data name="CaptureWholeScreen" xml:space="preserve">
+    <value>Capture whole screen</value>
   </data>
 </root>

@@ -168,6 +168,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PageManagerResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\ScreenshotResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScreenshotResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\SettingsResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -392,6 +397,11 @@
     <EmbeddedResource Include="Properties\RibbonResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RibbonResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\ScreenshotResources.fr-FR.resx" />
+    <EmbeddedResource Include="Properties\ScreenshotResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ScreenshotResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SettingsResources.fr-FR.resx" />
     <EmbeddedResource Include="Properties\SettingsResources.resx">

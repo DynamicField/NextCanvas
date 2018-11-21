@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:NextCanvas.Controls.Editor"
              xmlns:fluent="urn:fluent-ribbon"
              xmlns:vm="clr-namespace:NextCanvas.ViewModels"
+             xmlns:properties="clr-namespace:NextCanvas.Properties"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ToolViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="355.213" d:DesignWidth="724.362">
     <UserControl.Resources>
@@ -23,11 +24,11 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackPanel>
-                <TextBlock Text="Name:" Margin="0,2" />
+                <TextBlock Text="{x:Static properties:EditorResources.ToolEditor_Name}" Margin="0,2" />
                 <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
             <StackPanel Grid.Row="1" Visibility="{Binding HasSize, Converter={StaticResource VisibilityConverter}}">
-                <TextBlock Text="Size:" Margin="0,2" />
+                <TextBlock Text="{x:Static properties:RibbonResources.Home_Size}" Margin="0,2" />
                 <fluent:Spinner BorderThickness="1" BorderBrush="Gray" Template="{DynamicResource SpinnerTemplate}"
                                 Value="{Binding UniformSize}" Minimum="1" />
             </StackPanel>

@@ -1,12 +1,7 @@
 ﻿
 using System;
-using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using NextCanvas.ViewModels.Content;
 using NextCanvas.Views;
 
@@ -21,7 +16,6 @@ namespace NextCanvas
         public App()
         {
             LogManager.AddLogItem("Constructor app started :)", $"NextCanvas {Assembly.GetExecutingAssembly().GetName().Version}");
-            // TODO: Add localization.
             WebBrowserElementViewModel.SetHighestIEMode();
             // Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             AppDomain.CurrentDomain.UnhandledException += RestInPeperonies;

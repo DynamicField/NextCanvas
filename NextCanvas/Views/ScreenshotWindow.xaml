@@ -4,6 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:NextCanvas" xmlns:local1="clr-namespace:NextCanvas.Views"
+    xmlns:properties="clr-namespace:NextCanvas.Properties"
     x:Class="NextCanvas.Views.ScreenshotWindow"
     Background="Transparent" KeyDown="ScreenshotWindow_OnKeyDown" ResizeMode="NoResize"
     ContentRendered="ScreenshotWindow_OnContentRendered" Topmost="False"
@@ -29,8 +30,8 @@
         </Canvas>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" ZIndex="3"
                     x:Name="ScreenshotOptions" Cursor="Arrow" ForceCursor="True">
-            <Button Content="Cancel screenshot" Padding="25,5" Margin="5" Click="CancelClick" />
-            <Button Content="Capture whole screen" Padding="25,5" Margin="5" Click="CaptureWholeScreenClick" />
+            <Button Content="{x:Static properties:ScreenshotResources.CancelScreenshot}" Padding="25,5" Margin="5" Click="CancelClick" />
+            <Button Content="{x:Static properties:ScreenshotResources.CaptureWholeScreen}" Padding="25,5" Margin="5" Click="CaptureWholeScreenClick" />
         </StackPanel>
     </Grid>
 </local:InteractionWindow>

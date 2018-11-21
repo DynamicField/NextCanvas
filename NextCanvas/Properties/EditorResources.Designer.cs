@@ -122,5 +122,23 @@ namespace NextCanvas.Properties {
                 return ResourceManager.GetString("ModifyObject_FallbackEditorText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Name:.
+        /// </summary>
+        public static string ToolEditor_Name {
+            get {
+                return ResourceManager.GetString("ToolEditor_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à URL:.
+        /// </summary>
+        public static string WebBrowserEditor_Url {
+            get {
+                return ResourceManager.GetString("WebBrowserEditor_Url", resourceCulture);
+            }
+        }
     }
 }
