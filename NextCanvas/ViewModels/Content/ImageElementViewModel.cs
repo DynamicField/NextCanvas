@@ -2,6 +2,7 @@
 
 using System.Windows.Media.Imaging;
 using NextCanvas.Models.Content;
+using NextCanvas.Properties;
 using NextCanvas.Utilities.Content;
 
 #endregion
@@ -81,6 +82,6 @@ namespace NextCanvas.ViewModels.Content
             CreateBitmapImage();
         }
 
-        public string Name => "Image";
+        public string Name => DefaultObjectNamesResources.Image;
     }
 }

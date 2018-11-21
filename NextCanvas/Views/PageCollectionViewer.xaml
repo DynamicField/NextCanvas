@@ -6,9 +6,11 @@
         xmlns:vm="clr-namespace:NextCanvas.ViewModels"
         xmlns:convert="clr-namespace:NextCanvas.Converters"
         xmlns:controls="clr-namespace:NextCanvas.Controls"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Name="Window" WindowStyle="ToolWindow"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:properties="clr-namespace:NextCanvas.Properties"
+        x:Name="Window" WindowStyle="ToolWindow"
         mc:Ignorable="d" d:DataContext="{x:Static vm:PageCollectionViewerViewModel.SampleViewModel}"
-        Title="Page manager" Height="450" Width="800">
+        Title="{x:Static properties:PageManagerResources.PageManager}" Height="450" Width="800">
     <Window.Resources>
         <convert:WidthToScaleMultiConverter x:Key="ScaleMultiConverter" />
         <convert:AlternationIndexConverter x:Key="IndexConverter" />
@@ -85,7 +87,7 @@
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Button Content="Delete selected pages" Padding="5,0" Command="{Binding DeletePagesCommand}"
+                <Button Content="{x:Static properties:PageManagerResources.DeleteSelectedPages}" Padding="5,0" Command="{Binding DeletePagesCommand}"
                         CommandParameter="{Binding SelectedItems, ElementName=ListBox}" x:Name="DeleteButton" />
             </Grid>
         </Border>

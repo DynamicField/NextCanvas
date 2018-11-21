@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:NextCanvas.Controls.Editor"
              xmlns:vm="clr-namespace:NextCanvas.ViewModels.Content"
-             xmlns:fluent="urn:fluent-ribbon" x:Name="UserControl"
+             xmlns:fluent="urn:fluent-ribbon"
+             xmlns:properties="clr-namespace:NextCanvas.Properties"
+             x:Name="UserControl"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ContentElementViewModel}"
              d:DesignHeight="381.064" d:DesignWidth="200.638">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
     </UserControl.Resources>
-    
     <UniformGrid Margin="1" Columns="2" VerticalAlignment="Top">
         <UniformGrid.Style>
             <Style TargetType="UniformGrid">
@@ -42,16 +43,16 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
         </UniformGrid.Resources>
-        <TextBlock Text="X:" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}"/>
+        <TextBlock Text="{x:Static properties:EditorResources.ContentElementEditor_X}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}"/>
         <!-- ReSharper disable Xaml.MissingGridIndex -->
         <fluent:Spinner Value="{Binding Left}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}"/>
-        <TextBlock Text="Y:" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}"/>
+        <TextBlock Text="{x:Static properties:EditorResources.ContentElementEditor_Y}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}"/>
         <fluent:Spinner Value="{Binding Top}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}" />
-        <TextBlock Text="Width:" />
+        <TextBlock Text="{x:Static properties:RibbonResources.Page_Width}" />
         <fluent:Spinner Value="{Binding Width}" Interval="25" Increment="10" />
-        <TextBlock Text="Height:" />
+        <TextBlock Text="{x:Static properties:RibbonResources.Page_Height}" />
         <fluent:Spinner Value="{Binding Height}" Interval="25" Increment="10" />
-        <TextBlock Text="Layer:" />
+        <TextBlock Text="{x:Static properties:EditorResources.ContentElementEditor_Layer}" />
         <fluent:Spinner Value="{Binding ZIndex}" Interval="780" />
     </UniformGrid>
 </UserControl>

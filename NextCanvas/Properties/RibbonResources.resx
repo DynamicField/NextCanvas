@@ -117,4 +117,109 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Home_BasicTools" xml:space="preserve">
+    <value>Basic tools</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Home_Colors" xml:space="preserve">
+    <value>Colors</value>
+  </data>
+  <data name="Home_Pages" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="Home_Selection" xml:space="preserve">
+    <value>Selection</value>
+  </data>
+  <data name="Home_ToolShape" xml:space="preserve">
+    <value>Tool shape</value>
+  </data>
+  <data name="Home_Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Home_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Home_Cut" xml:space="preserve">
+    <value>Cut</value>
+  </data>
+  <data name="Home_Paste" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="Home_SelectAll" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="Home_CreateTool" xml:space="preserve">
+    <value>Create tool</value>
+  </data>
+  <data name="Home_NewPage" xml:space="preserve">
+    <value>New page</value>
+  </data>
+  <data name="Home_DeletePage" xml:space="preserve">
+    <value>Delete page</value>
+  </data>
+  <data name="Home_GoLeft" xml:space="preserve">
+    <value>Previous page</value>
+  </data>
+  <data name="Home_GoRight" xml:space="preserve">
+    <value>Next page</value>
+  </data>
+  <data name="Insert_TextBox" xml:space="preserve">
+    <value>Text box</value>
+  </data>
+  <data name="Insert_Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="Insert_Screenshot" xml:space="preserve">
+    <value>Screenshot</value>
+  </data>
+  <data name="Insert_WebBrowser" xml:space="preserve">
+    <value>Web browser</value>
+  </data>
+  <data name="Insert" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="Insert_Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="Insert_Images" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="Insert_Web" xml:space="preserve">
+    <value>Web</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="Page_Dimensions" xml:space="preserve">
+    <value>Dimensions</value>
+  </data>
+  <data name="Page_Width" xml:space="preserve">
+    <value>Width:</value>
+  </data>
+  <data name="Page_Height" xml:space="preserve">
+    <value>Height:</value>
+  </data>
+  <data name="Home_Size" xml:space="preserve">
+    <value>Size:</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="File_New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="File_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="File_SaveAs" xml:space="preserve">
+    <value>Save as...</value>
+  </data>
+  <data name="File_Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="File_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
 </root>

@@ -2,13 +2,14 @@
 
 using Microsoft.Win32;
 using NextCanvas.Models.Content;
+using NextCanvas.Properties;
 using NextCanvas.Utilities;
 
 #endregion
 
 namespace NextCanvas.ViewModels.Content
 {
-    public class WebBrowserElementViewModel : ContentElementViewModel
+    public class WebBrowserElementViewModel : ContentElementViewModel, INamedObject
     {
         public WebBrowserElementViewModel(WebBrowserElement model = null) : base(model)
         {
@@ -47,5 +48,7 @@ namespace NextCanvas.ViewModels.Content
         {
             return new WebBrowserElement { Width = 800, Height = 600 };
         }
+
+        public string Name => DefaultObjectNamesResources.WebBrowser;
     }
 }

@@ -2,6 +2,7 @@
 
 using System.Diagnostics;
 using System.Windows;
+using NextCanvas.Properties;
 
 #endregion
 
@@ -31,7 +32,7 @@ namespace NextCanvas.Views
         {
             Process.Start("https://github.com/jeuxjeux20/NextCanvas/issues");
             Clipboard.SetText(Info.Text);
-            MessageBox.Show("Error data has been succesfully copied to your clipboard.", "Error details copied",
+            MessageBox.Show(ErrorResources.Exception_ClipboardCopySuccessfulContent, ErrorResources.Exception_ClipboardCopySuccessfulTitle,
                 MessageBoxButton.OK, MessageBoxImage.Information);
             Close();
         }

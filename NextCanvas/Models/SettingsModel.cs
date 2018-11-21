@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Ionic.Zlib;
 using Newtonsoft.Json;
+using NextCanvas.Properties;
 
 #endregion
 
@@ -22,8 +23,8 @@ namespace NextCanvas.Models
             {
                 new Tool
                 {
-                    Name = "Medium Brush",
-                    Group = Groups["Brushes"],
+                    Name = DefaultObjectNamesResources.Tools_MediumBrush,
+                    Group = Groups[DefaultObjectNamesResources.ToolGroups_Brushes],
                     LargeIcon = new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Brush.png"),
                     DrawingAttributes = new DrawingAttributes
                     {
@@ -34,8 +35,8 @@ namespace NextCanvas.Models
                 },
                 new Tool
                 {
-                    Name = "Big Eraser",
-                    Group = Groups["Erasers"],
+                    Name = DefaultObjectNamesResources.Tools_BigEraser,
+                    Group = Groups[DefaultObjectNamesResources.ToolGroups_Erasers],
                     LargeIcon = new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Eraser.png"),
                     Mode = InkCanvasEditingMode.EraseByPoint,
                     DrawingAttributes = new DrawingAttributes
@@ -47,8 +48,8 @@ namespace NextCanvas.Models
                 },
                 new Tool
                 {
-                    Name = "Big Brush",
-                    Group = Groups["Brushes"],
+                    Name = DefaultObjectNamesResources.Tools_BigBrush,
+                    Group = Groups[DefaultObjectNamesResources.ToolGroups_Brushes],
                     LargeIcon = new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Brush.png"),
                     DrawingAttributes = new DrawingAttributes
                     {
@@ -59,8 +60,8 @@ namespace NextCanvas.Models
                 },
                 new Tool
                 {
-                    Name = "Thin Brush",
-                    Group = Groups["Brushes"],
+                    Name = DefaultObjectNamesResources.Tools_ThinBrush,
+                    Group = Groups[DefaultObjectNamesResources.ToolGroups_Brushes],
                     LargeIcon = new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Brush.png"),
                     DrawingAttributes = new DrawingAttributes
                     {
@@ -72,8 +73,8 @@ namespace NextCanvas.Models
                 },
                 new Tool
                 {
-                    Name = "Highlighter",
-                    Group = Groups["Highlighters"],
+                    Name = DefaultObjectNamesResources.Tools_Highlighter,
+                    Group = Groups[DefaultObjectNamesResources.ToolGroups_Highlighters],
                     LargeIcon = new Uri(
                         "pack://application:,,,/NextCanvas;component/Images/Ribbon/Shared/Highlighter_24.png"),
                     DrawingAttributes = new DrawingAttributes
@@ -86,8 +87,8 @@ namespace NextCanvas.Models
                 },
                 new SquareTool
                 {
-                    Name = "Rectangle",
-                    Group = Groups["Shapes"],
+                    Name = DefaultObjectNamesResources.Tools_Rectangle,
+                    Group = Groups[DefaultObjectNamesResources.ToolGroups_Shapes],
                     LargeIcon = new Uri(
                         "pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Rectangle.png"),
                     DrawingAttributes = new DrawingAttributes
@@ -100,8 +101,8 @@ namespace NextCanvas.Models
                 },
                 new Tool
                 {
-                    Name = "Small Eraser",
-                    Group = Groups["Erasers"],
+                    Name = DefaultObjectNamesResources.Tools_SmallEraser,
+                    Group = Groups[DefaultObjectNamesResources.ToolGroups_Erasers],
                     LargeIcon = new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Eraser.png"),
                     Mode = InkCanvasEditingMode.EraseByPoint,
                     DrawingAttributes = new DrawingAttributes
@@ -113,8 +114,8 @@ namespace NextCanvas.Models
                 },
                 new Tool
                 {
-                    Name = "Medium Eraser",
-                    Group = Groups["Erasers"],
+                    Name = DefaultObjectNamesResources.Tools_MediumEraser,
+                    Group = Groups[DefaultObjectNamesResources.ToolGroups_Erasers],
                     LargeIcon = new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Eraser.png"),
                     Mode = InkCanvasEditingMode.EraseByPoint,
                     DrawingAttributes = new DrawingAttributes
@@ -127,8 +128,8 @@ namespace NextCanvas.Models
 
                 new Tool
                 {
-                    Name = "Huge Eraser",
-                    Group = Groups["Erasers"],
+                    Name = DefaultObjectNamesResources.Tools_HugeEraser,
+                    Group = Groups[DefaultObjectNamesResources.ToolGroups_Erasers],
                     LargeIcon = new Uri("pack://application:,,,/NextCanvas;component/Images/Ribbon/Home/Eraser.png"),
                     Mode = InkCanvasEditingMode.EraseByPoint,
                     DrawingAttributes = new DrawingAttributes
@@ -160,30 +161,25 @@ namespace NextCanvas.Models
         {
             new ToolGroup
             {
-                Name = "Brushes",
+                Name = DefaultObjectNamesResources.ToolGroups_Brushes,
                 Color = Colors.Black
             },
             new ToolGroup
             {
-                Name = "Highlighters",
+                Name = DefaultObjectNamesResources.ToolGroups_Highlighters,
                 Color = Color.FromRgb(255, 222, 5)
             },
             new ToolGroup
             {
-                Name = "Erasers",
+                Name = DefaultObjectNamesResources.ToolGroups_Erasers,
                 Color = Colors.Black,
                 HasGotColor = false
             },
             new ToolGroup
             {
-                Name = "Shapes",
+                Name = DefaultObjectNamesResources.ToolGroups_Shapes,
                 Color = Colors.Black
             },
-            new ToolGroup
-            {
-                Name = "Other",
-                Color = Colors.Black
-            }
         };
 
     }

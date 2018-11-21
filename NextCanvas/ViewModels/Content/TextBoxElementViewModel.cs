@@ -1,6 +1,7 @@
 ﻿#region
 
 using NextCanvas.Models.Content;
+using NextCanvas.Properties;
 
 #endregion
 
@@ -33,6 +34,6 @@ namespace NextCanvas.ViewModels.Content
             return new TextBoxElement();
         }
 
-        public string Name => "Text block";
+        public string Name => DefaultObjectNamesResources.TextBox;
     }
 }

@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using NextCanvas.Interactivity.Dialogs;
+using NextCanvas.Properties;
 
 #endregion
 
@@ -308,7 +309,7 @@ namespace NextCanvas.ViewModels
             var browserInstance =
                 new WebBrowserElementViewModel(SettingsManager.Settings.GetDefaultValue<WebBrowserElement>());
             editor.ObjectToModify = browserInstance;
-            editor.HeaderText = "Creating a web browser...";
+            editor.HeaderStart = EditorResources.ModifyObject_CreateHeader;
             editor.IsObjectCreation = true;
             editor.ActionComplete += (sender, args) => { ProcessItem(browserInstance); };
             editor.ShowInteraction();
@@ -354,8 +355,8 @@ namespace NextCanvas.ViewModels
             {
                 if (ErrorProvider == null) throw;
                 var error = ErrorProvider.CreateInteraction();
-                error.Content = "Sorry, we weren't able to save your file: " + e.Message;
-                error.Title = "Oops :(";
+                error.Content = string.Format(ErrorResources.PassBy_Content, e.Message);
+                error.Title = ErrorResources.Error;
                 error.ShowInteraction();
             }
             finally
@@ -393,12 +394,9 @@ namespace NextCanvas.ViewModels
             {
                 if (ErrorProvider == null) throw;
                 var error = ErrorProvider.CreateInteraction();
-                error.Content = "Sorry, we weren't able to open your file: " + e.Message;
-                error.Title = "Oops :(";
+                error.Content = string.Format(ErrorResources.PassBy_Content, e.Message);
+                error.Title = ErrorResources.Error;
                 error.ShowInteraction();
-#if DEBUG
-                throw;
-#endif
             }
             finally
             {
@@ -441,8 +439,8 @@ namespace NextCanvas.ViewModels
             if (!CurrentDocument.CanDeletePage) return;
             if (!(interaction is IInteractionProvider<IUserRequestInteraction> userRequest)) return;
             var interact = userRequest.CreateInteraction();
-            interact.Title = "Confirmation";
-            interact.Content = "Are you sure you want to delete this page?";
+            interact.Title = DialogResources.DeletePageTitle;
+            interact.Content = DialogResources.DeletePageContent;
             interact.ActionComplete += (sender, args) =>
             {
                 if (!args.IsAccept) return;

@@ -4,6 +4,7 @@ using System;
 using System.Text;
 using System.Windows;
 using NextCanvas.Interactivity;
+using NextCanvas.Properties;
 
 #endregion
 
@@ -75,8 +76,7 @@ namespace NextCanvas.Views.Editor
                 set { objectToModify = value; OnPropertyChanged(nameof(ObjectToModify)); SetHeader(); }
             }
             private string headerText;
-            private string _headerStart = "Editing";
-
+            private string _headerStart = EditorResources.ModifyObject_DefaultHeaderStart;
             public string HeaderText
             {
                 get => headerText;
@@ -107,7 +107,7 @@ namespace NextCanvas.Views.Editor
                 }
                 else
                 {
-                    HeaderText = $"{HeaderStart} object...";
+                    HeaderText = string.Format(EditorResources.ModifyObject_DefaultHeaderText, HeaderStart);
                 }
             }
         }

@@ -6,6 +6,7 @@ using System.Windows;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Dialogs;
 using NextCanvas.Models;
+using NextCanvas.Properties;
 
 #endregion
 
@@ -34,8 +35,8 @@ namespace NextCanvas.ViewModels
             if (!CanDeletePages(param)) return;
             var list = ((IList)param).Cast<PageViewModel>().ToList();
             var dialog =  DialogProvider.CreateInteraction();
-            dialog.Content = "Are you really, really, seriously sure you want to delete these pages?";
-            dialog.Title = "Deletion";
+            dialog.Content = DialogResources.PageCollectionViewer_DeleteDialogContent;
+            dialog.Title = DialogResources.PageCollectionViewer_DeleteDialogTitle;
             dialog.ActionComplete += (sender, args) =>
             {
                 if (args.ChosenButtonText != "Yes") return;

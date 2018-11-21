@@ -9,9 +9,10 @@
         xmlns:converters="clr-namespace:NextCanvas.Converters"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:fluent="urn:fluent-ribbon"
+        xmlns:properties="clr-namespace:NextCanvas.Properties"
         x:Name="Window"
         mc:Ignorable="d" Background="White" WindowStartupLocation="CenterOwner"
-        Title="Settings" Height="530" Width="812">
+        Title="{x:Static properties:RibbonResources.File_Settings}" Height="530" Width="812">
     <Window.Resources>
         <converters:DivideByConverter x:Key="DivideByConverter"/>
     </Window.Resources>
@@ -32,9 +33,7 @@
                 </LinearGradientBrush>
             </Border.Background>
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold"
-                       Foreground="#FF3A3A3A">
-                Settings
-            </TextBlock>
+                       Foreground="#FF3A3A3A" Text="{x:Static properties:RibbonResources.File_Settings}"/> 
         </Border>
         <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="LightGray">
             <Border.Resources>
@@ -69,7 +68,7 @@
                         </Setter>
                     </Style>
                 </TabControl.Resources>
-                <TabItem Header="General">
+                <TabItem Header="{x:Static properties:SettingsResources.General}">
                     <Grid Margin="5,5,25,5">
                         <Grid.Resources>
                             <Style TargetType="TextBlock" x:Key="LeftPanelTextStyle">
@@ -88,23 +87,17 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Text="File compression:" Margin="5,0"
+                        <TextBlock HorizontalAlignment="Right" Text="{x:Static properties:SettingsResources.FileCompression}" Margin="5,0"
                                    Style="{StaticResource LeftPanelTextStyle}">
                             <TextBlock.ToolTip>
-                                <TextBlock TextWrapping="Wrap">
-                                    This parameter sets the file compression when a file is saved.
-                                    <LineBreak />
-                                    With the highest compression, the file size is smaller, but takes more time to save.
-                                    <LineBreak />
-                                    With the lowest compression, the file size is bigger, but takes less time to save.
-                                </TextBlock>
+                                <TextBlock TextWrapping="Wrap" Text="{x:Static properties:SettingsResources.FileCompression_ToolTip}"/>
                             </TextBlock.ToolTip>
                         </TextBlock>
                         <StackPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="3">
                             <Slider Width="150" Minimum="0" Maximum="9" Value="{Binding Settings.FileCompressionLevel}"
                                     TickPlacement="BottomRight" HorizontalAlignment="Left" />
                         </StackPanel>
-                        <TextBlock Style="{StaticResource LeftPanelTextStyle}" Text="Tools: " Grid.Row="1"/>
+                        <TextBlock Style="{StaticResource LeftPanelTextStyle}" Text="{x:Static properties:SettingsResources.Tools}" Grid.Row="1"/>
                         <StackPanel Grid.Column="1" Grid.Row="1" Margin="5">
                             <StackPanel.Resources>
                                 <system:Double x:Key="Max">2.2</system:Double>
@@ -129,7 +122,7 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                             <StackPanel Orientation="Horizontal" Margin="0,5">
-                                <TextBlock Text="Max items shown: " FontSize="13" VerticalAlignment="Center"/>
+                                <TextBlock Text="{x:Static properties:SettingsResources.MaxToolsShown}" FontSize="13" VerticalAlignment="Center" Margin="0,0,4,0"/>
                                 <fluent:Spinner Template="{StaticResource SpinnerTemplate}" VerticalContentAlignment="Center" BorderThickness="1" BorderBrush="Gray" MinWidth="60"
                                                 Format="g" Value="{Binding Settings.MaxToolsDisplayed}" Minimum="4" Maximum="15"/>
                             </StackPanel>
@@ -137,11 +130,11 @@
                         
                     </Grid>
                 </TabItem>
-                <TabItem Header="Other" />
+                <TabItem Header="{x:Static properties:SettingsResources.Other}" />
             </TabControl>
         </Border>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
-            <Button Content="OK" Padding="15,3" MinWidth="65" Click="CloseClick" />
+            <Button Content="{x:Static properties:DialogResources.Ok}" Padding="15,3" MinWidth="65" Click="CloseClick" />
         </StackPanel>
     </Grid>
 </Window>

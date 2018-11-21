@@ -23,7 +23,7 @@ namespace NextCanvas
             LogManager.AddLogItem("Constructor app started :)", $"NextCanvas {Assembly.GetExecutingAssembly().GetName().Version}");
             // TODO: Add localization.
             WebBrowserElementViewModel.SetHighestIEMode();
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+            // Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             AppDomain.CurrentDomain.UnhandledException += RestInPeperonies;
             Exit += (sender, args) => { SettingsManager.SaveSettings(); };
         }
