@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -42,6 +43,7 @@ namespace NextCanvas
             {
                 window.Close();
             }
+            GC.Collect();
             foreach (var dataContext in dataContexts)
             {
                 try
@@ -60,7 +62,7 @@ namespace NextCanvas
             LogManager.AddCustomLogItem("OnStartup started.", "Initialisation");
             base.OnStartup(e);
         }
-        public static CultureInfo[] SupportedCultures => new CultureInfo[]
+        public static IEnumerable<CultureInfo> SupportedCultures => new[]
         {
             CultureInfo.GetCultureInfo("en-US"),
             CultureInfo.GetCultureInfo("fr-FR"), 

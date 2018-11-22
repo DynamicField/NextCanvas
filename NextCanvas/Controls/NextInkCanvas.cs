@@ -62,19 +62,16 @@ namespace NextCanvas.Controls
                     {
                         return;
                     }
-
-                    if (e.NewValue == null)
-                    {
-                        return;
-                    }
-
                     var casted = (NextInkCanvas)sender;
                     if (e.OldValue is INotifyCollectionChanged old)
                     {
                         old.CollectionChanged -= casted.ItemsSourceItemChanged;
                     }
-
                     casted.Children.Clear();
+                    if (e.NewValue == null)
+                    {
+                        return;
+                    }
                     if (e.NewValue is INotifyCollectionChanged newish)
                     {
                         newish.CollectionChanged += casted.ItemsSourceItemChanged;
@@ -217,6 +214,12 @@ namespace NextCanvas.Controls
                 new CommandBinding(ApplicationCommands.Paste, CommandExecuted, CanExecuteCommand));
             CommandManager.RegisterClassCommandBinding(typeof(NextInkCanvas),
                 new CommandBinding(ApplicationCommands.SelectAll, CommandExecuted, CanExecuteCommand));
+            Unloaded += NextInkCanvas_Unloaded;
+        }
+
+        private void NextInkCanvas_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ItemsSource = null;
         }
 
         public SelectionWrapper SelectionHelper { get; }

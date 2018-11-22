@@ -31,14 +31,18 @@ namespace NextCanvas.Views
             ModifyProvider = new DelegateInteractionProvider<IModifyObjectInteraction>(() => new ModifyObjectWindow(this));
             InitializeComponent();
             PropertyChangedObject.RegisterWindow(this);
-            DataContext = new MainWindowViewModel
-            {
-                ElementCreationContext = CreationContext,
-                ErrorProvider = ErrorProvider,
-                ModifyProvider = ModifyProvider
-            };
+            DataContextChanged += OnDataContextChanged;
+            DataContext = new MainWindowViewModel();
             pageViewerFactory = new UniqueWindowFactory<PageCollectionViewer>(() => new PageCollectionViewer((MainWindowViewModel)DataContext), this);
             Canvas.DefaultDrawingAttributes.FitToCurve = true;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var d = (MainWindowViewModel) DataContext;
+            d.ElementCreationContext = CreationContext;
+            d.ErrorProvider = ErrorProvider;
+            d.ModifyProvider = ModifyProvider;
         }
 
         // Creation context for commands. Nice. Nice. Nice. Nice. Nice. Nice.

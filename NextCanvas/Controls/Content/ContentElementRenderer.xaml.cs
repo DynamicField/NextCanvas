@@ -18,9 +18,15 @@ namespace NextCanvas.Controls.Content
             InitializeComponent();
         }
 
-        public void FocusChild()
+        public bool FocusChild()
         {
-            ((UIElement) VisualTreeHelper.GetChild(ElementContentPresenter, 0)).Focus();
+            var canFocus = VisualTreeHelper.GetChildrenCount(ElementContentPresenter) > 0;
+            if (canFocus)
+            {
+                ((UIElement) VisualTreeHelper.GetChild(ElementContentPresenter, 0)).Focus();
+            }
+
+            return canFocus;
         }
         public void Initialize(object v)
         {
