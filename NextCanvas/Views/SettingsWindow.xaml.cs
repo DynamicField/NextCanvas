@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 #endregion
 
@@ -20,6 +21,8 @@ namespace NextCanvas.Views
 
         private void CloseClick(object sender, RoutedEventArgs e)
         {
+            Cursor = Cursors.Wait;
+            SettingsManager.SaveSettings();
             Close();
         }
     }

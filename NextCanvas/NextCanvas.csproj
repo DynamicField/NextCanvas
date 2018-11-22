@@ -143,6 +143,11 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\SquareTool.cs" />
     <Compile Include="ObservableModelCollection.cs" />
+    <Compile Include="Properties\CommonResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommonResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\DefaultObjectNamesResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -368,6 +373,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\CommonResources.fr-FR.resx" />
+    <EmbeddedResource Include="Properties\CommonResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CommonResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\DefaultObjectNamesResources.fr-FR.resx" />
     <EmbeddedResource Include="Properties\DefaultObjectNamesResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

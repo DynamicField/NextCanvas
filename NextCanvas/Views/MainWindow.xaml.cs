@@ -168,12 +168,12 @@ namespace NextCanvas.Views
             if (dialog.ShowDialog() ?? false)
             {
                 vm.OpenImagePath = dialog.FileName;
+                GoHome();
             }
             else
             {
                 vm.OpenImagePath = null;
             }
-            GoHome();
         }
 
         private void SettingsClick(object sender, RoutedEventArgs e)

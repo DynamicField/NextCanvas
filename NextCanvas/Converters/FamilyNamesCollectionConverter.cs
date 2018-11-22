@@ -23,7 +23,12 @@ namespace NextCanvas.Converters
             }
 #endif
             if (value is null || !(value is FontFamily family)) return "";
-            var name = family.FamilyNames[XmlLanguage.GetLanguage(CultureInfo.CurrentUICulture.Name)];
+            var name = string.Empty;
+            var xmlLanguage = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.Name);
+            if (family.FamilyNames.Any(kv => kv.Key.Equals(xmlLanguage)))
+            {
+                name = family.FamilyNames[xmlLanguage];
+            }
             return string.IsNullOrEmpty(name) ? family.ToString() : name;
         }
 

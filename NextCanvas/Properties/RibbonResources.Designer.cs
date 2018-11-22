@@ -178,6 +178,15 @@ namespace NextCanvas.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Delete selection.
+        /// </summary>
+        public static string Home_DeleteSelection {
+            get {
+                return ResourceManager.GetString("Home_DeleteSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Previous page.
         /// </summary>
         public static string Home_GoLeft {
@@ -372,6 +381,15 @@ namespace NextCanvas.Properties {
         public static string Page_Width {
             get {
                 return ResourceManager.GetString("Page_Width", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Edit....
+        /// </summary>
+        public static string ToolGallery_EditItem {
+            get {
+                return ResourceManager.GetString("ToolGallery_EditItem", resourceCulture);
             }
         }
     }

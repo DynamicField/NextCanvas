@@ -222,4 +222,10 @@
   <data name="File_Settings" xml:space="preserve">
     <value>Paramètres</value>
   </data>
+  <data name="Home_DeleteSelection" xml:space="preserve">
+    <value>Supprimer la séléction</value>
+  </data>
+  <data name="ToolGallery_EditItem" xml:space="preserve">
+    <value>Éditer...</value>
+  </data>
 </root>

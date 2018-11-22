@@ -161,7 +161,7 @@
                                        Icon="/NextCanvas;component/Images/Ribbon/Shared/Paste-Small.png"
                                        x:Name="PasteButton" Command="ApplicationCommands.Paste"
                                        CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}" />
-                        <fluent:Button Header="Delete selection" LargeIcon="{StaticResource DeleteSelection}"
+                        <fluent:Button Header="{x:Static properties:RibbonResources.Home_DeleteSelection}" LargeIcon="{StaticResource DeleteSelection}"
                                        SizeDefinition="large"
                                        Command="ApplicationCommands.Delete"
                                        CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"
@@ -197,7 +197,7 @@
                                     <Setter Property="ContextMenu">
                                         <Setter.Value>
                                             <ContextMenu d:DataContext="{d:DesignInstance vm:ToolViewModel}">
-                                                <MenuItem Header="Edit..."
+                                                <MenuItem Header="{x:Static properties:RibbonResources.ToolGallery_EditItem}"
                                                           Command="{Binding ModifyCommand}"
                                                           CommandParameter="{x:Static local1:MainWindow.ModifyProvider}" />
                                                 <!-- x reference is broken for some reason-->
