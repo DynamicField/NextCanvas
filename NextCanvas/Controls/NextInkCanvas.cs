@@ -582,7 +582,7 @@ namespace NextCanvas.Controls
                             image,
                             new TextBlock
                             {
-                                Text = "Edit...",
+                                Text = RibbonResources.ToolGallery_EditItem,
                                 VerticalAlignment = VerticalAlignment.Center,
                                 Margin = new Thickness(3)
                             }
