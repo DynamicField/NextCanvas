@@ -39,7 +39,7 @@ namespace NextCanvas.Views
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var d = (MainWindowViewModel) DataContext;
+            if (!(DataContext is MainWindowViewModel d)) return;
             d.ElementCreationContext = CreationContext;
             d.ErrorProvider = ErrorProvider;
             d.ModifyProvider = ModifyProvider;

@@ -133,7 +133,7 @@
     <value>Y :</value>
   </data>
   <data name="ModifyObject_FallbackEditorText" xml:space="preserve">
-    <value>Oups ! Nous n'avons pas encore crée d'éditeur pour cet élément. Désolé :(</value>
+    <value>Oups ! Nous n'avons pas encore créé d'éditeur pour cet élément. Désolé :(</value>
   </data>
   <data name="ModifyObject_CreateHeader" xml:space="preserve">
     <value>Création d'un</value>
