@@ -19,6 +19,7 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using NextCanvas.Serialization;
 using NextCanvas.Views.Editor;
 
 #endregion
@@ -258,6 +259,15 @@ namespace NextCanvas.Controls
         protected override void OnSelectionChanged(EventArgs e)
         {
             var elements = GetSelectedElements();
+            RemoveAdorners(elements);
+            SelectedItems.Clear();
+            AddAdornersAndAddToSelected(elements);
+            SetZIndexes(elements);
+            base.OnSelectionChanged(e);
+        }
+
+        private void RemoveAdorners(ReadOnlyCollection<UIElement> elements)
+        {
             foreach (var item in SelectedItems)
             {
                 var element = GetElementFromDataContext(this, item);
@@ -271,14 +281,18 @@ namespace NextCanvas.Controls
                     adorner.Remove(appliedAdorner);
                 }
             }
-            SelectedItems.Clear();
+        }
+
+        private void AddAdornersAndAddToSelected(ReadOnlyCollection<UIElement> elements)
+        {
             if (elements.Any())
             {
                 foreach (var element in elements)
                 {
                     shouldAutoSet = false;
                     isSelectionInternal = true;
-                    if (element is FrameworkElement frameworkElement && GetDataContextFromElement(frameworkElement) is ContentElementViewModel item)
+                    if (element is FrameworkElement frameworkElement &&
+                        GetDataContextFromElement(frameworkElement) is ContentElementViewModel item)
                     {
                         SetIsSelected(frameworkElement, true);
                         SelectedItems.Add(item);
@@ -287,8 +301,6 @@ namespace NextCanvas.Controls
                     }
                 }
             }
-            SetZIndexes(elements);
-            base.OnSelectionChanged(e);
         }
 
         private void SetZIndexes(ReadOnlyCollection<UIElement> elements)
@@ -298,18 +310,22 @@ namespace NextCanvas.Controls
                 var element = elements[0];
                 var children = Children.Cast<UIElement>();
                 var uiElements = children as UIElement[] ?? children.ToArray();
-                var highestZIndex = uiElements.Select(el => (int) el.GetValue(Panel.ZIndexProperty))
+                var highestZIndex = uiElements
+                    .Select(el => (int) el.GetValue(Panel.ZIndexProperty))
                     .OrderByDescending(i => i).First();
                 var zIndex = (int) element.GetValue(Panel.ZIndexProperty);
+
                 if (highestZIndex == 0 || zIndex != highestZIndex)
                 {
                     element.SetValue(Panel.ZIndexProperty, highestZIndex + 1);
                 }
+
                 element.Focus();
                 if (element is ContentElementRenderer render)
                 {
                     render.FocusChild();
                 }
+
                 ReorderZIndexes(uiElements);
             }
         }
@@ -468,13 +484,9 @@ namespace NextCanvas.Controls
             }
             // Remove the original stroke and add a custom stroke.
             Strokes.Remove(e.Stroke);
+
             var customStroke = CustomStrokeInvocator(e.Stroke);
-            // Store the type name, UwU
-            var typeName = customStroke.GetType().FullName;
-            if (typeName != null)
-            {
-                customStroke.AddPropertyData(AssemblyInfo.Guid, typeName);
-            }
+            StrokeSerializer.ProcessStroke(customStroke);
 
             Strokes.Add(customStroke);
             // Pass the custom stroke to base class' OnStrokeCollected method.

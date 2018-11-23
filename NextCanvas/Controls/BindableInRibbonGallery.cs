@@ -5,10 +5,6 @@ namespace NextCanvas.Controls
 {
     public class BindableInRibbonGallery : InRibbonGallery
     {
-        public BindableInRibbonGallery()
-        {
-            
-        }
 
         public static readonly DependencyProperty MaxItemsInRowFixProperty = DependencyProperty.Register(
             "MaxItemsInRowFix", typeof(int), typeof(BindableInRibbonGallery), new PropertyMetadata(8, MaxItemsChanged));

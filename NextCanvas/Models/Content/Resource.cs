@@ -22,7 +22,7 @@ namespace NextCanvas.Models.Content
         ///     Creates a resource with that name, and uses the stream to copy it inside the <see cref="Data" />
         /// </summary>
         /// <param name="name">The name, usually something like file.ext</param>
-        /// <param name="data">The deeta. Oh no, my system crashed, i lost my deeta !</param>
+        /// <param name="data">The deeta. Oh no, my system crashed, i lost my deeta!</param>
         public Resource(string name, Stream data)
         {
             Name = name;

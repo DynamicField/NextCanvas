@@ -62,7 +62,6 @@ namespace NextCanvas.Controls
                     };
                     rtfRichTextEditor.SetBinding(WidthProperty, widthBindTwo);
                     rtfRichTextEditor.SetBinding(HeightProperty, heightBindTwo);
-                    this.doNotReact = true;
                 };
                 return window;
             }, this);

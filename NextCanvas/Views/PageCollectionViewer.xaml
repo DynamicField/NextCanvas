@@ -12,7 +12,6 @@
         mc:Ignorable="d" d:DataContext="{x:Static vm:PageCollectionViewerViewModel.SampleViewModel}"
         Title="{x:Static properties:PageManagerResources.PageManager}" Height="450" Width="800">
     <Window.Resources>
-        <convert:WidthToScaleMultiConverter x:Key="ScaleMultiConverter" />
         <convert:AlternationIndexConverter x:Key="IndexConverter" />
     </Window.Resources>
     <Grid>

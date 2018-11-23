@@ -72,6 +72,7 @@ namespace NextCanvas.ViewModels
         }
 
         public static event EventHandler CultureChanged;
+        public bool HasLanguage() => Model.PreferredLanguage is null;
         public CultureInfo PreferredLanguage
         {
             get => Model.PreferredLanguage ?? Thread.CurrentThread.CurrentUICulture;

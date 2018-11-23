@@ -42,11 +42,6 @@ namespace NextCanvas.Controls.Content
 
         private bool givingToBinding;
 
-        public XamlRichTextBox()
-        {
-
-        }
-
         public string XamlText
         {
             get => (string)GetValue(XamlTextProperty);

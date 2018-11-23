@@ -23,7 +23,7 @@ namespace NextCanvas
         {
             LogManager.AddLogItem("Constructor app started :)", $"NextCanvas {Assembly.GetExecutingAssembly().GetName().Version}");
             WebBrowserElementViewModel.SetHighestIEMode();
-            if (SettingsManager.Settings.PreferredLanguage != null)
+            if (SettingsManager.Settings.HasLanguage())
             {
                 Thread.CurrentThread.CurrentUICulture = SettingsManager.Settings.PreferredLanguage;
             }
@@ -37,7 +37,11 @@ namespace NextCanvas
             var windows = Current.Windows.OfType<Window>();
             var windowsArray = windows as Window[] ?? windows.ToArray();
             if (!windowsArray.Any()) return;
-            var dataContexts = windowsArray.Select(w => new Tuple<object, Window>(w.DataContext, w));
+            var dataContexts = windowsArray.Select(w => new
+            {
+                w.DataContext,
+                Window = w
+            });
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             foreach (var window in windowsArray)
             {
@@ -48,8 +52,8 @@ namespace NextCanvas
             {
                 try
                 {
-                    var createWindow = (Window) Activator.CreateInstance(dataContext.Item2.GetType());
-                    createWindow.DataContext = dataContext.Item1;
+                    var createWindow = (Window) Activator.CreateInstance(dataContext.DataContext.GetType());
+                    createWindow.DataContext = dataContext.Window;
                     createWindow.Show();
                 }
                 catch { /* oops whatever */ }
