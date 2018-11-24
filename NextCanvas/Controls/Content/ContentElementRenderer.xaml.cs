@@ -1,5 +1,7 @@
 ﻿#region
 
+using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -29,6 +31,13 @@ namespace NextCanvas.Controls.Content
         public void Initialize(object v)
         {
             DataContext = v;
+        }
+
+        private void WebBrowserUnloaded(object sender, RoutedEventArgs e)
+        {
+            ((WebBrowser) sender).Source = null; // Clear the web browser resources 
+            ((WebBrowser)sender).Dispose();
+            GC.Collect();
         }
     }
 }

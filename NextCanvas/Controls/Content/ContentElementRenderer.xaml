@@ -45,7 +45,8 @@
                         <DataTemplate DataType="{x:Type vm:WebBrowserElementViewModel}" x:Key="NormalTemplate">
                             <Border BorderThickness="4" BorderBrush="LightGray" x:Name="Border">
                                 <WebBrowser local:WebBrowserHelper.Source="{Binding Url}"
-                                            local:WebBrowserHelper.IgnoreErrors="True" />
+                                            local:WebBrowserHelper.IgnoreErrors="True"
+                                            Unloaded="WebBrowserUnloaded" x:Name="WebBrowser"/>
                             </Border>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type vm:WebBrowserElementViewModel}" x:Key="LightweightTemplate">
