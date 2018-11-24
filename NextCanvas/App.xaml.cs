@@ -52,8 +52,8 @@ namespace NextCanvas
             {
                 try
                 {
-                    var createWindow = (Window) Activator.CreateInstance(dataContext.DataContext.GetType());
-                    createWindow.DataContext = dataContext.Window;
+                    var createWindow = (Window) Activator.CreateInstance(dataContext.Window.GetType());
+                    createWindow.DataContext = dataContext.DataContext;
                     createWindow.Show();
                 }
                 catch { /* oops whatever */ }
