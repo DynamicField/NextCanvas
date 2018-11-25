@@ -140,4 +140,10 @@ Avec la plus basse compression, le fichier est plus gros, mais prend moins de te
   <data name="Language" xml:space="preserve">
     <value>Langue :</value>
   </data>
+  <data name="Interface" xml:space="preserve">
+    <value>Interface</value>
+  </data>
+  <data name="IsRibbonOnTop" xml:space="preserve">
+    <value>Ruban en haut :</value>
+  </data>
 </root>

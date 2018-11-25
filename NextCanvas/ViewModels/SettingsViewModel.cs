@@ -1,14 +1,15 @@
 ﻿#region
 
+using Ionic.Zlib;
+using NextCanvas.Models;
+using NextCanvas.Properties;
 using System;
 using System.Collections;
 using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Threading;
 using System.Windows.Media;
-using Ionic.Zlib;
-using NextCanvas.Models;
-using NextCanvas.Properties;
 
 #endregion
 
@@ -33,11 +34,21 @@ namespace NextCanvas.ViewModels
         }
         public int FileCompressionLevel
         {
-            get => (int) Model.FileCompressionLevel;
+            get => (int)Model.FileCompressionLevel;
             set
             {
-                Model.FileCompressionLevel = (CompressionLevel) value;
+                Model.FileCompressionLevel = (CompressionLevel)value;
                 OnPropertyChanged(nameof(FileCompressionLevel));
+            }
+        }
+
+        public bool IsRibbonOnTop
+        {
+            get => Model.IsRibbonOnTop;
+            set
+            {
+                Model.IsRibbonOnTop = value;
+                OnPropertyChanged(nameof(IsRibbonOnTop));
             }
         }
 
@@ -72,35 +83,43 @@ namespace NextCanvas.ViewModels
         }
 
         public static event EventHandler CultureChanged;
-        public bool HasLanguage() => Model.PreferredLanguage is null;
+        public bool HasLanguage()
+        {
+            return !(Model.PreferredLanguage is null);
+        }
+
         public CultureInfo PreferredLanguage
         {
             get => Model.PreferredLanguage ?? Thread.CurrentThread.CurrentUICulture;
             set
             {
-                if (value != null && !Equals(Model.PreferredLanguage, value))
+                if (value == null || Equals(Model.PreferredLanguage, value)) return;
+                ResourceSet previousResourceSet;
+                try
                 {
-                    var previousResourceSet =
-                        DefaultObjectNamesResources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true,
-                            true);
-                    Model.PreferredLanguage = value;
-                    OnPropertyChanged(nameof(PreferredLanguage));
-                    Thread.CurrentThread.CurrentUICulture = value;
-                    var resourceSet = DefaultObjectNamesResources.ResourceManager
-                        .GetResourceSet(CultureInfo.CurrentUICulture, true, true);
-                    foreach (var tool in Tools)
+                    previousResourceSet =
+                        DefaultObjectNamesResources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+                }
+                catch (MissingManifestResourceException)
+                {
+                    previousResourceSet = DefaultObjectNamesResources.ResourceManager.GetResourceSet(CultureInfo.GetCultureInfo("en"), true, true);
+                }
+                Model.PreferredLanguage = value;
+                OnPropertyChanged(nameof(PreferredLanguage));
+                Thread.CurrentThread.CurrentUICulture = value;
+                var resourceSet = DefaultObjectNamesResources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+                foreach (var tool in Tools)
+                {
+                    foreach (DictionaryEntry entry in previousResourceSet)
                     {
-                        foreach (DictionaryEntry entry in previousResourceSet)
+                        if (entry.Value.ToString() == tool.Name)
                         {
-                            if (entry.Value.ToString() == tool.Name)
-                            {
-                                tool.Name = resourceSet.GetString(entry.Key.ToString());
-                                break;
-                            }
+                            tool.Name = resourceSet.GetString(entry.Key.ToString());
+                            break;
                         }
                     }
-                    CultureChanged?.Invoke(this, EventArgs.Empty);
                 }
+                CultureChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public ObservableViewModelCollection<ToolViewModel, Tool> Tools { get; set; }

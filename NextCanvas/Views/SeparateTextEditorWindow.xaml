@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fluent="urn:fluent-ribbon"
         xmlns:local="clr-namespace:NextCanvas.Views"
+        xmlns:properties="clr-namespace:NextCanvas.Properties"
         mc:Ignorable="d"
-        Title="SeparateTextEditorWindow" Height="450" Width="800">
+        Title="{x:Static properties:DefaultObjectNamesResources.TextBox}" Height="450" Width="800">
     <Grid x:Name="Grid">
         
     </Grid>

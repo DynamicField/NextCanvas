@@ -39,10 +39,42 @@
     </fluent:RibbonWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*">
+                <RowDefinition.Style>
+                    <Style TargetType="RowDefinition">
+                        <Setter Property="Height" Value="1*"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsRibbonOnTop, Source={x:Static nextCanvas:SettingsManager.Settings}}" Value="True">
+                                <Setter Property="Height" Value="Auto"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+            <RowDefinition Height="Auto" >
+                <RowDefinition.Style>
+                    <Style TargetType="RowDefinition">
+                        <Setter Property="Height" Value="Auto"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsRibbonOnTop, Source={x:Static nextCanvas:SettingsManager.Settings}}" Value="True">
+                                <Setter Property="Height" Value="1*"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
         </Grid.RowDefinitions>
         <Border Background="Gray">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Grid.Row" Value="0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsRibbonOnTop, Source={x:Static nextCanvas:SettingsManager.Settings}}" Value="True">
+                            <Setter Property="Grid.Row" Value="1"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" x:Name="ScrollParent">
                 <Grid>
                     <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Center"
@@ -83,92 +115,101 @@
                 </Grid>
             </ScrollViewer>
         </Border>
-        <Grid Grid.Row="1">
-            <fluent:Ribbon Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon">
-                <fluent:Ribbon.Menu>
-                    <fluent:ApplicationMenu Header="{x:Static properties:RibbonResources.File}">
-                        <fluent:ApplicationMenu.Resources>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="CornerRadius" Value="0" />
-                            </Style>
-                        </fluent:ApplicationMenu.Resources>
-                        <fluent:ApplicationMenu.RightPaneContent>
-                            <TextBlock>
+        <fluent:Ribbon Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon" Grid.Row="1">
+            <fluent:Ribbon.Style>
+                <Style TargetType="fluent:Ribbon">
+                    <Setter Property="Grid.Row" Value="1"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsRibbonOnTop, Source={x:Static nextCanvas:SettingsManager.Settings}}" Value="True">
+                            <Setter Property="Grid.Row" Value="0"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </fluent:Ribbon.Style>
+            <fluent:Ribbon.Menu>
+                <fluent:ApplicationMenu Header="{x:Static properties:RibbonResources.File}">
+                    <fluent:ApplicationMenu.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="0" />
+                        </Style>
+                    </fluent:ApplicationMenu.Resources>
+                    <fluent:ApplicationMenu.RightPaneContent>
+                        <TextBlock>
                                 <Run Text="Thing" />
-                            </TextBlock>
-                        </fluent:ApplicationMenu.RightPaneContent>
-                        <fluent:MenuItem Header="{x:Static properties:RibbonResources.File_New}" Click="NewButton_Click"
+                        </TextBlock>
+                    </fluent:ApplicationMenu.RightPaneContent>
+                    <fluent:MenuItem Header="{x:Static properties:RibbonResources.File_New}" Click="NewButton_Click"
                                          Icon="/NextCanvas;component/Images/Menu/NewFile.png" />
-                        <fluent:MenuItem Header="{x:Static properties:RibbonResources.File_Open}" Icon="/NextCanvas;component/Images/Menu/Open.png" x:Name="Open"
+                    <fluent:MenuItem Header="{x:Static properties:RibbonResources.File_Open}" Icon="/NextCanvas;component/Images/Menu/Open.png" x:Name="Open"
                                          Click="Open_Click"
                                          Command="{Binding OpenCommand}"
                                          CommandParameter="{Binding ProgressProvider, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}" />
-                        <fluent:MenuItem Header="{x:Static properties:RibbonResources.File_Save}" Icon="/NextCanvas;component/Images/Menu/Save.png" x:Name="Save"
+                    <fluent:MenuItem Header="{x:Static properties:RibbonResources.File_Save}" Icon="/NextCanvas;component/Images/Menu/Save.png" x:Name="Save"
                                          Click="Save_Click"
                                          Command="{Binding SaveCommand}"
                                          CommandParameter="{Binding ProgressProvider, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}" />
-                        <!-- Events are executed before commands so ye -->
-                        <fluent:MenuItem Header="{x:Static properties:RibbonResources.File_SaveAs}" Icon="/NextCanvas;component/Images/Menu/SaveAs.png"
+                    <!-- Events are executed before commands so ye -->
+                    <fluent:MenuItem Header="{x:Static properties:RibbonResources.File_SaveAs}" Icon="/NextCanvas;component/Images/Menu/SaveAs.png"
                                          IsSplited="True" Click="Save_Click"
                                          Command="{Binding SaveCommand}"
                                          CommandParameter="{Binding ProgressProvider, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}">
-                            <!-- TODO: Create SaveAs command but this will require some undo redo oof things and since for some reason inexperienced people always use save as (why tho?)... -->
-                            <fluent:MenuItem Header="Save as that format..." Description="something something"
+                        <!-- TODO: Create SaveAs command but this will require some undo redo oof things and since for some reason inexperienced people always use save as (why tho?)... -->
+                        <fluent:MenuItem Header="Save as that format..." Description="something something"
                                              Icon="/NextCanvas;component/Images/Menu/Save.png" />
-                        </fluent:MenuItem>
-                        <Separator />
-                        <fluent:MenuItem Header="{x:Static properties:RibbonResources.File_Settings}" Click="SettingsClick"
+                    </fluent:MenuItem>
+                    <Separator />
+                    <fluent:MenuItem Header="{x:Static properties:RibbonResources.File_Settings}" Click="SettingsClick"
                                          Icon="/NextCanvas;component/Images/Menu/Settings.png" />
-                    </fluent:ApplicationMenu>
-                </fluent:Ribbon.Menu>
-                <fluent:Ribbon.ToolBarItems>
-                    <fluent:Button Size="Small" Icon="/NextCanvas;component/Images/Ribbon/Shared/NewPage-Small.png"
+                </fluent:ApplicationMenu>
+            </fluent:Ribbon.Menu>
+            <fluent:Ribbon.ToolBarItems>
+                <fluent:Button Size="Small" Icon="/NextCanvas;component/Images/Ribbon/Shared/NewPage-Small.png"
                                    Command="{Binding NewPageCommand}" />
-                    <fluent:Button Size="Small" Icon="/NextCanvas;component/Images/Ribbon/Shared/Arrow.png"
+                <fluent:Button Size="Small" Icon="/NextCanvas;component/Images/Ribbon/Shared/Arrow.png"
                                    Command="{Binding PreviousPageCommand}" />
-                    <TextBlock Text="{Binding PageDisplayText}" VerticalAlignment="Center" />
-                    <fluent:Button Size="Small" Icon="/NextCanvas;component/Images/Ribbon/Shared/Arrow.png"
+                <TextBlock Text="{Binding PageDisplayText}" VerticalAlignment="Center" />
+                <fluent:Button Size="Small" Icon="/NextCanvas;component/Images/Ribbon/Shared/Arrow.png"
                                    Command="{Binding NextPageCommand}" RenderTransformOrigin="0.5,0.5">
-                        <fluent:Button.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform ScaleY="1" ScaleX="-1" />
-                            </TransformGroup>
-                        </fluent:Button.RenderTransform>
-                    </fluent:Button>
-                </fluent:Ribbon.ToolBarItems>
-                <fluent:RibbonTabItem Header="{x:Static properties:RibbonResources.Home}" IsSelected="True" ReduceOrder="Pages, Selection">
-                    <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Home_Selection}" x:Name="Selection">
-                        <fluent:SplitButton Header="{x:Static properties:RibbonResources.Home_Select}"
+                    <fluent:Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1" ScaleX="-1" />
+                        </TransformGroup>
+                    </fluent:Button.RenderTransform>
+                </fluent:Button>
+            </fluent:Ribbon.ToolBarItems>
+            <fluent:RibbonTabItem Header="{x:Static properties:RibbonResources.Home}" IsSelected="True" ReduceOrder="Pages, Selection">
+                <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Home_Selection}" x:Name="Selection">
+                    <fluent:SplitButton Header="{x:Static properties:RibbonResources.Home_Select}"
                                             LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Select.png"
                                             SizeDefinition="Large" x:Name="SelectButton" IsCheckable="True"
                                             IsChecked="{Binding IsSelectTool, Mode=TwoWay}">
-                            <fluent:MenuItem Header="{x:Static properties:RibbonResources.Home_SelectAll}"
+                        <fluent:MenuItem Header="{x:Static properties:RibbonResources.Home_SelectAll}"
                                              Icon="/NextCanvas;component/Images/Ribbon/Home/SelectAll.png"
                                              SizeDefinition="large, large, small"
                                              Command="ApplicationCommands.SelectAll"
                                              CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}" IsEnabled="True" />
-                        </fluent:SplitButton>
+                    </fluent:SplitButton>
 
-                        <fluent:Button SizeDefinition="middle, small, small" Header="{x:Static properties:RibbonResources.Home_Copy}"
+                    <fluent:Button SizeDefinition="middle, small, small" Header="{x:Static properties:RibbonResources.Home_Copy}"
                                        Icon="/NextCanvas;component/Images/Ribbon/Shared/Copy-Small.png"
                                        x:Name="CopyButton" Command="ApplicationCommands.Copy"
                                        CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}" />
-                        <fluent:Button SizeDefinition="middle, small, small" Header="{x:Static properties:RibbonResources.Home_Cut}"
+                    <fluent:Button SizeDefinition="middle, small, small" Header="{x:Static properties:RibbonResources.Home_Cut}"
                                        Icon="/NextCanvas;component/Images/Ribbon/Shared/Cut-Small.png"
                                        x:Name="CutButton" Command="ApplicationCommands.Cut"
                                        CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}" />
-                        <fluent:Button SizeDefinition="middle, small, small" Header="{x:Static properties:RibbonResources.Home_Paste}"
+                    <fluent:Button SizeDefinition="middle, small, small" Header="{x:Static properties:RibbonResources.Home_Paste}"
                                        Icon="/NextCanvas;component/Images/Ribbon/Shared/Paste-Small.png"
                                        x:Name="PasteButton" Command="ApplicationCommands.Paste"
                                        CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}" />
-                        <fluent:Button Header="{x:Static properties:RibbonResources.Home_DeleteSelection}" LargeIcon="{StaticResource DeleteSelection}"
+                    <fluent:Button Header="{x:Static properties:RibbonResources.Home_DeleteSelection}" LargeIcon="{StaticResource DeleteSelection}"
                                        SizeDefinition="large"
                                        Command="ApplicationCommands.Delete"
                                        CommandTarget="{Binding ElementName=Canvas, Mode=OneWay}"
                                        Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Self}}" />
-                    </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Home_BasicTools}" x:Name="Tools" Icon="{Binding SelectedTool.LargeIcon}" >
-                        <local:BindableInRibbonGallery
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Home_BasicTools}" x:Name="Tools" Icon="{Binding SelectedTool.LargeIcon}" >
+                    <local:BindableInRibbonGallery
                             ItemsSource="{Binding Tools, TargetNullValue={x:Static DependencyProperty.UnsetValue}}"
                             Selectable="True"
                             SelectedItem="{Binding SelectedTool}"
@@ -176,198 +217,197 @@
                             Orientation="Horizontal" 
                             ItemWidth="54" GroupBy="GroupName" ItemHeight="58"
                             SizeDefinition="Large, Large, Large" MaxItemsInRowFix="{Binding MaxToolsDisplayed, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=TwoWay}">
-                            <fluent:InRibbonGallery.ItemContainerStyle>
-                                <Style TargetType="fluent:GalleryItem">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding HasDemo}" Value="True">
-                                            <Setter Property="ToolTip">
-                                                <Setter.Value>
-                                                    <ToolTip d:DataContext="{d:DesignInstance vm:ToolViewModel}">
-                                                        <InkCanvas VerticalAlignment="Top"
+                        <fluent:InRibbonGallery.ItemContainerStyle>
+                            <Style TargetType="fluent:GalleryItem">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HasDemo}" Value="True">
+                                        <Setter Property="ToolTip">
+                                            <Setter.Value>
+                                                <ToolTip d:DataContext="{d:DesignInstance vm:ToolViewModel}">
+                                                    <InkCanvas VerticalAlignment="Top"
                                                                    Height="{Binding DemoHeight}" EditingMode="None"
                                                                    Strokes="{Binding DemoStroke}"
                                                                    Width="{Binding DemoWidth}" />
-                                                    </ToolTip>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="ToolTipService.InitialShowDelay" Value="100" />
-                                            <Setter Property="ToolTipService.BetweenShowDelay" Value="75" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                    <Setter Property="ContextMenu">
-                                        <Setter.Value>
-                                            <ContextMenu d:DataContext="{d:DesignInstance vm:ToolViewModel}">
-                                                <MenuItem Header="{x:Static properties:RibbonResources.ToolGallery_EditItem}"
+                                                </ToolTip>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="ToolTipService.InitialShowDelay" Value="100" />
+                                        <Setter Property="ToolTipService.BetweenShowDelay" Value="75" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+                                        <ContextMenu d:DataContext="{d:DesignInstance vm:ToolViewModel}">
+                                            <MenuItem Header="{x:Static properties:RibbonResources.ToolGallery_EditItem}"
                                                           Command="{Binding ModifyCommand}"
                                                           CommandParameter="{x:Static local1:MainWindow.ModifyProvider}" />
-                                                <!-- x reference is broken for some reason-->
-                                            </ContextMenu>
-                                        </Setter.Value>
-                                    </Setter>
+                                            <!-- x reference is broken for some reason-->
+                                        </ContextMenu>
+                                    </Setter.Value>
+                                </Setter>
 
-                                </Style>
-                            </fluent:InRibbonGallery.ItemContainerStyle>
-                            <fluent:InRibbonGallery.ItemTemplate>
-                                <DataTemplate DataType="{x:Type vm:ToolViewModel}">
-                                    <StackPanel>
-                                        <Image Source="{Binding LargeIcon}" Width="24" />
-                                        <Viewbox StretchDirection="DownOnly">
-                                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" TextAlignment="Center"
+                            </Style>
+                        </fluent:InRibbonGallery.ItemContainerStyle>
+                        <fluent:InRibbonGallery.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:ToolViewModel}">
+                                <StackPanel>
+                                    <Image Source="{Binding LargeIcon}" Width="24" />
+                                    <Viewbox StretchDirection="DownOnly">
+                                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap" TextAlignment="Center"
                                                        FontSize="10" Width="50" />
-                                        </Viewbox>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </fluent:InRibbonGallery.ItemTemplate>
-                        </local:BindableInRibbonGallery>
-                        <fluent:Button LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Add.png"
+                                    </Viewbox>
+                                </StackPanel>
+                            </DataTemplate>
+                        </fluent:InRibbonGallery.ItemTemplate>
+                    </local:BindableInRibbonGallery>
+                    <fluent:Button LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Add.png"
                                        Header="{x:Static properties:RibbonResources.Home_CreateTool}" SizeDefinition="large" />
-                    </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Home_ToolShape}">
-                        <fluent:RibbonGroupBox.Visibility>
-                            <MultiBinding Converter="{StaticResource OrConverter}">
-                                <Binding Path="SelectedTool.HasSize" />
-                                <Binding Path="SelectedTool.HasDemo" />
-                            </MultiBinding>
-                        </fluent:RibbonGroupBox.Visibility>
-                        <StackPanel>
-                            <StackPanel
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Home_ToolShape}">
+                    <fluent:RibbonGroupBox.Visibility>
+                        <MultiBinding Converter="{StaticResource OrConverter}">
+                            <Binding Path="SelectedTool.HasSize" />
+                            <Binding Path="SelectedTool.HasDemo" />
+                        </MultiBinding>
+                    </fluent:RibbonGroupBox.Visibility>
+                    <StackPanel>
+                        <StackPanel
                                 Visibility="{Binding SelectedTool.HasSize, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                                 Orientation="{Binding SelectedTool.HasDemo, Converter={StaticResource BoolToOrientationConverter}, Mode=OneWay}"
                                 Margin="0,1,0,0">
-                                <TextBlock HorizontalAlignment="Center" Margin="1" FontSize="12"
+                            <TextBlock HorizontalAlignment="Center" Margin="1" FontSize="12"
                                            VerticalAlignment="Center" Text="{x:Static properties:RibbonResources.Home_Size}"/>
-                                <fluent:Spinner FontSize="12" Minimum="1" Maximum="18000" x:Name="Size" MinWidth="70"
+                            <fluent:Spinner FontSize="12" Minimum="1" Maximum="18000" x:Name="Size" MinWidth="70"
                                                 Value="{Binding SelectedTool.UniformSize}"
                                                 Increment="1" Interval="18">
-                                    <fluent:Spinner.Style>
-                                        <Style TargetType="{x:Type fluent:Spinner}">
-                                            <Setter Property="Margin" Value="-8,0,0,0" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding SelectedTool.HasDemo}" Value="True">
-                                                    <Setter Property="Margin" Value="-5,0,0,0" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </fluent:Spinner.Style>
-                                </fluent:Spinner>
-                            </StackPanel>
-                            <Border BorderBrush="Gray" BorderThickness="1" Margin="1,1,0,0"
+                                <fluent:Spinner.Style>
+                                    <Style TargetType="{x:Type fluent:Spinner}">
+                                        <Setter Property="Margin" Value="-8,0,0,0" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedTool.HasDemo}" Value="True">
+                                                <Setter Property="Margin" Value="-5,0,0,0" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </fluent:Spinner.Style>
+                            </fluent:Spinner>
+                        </StackPanel>
+                        <Border BorderBrush="Gray" BorderThickness="1" Margin="1,1,0,0"
                                     Visibility="{Binding SelectedTool.HasDemo, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Viewbox StretchDirection="Both" Width="90" Height="44">
-                                    <InkCanvas VerticalAlignment="Top" Height="{Binding SelectedTool.DemoHeight}"
+                            <Viewbox StretchDirection="Both" Width="90" Height="44">
+                                <InkCanvas VerticalAlignment="Top" Height="{Binding SelectedTool.DemoHeight}"
                                                EditingMode="None" x:Name="Preview"
                                                Strokes="{Binding SelectedTool.DemoStroke}"
                                                Width="{Binding SelectedTool.DemoWidth}" Background="White" />
-                                </Viewbox>
-                            </Border>
-                        </StackPanel>
-                    </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Home_Colors}"
+                            </Viewbox>
+                        </Border>
+                    </StackPanel>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Home_Colors}"
                                            Visibility="{Binding SelectedTool.Group.HasGotColor, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <fluent:ColorGallery SelectedColorChanged="ColorGallery_SelectedColorChanged"
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <fluent:ColorGallery SelectedColorChanged="ColorGallery_SelectedColorChanged"
                                                  x:Name="ColorGallery"
                                                  SelectedColor="{Binding SelectedTool.DrawingAttributes.Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsMoreColorsButtonVisible="True" IsNoColorButtonVisible="False"
                                                  Mode="ThemeColors" ChipHeight="14" ChipWidth="14"
                                                  IsAutomaticColorButtonVisible="False">
-                                <fluent:ColorGallery.Resources>
-                                    <Style TargetType="{x:Type fluent:GroupSeparatorMenuItem}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </Style>
-                                </fluent:ColorGallery.Resources>
-                            </fluent:ColorGallery>
-                        </ScrollViewer>
-                    </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox Header="Pages" x:Name="Pages"
+                            <fluent:ColorGallery.Resources>
+                                <Style TargetType="{x:Type fluent:GroupSeparatorMenuItem}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Style>
+                            </fluent:ColorGallery.Resources>
+                        </fluent:ColorGallery>
+                    </ScrollViewer>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="Pages" x:Name="Pages"
                                            Icon="/NextCanvas;component/Images/Ribbon/Home/NewPage-Big.png"
                                            IsLauncherVisible="True" LauncherClick="PagesTabLauncherClick">
-                        <fluent:Button Header="{x:Static properties:RibbonResources.Home_GoLeft}"
+                    <fluent:Button Header="{x:Static properties:RibbonResources.Home_GoLeft}"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Shared/Arrow.png"
                                        Command="{Binding PreviousPageCommand}" SizeDefinition="Large, Large, Large" />
-                        <fluent:Button Header="{x:Static properties:RibbonResources.Home_NewPage}"
+                    <fluent:Button Header="{x:Static properties:RibbonResources.Home_NewPage}"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Home/NewPage-Big.png"
                                        Command="{Binding NewPageCommand}" SizeDefinition="Large, Large, Large" />
-                        <fluent:Button Header="{x:Static properties:RibbonResources.Home_DeletePage}"
+                    <fluent:Button Header="{x:Static properties:RibbonResources.Home_DeletePage}"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Home/Delete.png"
                                        Command="{Binding DeletePageCommand}" SizeDefinition="Large, Large, Large" 
                                        CommandParameter="{Binding DialogProvider, ElementName=Window}"/>
-                        <fluent:Button Header="{x:Static properties:RibbonResources.Home_GoRight}" Command="{Binding NextPageCommand}"
+                    <fluent:Button Header="{x:Static properties:RibbonResources.Home_GoRight}" Command="{Binding NextPageCommand}"
                                        SizeDefinition="Large, Large, Large">
-                            <fluent:Button.LargeIcon>
-                                <Image Source="/NextCanvas;component/Images/Ribbon/Shared/Arrow.png"
+                        <fluent:Button.LargeIcon>
+                            <Image Source="/NextCanvas;component/Images/Ribbon/Shared/Arrow.png"
                                        RenderTransformOrigin="0.5,0.5">
-                                    <Image.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform ScaleY="1" ScaleX="-1" />
-                                            <SkewTransform AngleY="0" AngleX="0" />
-                                            <RotateTransform Angle="0" />
-                                            <TranslateTransform />
-                                        </TransformGroup>
-                                    </Image.RenderTransform>
-                                </Image>
-                            </fluent:Button.LargeIcon>
-                        </fluent:Button>
-                    </fluent:RibbonGroupBox>
-                </fluent:RibbonTabItem>
-                <fluent:RibbonTabItem Header="{x:Static properties:RibbonResources.Insert}">
-                    <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Insert_Text}">
-                        <fluent:Button Header="{x:Static properties:RibbonResources.Insert_TextBox}"
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleY="1" ScaleX="-1" />
+                                        <SkewTransform AngleY="0" AngleX="0" />
+                                        <RotateTransform Angle="0" />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </fluent:Button.LargeIcon>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
+            </fluent:RibbonTabItem>
+            <fluent:RibbonTabItem Header="{x:Static properties:RibbonResources.Insert}">
+                <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Insert_Text}">
+                    <fluent:Button Header="{x:Static properties:RibbonResources.Insert_TextBox}"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/NewTextBox.png"
                                        Click="InsertClick_GoToHome"
                                        Command="{Binding CreateTextBoxCommand}" />
-                    </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox Header="Images">
-                        <fluent:Button Header="{x:Static properties:RibbonResources.Insert_Image}"
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="Images">
+                    <fluent:Button Header="{x:Static properties:RibbonResources.Insert_Image}"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/NewImage.png"
                                        Click="NewImage_Click"
                                        Command="{Binding CreateImageCommand}" />
-                        <fluent:Button Header="{x:Static properties:RibbonResources.Insert_Screenshot}"
+                    <fluent:Button Header="{x:Static properties:RibbonResources.Insert_Screenshot}"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/Screenshot.png"
                                        Click="InsertClick_GoToHome"
                                        Command="{Binding CreateScreenshotCommand}"
                                        CommandParameter="{Binding ScreenshotProvider, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:MainWindow}}}" />
-                    </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Insert_Web}">
-                        <fluent:Button Header="{x:Static properties:RibbonResources.Insert_WebBrowser}"
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Insert_Web}">
+                    <fluent:Button Header="{x:Static properties:RibbonResources.Insert_WebBrowser}"
                                        LargeIcon="/NextCanvas;component/Images/Ribbon/Insert/WebBrowser.png"
                                        Command="{Binding CreateWebBrowserCommand}"
                                        CommandParameter="{x:Static local1:MainWindow.ModifyProvider}" />
-                    </fluent:RibbonGroupBox>
-                </fluent:RibbonTabItem>
-                <fluent:RibbonTabItem Header="{x:Static properties:RibbonResources.Page}">
-                    <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Page_Dimensions}">
-                        <Grid Margin="4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <TextBlock HorizontalAlignment="Right" Text="{x:Static properties:RibbonResources.Page_Width}"/>
-                            <fluent:Spinner Grid.Row="0" Grid.Column="1" Increment="25"
+                </fluent:RibbonGroupBox>
+            </fluent:RibbonTabItem>
+            <fluent:RibbonTabItem Header="{x:Static properties:RibbonResources.Page}">
+                <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Page_Dimensions}">
+                    <Grid Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock HorizontalAlignment="Right" Text="{x:Static properties:RibbonResources.Page_Width}"/>
+                        <fluent:Spinner Grid.Row="0" Grid.Column="1" Increment="25"
                                             Value="{Binding CurrentDocument.SelectedPage.Width}" Margin="0,0,0,5" />
-                            <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Text="{x:Static properties:RibbonResources.Page_Height}"/>
-                            <fluent:Spinner Grid.Row="1" Grid.Column="1" Increment="25"
+                        <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Text="{x:Static properties:RibbonResources.Page_Height}"/>
+                        <fluent:Spinner Grid.Row="1" Grid.Column="1" Increment="25"
                                             Value="{Binding CurrentDocument.SelectedPage.Height}" />
-                        </Grid>
-                    </fluent:RibbonGroupBox>
-                </fluent:RibbonTabItem>
-                <fluent:RibbonTabItem Header="Debug">
-                    <fluent:RibbonGroupBox Header="Stylus">
-                        <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/NextCanvas.png"
+                    </Grid>
+                </fluent:RibbonGroupBox>
+            </fluent:RibbonTabItem>
+            <fluent:RibbonTabItem Header="Debug">
+                <fluent:RibbonGroupBox Header="Stylus">
+                    <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/NextCanvas.png"
                                        Header="Stylus Debug" Click="DebugStylusXD_Click" x:Name="DebugStylusXd" />
-                        <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/Menu/Open.png"
+                    <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/Menu/Open.png"
                                        Header="Multi Canvas" Click="Button_Click" />
-                    </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox Header="Bugs">
-                        <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/Ribbon/Debug/Log.png"
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="Bugs">
+                    <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/Ribbon/Debug/Log.png"
                                        Header="Log viewer" Click="LogViewerClick"></fluent:Button>
-                    </fluent:RibbonGroupBox>
-                </fluent:RibbonTabItem>
-            </fluent:Ribbon>
-        </Grid>
+                </fluent:RibbonGroupBox>
+            </fluent:RibbonTabItem>
+        </fluent:Ribbon>
     </Grid>
 </fluent:RibbonWindow>

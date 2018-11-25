@@ -120,4 +120,10 @@ With the lowest compression, the file size is bigger, but takes less time to sav
   <data name="Language" xml:space="preserve">
     <value>Language:</value>
   </data>
+  <data name="Interface" xml:space="preserve">
+    <value>Interface</value>
+  </data>
+  <data name="IsRibbonOnTop" xml:space="preserve">
+    <value>Ribbon on top:</value>
+  </data>
 </root>

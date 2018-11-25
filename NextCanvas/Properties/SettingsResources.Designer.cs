@@ -90,6 +90,24 @@ namespace NextCanvas.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Interface.
+        /// </summary>
+        public static string Interface {
+            get {
+                return ResourceManager.GetString("Interface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ribbon on top:.
+        /// </summary>
+        public static string IsRibbonOnTop {
+            get {
+                return ResourceManager.GetString("IsRibbonOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Language:.
         /// </summary>
         public static string Language {

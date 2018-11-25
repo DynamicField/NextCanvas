@@ -63,7 +63,7 @@ namespace NextCanvas
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            LogManager.AddCustomLogItem("OnStartup started.", "Initialisation");
+            LogManager.AddLogItem("OnStartup started.", "Initialisation");
             base.OnStartup(e);
         }
         public static IEnumerable<CultureInfo> SupportedCultures => new[]

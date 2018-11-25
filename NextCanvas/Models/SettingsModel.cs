@@ -148,6 +148,7 @@ namespace NextCanvas.Models
             Tools = tools;
         }
         public CompressionLevel FileCompressionLevel { get; set; } = CompressionLevel.Level3;
+        public bool IsRibbonOnTop { get; set; } = false;
         public List<object> DefaultValues { get; set; } = new List<object>();
         public double DefaultFontSize { get; set; } = 16;
 
