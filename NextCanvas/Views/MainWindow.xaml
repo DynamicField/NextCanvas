@@ -39,7 +39,7 @@
     </fluent:RibbonWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*">
+            <RowDefinition>
                 <RowDefinition.Style>
                     <Style TargetType="RowDefinition">
                         <Setter Property="Height" Value="1*"/>
@@ -51,7 +51,7 @@
                     </Style>
                 </RowDefinition.Style>
             </RowDefinition>
-            <RowDefinition Height="Auto" >
+            <RowDefinition>
                 <RowDefinition.Style>
                     <Style TargetType="RowDefinition">
                         <Setter Property="Height" Value="Auto"/>
@@ -64,9 +64,9 @@
                 </RowDefinition.Style>
             </RowDefinition>
         </Grid.RowDefinitions>
-        <Border Background="Gray">
-            <Border.Style>
-                <Style TargetType="Border">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" x:Name="ScrollParent">
+            <ScrollViewer.Style>
+                <Style TargetType="ScrollViewer">
                     <Setter Property="Grid.Row" Value="0"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=IsRibbonOnTop, Source={x:Static nextCanvas:SettingsManager.Settings}}" Value="True">
@@ -74,18 +74,17 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Border.Style>
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" x:Name="ScrollParent">
-                <Grid>
-                    <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Center"
+            </ScrollViewer.Style>
+            <Grid>
+                <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Center"
                             HorizontalAlignment="Right"
                             Padding="5,2" Margin="2" Opacity="0.2" Style="{StaticResource OpacityOnHover}"
                             Command="{Binding ExtendPageCommand}" CommandParameter="Right"
                             Click="ResizeCanvasEvent" />
-                    <Canvas Width="{Binding CurrentDocument.SelectedPage.Width}"
+                <Canvas Width="{Binding CurrentDocument.SelectedPage.Width}"
                             Height="{Binding CurrentDocument.SelectedPage.Height}">
-                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-                        <local:NextInkCanvas
+                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                    <local:NextInkCanvas
                             x:Name="Canvas"
                             EditingMode="{Binding SelectedTool.Mode, Mode=TwoWay, UpdateSourceTrigger=Explicit, TargetNullValue={StaticResource NullMode}, FallbackValue={StaticResource NullMode}}"
                             EraserShapeDP="{Binding SelectedTool.EraserShape}"
@@ -100,21 +99,20 @@
                             ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"
                             SelectedItems="{Binding SelectedElements}"
                             CustomStrokeInvocator="{Binding SelectedTool, Converter={StaticResource ToolToConstructorConverter}}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanging">
-                                    <ei:CallMethodAction TargetObject="{Binding}" MethodName="SelectionHandler" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </local:NextInkCanvas>
-                    </Canvas>
-                    <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Bottom"
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanging">
+                                <ei:CallMethodAction TargetObject="{Binding}" MethodName="SelectionHandler" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </local:NextInkCanvas>
+                </Canvas>
+                <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Bottom"
                             HorizontalAlignment="Center"
                             Padding="5,2" Margin="2" Opacity="0.6" Style="{StaticResource OpacityOnHover}"
                             Command="{Binding ExtendPageCommand}" CommandParameter="Bottom"
                             Click="ResizeCanvasEvent" />
-                </Grid>
-            </ScrollViewer>
-        </Border>
+            </Grid>
+        </ScrollViewer>
         <fluent:Ribbon Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon" Grid.Row="1">
             <fluent:Ribbon.Style>
                 <Style TargetType="fluent:Ribbon">
