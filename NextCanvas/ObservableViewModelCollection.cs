@@ -27,7 +27,11 @@ namespace NextCanvas
             if (ModelCollection != null && vmConstructor != null)
                 ExecuteWithSyncDisabled(() =>
                 {
-                    foreach (var item in ModelCollection) Add(vmConstructor(item));
+                    foreach (var item in ModelCollection)
+                    {
+                        var viewModel = vmConstructor(item);
+                        Add(viewModel);
+                    }
                 });
         }
 

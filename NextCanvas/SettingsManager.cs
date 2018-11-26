@@ -29,11 +29,12 @@ namespace NextCanvas
                         JsonConvert.DeserializeObject<SettingsModel>(streamReader.ReadToEnd(), _serializerSettings));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // It's fine we will save it later
                 Settings = new SettingsViewModel();
             }
+            
         }
 
         private static string ApplicationDataPath =>

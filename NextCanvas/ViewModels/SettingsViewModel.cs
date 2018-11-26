@@ -20,8 +20,20 @@ namespace NextCanvas.ViewModels
         public SettingsViewModel(SettingsModel model = null) : base(model)
         {
             DefaultValues = new ObservableModelCollection<object>(Model.DefaultValues);
-            Tools = new ObservableViewModelCollection<ToolViewModel, Tool>(Model.Tools, ToolViewModel.GetViewModel);
             Groups = new ObservableViewModelCollection<ToolGroupViewModel, ToolGroup>(Model.Groups, g => new ToolGroupViewModel(g));
+            Tools = new ObservableViewModelCollection<ToolViewModel, Tool>(Model.Tools, m =>
+            {
+                var viewModel = ToolViewModel.GetViewModel(m);
+                var found = Groups.FirstOrDefault(g => g == viewModel.Group);
+                if (found != null)
+                    viewModel.Group = found;
+                return viewModel;
+            }, v =>
+            {
+                var found = Groups.FirstOrDefault(g => g == v.Group);
+                if (found != null)
+                    v.Group = found;
+            });
         }
         public ObservableModelCollection<object> DefaultValues { get; }
         public T GetDefaultValue<T>() where T : class, new()

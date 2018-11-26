@@ -179,9 +179,9 @@ namespace NextCanvas.ViewModels
             }
         }
         
-        private void Initialize()
+        private void Initialize(ToolGroupViewModel group = null)
         {
-            Group = new ToolGroupViewModel(Model.Group);
+            Group = group ?? new ToolGroupViewModel(Model.Group);
             InitDrawing(DrawingAttributes);
             ModifyCommand = new DelegateCommand(Modify);
         }
@@ -196,13 +196,17 @@ namespace NextCanvas.ViewModels
         private void Group_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ToolGroupViewModel.Name)) OnPropertyChanged(nameof(GroupName));
+            if (e.PropertyName == nameof(ToolGroupViewModel.Color))
+            {
+                DrawingAttributes.Color = Group.Color;
+                OnPropertyChanged(nameof(DrawingAttributes));
+            }
         }
 
         private void InitDrawing(DrawingAttributes value)
         {
             Model.DrawingAttributes.AttributeChanged -= ColorChangeHandler;
             Model.DrawingAttributes = value;
-            // Group.Color = Model.DrawingAttributes.Color;
             Model.DrawingAttributes.AttributeChanged += ColorChangeHandler;
             OnPropertyChanged(nameof(DrawingAttributes));
             OnPropertyChanged(nameof(DemoStroke));
@@ -211,7 +215,7 @@ namespace NextCanvas.ViewModels
         private void ColorChangeHandler(object sender, PropertyDataChangedEventArgs e)
         {
             OnPropertyChanged(nameof(DemoStroke));
-            if (e.NewValue is Color c) group.Color = c;
+            if (e.NewValue is Color c && group.Color != c) group.Color = c;
         }
 
         public static void UpdateCursorIfEraser(ToolViewModel t)
