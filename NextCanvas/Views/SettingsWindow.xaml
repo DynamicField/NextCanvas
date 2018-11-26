@@ -74,6 +74,8 @@
                         <Setter Property="Cursor" Value="Help" />
                         <Setter Property="ToolTipService.InitialShowDelay" Value="375" />
                         <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="Margin" Value="10,0"/>
+                        <Setter Property="VerticalAlignment" Value="Top"></Setter>
                     </Style>
                 </TabControl.Resources>
                 <TabItem Header="{x:Static properties:SettingsResources.General}">
@@ -89,23 +91,23 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock HorizontalAlignment="Right" Text="{x:Static properties:SettingsResources.FileCompression}" Margin="5,0"
+                        <TextBlock HorizontalAlignment="Right" Text="{x:Static properties:SettingsResources.FileCompression}"
                                    Style="{StaticResource LeftPanelTextStyle}">
                             <TextBlock.ToolTip>
                                 <TextBlock TextWrapping="Wrap" Text="{x:Static properties:SettingsResources.FileCompression_ToolTip}"/>
                             </TextBlock.ToolTip>
                         </TextBlock>
-                        <StackPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="3">
+                        <StackPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left">
                             <Slider Width="150" Minimum="0" Maximum="9" Value="{Binding Settings.FileCompressionLevel}"
                                     TickPlacement="BottomRight" HorizontalAlignment="Left" />
                         </StackPanel>
                         <TextBlock Style="{StaticResource LeftPanelTextStyle}" Text="{x:Static properties:SettingsResources.Tools}" Grid.Row="1"/>
-                        <StackPanel Grid.Column="1" Grid.Row="1" Margin="5">
+                        <StackPanel Grid.Column="1" Grid.Row="1">
                             <StackPanel.Resources>
                                 <system:Double x:Key="Max">2.2</system:Double>
                             </StackPanel.Resources>
                             <ListBox ItemsSource="{Binding Settings.Tools}" HorizontalContentAlignment="Stretch" SelectionMode="Single"
-                                     MaxHeight="400" >
+                                     MaxHeight="400" Margin="0,5,0,2">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type viewModels:ToolViewModel}">
                                         <DockPanel Margin="1">
@@ -130,7 +132,7 @@
                             </StackPanel>
                         </StackPanel>
                         <TextBlock Style="{StaticResource LeftPanelTextStyle}" Grid.Row="2" Text="{x:Static properties:SettingsResources.Language}"/>
-                        <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0" ItemsSource="{x:Static vm:App.SupportedCultures}" 
+                        <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{x:Static vm:App.SupportedCultures}" 
                                   SelectedItem="{Binding Settings.PreferredLanguage}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate DataType="globalization:CultureInfo">
