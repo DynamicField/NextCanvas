@@ -65,7 +65,7 @@ namespace NextCanvas.ViewModels
             }
         }
 
-        public ObservableCollection<Color> FavoriteColors => Model.FavouriteColors;
+        public ObservableCollection<Color> FavoriteColors => SettingsManager.Settings.FavoriteColors;
         public ObservableViewModelCollection<ToolViewModel, Tool> Tools => SettingsManager.Settings.Tools;
         public ObservableCollection<ContentElementViewModel> SelectedElements { get; set; } = new ObservableCollection<ContentElementViewModel>();
         public string SavePath { get; set; }

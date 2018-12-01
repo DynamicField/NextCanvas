@@ -115,4 +115,7 @@
   <data name="DeletePageTitle" xml:space="preserve">
     <value>Confirmation</value>
   </data>
+  <data name="ColorChooser_ColorPicker" xml:space="preserve">
+    <value>Color picker</value>
+  </data>
 </root>

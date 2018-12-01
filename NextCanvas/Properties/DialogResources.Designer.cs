@@ -70,6 +70,15 @@ namespace NextCanvas.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Color picker.
+        /// </summary>
+        public static string ColorChooser_ColorPicker {
+            get {
+                return ResourceManager.GetString("ColorChooser_ColorPicker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Do you really want to delete this page?.
         /// </summary>
         public static string DeletePageContent {

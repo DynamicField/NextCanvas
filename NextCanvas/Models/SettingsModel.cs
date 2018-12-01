@@ -2,12 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+using Fluent;
 using Ionic.Zlib;
 using Newtonsoft.Json;
 using NextCanvas.Properties;
@@ -20,6 +22,11 @@ namespace NextCanvas.Models
     {
         public SettingsModel()
         {
+            if (!FavoriteColors.Contains(Colors.Black))
+            {
+                FavoriteColors.Add(Colors.Black);
+                ColorGallery.RecentColors.Add(Colors.Black);
+            }
             Tools = new List<Tool>
             {
                 new Tool
@@ -184,5 +191,6 @@ namespace NextCanvas.Models
             },
         };
 
+        public ObservableCollection<Color> FavoriteColors => ColorGallery.RecentColors;
     }
 }

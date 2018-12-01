@@ -5,11 +5,13 @@ using NextCanvas.Models;
 using NextCanvas.Properties;
 using System;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
 using System.Threading;
 using System.Windows.Media;
+using Fluent;
 
 #endregion
 
@@ -136,5 +138,6 @@ namespace NextCanvas.ViewModels
         }
         public ObservableViewModelCollection<ToolViewModel, Tool> Tools { get; set; }
         public ObservableViewModelCollection<ToolGroupViewModel, ToolGroup> Groups { get; set; }
+        public ObservableCollection<Color> FavoriteColors => Model.FavoriteColors;
     }
 }

@@ -112,6 +112,7 @@
     <Compile Include="Controls\Content\LightweightDataTemplateSelector.cs" />
     <Compile Include="Controls\Content\XamlRichTextBox.cs" />
     <Compile Include="Controls\Content\WebBrowserHelper.cs" />
+    <Compile Include="Controls\CustomColorGallery.cs" />
     <Compile Include="Controls\Editor\ControlElementEditorControl.xaml.cs">
       <DependentUpon>ControlElementEditorControl.xaml</DependentUpon>
     </Compile>
@@ -129,6 +130,7 @@
     <Compile Include="Converters\ToolToConstructorConverter.cs" />
     <Compile Include="INamedObject.cs" />
     <Compile Include="Interactivity\DelegateMultiInteractionProvider.cs" />
+    <Compile Include="Interactivity\Dialogs\IColorRequestInteraction.cs" />
     <Compile Include="Interactivity\Dialogs\IUserRequestInteraction.cs" />
     <Compile Include="Interactivity\Dialogs\MessageBoxRequest.cs" />
     <Compile Include="Interactivity\IContentInteraction.cs" />
@@ -250,6 +252,9 @@
     <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="InteractionWindow.cs" />
+    <Compile Include="Views\ColorChooserWindow.xaml.cs">
+      <DependentUpon>ColorChooserWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Editor\ModifyObjectWindow.xaml.cs">
       <DependentUpon>ModifyObjectWindow.xaml</DependentUpon>
     </Compile>
@@ -298,6 +303,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\XamlRichTextEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ColorChooserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

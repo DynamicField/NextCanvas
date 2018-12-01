@@ -10,6 +10,10 @@ namespace NextCanvas
 {
     public class InteractionWindow : Window, IInteractionBase
     {
+        public InteractionWindow()
+        {
+            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        }
         public virtual void CloseInteraction()
         {
             Dispatcher.Invoke(Close);

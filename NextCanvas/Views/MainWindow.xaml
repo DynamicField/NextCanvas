@@ -315,7 +315,7 @@
                 <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Home_Colors}"
                                        Visibility="{Binding SelectedTool.Group.HasGotColor, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <fluent:ColorGallery SelectedColorChanged="ColorGallery_SelectedColorChanged"
+                        <local:CustomColorGallery SelectedColorChanged="ColorGallery_SelectedColorChanged"
                                                  x:Name="ColorGallery" 
                                                  SelectedColor="{Binding SelectedTool.DrawingAttributes.Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsMoreColorsButtonVisible="True" IsNoColorButtonVisible="False"
@@ -326,7 +326,7 @@
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </Style>
                             </fluent:ColorGallery.Resources>
-                        </fluent:ColorGallery>
+                        </local:CustomColorGallery>
                     </ScrollViewer>
                 </fluent:RibbonGroupBox>
                 <fluent:RibbonGroupBox Header="Pages" x:Name="Pages"

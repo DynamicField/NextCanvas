@@ -120,4 +120,7 @@
   <data name="Edit" xml:space="preserve">
     <value>Éditer</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
 </root>

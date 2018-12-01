@@ -16,6 +16,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
+using Gallery = Fluent.ColorGallery;
+using MenuItem = Fluent.MenuItem;
 
 #endregion
 

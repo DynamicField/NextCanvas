@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace NextCanvas
 {
-    public sealed class ObservableModelCollection<TModel> : ObservableCollection<TModel> where TModel : class, new()
+    public sealed class ObservableModelCollection<TModel> : ObservableCollection<TModel> where TModel : new()
     {
         public ObservableModelCollection()
         {
