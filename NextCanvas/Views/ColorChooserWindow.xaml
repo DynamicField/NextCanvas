@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:NextCanvas.Views"
         xmlns:properties="clr-namespace:NextCanvas.Properties"
         xmlns:nextCanvas="clr-namespace:NextCanvas"
+        xmlns:fluent="urn:fluent-ribbon"
         mc:Ignorable="d" ResizeMode="NoResize" d:DataContext="{d:DesignInstance local:ColorChooserWindow+ColorWindowData, IsDesignTimeCreatable=True}"
-        Title="ColorChooserWindow" Height="450" Width="564.468">
+        Title="ColorChooserWindow" Height="500" Width="564.468">
     <Window.Resources>
         <ControlTemplate x:Key="RoundedSlider" TargetType="{x:Type Slider}">
             <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
@@ -195,11 +196,19 @@
                     </Slider.Background>
                 </Slider>
             </StackPanel>
-            <Rectangle Height="60" Margin="0,20">
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="{Binding ResultColor}"/>
-                </Rectangle.Fill>
-            </Rectangle>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Opacity: "/>
+                <fluent:Spinner Template="{StaticResource SpinnerTemplate}" BorderBrush="Black" BorderThickness="1" VerticalAlignment="Center" Margin="0,1,0,0" Format="P0"
+                                Value="{Binding Opacity}" Minimum="0" Maximum="1" Increment="0.01" Interval="10"/>
+            </StackPanel>
+            <Grid Height="60" Margin="0,20,0,5">
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{Binding ResultColor}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+            <TextBox Text="{Binding ResultTextColor, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" KeyDown="ColorTextKeyDown" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" FontFamily="Consolas" />
         </StackPanel>
         <UniformGrid Columns="2" Grid.Row="2" Height="40" Margin="25,10">
             <Button Margin="15,5" Content="{x:Static properties:DialogResources.Ok}" Click="Ok_Click"/>

@@ -22,11 +22,6 @@ namespace NextCanvas
         private static readonly object isChanging = new object();
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (Contexts.Count == 0) 
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return;
-            }
             lock (isChanging)
             {
                 foreach (var context in Contexts)
