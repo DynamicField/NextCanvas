@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NextCanvas.Interactivity.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,7 +12,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using NextCanvas.Interactivity.Dialogs;
 using Color = System.Windows.Media.Color;
 
 namespace NextCanvas.Views
@@ -39,7 +39,7 @@ namespace NextCanvas.Views
             public double Hue
             {
                 get => _hue;
-                set { _hue = value; OnPropertyChanged();  UpdateColors(); }
+                set { _hue = value; OnPropertyChanged(); UpdateColors(); }
             }
             private double _saturation = 90;
 
@@ -48,7 +48,7 @@ namespace NextCanvas.Views
                 get => _saturation;
                 set { _saturation = value; OnPropertyChanged(); UpdateColors(); }
             }
-            private double _lightness = 95;
+            private double _lightness = 60;
 
             public double Lightness
             {
@@ -59,7 +59,7 @@ namespace NextCanvas.Views
 
             public double Opacity
             {
-                get { return _opacity; }
+                get => _opacity;
                 set { _opacity = value; OnPropertyChanged(); UpdateColors(); }
             }
 
@@ -75,9 +75,9 @@ namespace NextCanvas.Views
                 if (Opacity == 0) Opacity += double.Epsilon;
                 c.A = (byte)Math.Round(Opacity * 255);
                 return c;
-            } 
-            public Color ResultColor => ChangeOpacity(HsvToRgb(_hue * 3.6, _saturation / 100, _lightness / 100));
-            
+            }
+            public Color ResultColor => ChangeOpacity(HslToRgb(_hue / 100, _saturation / 100, _lightness / 100));
+
             public string ResultTextColor
             {
                 get => ResultColor.ToString();
@@ -86,14 +86,10 @@ namespace NextCanvas.Views
                     try
                     {
                         var c = ColorTranslator.FromHtml(value);
-                        _hue = c.GetHue() / 360 * 100;
+                        _hue = c.GetHue() / 3.6;
+                        _lightness = c.GetBrightness() * 100;
                         _saturation = c.GetSaturation() * 100;
-                        _lightness = c.GetBrightness()  * 100;
-                        _opacity = c.A / (float) 255;
-                        if (_lightness == 50)
-                        {
-                            _lightness = 100;
-                        }
+                        _opacity = c.A / (float)255;
                         OnPropertyChanged(nameof(Hue));
                         OnPropertyChanged(nameof(Lightness));
                         OnPropertyChanged(nameof(Saturation));
@@ -107,99 +103,75 @@ namespace NextCanvas.Views
                     }
                 }
             }
-            public Color FullSaturationColor => ChangeOpacity(HsvToRgb(_hue * 3.6, 1, 1));
+            public Color FullSaturationColor => ChangeOpacity(HslToRgb(_hue / 100, 1, _lightness / 100));
 
-            // https://stackoverflow.com/questions/1335426/is-there-a-built-in-c-net-system-api-for-hsv-to-rgb
-            public static Color HsvToRgb(double h, double s, double v)
+
+            // Given H,S,L in range of 0-1
+            // Returns a Color (RGB struct) in range of 0-255
+            public static Color HslToRgb(double h, double sl, double l)
             {
-                var d = h;
-                while (d < 0) { d += 360; };
-                while (d >= 360) { d -= 360; };
+                double v;
                 double r, g, b;
-                if (v <= 0)
-                { r = g = b = 0; }
-                else if (s <= 0)
+
+                r = l;   // default to gray
+                g = l;
+                b = l;
+                v = (l <= 0.5) ? (l * (1.0 + sl)) : (l + sl - l * sl);
+                if (v > 0)
                 {
-                    r = g = b = v;
-                }
-                else
-                {
-                    var hf = d / 60.0;
-                    var i = (int)Math.Floor(hf);
-                    var f = hf - i;
-                    var pv = v * (1 - s);
-                    var qv = v * (1 - s * f);
-                    var tv = v * (1 - s * (1 - f));
-                    switch (i)
+                    double m;
+                    double sv;
+                    int sextant;
+                    double fract, vsf, mid1, mid2;
+
+                    m = l + l - v;
+                    sv = (v - m) / v;
+                    h *= 6.0;
+                    sextant = (int)h;
+                    fract = h - sextant;
+                    vsf = v * sv * fract;
+                    mid1 = m + vsf;
+                    mid2 = v - vsf;
+                    switch (sextant)
                     {
-
-                        // Red is the dominant color
-
                         case 0:
                             r = v;
-                            g = tv;
-                            b = pv;
+                            g = mid1;
+                            b = m;
                             break;
-
-                        // Green is the dominant color
-
                         case 1:
-                            r = qv;
+                            r = mid2;
                             g = v;
-                            b = pv;
+                            b = m;
                             break;
                         case 2:
-                            r = pv;
+                            r = m;
                             g = v;
-                            b = tv;
+                            b = mid1;
                             break;
-
-                        // Blue is the dominant color
-
                         case 3:
-                            r = pv;
-                            g = qv;
+                            r = m;
+                            g = mid2;
                             b = v;
                             break;
                         case 4:
-                            r = tv;
-                            g = pv;
+                            r = mid1;
+                            g = m;
                             b = v;
                             break;
-
-                        // Red is the dominant color
-
                         case 5:
                             r = v;
-                            g = pv;
-                            b = qv;
+                            g = m;
+                            b = mid2;
                             break;
-
-                        // Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
-
                         case 6:
-                            r = v;
-                            g = tv;
-                            b = pv;
-                            break;
-                        case -1:
-                            r = v;
-                            g = pv;
-                            b = qv;
-                            break;
-
-                        // The color is not defined, we should throw an error.
-
-                        default:
-                            //LFATAL("i Value error in Pixel conversion, Value is %d", i);
-                            r = g = b = v; // Just pretend its black/white
-                            break;
+                            return HslToRgb(0.999, sl, l);
                     }
                 }
-                var finalR = Clamp((int)(r * 255.0));
-                var finalG = Clamp((int)(g * 255.0));
-                var finalB = Clamp((int)(b * 255.0));
-                return Color.FromRgb(finalR, finalG, finalB);
+                unchecked
+                {
+                    return Color.FromRgb((byte)(r * 255.0f), (byte)(g * 255.0f), (byte)(b * 255.0f));
+                }
             }
 
             /// <summary>
@@ -210,6 +182,15 @@ namespace NextCanvas.Views
                 if (i < 0) return 0;
                 if (i > 255) return 255;
                 return (byte)i;
+            }
+            public static void ColorToHSV(System.Drawing.Color color, out double hue, out double saturation, out double value)
+            {
+                int max = Math.Max(color.R, Math.Max(color.G, color.B));
+                int min = Math.Min(color.R, Math.Min(color.G, color.B));
+
+                hue = color.GetHue();
+                saturation = (max == 0) ? 0 : 1d - (1d * min / max);
+                value = max / 255d;
             }
         }
 
