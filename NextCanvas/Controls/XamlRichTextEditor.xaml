@@ -36,7 +36,9 @@
         </Grid.RowDefinitions>
         <content:XamlRichTextBox
             XamlText="{Binding XamlText, ElementName=Control, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"    
-            IsUndoEnabled="True" Background="{x:Null}" x:Name="TextBox" SelectionChanged="TextBox_OnSelectionChanged">
+            IsUndoEnabled="True" Background="{x:Null}" x:Name="TextBox" SelectionChanged="TextBox_OnSelectionChanged"
+            FontSize="{Binding Path=DefaultFontSize, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}"
+            FontFamily="{Binding Path=DefaultFontFamily, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}">
             <content:XamlRichTextBox.Resources>
                 <Style TargetType="{x:Type List}">
                     <Setter Property="MarkerOffset" Value="7"/>
