@@ -8,7 +8,7 @@
         xmlns:nextCanvas="clr-namespace:NextCanvas"
         xmlns:fluent="urn:fluent-ribbon"
         mc:Ignorable="d" ResizeMode="NoResize" d:DataContext="{d:DesignInstance local:ColorChooserWindow+ColorWindowData, IsDesignTimeCreatable=True}"
-        Title="ColorChooserWindow" Height="500" Width="564.468">
+        Title="{x:Static properties:DialogResources.ColorChooser_ColorPicker}" Height="500" Width="564.468">
     <Window.Resources>
         <ControlTemplate x:Key="RoundedSlider" TargetType="{x:Type Slider}">
             <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
@@ -159,7 +159,7 @@
                 </Style>
             </StackPanel.Resources>
             <StackPanel>
-                <TextBlock Text="Hue:"/>
+                <TextBlock Text="{x:Static properties:DialogResources.ColorChooserWindow_Hue}"/>
                 <Slider Value="{Binding Hue}">
                     <Slider.Background>
                         <LinearGradientBrush StartPoint="0.0,0.5" EndPoint="1.0, 0.5" >
@@ -175,7 +175,7 @@
                 </Slider>
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="Saturation:"/>
+                <TextBlock Text="{x:Static properties:DialogResources.ColorChooserWindow_Saturation}"/>
                 <Slider Value="{Binding Saturation}">
                     <Slider.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0.0,0">
@@ -186,7 +186,7 @@
                 </Slider>
             </StackPanel>
             <StackPanel>
-                <TextBlock Text="Lightness: "/>
+                <TextBlock Text="{x:Static properties:DialogResources.ColorChooserWindow_Lightness}"/>
                 <Slider Value="{Binding Lightness}">
                     <Slider.Background>
                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
@@ -197,7 +197,7 @@
                 </Slider>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Opacity: "/>
+                <TextBlock Text="{x:Static properties:DialogResources.ColorChooserWindow_Opacity}" Margin="0,5,10,5"/>
                 <fluent:Spinner Template="{StaticResource SpinnerTemplate}" BorderBrush="Black" BorderThickness="1" VerticalAlignment="Center" Margin="0,1,0,0" Format="P0"
                                 Value="{Binding Opacity}" Minimum="0" Maximum="1" Increment="0.01" Interval="10"/>
             </StackPanel>

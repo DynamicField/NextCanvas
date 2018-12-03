@@ -165,7 +165,7 @@ namespace NextCanvas.Views
                             b = mid2;
                             break;
                         case 6:
-                            return HslToRgb(0.999, sl, l);
+                            goto case 0;
                     }
                 }
                 unchecked
@@ -182,15 +182,6 @@ namespace NextCanvas.Views
                 if (i < 0) return 0;
                 if (i > 255) return 255;
                 return (byte)i;
-            }
-            public static void ColorToHSV(System.Drawing.Color color, out double hue, out double saturation, out double value)
-            {
-                int max = Math.Max(color.R, Math.Max(color.G, color.B));
-                int min = Math.Min(color.R, Math.Min(color.G, color.B));
-
-                hue = color.GetHue();
-                saturation = (max == 0) ? 0 : 1d - (1d * min / max);
-                value = max / 255d;
             }
         }
 

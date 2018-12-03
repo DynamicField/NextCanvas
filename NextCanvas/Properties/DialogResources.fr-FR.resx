@@ -135,4 +135,19 @@
   <data name="DeletePageTitle" xml:space="preserve">
     <value>Confirmation</value>
   </data>
+  <data name="ColorChooser_ColorPicker" xml:space="preserve">
+    <value>Sélecteur de couleurs</value>
+  </data>
+  <data name="ColorChooserWindow_Hue" xml:space="preserve">
+    <value>Teinte :</value>
+  </data>
+  <data name="ColorChooserWindow_Saturation" xml:space="preserve">
+    <value>Saturation :</value>
+  </data>
+  <data name="ColorChooserWindow_Lightness" xml:space="preserve">
+    <value>Luminosité :</value>
+  </data>
+  <data name="ColorChooserWindow_Opacity" xml:space="preserve">
+    <value>Opacité :</value>
+  </data>
 </root>

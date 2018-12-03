@@ -79,6 +79,42 @@ namespace NextCanvas.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Hue:.
+        /// </summary>
+        public static string ColorChooserWindow_Hue {
+            get {
+                return ResourceManager.GetString("ColorChooserWindow_Hue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Lightness:.
+        /// </summary>
+        public static string ColorChooserWindow_Lightness {
+            get {
+                return ResourceManager.GetString("ColorChooserWindow_Lightness", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Opacity:.
+        /// </summary>
+        public static string ColorChooserWindow_Opacity {
+            get {
+                return ResourceManager.GetString("ColorChooserWindow_Opacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Saturation:.
+        /// </summary>
+        public static string ColorChooserWindow_Saturation {
+            get {
+                return ResourceManager.GetString("ColorChooserWindow_Saturation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Do you really want to delete this page?.
         /// </summary>
         public static string DeletePageContent {

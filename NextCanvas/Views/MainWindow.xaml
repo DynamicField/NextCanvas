@@ -116,7 +116,7 @@
                             Click="ResizeCanvasEvent" />
             </Grid>
         </ScrollViewer>
-        <fluent:Ribbon Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon" Grid.Row="1" CanCustomizeRibbon="True">
+        <fluent:Ribbon Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon" CanCustomizeRibbon="True">
             <fluent:Ribbon.Style>
                 <Style TargetType="fluent:Ribbon">
                     <Setter Property="Grid.Row" Value="1"/>

@@ -118,4 +118,16 @@
   <data name="ColorChooser_ColorPicker" xml:space="preserve">
     <value>Color picker</value>
   </data>
+  <data name="ColorChooserWindow_Hue" xml:space="preserve">
+    <value>Hue:</value>
+  </data>
+  <data name="ColorChooserWindow_Saturation" xml:space="preserve">
+    <value>Saturation:</value>
+  </data>
+  <data name="ColorChooserWindow_Lightness" xml:space="preserve">
+    <value>Lightness:</value>
+  </data>
+  <data name="ColorChooserWindow_Opacity" xml:space="preserve">
+    <value>Opacity:</value>
+  </data>
 </root>
