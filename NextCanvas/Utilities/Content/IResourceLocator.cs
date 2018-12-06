@@ -1,6 +1,6 @@
 ﻿#region
 
-using NextCanvas.Models.Content;
+using NextCanvas.Content;
 
 #endregion
 

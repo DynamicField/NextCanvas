@@ -1,10 +1,10 @@
 ﻿#region
 
 using System.Windows.Ink;
-using NextCanvas.Models;
-using NextCanvas.Models.Content;
+using NextCanvas;
+using NextCanvas.Content;
 using NextCanvas.Utilities.Content;
-using NextCanvas.ViewModels.Content;
+using NextCanvas.Content.ViewModels;
 
 #endregion
 
@@ -79,11 +79,11 @@ namespace NextCanvas.ViewModels
         {
             if (Locator == null)
                 Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
-                    ContentElementViewModel.GetViewModel); // With a locator.
+                    ContentElementViewModelFinder.GetViewModel); // With a locator.
             else
             {
                 Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
-                    e => ContentElementViewModel.GetViewModel(e, Locator)); // With a locator.
+                    e => ContentElementViewModelFinder.GetViewModel(e, Locator)); // With a locator.
             }
             if (locator != null) SetLocatorForCollection();
         }

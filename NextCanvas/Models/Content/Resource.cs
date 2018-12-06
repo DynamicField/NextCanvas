@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 #endregion
 
-namespace NextCanvas.Models.Content
+namespace NextCanvas.Content
 {
     public class Resource : IDisposable
     {

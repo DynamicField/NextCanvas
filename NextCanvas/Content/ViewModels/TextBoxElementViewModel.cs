@@ -1,11 +1,11 @@
 ﻿#region
 
-using NextCanvas.Models.Content;
 using NextCanvas.Properties;
+using NextCanvas.ViewModels;
 
 #endregion
 
-namespace NextCanvas.ViewModels.Content
+namespace NextCanvas.Content.ViewModels
 {
     public class TextBoxElementViewModel : ContentElementViewModel, IViewModel<TextBoxElement>, INamedObject
     {

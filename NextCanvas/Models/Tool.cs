@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 #endregion
 
-namespace NextCanvas.Models
+namespace NextCanvas
 {
     public class Tool : INamedObject
     {

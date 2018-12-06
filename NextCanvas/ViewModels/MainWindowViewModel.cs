@@ -4,12 +4,12 @@ using Fluent;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Multimedia;
 using NextCanvas.Interactivity.Progress;
-using NextCanvas.Models;
-using NextCanvas.Models.Content;
+using NextCanvas;
+using NextCanvas.Content;
 using NextCanvas.Serialization;
 using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
-using NextCanvas.ViewModels.Content;
+using NextCanvas.Content.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -219,6 +219,8 @@ namespace NextCanvas.ViewModels
             CreateImageCommand = new DelegateCommand(CreateImage);
             CreateScreenshotCommand = new DelegateCommand(CreateScreenShot);
             CreateWebBrowserCommand = new DelegateCommand(CreateWebBrowser);
+            var instance = App.Current.Addons[0].ResolvedAddonElements[0].CreateInstance();
+            document.SelectedPage.Elements.Add(instance as ContentElementViewModel);
         }
         private void CenterElement(ContentElementViewModel v, ElementCreationContext context)
         {

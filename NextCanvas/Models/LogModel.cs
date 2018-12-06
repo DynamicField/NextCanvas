@@ -1,4 +1,4 @@
-﻿namespace NextCanvas.Models
+﻿namespace NextCanvas
 {
     public class LogModel
     {

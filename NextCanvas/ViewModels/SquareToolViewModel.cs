@@ -2,7 +2,7 @@
 using System.Windows.Ink;
 using System.Windows.Input;
 using NextCanvas.Ink;
-using NextCanvas.Models;
+using NextCanvas;
 
 namespace NextCanvas.ViewModels
 {

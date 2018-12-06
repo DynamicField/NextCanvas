@@ -7,7 +7,7 @@ using Ionic.Zip;
 using Ionic.Zlib;
 using Newtonsoft.Json;
 using NextCanvas.Interactivity.Progress;
-using NextCanvas.Models;
+using NextCanvas;
 
 #endregion
 

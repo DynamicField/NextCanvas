@@ -1,7 +1,7 @@
 ﻿#region
 
-using NextCanvas.Models.Content;
-using NextCanvas.ViewModels.Content;
+using NextCanvas.Content;
+using NextCanvas.Content.ViewModels;
 
 #endregion
 

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 #endregion
 
-namespace NextCanvas.Models
+namespace NextCanvas
 {
     public abstract class StrokeTool<T> : StrokeTool, IStrokeTool<T> where T : Stroke
     {

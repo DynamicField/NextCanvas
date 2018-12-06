@@ -1,17 +1,14 @@
 ﻿#region
 
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows.Ink;
 using Newtonsoft.Json;
-using NextCanvas.Models.Content;
-using NextCanvas.Properties;
+using NextCanvas.Content;
 using NextCanvas.Serialization;
 
 #endregion
 
-namespace NextCanvas.Models
+namespace NextCanvas
 {
     public class Page
     {

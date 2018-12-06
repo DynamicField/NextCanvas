@@ -106,6 +106,7 @@
     <Compile Include="Controls\Content\ContentElementRenderer.xaml.cs">
       <DependentUpon>ContentElementRenderer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Content\ContentElementTemplateSelector.cs" />
     <Compile Include="Controls\Content\ElementRecognitionError.xaml.cs">
       <DependentUpon>ElementRecognitionError.xaml</DependentUpon>
     </Compile>
@@ -186,6 +187,7 @@
     </Compile>
     <Compile Include="Serialization\StrokeSerializer.cs" />
     <Compile Include="SettingsManager.cs" />
+    <Compile Include="Utilities\Content\ContentElementViewModelFinder.cs" />
     <Compile Include="Utilities\Content\ElementCreationContext.cs" />
     <Compile Include="Controls\NextDynamicRenderer.cs" />
     <Compile Include="Controls\NextInkCanvas.cs" />
@@ -208,7 +210,6 @@
     <Compile Include="Interactivity\Progress\ProgressDataContext.cs" />
     <Compile Include="Interactivity\Progress\ProgressTask.cs" />
     <Compile Include="Interactivity\Progress\TaskManager.cs" />
-    <Compile Include="Models\Content\ContentElement.cs" />
     <Compile Include="Models\Content\ImageElement.cs" />
     <Compile Include="Models\Content\Resource.cs" />
     <Compile Include="Models\Content\ResourceElement.cs" />
@@ -219,7 +220,6 @@
     <Compile Include="Models\Tool.cs" />
     <Compile Include="Models\ToolGroup.cs" />
     <Compile Include="ObservableViewModelCollection.cs" />
-    <Compile Include="PropertyChangedObject.cs" />
     <Compile Include="Serialization\DocumentSaver.cs" />
     <Compile Include="Serialization\DocumentReader.cs" />
     <Compile Include="Serialization\DocumentSerializerBase.cs" />
@@ -232,14 +232,12 @@
     <Compile Include="Utilities\Multimedia\ScreenshotHelper.cs" />
     <Compile Include="Utilities\UniqueWindowFactory.cs" />
     <Compile Include="Utilities\VisualTreeUtilities.cs" />
-    <Compile Include="ViewModels\Content\ContentElementViewModel.cs" />
-    <Compile Include="ViewModels\Content\ImageElementViewModel.cs" />
-    <Compile Include="ViewModels\Content\ResourceElementViewModel.cs" />
-    <Compile Include="ViewModels\Content\ResourceViewModel.cs" />
-    <Compile Include="ViewModels\Content\TextBoxElementViewModel.cs" />
-    <Compile Include="ViewModels\Content\WebBrowserElementViewModel.cs" />
+    <Compile Include="Content\ViewModels\ImageElementViewModel.cs" />
+    <Compile Include="Content\ViewModels\ResourceElementViewModel.cs" />
+    <Compile Include="Content\ViewModels\ResourceViewModel.cs" />
+    <Compile Include="Content\ViewModels\TextBoxElementViewModel.cs" />
+    <Compile Include="Content\ViewModels\WebBrowserElementViewModel.cs" />
     <Compile Include="ViewModels\DocumentViewModel.cs" />
-    <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PageCollectionViewerViewModel.cs" />
@@ -250,7 +248,6 @@
     <Compile Include="ViewModels\StrokeToolViewModel.cs" />
     <Compile Include="ViewModels\ToolGroupViewModel.cs" />
     <Compile Include="ViewModels\ToolViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="InteractionWindow.cs" />
     <Compile Include="Views\ColorChooserWindow.xaml.cs">
       <DependentUpon>ColorChooserWindow.xaml</DependentUpon>
@@ -532,6 +529,24 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\TextEditor\OpenInANewWindow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NextCanvas.BaseLibrary\NextCanvas.BaseLibrary.csproj">
+      <Project>{b348eac6-d6a2-45dc-b250-bde91853b3a7}</Project>
+      <Name>NextCanvas.BaseLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NextCanvas.Content\NextCanvas.Content.csproj">
+      <Project>{b38abadb-c958-4a24-bcd6-9fc2f75e59ff}</Project>
+      <Name>NextCanvas.Content</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NextCanvas.Extensibility.Content\NextCanvas.Extensibility.Content.csproj">
+      <Project>{710d2105-0bc2-46b3-99bd-8675e5bed38e}</Project>
+      <Name>NextCanvas.Extensibility.Content</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NextCanvas.Extensibility\NextCanvas.Extensibility.csproj">
+      <Project>{0915ad9c-af72-4df8-94d6-61fe8d148741}</Project>
+      <Name>NextCanvas.Extensibility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

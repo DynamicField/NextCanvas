@@ -16,7 +16,7 @@ using NextCanvas.Properties;
 
 #endregion
 
-namespace NextCanvas.Models
+namespace NextCanvas
 {
     public class SettingsModel
     {

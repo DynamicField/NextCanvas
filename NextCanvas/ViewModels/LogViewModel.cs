@@ -1,4 +1,4 @@
-﻿using NextCanvas.Models;
+﻿using NextCanvas;
 
 namespace NextCanvas.ViewModels
 {

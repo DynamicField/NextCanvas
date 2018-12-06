@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Ink;
-using NextCanvas.Models;
+using NextCanvas;
 
 namespace NextCanvas.ViewModels
 {

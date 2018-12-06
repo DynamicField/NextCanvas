@@ -2,11 +2,11 @@
 
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using NextCanvas.Models.Content;
+using NextCanvas.Content;
 
 #endregion
 
-namespace NextCanvas.Models
+namespace NextCanvas
 {
     public class Document
     {

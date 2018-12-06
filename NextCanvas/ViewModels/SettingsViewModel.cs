@@ -1,7 +1,7 @@
 ﻿#region
 
 using Ionic.Zlib;
-using NextCanvas.Models;
+using NextCanvas;
 using NextCanvas.Properties;
 using System;
 using System.Collections;

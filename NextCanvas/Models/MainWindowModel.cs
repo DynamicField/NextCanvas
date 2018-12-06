@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 #endregion
 
-namespace NextCanvas.Models
+namespace NextCanvas
 {
     /// <summary>
     ///     This is the main window model *SWOOSH*

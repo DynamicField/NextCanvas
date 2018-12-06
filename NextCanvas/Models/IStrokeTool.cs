@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Ink;
 
-namespace NextCanvas.Models
+namespace NextCanvas
 {
     public interface IStrokeTool<out T> where T : Stroke
     {

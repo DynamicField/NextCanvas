@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Dialogs;
-using NextCanvas.Models;
+using NextCanvas;
 using NextCanvas.Properties;
 
 #endregion

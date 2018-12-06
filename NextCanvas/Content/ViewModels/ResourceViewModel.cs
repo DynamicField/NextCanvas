@@ -2,12 +2,12 @@
 
 using System;
 using System.IO;
-using NextCanvas.Models.Content;
 using NextCanvas.Utilities.Content;
+using NextCanvas.ViewModels;
 
 #endregion
 
-namespace NextCanvas.ViewModels.Content
+namespace NextCanvas.Content.ViewModels
 {
     public class ResourceViewModel : ViewModelBase<Resource>, IDisposable
     {

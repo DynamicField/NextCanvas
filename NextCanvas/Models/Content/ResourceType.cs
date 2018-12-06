@@ -1,4 +1,4 @@
-﻿namespace NextCanvas.Models.Content
+﻿namespace NextCanvas.Content
 {
     public enum ResourceType
     {

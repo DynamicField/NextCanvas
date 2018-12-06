@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 #endregion
 
-namespace NextCanvas.Models
+namespace NextCanvas
 {
     public class ToolGroup
     {

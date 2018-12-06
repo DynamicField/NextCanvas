@@ -2,9 +2,9 @@
 
 using NextCanvas.Controls.Content;
 using NextCanvas.Ink;
-using NextCanvas.Models;
+using NextCanvas;
 using NextCanvas.Properties;
-using NextCanvas.ViewModels.Content;
+using NextCanvas.Content.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;

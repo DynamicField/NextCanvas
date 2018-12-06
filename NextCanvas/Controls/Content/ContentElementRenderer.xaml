@@ -6,7 +6,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:NextCanvas.Controls.Content"
              xmlns:controls="clr-namespace:NextCanvas.Controls"
-             xmlns:vm="clr-namespace:NextCanvas.ViewModels.Content" x:Name="RendererControl"
+             xmlns:vm="clr-namespace:NextCanvas.Content.ViewModels"
+             xmlns:content="clr-namespace:NextCanvas.Content.ViewModels;assembly=NextCanvas.Content"
+             x:Name="RendererControl"
              mc:Ignorable="d" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"
              InkCanvas.Left="{Binding Left, Mode=TwoWay}"
              InkCanvas.Top="{Binding Top, Mode=TwoWay}" Panel.ZIndex="{Binding ZIndex, Mode=TwoWay}"
@@ -14,6 +16,9 @@
              RenderOptions.BitmapScalingMode="HighQuality"
              controls:NextInkCanvas.IsSelected="False"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:ContentElementTemplateSelector x:Key="Selector"/>
+    </UserControl.Resources>
     <UserControl.Style>
         <Style TargetType="UserControl">
             <Style.Triggers>
@@ -25,7 +30,7 @@
         </Style>
     </UserControl.Style>
     <Grid>
-        <ContentPresenter Content="{Binding}" x:Name="ElementContentPresenter">
+        <ContentPresenter Content="{Binding}" x:Name="ElementContentPresenter" ContentTemplateSelector="{StaticResource Selector}">
             <ContentPresenter.Resources>
                 <DataTemplate DataType="{x:Type vm:ImageElementViewModel}">
                     <Image Source="{Binding Image, Mode=OneWay}" Stretch="Uniform" />
@@ -37,7 +42,7 @@
                                                 Width="{Binding Width, Mode=TwoWay}"
                                                 Height="{Binding Height, Mode=TwoWay}"/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:ContentElementViewModel}">
+                <DataTemplate DataType="{x:Type content:ContentElementViewModel}">
                     <local:ElementRecognitionError />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:WebBrowserElementViewModel}">

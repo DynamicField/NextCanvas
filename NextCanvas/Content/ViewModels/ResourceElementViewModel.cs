@@ -1,11 +1,10 @@
 ﻿#region
 
-using NextCanvas.Models.Content;
 using NextCanvas.Utilities.Content;
 
 #endregion
 
-namespace NextCanvas.ViewModels.Content
+namespace NextCanvas.Content.ViewModels
 {
     public abstract class ResourceElementViewModel : ContentElementViewModel
     {

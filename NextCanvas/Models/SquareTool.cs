@@ -5,7 +5,7 @@ using NextCanvas.Ink;
 
 #endregion
 
-namespace NextCanvas.Models
+namespace NextCanvas
 {
     public class SquareTool : StrokeTool<SquareStroke>
     {

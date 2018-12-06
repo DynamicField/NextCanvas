@@ -7,7 +7,7 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using NextCanvas.Interactivity;
-using NextCanvas.Models;
+using NextCanvas;
 
 #endregion
 

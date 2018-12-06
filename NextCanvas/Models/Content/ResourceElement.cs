@@ -1,4 +1,4 @@
-﻿namespace NextCanvas.Models.Content
+﻿namespace NextCanvas.Content
 {
     public abstract class ResourceElement : ContentElement
     {

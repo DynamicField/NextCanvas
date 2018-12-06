@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
-using NextCanvas.Models;
+using NextCanvas;
 using NextCanvas.ViewModels;
 
 #endregion
@@ -37,7 +37,7 @@ namespace NextCanvas
             
         }
 
-        private static string ApplicationDataPath =>
+        internal static string ApplicationDataPath =>
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\NextCanvas\\");
         private static string FilePath =>
             Path.Combine(ApplicationDataPath, "settings.json");

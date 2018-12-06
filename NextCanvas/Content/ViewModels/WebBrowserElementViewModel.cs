@@ -1,13 +1,12 @@
 ﻿#region
 
 using Microsoft.Win32;
-using NextCanvas.Models.Content;
 using NextCanvas.Properties;
 using NextCanvas.Utilities;
 
 #endregion
 
-namespace NextCanvas.ViewModels.Content
+namespace NextCanvas.Content.ViewModels
 {
     public class WebBrowserElementViewModel : ContentElementViewModel, INamedObject
     {
