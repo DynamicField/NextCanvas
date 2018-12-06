@@ -13,10 +13,13 @@ using NextCanvas.Views.Editor;
 using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using NextCanvas.Properties;
 using Gallery = Fluent.ColorGallery;
 using MenuItem = Fluent.MenuItem;
 
@@ -38,6 +41,16 @@ namespace NextCanvas.Views
             DataContext = new MainWindowViewModel();
             _pageViewerFactory = new UniqueWindowFactory<PageCollectionViewer>(() => new PageCollectionViewer((MainWindowViewModel)DataContext), this);
             Canvas.DefaultDrawingAttributes.FitToCurve = true;
+            ContentRendered += (_, __) =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    foreach (var error in App.ErrorQueue)
+                    {
+                        MessageBox.Show(this, error, ErrorResources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }), DispatcherPriority.ApplicationIdle);
+            };
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

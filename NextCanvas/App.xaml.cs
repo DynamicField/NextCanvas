@@ -26,12 +26,9 @@ namespace NextCanvas
             return (App)Current;
         }
 
-        public static string AddonsPath => Path.Combine(SettingsManager.ApplicationDataPath, "Addons");
         public static string RootAddonsPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Addons");
         public App()
         {
-            Directory.CreateDirectory(AddonsPath);
-            SetAddons();
             LogManager.AddLogItem("Constructor app started :)", $"NextCanvas {Assembly.GetExecutingAssembly().GetName().Version}");
             WebBrowserElementViewModel.SetHighestIEMode();
             SetSettingsLanguage();
@@ -47,6 +44,7 @@ namespace NextCanvas
 
         private void SetAddons()
         {
+            Directory.CreateDirectory(RootAddonsPath);
             Addons = Directory.EnumerateFiles(RootAddonsPath).Where(s => s.EndsWith("dll"))
                 .Select(LoadAssemblySafe)
                 .Where(a => !(a is null))
@@ -54,7 +52,7 @@ namespace NextCanvas
                 .Where(a => !(a is null))
                 .ToArray();
         }
-
+        public static List<string> ErrorQueue { get; } = new List<string>();
         private Assembly LoadAssemblySafe(string path)
         {
             try
@@ -63,8 +61,8 @@ namespace NextCanvas
             }
             catch (Exception e)
             {
-                MessageBox.Show(
-                    $"We had a problem loading the library {Path.GetFileName(path)}. Please contact the developer of this addon or it can also be a bug other than that.\n{e.Message}");
+                ErrorQueue.Add(
+                     $"We had a problem loading the library {Path.GetFileName(path)}. Please contact the developer of this addon or it can also be a bug other than that.\n{e.Message}");
                 LogManager.AddLogItem($"Could not load assembly {path}. Exception: {e.Message}\nStack trace:\n{e.StackTrace}", status: LogEntryStatus.Error);
                 return null;
             }
@@ -77,7 +75,7 @@ namespace NextCanvas
             }
             catch (Exception e)
             {
-                MessageBox.Show(
+                ErrorQueue.Add(
                     $"We had a problem loading the addon {assembly.GetName().Name}. Please contact the developer of this addon or it can also be a bug other than that.\n{e.Message}");
                 LogManager.AddLogItem($"Could not load addon {assembly.FullName}. Exception: {e.Message}\nStack trace:\n{e.StackTrace}", status: LogEntryStatus.Error);
                 return null;
@@ -124,6 +122,7 @@ namespace NextCanvas
         {
             LogManager.AddLogItem("OnStartup started.", "Initialisation");
             base.OnStartup(e);
+            SetAddons();
         }
         public static IEnumerable<CultureInfo> SupportedCultures => new[]
         {
