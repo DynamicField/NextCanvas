@@ -12,6 +12,6 @@ namespace TestAddon
     [ContentAddonElement(typeof(HelloWorldElementViewModel), Name = "Hello world !")]
     public class HelloWorldElement : ContentElement
     {
-
+        public int Fun { get; set; } = 1;
     }
 }

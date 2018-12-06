@@ -4,6 +4,8 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:viewModels="clr-namespace:TestAddon.ViewModels;assembly=TestAddon">
     <DataTemplate DataType="{x:Type viewModels:HelloWorldElementViewModel}">
-        <TextBlock Text="Hello world ^^" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25">
+            Hello <Run Text="{Binding Fun}"/> world(s)!
+        </TextBlock>
     </DataTemplate>
 </ResourceDictionary>
