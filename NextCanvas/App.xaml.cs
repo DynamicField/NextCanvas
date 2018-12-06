@@ -44,6 +44,7 @@ namespace NextCanvas
 
         private void SetAddons()
         {
+            LogManager.AddLogItem("Loading the addons");
             Directory.CreateDirectory(RootAddonsPath);
             Addons = Directory.EnumerateFiles(RootAddonsPath).Where(s => s.EndsWith("dll"))
                 .Select(LoadAssemblySafe)
@@ -51,6 +52,11 @@ namespace NextCanvas
                 .Select(CreateSafeAddonInfo)
                 .Where(a => !(a is null))
                 .ToArray();
+            LogManager.AddLogItem($"Loaded {Addons.Length} addons.");
+            foreach (var addon in Addons)
+            {
+                LogManager.AddLogItem($"...Addon: {addon.AddonInfoAttribute.Name}, Elements: {addon.ResolvedAddonElements.Length}");
+            }
         }
         public static List<string> ErrorQueue { get; } = new List<string>();
         private Assembly LoadAssemblySafe(string path)
