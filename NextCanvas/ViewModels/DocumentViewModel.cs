@@ -18,8 +18,8 @@ namespace NextCanvas.ViewModels
 {
     public class DocumentViewModel : ViewModelBase<Document>, IDisposable
     {
-        private DocumentResourceLocator locator;
-        private int selectedIndex;
+        private DocumentResourceLocator _locator;
+        private int _selectedIndex;
         public bool CanDeletePage => Pages.Count > 1;
         public const string LogSenderString = "Document";
         public DocumentViewModel(Document model = null) : base(model)
@@ -32,20 +32,20 @@ namespace NextCanvas.ViewModels
 
         public int SelectedIndex
         {
-            get => selectedIndex;
+            get => _selectedIndex;
             set
             {
                 if (value > Pages.Count - 1) throw new IndexOutOfRangeException("ur out of range");
-                selectedIndex = value;
+                _selectedIndex = value;
                 UpdateSelectedPage();
             }
         }
 
         private void UpdateSelectedPage()
         {
-            if (selectedIndex >= Pages.Count)
+            if (_selectedIndex >= Pages.Count)
             {
-                selectedIndex = Pages.Count - 1;
+                _selectedIndex = Pages.Count - 1;
             }
             OnPropertyChanged(nameof(SelectedIndex));
             OnPropertyChanged(nameof(SelectedPage));
@@ -53,17 +53,17 @@ namespace NextCanvas.ViewModels
 
         public PageViewModel SelectedPage
         {
-            get => Pages[selectedIndex];
+            get => Pages[_selectedIndex];
             set => SelectedIndex = Pages.IndexOf(value);
         }
 
-        internal IResourceViewModelLocator ResourceLocator => locator;
+        internal IResourceViewModelLocator ResourceLocator => _locator;
 
         private void Initialize()
         {
             Resources = new ObservableViewModelCollection<ResourceViewModel, Resource>(Model.Resources,
                 r => new ResourceViewModel(r));
-            locator = new DocumentResourceLocator(this);
+            _locator = new DocumentResourceLocator(this);
             Pages = new ObservableViewModelCollection<PageViewModel, Page>(Model.Pages,
                 GivePageViewModel, SetLocator, PageRemoved); // set locator
             Pages.CollectionChanged += Pages_CollectionChanged;
@@ -71,14 +71,14 @@ namespace NextCanvas.ViewModels
 
         private PageViewModel GivePageViewModel(Page m)
         {
-            var page = new PageViewModel(m, locator);
+            var page = new PageViewModel(m, _locator);
             SetLocator(page);
             return page;
         }
 
         private void SetLocator(PageViewModel vm)
         {
-            vm.Locator = locator;
+            vm.Locator = _locator;
             vm.Elements.ItemRemoved += ElementRemoved;
         }
         private void PageRemoved(PageViewModel p)
@@ -129,7 +129,7 @@ namespace NextCanvas.ViewModels
         {
             var baseName = Path.GetFileNameWithoutExtension(name);
             var extension = Path.GetExtension(name);
-            var fileName = baseName + "_" + random.Next(0, short.MaxValue) + "_" + Resources.Count + extension;
+            var fileName = baseName + "_" + _random.Next(0, short.MaxValue) + "_" + Resources.Count + extension;
             return fileName;
         }
 
@@ -138,7 +138,7 @@ namespace NextCanvas.ViewModels
             var testResource = Resources.FirstOrDefault(r => r.DataMD5Hash == fileStream.GetMD5FromFile());
             return testResource;
         }
-        private Random random = new Random();
+        private Random _random = new Random();
         public ResourceViewModel AddResource(Stream stream, string name)
         {
             var memoryStream = new MemoryStream();

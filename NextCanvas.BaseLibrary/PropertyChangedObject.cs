@@ -19,10 +19,10 @@ namespace NextCanvas
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private static List<WindowSyncData> Contexts { get; } = new List<WindowSyncData>();
-        private static readonly object isChanging = new object();
+        private static readonly object IsChanging = new object();
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            lock (isChanging)
+            lock (IsChanging)
             {
                 foreach (var context in Contexts)
                 {
@@ -43,7 +43,7 @@ namespace NextCanvas
 
         public static void RegisterWindow(Window window)
         {
-            lock (isChanging)
+            lock (IsChanging)
             {
                 Contexts.Add(new WindowSyncData(window));
             }
@@ -52,7 +52,7 @@ namespace NextCanvas
 
         private static void RegisteredWindowClosed(object sender, System.EventArgs e)
         {
-            lock (isChanging)
+            lock (IsChanging)
             {
                 Contexts.Remove(Contexts.First(w => w.Window == sender));
             }

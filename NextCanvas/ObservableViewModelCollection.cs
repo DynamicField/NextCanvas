@@ -46,8 +46,8 @@ namespace NextCanvas
         public bool DisableSync { get; set; }
         public Action<TViewModel> ItemAdded { get; set; }
         public Action<TViewModel> ItemRemoved { get; set; }
-        private List<PropertyChangedAdder> addHandlers = new List<PropertyChangedAdder>();
-        private List<PropertyChangedRemover> removeHandlers = new List<PropertyChangedRemover>();
+        private List<PropertyChangedAdder> _addHandlers = new List<PropertyChangedAdder>();
+        private List<PropertyChangedRemover> _removeHandlers = new List<PropertyChangedRemover>();
         private IList<TModel> ModelCollection { get; }
 
         public void ExecuteWithSyncDisabled(Action action)
@@ -68,8 +68,8 @@ namespace NextCanvas
             var removeHandler = new PropertyChangedRemover(handler);
             ItemAdded +=  addHandler;
             ItemRemoved += removeHandler;
-            addHandlers.Add(addHandler);
-            removeHandlers.Add(removeHandler);
+            _addHandlers.Add(addHandler);
+            _removeHandlers.Add(removeHandler);
         }
         public void UnSubscribeToPropertyChanged(PropertyChangedEventHandler handler)
         {
@@ -78,12 +78,12 @@ namespace NextCanvas
                 ((INotifyPropertyChanged) viewModel).PropertyChanged -= handler;
             }
 
-            var adder = addHandlers.First(a => a.Handler == handler);
-            var remover = removeHandlers.First(a => a.Handler == handler);
+            var adder = _addHandlers.First(a => a.Handler == handler);
+            var remover = _removeHandlers.First(a => a.Handler == handler);
             ItemAdded -= adder;
             ItemRemoved -= remover;
-            removeHandlers.Remove(remover);
-            addHandlers.Remove(adder);
+            _removeHandlers.Remove(remover);
+            _addHandlers.Remove(adder);
         }
         private void Sync_Collection(object sender, NotifyCollectionChangedEventArgs e)
         {

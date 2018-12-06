@@ -20,19 +20,19 @@ namespace NextCanvas.ViewModels
             return new SquareTool();
         }
 
-        private int marginWidth = 4;
+        private int _marginWidth = 4;
 
         public int MarginWidth
         {
-            get => marginWidth;
-            set { marginWidth = value; OnPropertyChanged(nameof(MarginWidth)); OnPropertyChanged(nameof(DemoStroke)); }
+            get => _marginWidth;
+            set { _marginWidth = value; OnPropertyChanged(nameof(MarginWidth)); OnPropertyChanged(nameof(DemoStroke)); }
         }
-        private int marginHeight = 15;
+        private int _marginHeight = 15;
 
         public int MarginHeight
         {
-            get => marginHeight;
-            set { marginHeight = value; OnPropertyChanged(nameof(MarginHeight)); OnPropertyChanged(nameof(DemoStroke)); }
+            get => _marginHeight;
+            set { _marginHeight = value; OnPropertyChanged(nameof(MarginHeight)); OnPropertyChanged(nameof(DemoStroke)); }
         }
 
         public override StrokeCollection DemoStroke => new StrokeCollection

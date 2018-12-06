@@ -8,8 +8,8 @@ namespace NextCanvas.Interactivity.Progress
 {
     public class ProgressTask : PropertyChangedObject, IProgressData
     {
-        private double progress;
-        private string progressText;
+        private double _progress;
+        private string _progressText;
 
         public ProgressTask(double weight = 50, string text = "Something goes there...")
         {
@@ -25,12 +25,12 @@ namespace NextCanvas.Interactivity.Progress
 
         public double Progress
         {
-            get => IsComplete ? 100 : progress;
+            get => IsComplete ? 100 : _progress;
             set
             {
                 if (IsComplete) return;
-                progress = Math.Min(100, value);
-                if (progress >= 99.999)
+                _progress = Math.Min(100, value);
+                if (_progress >= 99.999)
                 {
                     OnPropertyChanged();
                     Complete();
@@ -44,11 +44,11 @@ namespace NextCanvas.Interactivity.Progress
 
         public string ProgressText
         {
-            get => progressText;
+            get => _progressText;
             set
             {
                 if (IsComplete) return;
-                progressText = value;
+                _progressText = value;
                 OnPropertyChanged();
             }
         }

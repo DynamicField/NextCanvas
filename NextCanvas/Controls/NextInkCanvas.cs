@@ -169,10 +169,10 @@ namespace NextCanvas.Controls
 
         private static void UpdateSelection(NextInkCanvas canvas, ObservableCollection<ContentElementViewModel> c)
         {
-            if (canvas.isSelectionInternal)
+            if (canvas._isSelectionInternal)
             {
-                canvas.isSelectionInternal = canvas.shouldAutoSet;
-                canvas.shouldAutoSet = false;
+                canvas._isSelectionInternal = canvas._shouldAutoSet;
+                canvas._shouldAutoSet = false;
                 return;
             }
             var elements = new List<FrameworkElement>();
@@ -184,8 +184,8 @@ namespace NextCanvas.Controls
                     elements.Add(item);
                 }
             }
-            canvas.isSelectionInternal = true;
-            canvas.shouldAutoSet = true;
+            canvas._isSelectionInternal = true;
+            canvas._shouldAutoSet = true;
             if (elements.Any())
                 canvas.Select(elements);
         }
@@ -195,11 +195,11 @@ namespace NextCanvas.Controls
             UpdateSelection(this, SelectedItems);
         }
 
-        private bool isInternal;
-        private bool isSelectionInternal;
-        private bool shouldAutoSet;
-        private MemoryStream lastDataObject;
-        private double pasteDiff;
+        private bool _isInternal;
+        private bool _isSelectionInternal;
+        private bool _shouldAutoSet;
+        private MemoryStream _lastDataObject;
+        private double _pasteDiff;
 
         public NextInkCanvas()
         {
@@ -289,8 +289,8 @@ namespace NextCanvas.Controls
             {
                 foreach (var element in elements)
                 {
-                    shouldAutoSet = false;
-                    isSelectionInternal = true;
+                    _shouldAutoSet = false;
+                    _isSelectionInternal = true;
                     if (element is FrameworkElement frameworkElement &&
                         GetDataContextFromElement(frameworkElement) is ContentElementViewModel item)
                     {
@@ -411,34 +411,34 @@ namespace NextCanvas.Controls
                 width -= maxX.X - minX.X;
                 height -= maxY.Y - minY.Y;
             }
-            Paste(new Point(horizontalOffset + width / 2 + pasteDiff, verticalOffset + height / 2 + pasteDiff));
+            Paste(new Point(horizontalOffset + width / 2 + _pasteDiff, verticalOffset + height / 2 + _pasteDiff));
         }
         private void UpdatePasteDifference()
         {
             if (!(Clipboard.GetData(StrokeCollection.InkSerializedFormat) is MemoryStream data))
             {
-                pasteDiff = 0;
+                _pasteDiff = 0;
                 return;
             }
 
-            if (lastDataObject == null)
+            if (_lastDataObject == null)
             {
-                pasteDiff = 0;
-                lastDataObject = data;
+                _pasteDiff = 0;
+                _lastDataObject = data;
                 return;
             }
 
-            if (data.Length == lastDataObject.Length
+            if (data.Length == _lastDataObject.Length
             ) // It's less heavier than having to create two stream readers and blah blah blah
             {
-                pasteDiff += 5;
+                _pasteDiff += 5;
             }
             else
             {
-                pasteDiff = 0;
+                _pasteDiff = 0;
             }
 
-            lastDataObject = data;
+            _lastDataObject = data;
         }
 
         private static void CanExecuteCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -515,7 +515,7 @@ namespace NextCanvas.Controls
         {
             if (canvas.ItemsSource is IList l)
             {
-                canvas.isInternal = true;
+                canvas._isInternal = true;
                 l.Remove(item);
             }
         }
@@ -558,7 +558,7 @@ namespace NextCanvas.Controls
             {
                 foreach (var item in e.OldItems)
                 {
-                    if (isInternal)
+                    if (_isInternal)
                     {
                         RemoveVisualChild(this, item);
                     }
@@ -569,16 +569,16 @@ namespace NextCanvas.Controls
                 }
             }
 
-            isInternal = false;
+            _isInternal = false;
         }
 
         private class ModifyElementAdorner : Adorner
         {
-            private VisualCollection visuals;
-            private Button settingsButton;
+            private VisualCollection _visuals;
+            private Button _settingsButton;
             public ModifyElementAdorner(UIElement adornedElement) : base(adornedElement)
             {
-                visuals = new VisualCollection(this);
+                _visuals = new VisualCollection(this);
                 var image = new Image
                 {
                     Width = 24
@@ -586,7 +586,7 @@ namespace NextCanvas.Controls
                 var bitmap =
                     new BitmapImage(new Uri("pack://application:,,,/NextCanvas;component/Images/Menu/Settings.png"));
                 image.Source = bitmap;
-                settingsButton = new Button
+                _settingsButton = new Button
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Content = new StackPanel
@@ -606,8 +606,8 @@ namespace NextCanvas.Controls
                     Margin = new Thickness(0),
                     Padding = new Thickness(5)
                 };
-                settingsButton.Click += SettingsButton_Click;
-                visuals.Add(settingsButton);
+                _settingsButton.Click += SettingsButton_Click;
+                _visuals.Add(_settingsButton);
             }
 
             private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -622,21 +622,21 @@ namespace NextCanvas.Controls
 
             protected override Size ArrangeOverride(Size finalSize)
             {
-                settingsButton.Arrange(new Rect(-3, -10 - finalSize.Height, finalSize.Width, finalSize.Height));
-                return settingsButton.RenderSize;
+                _settingsButton.Arrange(new Rect(-3, -10 - finalSize.Height, finalSize.Width, finalSize.Height));
+                return _settingsButton.RenderSize;
             }
 
             protected override Size MeasureOverride(Size constraint)
             {
-                settingsButton.Measure(constraint);
-                return settingsButton.DesiredSize;
+                _settingsButton.Measure(constraint);
+                return _settingsButton.DesiredSize;
             }
             protected override Visual GetVisualChild(int index)
             {
-                return visuals[index];
+                return _visuals[index];
             }
 
-            protected override int VisualChildrenCount => visuals.Count;
+            protected override int VisualChildrenCount => _visuals.Count;
         }
     }
 }

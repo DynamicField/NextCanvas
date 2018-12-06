@@ -40,7 +40,7 @@ namespace NextCanvas.Controls.Content
             set => SetValue(UpdateModeProperty, value);
         }
 
-        private bool givingToBinding;
+        private bool _givingToBinding;
 
         public string XamlText
         {
@@ -53,12 +53,12 @@ namespace NextCanvas.Controls.Content
             if (e.NewValue is string value && value != string.Empty)
             {
                 var textBox = (XamlRichTextBox)d;
-                if (textBox.givingToBinding)
+                if (textBox._givingToBinding)
                 {
-                    textBox.givingToBinding = false;
+                    textBox._givingToBinding = false;
                     return;
                 }
-                if (textBox.isTextInput) return;
+                if (textBox._isTextInput) return;
                 using (var stream = new MemoryStream())
                 using (var writer = new StreamWriter(stream))
                 {
@@ -88,7 +88,7 @@ namespace NextCanvas.Controls.Content
             using (var mem = new MemoryStream())
             {
                 new TextRange(Document.ContentStart, Document.ContentEnd).Save(mem, DataFormats.Xaml);
-                givingToBinding = true;
+                _givingToBinding = true;
                 mem.Position = 0;
                 using (var read = new StreamReader(mem, Encoding.UTF8, true))
                 {
@@ -106,17 +106,17 @@ namespace NextCanvas.Controls.Content
             if (HasTextChangedOnce) UpdateXaml();
         }
 
-        private bool isTextInput;
+        private bool _isTextInput;
         protected override void OnTextChanged(TextChangedEventArgs e)
         {        
             base.OnTextChanged(e);
             HasTextChangedOnce = true;
             if (UpdateMode == UpdateMode.TextInput)
             {
-                isTextInput = true;
-                givingToBinding = true;
+                _isTextInput = true;
+                _givingToBinding = true;
                 UpdateXaml();
-                isTextInput = false;
+                _isTextInput = false;
             }      
         }
     }

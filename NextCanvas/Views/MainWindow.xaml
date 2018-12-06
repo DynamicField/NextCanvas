@@ -384,7 +384,7 @@
                                        Command="{Binding CreateWebBrowserCommand}"
                                        CommandParameter="{x:Static local1:MainWindow.ModifyProvider}" />
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox Header="Addons" ItemsSource="{Binding ContentAddonEntries}">
+                <fluent:RibbonGroupBox Header="Addons" ItemsSource="{Binding ContentAddonEntries}" Visibility="{Binding HasContentAddons, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <fluent:RibbonGroupBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type vm:MainWindowViewModel+ContentAddonEntry}">
                             <fluent:Button Command="{Binding AddElementCommand}" Header="{Binding AddonData.Name}"/>

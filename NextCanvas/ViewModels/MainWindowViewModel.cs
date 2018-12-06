@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -31,12 +32,12 @@ namespace NextCanvas.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>
     {
-        private DocumentViewModel document;
+        private DocumentViewModel _document;
        
-        private ElementCreationContext elementCreationContext;
+        private ElementCreationContext _elementCreationContext;
         public IInteractionProvider<IErrorInteraction> ErrorProvider { get; set; }
         public IInteractionProvider<IModifyObjectInteraction> ModifyProvider { get; set; }
-        private int selectedToolIndex;
+        private int _selectedToolIndex;
 
         public MainWindowViewModel(MainWindowModel model = null) : base(model)
         {
@@ -50,17 +51,17 @@ namespace NextCanvas.ViewModels
 
         public DocumentViewModel CurrentDocument
         {
-            get => document;
+            get => _document;
             set
             {
-                if (document != null)
+                if (_document != null)
                 {
-                    document.Pages.CollectionChanged -= PagesChanged;
-                    document.PropertyChanged -= DocumentPropertyChanged;
+                    _document.Pages.CollectionChanged -= PagesChanged;
+                    _document.PropertyChanged -= DocumentPropertyChanged;
                 }
 
-                document = value;
-                Model.Document = document.Model;
+                _document = value;
+                Model.Document = _document.Model;
                 Subscribe();
                 OnPropertyChanged(nameof(CurrentDocument));
                 UpdatePageManipulation();
@@ -77,11 +78,11 @@ namespace NextCanvas.ViewModels
 
         public int SelectedToolIndex
         {
-            get => selectedToolIndex;
+            get => _selectedToolIndex;
             set
             {
                 if ((value < 0 || value >= Tools.Count) && Tools.Count != 0) return;
-                selectedToolIndex = value;
+                _selectedToolIndex = value;
                 OnPropertyChanged(nameof(SelectedToolIndex));
                 OnPropertyChanged(nameof(SelectedTool));
                 OnPropertyChanged(nameof(IsSelectTool));
@@ -119,13 +120,13 @@ namespace NextCanvas.ViewModels
             }
         }
 
-        private bool isSelectTool;
+        private bool _isSelectTool;
         public bool IsSelectTool
         {
-            get => isSelectTool;
+            get => _isSelectTool;
             set
             {
-                isSelectTool = value;
+                _isSelectTool = value;
                 OnPropertyChanged(nameof(IsSelectTool));
                 OnPropertyChanged(nameof(SelectedTool));
                 SwitchToSelectToolCommand.RaiseCanExecuteChanged();
@@ -134,10 +135,10 @@ namespace NextCanvas.ViewModels
 
         public ElementCreationContext ElementCreationContext
         {
-            get => elementCreationContext;
+            get => _elementCreationContext;
             set
             {
-                elementCreationContext = value;
+                _elementCreationContext = value;
                 OnPropertyChanged(nameof(ElementCreationContext));
             }
         }
@@ -171,8 +172,8 @@ namespace NextCanvas.ViewModels
 
         private void Subscribe() // To my youtube channel XD
         {
-            document.Pages.CollectionChanged += PagesChanged;
-            document.PropertyChanged += DocumentPropertyChanged;
+            _document.Pages.CollectionChanged += PagesChanged;
+            _document.PropertyChanged += DocumentPropertyChanged;
         }
 
         private void DocumentPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -202,9 +203,10 @@ namespace NextCanvas.ViewModels
             OnPropertyChanged(nameof(PageDisplayText));
         }
         public List<ContentAddonEntry> ContentAddonEntries { get; private set; }
+        public bool HasContentAddons => ContentAddonEntries?.Any() ?? false;
         private void Initialize()
         {
-            document = new DocumentViewModel(Model.Document);
+            _document = new DocumentViewModel(Model.Document);
             Subscribe();
             // Create commands
             PreviousPageCommand = new DelegateCommand(o => ChangePage(Direction.Backwards),
@@ -222,17 +224,25 @@ namespace NextCanvas.ViewModels
             CreateImageCommand = new DelegateCommand(CreateImage);
             CreateScreenshotCommand = new DelegateCommand(CreateScreenShot);
             CreateWebBrowserCommand = new DelegateCommand(CreateWebBrowser);
-            ContentAddonEntries = App.GetCurrent().Addons.SelectMany(a => a.ResolvedAddonElements)
-                .Where(a => a.IsContentElement())
-                .Select(a => new ContentAddonEntry
-                {
-                    AddElementCommand = new DelegateCommand(_ =>
+#if DEBUG
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
+#endif
+                ContentAddonEntries = App.GetCurrent().Addons.SelectMany(a => a.ResolvedAddonElements)
+                    .Where(a => a.IsContentElement())
+                    .Select(a => new ContentAddonEntry
                     {
-                        var e = a.CreateContentElement();
-                        ProcessItem(e);
-                    }),
-                    AddonData = a.Attribute as ContentAddonElementAttribute
-                }).ToList();
+                        AddElementCommand = new DelegateCommand(_ =>
+                        {
+                            var e = a.CreateContentElement();
+                            ProcessItem(e);
+                        }),
+                        AddonData = a.Attribute as ContentAddonElementAttribute
+                    }).ToList();
+#if DEBUG
+            }
+#endif
+                OnPropertyChanged(nameof(HasContentAddons));
         }
         private void CenterElement(ContentElementViewModel v, ElementCreationContext context)
         {
@@ -294,8 +304,8 @@ namespace NextCanvas.ViewModels
                 // 3. Tries to not exceed the page's dimensions.
                 var cappedHeight = (ElementCreationContext.VisibleHeight - 25).Cap(100);
                 var cappedWidth = (ElementCreationContext.VisibleWidth - 25).Cap(100);
-                element.Width = Math.Min(Math.Min(cappedWidth, document.SelectedPage.Width), element.Image.PixelWidth);
-                element.Height = Math.Min(Math.Min(cappedHeight, document.SelectedPage.Height),
+                element.Width = Math.Min(Math.Min(cappedWidth, _document.SelectedPage.Width), element.Image.PixelWidth);
+                element.Height = Math.Min(Math.Min(cappedHeight, _document.SelectedPage.Height),
                     element.Image.PixelHeight);
             }
             ProcessItem(element);
@@ -398,7 +408,7 @@ namespace NextCanvas.ViewModels
                 if (!(progress is IInteractionProvider<IProgressInteraction> provider)) return;
                 using (var fileStream = File.Open(OpenPath, FileMode.Open))
                 {
-                    document.Dispose();
+                    _document.Dispose();
                     CurrentDocument =
                         new DocumentViewModel(await DocumentReader.TryOpenDocument(fileStream,
                             provider.CreateInteraction()));
@@ -478,12 +488,12 @@ namespace NextCanvas.ViewModels
 
         private void ChangePage(Direction direction)
         {
-            if (CanChangePage(direction)) document.SelectedIndex += (int)direction;
+            if (CanChangePage(direction)) _document.SelectedIndex += (int)direction;
         }
 
         public void ChangePage(int index)
         {
-            if (CanChangePage(index)) document.SelectedIndex = index;
+            if (CanChangePage(index)) _document.SelectedIndex = index;
         }
 
         private void CreateNewPage()
@@ -494,13 +504,13 @@ namespace NextCanvas.ViewModels
 
         private bool CanChangePage(Direction direction)
         {
-            return direction == Direction.Forwards && document.SelectedIndex + 1 != document.Pages.Count ||
-                   direction == Direction.Backwards && document.SelectedIndex - 1 >= 0;
+            return direction == Direction.Forwards && _document.SelectedIndex + 1 != _document.Pages.Count ||
+                   direction == Direction.Backwards && _document.SelectedIndex - 1 >= 0;
         }
 
         private bool CanChangePage(int index)
         {
-            return document.Pages.Count > index;
+            return _document.Pages.Count > index;
         }
 
         private enum Direction

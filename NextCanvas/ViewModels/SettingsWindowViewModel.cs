@@ -22,11 +22,11 @@ namespace NextCanvas.ViewModels
                 MoveDownCommand.RaiseCanExecuteChanged();
             };
         }
-        private int selectedToolIndex;
+        private int _selectedToolIndex;
         public int SelectedToolIndex
         {
-            get { return selectedToolIndex; }
-            set { selectedToolIndex = value; OnPropertyChanged(nameof(SelectedToolIndex)); }
+            get { return _selectedToolIndex; }
+            set { _selectedToolIndex = value; OnPropertyChanged(nameof(SelectedToolIndex)); }
         }
         private void MoveUp(object t)
         {

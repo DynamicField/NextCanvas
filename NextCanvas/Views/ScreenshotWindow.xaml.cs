@@ -33,9 +33,9 @@ namespace NextCanvas.Views
             DependencyProperty.Register("RectangleCrop", typeof(Int32Rect), typeof(ScreenshotWindow),
                 new FrameworkPropertyMetadata(new Int32Rect()));
 
-        private Point clickPosition;
+        private Point _clickPosition;
 
-        private bool isCapturing;
+        private bool _isCapturing;
 
         public ScreenshotWindow(Window owner)
         {
@@ -56,17 +56,17 @@ namespace NextCanvas.Views
                 Owner = owner;
                 owner.WindowState = WindowState.Minimized;
                 owner.Hide();
-                FullScreenshot = ScreenshotHelper.TakeScreenshot(true, out usedScreen);
+                FullScreenshot = ScreenshotHelper.TakeScreenshot(true, out _usedScreen);
                 owner.Show();
             }
             else
             {
-                FullScreenshot = ScreenshotHelper.TakeScreenshot(true, out usedScreen);
+                FullScreenshot = ScreenshotHelper.TakeScreenshot(true, out _usedScreen);
             }
-            Left = usedScreen.Bounds.Left;
+            Left = _usedScreen.Bounds.Left;
             Top = 0;
         }
-        private Screen usedScreen;
+        private Screen _usedScreen;
         public BitmapSource FullScreenshot
         {
             get => (BitmapSource) GetValue(FullScreenshotProperty);
@@ -91,7 +91,7 @@ namespace NextCanvas.Views
 
         private void CancelScreenshot()
         {
-            isCapturing = true; // to not focus after autoclose
+            _isCapturing = true; // to not focus after autoclose
             ActionCanceled?.Invoke(this, EventArgs.Empty);
             Close();
         }
@@ -121,9 +121,9 @@ namespace NextCanvas.Views
         {
             Mouse.Capture(MainGrid);
             ScreenshotOptions.Visibility = Visibility.Collapsed;
-            isCapturing = true;
+            _isCapturing = true;
             var position = e.GetPosition(CropCanvas);
-            clickPosition = position;
+            _clickPosition = position;
             Canvas.SetLeft(SelectionRectangle, position.X);
             Canvas.SetTop(SelectionRectangle, position.Y);
             SetRectangleCrop();
@@ -131,12 +131,12 @@ namespace NextCanvas.Views
 
         private void CropCanvas_OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (!isCapturing || e.LeftButton == MouseButtonState.Released) return;
+            if (!_isCapturing || e.LeftButton == MouseButtonState.Released) return;
             var position = e.GetPosition(CropCanvas);
-            Canvas.SetLeft(SelectionRectangle, clickPosition.X < position.X ? clickPosition.X : position.X);
-            Canvas.SetTop(SelectionRectangle, clickPosition.Y < position.Y ? clickPosition.Y : position.Y);
-            SelectionRectangle.Width = Math.Abs(clickPosition.X - position.X);
-            SelectionRectangle.Height = Math.Abs(clickPosition.Y - position.Y);
+            Canvas.SetLeft(SelectionRectangle, _clickPosition.X < position.X ? _clickPosition.X : position.X);
+            Canvas.SetTop(SelectionRectangle, _clickPosition.Y < position.Y ? _clickPosition.Y : position.Y);
+            SelectionRectangle.Width = Math.Abs(_clickPosition.X - position.X);
+            SelectionRectangle.Height = Math.Abs(_clickPosition.Y - position.Y);
             SetRectangleCrop();
         }
 
@@ -161,7 +161,7 @@ namespace NextCanvas.Views
         private double DpiRatio => FullScreenshot.PixelHeight / ActualHeight;
         private void MainGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (!isCapturing) return;
+            if (!_isCapturing) return;
             ((IInputElement) CropCanvas).ReleaseMouseCapture();
             ActionComplete?.Invoke(this,
                 new ScreenshotTakenEventArgs(new CroppedBitmap(FullScreenshot, RectangleCrop)));
@@ -171,7 +171,7 @@ namespace NextCanvas.Views
         private async void ScreenshotWindow_OnContentRendered(object sender, EventArgs e)
         {
             await Task.Delay(TimeBeforeAutoClose);
-            if (!isCapturing) Close();
+            if (!_isCapturing) Close();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace NextCanvas
 {
     public class Tool : INamedObject
     {
-        private bool? hasDemo;
+        private bool? _hasDemo;
 
         public Tool()
         {
@@ -28,8 +28,8 @@ namespace NextCanvas
 
         public bool HasDemo
         {
-            get => hasDemo ?? HasColor;
-            set => hasDemo = value;
+            get => _hasDemo ?? HasColor;
+            set => _hasDemo = value;
         }
 
         public bool HasSize => Mode != InkCanvasEditingMode.None && Mode != InkCanvasEditingMode.Select;

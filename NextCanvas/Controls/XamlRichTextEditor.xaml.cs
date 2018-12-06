@@ -20,7 +20,7 @@ namespace NextCanvas.Controls
         {
             InitializeComponent();
             Unloaded += (sender, args) => { TextBox.UpdateXaml(); };
-            factory = new UniqueWindowFactory<SeparateTextEditorWindow>(() =>
+            _factory = new UniqueWindowFactory<SeparateTextEditorWindow>(() =>
             {
                 var rtfRichTextEditor = new XamlRichTextEditor
                 {
@@ -86,17 +86,17 @@ namespace NextCanvas.Controls
         public static readonly DependencyProperty XamlTextProperty =
             DependencyProperty.Register("XamlText", typeof(string), typeof(XamlRichTextEditor), new PropertyMetadata(""));
 
-        private bool doNotReact = false;
+        private bool _doNotReact = false;
         private void TextBox_OnSelectionChanged(object sender, RoutedEventArgs e)
         {
-            doNotReact = true;
+            _doNotReact = true;
             UpdateBoldButton();
             UpdateUnderlineButton();
             UpdateItalicButton();
             UpdateFontSizeComboBox();
             UpdateFontFamilyComboBox();
             UpdateBulletsListButton();
-            doNotReact = false;
+            _doNotReact = false;
         }
 
         private void UpdateBulletsListButton()
@@ -158,7 +158,7 @@ namespace NextCanvas.Controls
 
         private void FontSizeChanged(object sender, TextChangedEventArgs e)
         {
-            if (doNotReact) return;
+            if (_doNotReact) return;
             SetFormatWhenNotChanged();
             var tempFix = FontSizeBox.Text;
             var processed = new string(tempFix.Where(char.IsDigit).ToArray());
@@ -178,7 +178,7 @@ namespace NextCanvas.Controls
 
         private void FontBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (FontFamilyBox.SelectedItem == null || doNotReact) return;
+            if (FontFamilyBox.SelectedItem == null || _doNotReact) return;
             FocusTextBox();
             TextBox.Selection.ApplyPropertyValue(FontFamilyProperty, FontFamilyBox.SelectedItem); // Set font :)
             SettingsManager.Settings.DefaultFontFamily = (FontFamily)FontFamilyBox.SelectedItem;
@@ -238,15 +238,15 @@ namespace NextCanvas.Controls
 
         private void FocusTextBox(object sender, RoutedEventArgs e)
         {
-            if (doNotReact) return;
+            if (_doNotReact) return;
             FocusTextBox();
             UpdateFormat();
         }
 
-        private UniqueWindowFactory<SeparateTextEditorWindow> factory;
+        private UniqueWindowFactory<SeparateTextEditorWindow> _factory;
         private void OpenInANewWindow(object sender, RoutedEventArgs e)
         {
-            factory.TryShowWindow();
+            _factory.TryShowWindow();
         }
     }
 }

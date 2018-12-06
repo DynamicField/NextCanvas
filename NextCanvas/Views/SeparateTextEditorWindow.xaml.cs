@@ -24,10 +24,10 @@ namespace NextCanvas.Views
         public SeparateTextEditorWindow(XamlRichTextEditor editor)
         {
             InitializeComponent();
-            this.editor = editor;
+            this._editor = editor;
             Grid.Children.Add(editor);
-            lastHeight = editor.Height;
-            lastWidth = editor.Width;
+            _lastHeight = editor.Height;
+            _lastWidth = editor.Width;
             Loaded += (sender, args) => { UpdateWindowDimensions(); };
             editor.SizeChanged += Editor_SizeChanged;
         }
@@ -40,18 +40,18 @@ namespace NextCanvas.Views
 
         private void UpdateWindowDimensions()
         {
-            Height = lastHeight + (ActualHeight - Grid.ActualHeight);
-            Width = lastWidth + (ActualWidth - Grid.ActualWidth);
+            Height = _lastHeight + (ActualHeight - Grid.ActualHeight);
+            Width = _lastWidth + (ActualWidth - Grid.ActualWidth);
         }
 
-        private int noResizeCount = 0;
-        private double lastWidth, lastHeight;
-        private readonly XamlRichTextEditor editor;
+        private int _noResizeCount = 0;
+        private double _lastWidth, _lastHeight;
+        private readonly XamlRichTextEditor _editor;
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            noResizeCount = 1;
-            editor.Width = Grid.ActualWidth;
-            editor.Height = Grid.ActualHeight;
+            _noResizeCount = 1;
+            _editor.Width = Grid.ActualWidth;
+            _editor.Height = Grid.ActualHeight;
         }
     }
 }

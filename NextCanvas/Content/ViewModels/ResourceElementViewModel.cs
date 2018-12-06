@@ -8,13 +8,13 @@ namespace NextCanvas.Content.ViewModels
 {
     public abstract class ResourceElementViewModel : ContentElementViewModel
     {
-        private readonly IResourceLocator locator = new BridgeResourceLocator();
-        private ResourceViewModel resource;
+        private readonly IResourceLocator _locator = new BridgeResourceLocator();
+        private ResourceViewModel _resource;
 
         internal ResourceElementViewModel(ResourceElement model, IResourceLocator locator = null) : base(model)
         {
             if (locator == null) return;
-            this.locator = locator;
+            this._locator = locator;
         }
 
         public new ResourceElement Model => (ResourceElement) base.Model;
@@ -23,15 +23,15 @@ namespace NextCanvas.Content.ViewModels
         {
             get
             {
-                if (resource == null) Resource = new ResourceViewModel(Model.Resource, locator);
-                return resource;
+                if (_resource == null) Resource = new ResourceViewModel(Model.Resource, _locator);
+                return _resource;
             }
             set
             {
-                if (value == resource) return; // It's certainly given back on the second set.
-                resource?.Dispose();
-                resource = value;
-                Model.Resource = resource.Model;
+                if (value == _resource) return; // It's certainly given back on the second set.
+                _resource?.Dispose();
+                _resource = value;
+                Model.Resource = _resource.Model;
                 OnResourceChanged();
                 OnPropertyChanged(nameof(Resource));
             }

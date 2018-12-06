@@ -12,7 +12,7 @@ namespace NextCanvas.ViewModels
 {
     public class PageViewModel : ViewModelBase<Page>
     {
-        private IResourceViewModelLocator locator;
+        private IResourceViewModelLocator _locator;
 
         public PageViewModel(Page model = null) : base(model)
         {
@@ -27,11 +27,11 @@ namespace NextCanvas.ViewModels
 
         internal IResourceViewModelLocator Locator
         {
-            get => locator;
+            get => _locator;
             set
             {
                 if (value == null) return;
-                locator = value;
+                _locator = value;
                 if (Elements != null) SetLocatorForCollection();
             }
         }
@@ -72,7 +72,7 @@ namespace NextCanvas.ViewModels
         {
             if (vm is ResourceElementViewModel resourceElement)
                 resourceElement.Resource =
-                    locator.GetResourceViewModelDataFor(resourceElement.Resource); // Get the deeta from the json.
+                    _locator.GetResourceViewModelDataFor(resourceElement.Resource); // Get the deeta from the json.
         }
 
         private void Initialize()
@@ -85,7 +85,7 @@ namespace NextCanvas.ViewModels
                 Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
                     e => ContentElementViewModelFinder.GetViewModel(e, Locator)); // With a locator.
             }
-            if (locator != null) SetLocatorForCollection();
+            if (_locator != null) SetLocatorForCollection();
         }
 
         private void SetLocatorForCollection()

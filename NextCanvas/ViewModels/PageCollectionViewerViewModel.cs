@@ -60,20 +60,20 @@ namespace NextCanvas.ViewModels
             var list = preList?.Cast<PageViewModel>();
             return WindowViewModel.CurrentDocument.CanDeletePage && (list?.Any() ?? false);
         }
-        private double wantedWidth = 225;
+        private double _wantedWidth = 225;
 
         public double WantedWidth
         {
-            get => wantedWidth;
-            set { wantedWidth = value; OnPropertyChanged(nameof(WantedWidth)); }
+            get => _wantedWidth;
+            set { _wantedWidth = value; OnPropertyChanged(nameof(WantedWidth)); }
         }
 
-        private double wantedHeight = 175;
+        private double _wantedHeight = 175;
 
         public double WantedHeight
         {
-            get => wantedHeight;
-            set { wantedHeight = value; OnPropertyChanged(nameof(WantedHeight)); }
+            get => _wantedHeight;
+            set { _wantedHeight = value; OnPropertyChanged(nameof(WantedHeight)); }
         }
         
         public IInteractionProvider<IUserRequestInteraction> DialogProvider { get; set; }

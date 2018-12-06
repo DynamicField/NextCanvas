@@ -13,11 +13,11 @@ namespace NextCanvas.Interactivity.Progress
 {
     public class TaskManager<T> where T : class, IProgressInteraction
     {
-        private readonly T progress;
+        private readonly T _progress;
 
         public TaskManager(T progress, IEnumerable<ProgressTask> tasks)
         {
-            this.progress = progress;
+            this._progress = progress;
             var progressTasks = tasks.ToList();
             if (!progressTasks.Any())
                 throw new ArgumentException("There are no tasks for me to do something actually useful. :'(");
@@ -42,7 +42,7 @@ namespace NextCanvas.Interactivity.Progress
             var index = Tasks.IndexOf(CurrentTask) + 1;
             if (index == Tasks.Count)
             {
-                progress.CloseInteraction();
+                _progress.CloseInteraction();
                 return;
             }
 
@@ -65,7 +65,7 @@ namespace NextCanvas.Interactivity.Progress
         {
             if (!Tasks.Any()) return;
             var name = Tasks.First(t => !t.IsComplete || Tasks.IndexOf(t) == Tasks.Count - 1).ProgressText;
-            Application.Current.Dispatcher.Invoke(() => progress.Data.ProgressText = name);
+            Application.Current.Dispatcher.Invoke(() => _progress.Data.ProgressText = name);
             // Let's do some quick maths
             ProcessProgress();
         }
@@ -75,7 +75,7 @@ namespace NextCanvas.Interactivity.Progress
             var totalProgress = Tasks.Sum(t => t.ProgressWeight);
             var completedProgress = Tasks.Sum(t => t.ProgressWeight * (t.Progress / 100));
             var percentage = completedProgress / totalProgress * 100;
-            Application.Current.Dispatcher.Invoke(() => progress.Data.Progress = percentage);
+            Application.Current.Dispatcher.Invoke(() => _progress.Data.Progress = percentage);
         }
 
         private void TasksOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -93,7 +93,7 @@ namespace NextCanvas.Interactivity.Progress
         {
             Tasks.Clear();
             Tasks.CollectionChanged -= TasksOnCollectionChanged;
-            progress.CloseInteraction();
+            _progress.CloseInteraction();
         }
     }
     public class TaskManager : TaskManager<IProgressInteraction> {

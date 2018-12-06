@@ -15,35 +15,35 @@ namespace NextCanvas.Views.Editor
     /// </summary>
     public partial class ModifyObjectWindow : InteractionWindow, IModifyObjectInteraction
     {
-        private readonly ModifierData data = new ModifierData();
+        private readonly ModifierData _data = new ModifierData();
         public ModifyObjectWindow()
         {
-            DataContext = data;
+            DataContext = _data;
             InitializeComponent();
         }
 
         public ModifyObjectWindow(Window owner)
         {
-            DataContext = data;
+            DataContext = _data;
             InitializeComponent();
             Owner = owner;
         }
 
         public string HeaderText
         {
-            get => data.HeaderText;
-            set => data.HeaderText = value;
+            get => _data.HeaderText;
+            set => _data.HeaderText = value;
         }
         public string HeaderStart
         {
-            get => data.HeaderStart;
-            set => data.HeaderStart = value;
+            get => _data.HeaderStart;
+            set => _data.HeaderStart = value;
         }
 
         public bool IsObjectCreation
         {
-            get => data.IsObjectCreation;
-            set => data.IsObjectCreation = value;
+            get => _data.IsObjectCreation;
+            set => _data.IsObjectCreation = value;
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
@@ -62,43 +62,43 @@ namespace NextCanvas.Views.Editor
         public event EventHandler ActionCanceled;
         public object ObjectToModify
         {
-            get => data.ObjectToModify;
-            set => data.ObjectToModify = value;
+            get => _data.ObjectToModify;
+            set => _data.ObjectToModify = value;
         }
 
         private class ModifierData : PropertyChangedObject
         {
-            private object objectToModify;
+            private object _objectToModify;
 
             public object ObjectToModify
             {
-                get => objectToModify;
-                set { objectToModify = value; OnPropertyChanged(nameof(ObjectToModify)); SetHeader(); }
+                get => _objectToModify;
+                set { _objectToModify = value; OnPropertyChanged(nameof(ObjectToModify)); SetHeader(); }
             }
-            private string headerText;
+            private string _headerText;
             private string _headerStart = EditorResources.ModifyObject_DefaultHeaderStart;
             public string HeaderText
             {
-                get => headerText;
-                set { headerText = value; OnPropertyChanged(nameof(HeaderText)); }
+                get => _headerText;
+                set { _headerText = value; OnPropertyChanged(nameof(HeaderText)); }
             }
             public string HeaderStart
             {
                 get => _headerStart;
                 set { _headerStart = value; SetHeader(); }
             }
-            private bool isCreate;
+            private bool _isCreate;
 
             public bool IsObjectCreation
             {
-                get => isCreate;
-                set { isCreate = value; OnPropertyChanged(nameof(IsObjectCreation)); OnPropertyChanged(nameof(IsObjectCreationReversed));}
+                get => _isCreate;
+                set { _isCreate = value; OnPropertyChanged(nameof(IsObjectCreation)); OnPropertyChanged(nameof(IsObjectCreationReversed));}
             }
 
             public bool IsObjectCreationReversed => !IsObjectCreation;
             private void SetHeader()
             {
-                if (objectToModify is INamedObject named)
+                if (_objectToModify is INamedObject named)
                 {
                     var processed = named.Name;
                     var stringBuilder = new StringBuilder(processed);

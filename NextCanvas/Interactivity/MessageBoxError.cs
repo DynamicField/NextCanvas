@@ -23,14 +23,14 @@ namespace NextCanvas.Interactivity
 
         public MessageBoxError(Window owner)
         {
-            this.owner = owner;
+            this._owner = owner;
         }
 
         private async Task ShowMessageBox()
         {
-            if (owner != null)
+            if (_owner != null)
             {
-                await owner.Dispatcher.InvokeAsync(() => MessageBox.Show(owner, Content, Title, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK,
+                await _owner.Dispatcher.InvokeAsync(() => MessageBox.Show(_owner, Content, Title, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK,
                     MessageBoxOptions.None));
             }
             else
@@ -40,7 +40,7 @@ namespace NextCanvas.Interactivity
             }
         }
 
-        private readonly Window owner;
+        private readonly Window _owner;
         public string Title { get; set; }
         public string Content { get; set; }
     }

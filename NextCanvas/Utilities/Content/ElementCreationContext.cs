@@ -10,19 +10,19 @@ namespace NextCanvas.Utilities.Content
 {
     public class ElementCreationContext
     {
-        private readonly NextInkCanvas canvas;
-        private readonly ScrollViewer scrollViewer;
+        private readonly NextInkCanvas _canvas;
+        private readonly ScrollViewer _scrollViewer;
 
         public ElementCreationContext(NextInkCanvas canvas, ScrollViewer scrollViewer)
         {
-            this.canvas = canvas;
-            this.scrollViewer = scrollViewer;
+            this._canvas = canvas;
+            this._scrollViewer = scrollViewer;
         }
 
-        public SelectionWrapper Selection => canvas.SelectionHelper;
-        public double ContentHorizontalOffset => scrollViewer.ContentHorizontalOffset;
-        public double ContentVerticalOffset => scrollViewer.ContentVerticalOffset;
-        public double VisibleWidth => Math.Min(scrollViewer.ActualWidth, canvas.Width);
-        public double VisibleHeight => Math.Min(scrollViewer.ActualHeight, canvas.Height);
+        public SelectionWrapper Selection => _canvas.SelectionHelper;
+        public double ContentHorizontalOffset => _scrollViewer.ContentHorizontalOffset;
+        public double ContentVerticalOffset => _scrollViewer.ContentVerticalOffset;
+        public double VisibleWidth => Math.Min(_scrollViewer.ActualWidth, _canvas.Width);
+        public double VisibleHeight => Math.Min(_scrollViewer.ActualHeight, _canvas.Height);
     }
 }

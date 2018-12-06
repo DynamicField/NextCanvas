@@ -9,48 +9,48 @@ namespace NextCanvas.Utilities
 {
     public class UniqueWindowFactory<T> where T : Window
     {
-        private T window;
-        private FrameworkElement toUnload;
+        private T _window;
+        private FrameworkElement _toUnload;
         public bool ShouldCloseOnUnload { get; set; } = true;
-        private Func<T> createWindow;
+        private Func<T> _createWindow;
         public UniqueWindowFactory(Func<T> createWindow)
         {
-            this.createWindow = createWindow;
+            this._createWindow = createWindow;
         }
         public UniqueWindowFactory(Func<T> createWindow, FrameworkElement unload, bool closeOnUnload = true) : this(createWindow)
         {
-            this.createWindow = createWindow;
-            toUnload = unload;
+            this._createWindow = createWindow;
+            _toUnload = unload;
             ShouldCloseOnUnload = closeOnUnload;
         }
         public T TryShowWindow()
         {
-            if (window == null)
+            if (_window == null)
             {
-                window = createWindow();
-                if (toUnload != null)
-                    toUnload.Unloaded += ToUnloadOnUnloaded;
-                window.Closed += WindowClosed;
-                window.Show();
+                _window = _createWindow();
+                if (_toUnload != null)
+                    _toUnload.Unloaded += ToUnloadOnUnloaded;
+                _window.Closed += WindowClosed;
+                _window.Show();
             }
             else
             {
-                window.Focus();
+                _window.Focus();
             }
-            return window;
+            return _window;
         }
 
         private void ToUnloadOnUnloaded(object sender, RoutedEventArgs e)
         {
-            if (window != null && window.IsLoaded)
+            if (_window != null && _window.IsLoaded)
             {
-                window.Close();
+                _window.Close();
             }
         }
 
         private void WindowClosed(object sender, EventArgs e)
         {
-            window = null;
+            _window = null;
         }
     }
 }

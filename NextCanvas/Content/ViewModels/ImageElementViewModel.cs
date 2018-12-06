@@ -10,7 +10,7 @@ namespace NextCanvas.Content.ViewModels
 {
     public class ImageElementViewModel : ResourceElementViewModel, INamedObject
     {
-        private BitmapImage image;
+        private BitmapImage _image;
 
         internal ImageElementViewModel(ResourceElement model, IResourceLocator resource = null) : base(model, resource)
         {
@@ -23,9 +23,9 @@ namespace NextCanvas.Content.ViewModels
         {
             get
             {
-                if (image != null) return image;
+                if (_image != null) return _image;
                 CreateBitmapImage();
-                return image;
+                return _image;
             }
         }
 
@@ -67,12 +67,12 @@ namespace NextCanvas.Content.ViewModels
         {
             if (Resource?.Data == null) return;
             Resource.Data.Position = 0;
-            image = new BitmapImage();
-            image.BeginInit();
-            image.StreamSource = Resource.Data;
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.EndInit();
-            image.Freeze();
+            _image = new BitmapImage();
+            _image.BeginInit();
+            _image.StreamSource = Resource.Data;
+            _image.CacheOption = BitmapCacheOption.OnLoad;
+            _image.EndInit();
+            _image.Freeze();
             OnPropertyChanged(nameof(Image));
         }
         protected override void OnResourceChanged()

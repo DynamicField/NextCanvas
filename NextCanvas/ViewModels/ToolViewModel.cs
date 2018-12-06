@@ -15,7 +15,7 @@ namespace NextCanvas.ViewModels
 {
     public class ToolViewModel : ViewModelBase<Tool>, INamedObject
     {
-        private ToolGroupViewModel group;
+        private ToolGroupViewModel _group;
         public DelegateCommand ModifyCommand { get; private set; }
 
         public ToolViewModel(Tool model = null, Uri icon = null) : base(model)
@@ -83,13 +83,13 @@ namespace NextCanvas.ViewModels
 
         public ToolGroupViewModel Group
         {
-            get => group;
+            get => _group;
             set
             {
-                if (group != null) group.PropertyChanged -= Group_PropertyChanged;
-                group = value;
-                Model.Group = group.Model;
-                group.PropertyChanged += Group_PropertyChanged;
+                if (_group != null) _group.PropertyChanged -= Group_PropertyChanged;
+                _group = value;
+                Model.Group = _group.Model;
+                _group.PropertyChanged += Group_PropertyChanged;
                 OnPropertyChanged(nameof(Group));
                 OnPropertyChanged(nameof(GroupName));
             }
@@ -105,27 +105,27 @@ namespace NextCanvas.ViewModels
                 new StylusPoint(75, 22)
             }, DrawingAttributes)
         };
-        private int demoWidth = 90;
+        private int _demoWidth = 90;
 
         public int DemoWidth
         {
-            get => demoWidth;
+            get => _demoWidth;
             set
             {
-                demoWidth = value;
+                _demoWidth = value;
                 OnPropertyChanged(nameof(DemoWidth));
                 OnPropertyChanged(nameof(DemoStroke));
             }
         }
 
-        private int demoHeight = 44;
+        private int _demoHeight = 44;
 
         public int DemoHeight
         {
-            get => demoHeight;
+            get => _demoHeight;
             set
             {
-                demoHeight = value;
+                _demoHeight = value;
                 OnPropertyChanged(nameof(DemoHeight));
                 OnPropertyChanged(nameof(DemoStroke));
             }
@@ -215,7 +215,7 @@ namespace NextCanvas.ViewModels
         private void ColorChangeHandler(object sender, PropertyDataChangedEventArgs e)
         {
             OnPropertyChanged(nameof(DemoStroke));
-            if (e.NewValue is Color c && group.Color != c) group.Color = c;
+            if (e.NewValue is Color c && _group.Color != c) _group.Color = c;
         }
 
         public static void UpdateCursorIfEraser(ToolViewModel t)

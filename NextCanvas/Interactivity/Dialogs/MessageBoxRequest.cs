@@ -22,7 +22,7 @@ namespace NextCanvas.Interactivity.Dialogs
 
         private async Task ProcessDialog()
         {
-            var result = await owner.Dispatcher.InvokeAsync(() => MessageBox.Show(owner, Content, Title, MessageBoxButton.YesNo, MessageBoxImage.Question,
+            var result = await _owner.Dispatcher.InvokeAsync(() => MessageBox.Show(_owner, Content, Title, MessageBoxButton.YesNo, MessageBoxImage.Question,
                 MessageBoxResult.No));
             ActionComplete?.Invoke(this, new DialogResultEventArgs(result.ToString(), result == MessageBoxResult.Yes || result == MessageBoxResult.OK));
         }
@@ -31,11 +31,11 @@ namespace NextCanvas.Interactivity.Dialogs
         public event EventHandler ActionCanceled;
         public string Title { get; set; }
         public string Content { get; set; }
-        private readonly Window owner;
+        private readonly Window _owner;
 
         public MessageBoxRequest(Window owner)
         {
-            this.owner = owner;
+            this._owner = owner;
         }
     }
 }

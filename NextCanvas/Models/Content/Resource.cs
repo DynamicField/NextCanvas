@@ -12,7 +12,7 @@ namespace NextCanvas.Content
 {
     public class Resource : IDisposable
     {
-        [JsonIgnore] private Stream stream;
+        [JsonIgnore] private Stream _stream;
 
         public Resource()
         {
@@ -48,10 +48,10 @@ namespace NextCanvas.Content
         [JsonIgnore]
         public Stream Data
         {
-            get => stream;
+            get => _stream;
             set
             {
-                stream = value;
+                _stream = value;
                 ComputeMD5();
             }
         }
@@ -60,7 +60,7 @@ namespace NextCanvas.Content
 
         public void Dispose()
         {
-            stream?.Dispose();
+            _stream?.Dispose();
         }
 
         public static string ComputeMD5(Stream stream)

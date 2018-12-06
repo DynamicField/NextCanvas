@@ -8,16 +8,16 @@ namespace NextCanvas.Controls
 {
     public class SelectionWrapper
     {
-        private readonly Action<object> selectAction;
+        private readonly Action<object> _selectAction;
 
         public SelectionWrapper(Action<object> selectAction)
         {
-            this.selectAction = selectAction;
+            this._selectAction = selectAction;
         }
 
         public void Select(object item)
         {
-            selectAction(item);
+            _selectAction(item);
         }
     }
 }
