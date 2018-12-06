@@ -13,10 +13,11 @@ namespace NextCanvas.Extensibility.Content
         {
         }
 
-        public ContentAddonElementAttribute(Type viewModelType) : base(viewModelType)
+        public ContentAddonElementAttribute(Type viewModelType)
         {
+            ViewModelType = viewModelType;
         }
-
+        public Type ViewModelType { get; }
         public string Name { get; set; }
         public object Icon { get; set; }
         

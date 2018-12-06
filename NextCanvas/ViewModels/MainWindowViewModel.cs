@@ -11,6 +11,7 @@ using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
 using NextCanvas.Content.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -18,7 +19,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using NextCanvas.Extensibility.Content;
 using NextCanvas.Interactivity.Dialogs;
 using NextCanvas.Properties;
 
@@ -29,7 +32,7 @@ namespace NextCanvas.ViewModels
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>
     {
         private DocumentViewModel document;
-
+       
         private ElementCreationContext elementCreationContext;
         public IInteractionProvider<IErrorInteraction> ErrorProvider { get; set; }
         public IInteractionProvider<IModifyObjectInteraction> ModifyProvider { get; set; }
@@ -198,7 +201,7 @@ namespace NextCanvas.ViewModels
         {
             OnPropertyChanged(nameof(PageDisplayText));
         }
-
+        public List<ContentAddonEntry> ContentAddonEntries { get; private set; }
         private void Initialize()
         {
             document = new DocumentViewModel(Model.Document);
@@ -219,8 +222,17 @@ namespace NextCanvas.ViewModels
             CreateImageCommand = new DelegateCommand(CreateImage);
             CreateScreenshotCommand = new DelegateCommand(CreateScreenShot);
             CreateWebBrowserCommand = new DelegateCommand(CreateWebBrowser);
-            var instance = App.Current.Addons[0].ResolvedAddonElements[0].CreateInstance();
-            document.SelectedPage.Elements.Add(instance as ContentElementViewModel);
+            ContentAddonEntries = App.GetCurrent().Addons.SelectMany(a => a.ResolvedAddonElements)
+                .Where(a => a.IsContentElement())
+                .Select(a => new ContentAddonEntry
+                {
+                    AddElementCommand = new DelegateCommand(_ =>
+                    {
+                        var e = a.CreateContentElement();
+                        ProcessItem(e);
+                    }),
+                    AddonData = a.Attribute as ContentAddonElementAttribute
+                }).ToList();
         }
         private void CenterElement(ContentElementViewModel v, ElementCreationContext context)
         {
@@ -495,6 +507,12 @@ namespace NextCanvas.ViewModels
         {
             Forwards = 1,
             Backwards = -1
+        }
+
+        public class ContentAddonEntry
+        {
+            public ICommand AddElementCommand { get; set; }
+            public ContentAddonElementAttribute AddonData { get; set; }
         }
     }
 }

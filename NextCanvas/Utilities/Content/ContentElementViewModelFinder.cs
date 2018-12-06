@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NextCanvas.Content;
 using NextCanvas.Content.ViewModels;
+using NextCanvas.Extensibility.Content;
 
 namespace NextCanvas.Utilities.Content
 {
@@ -21,7 +22,9 @@ namespace NextCanvas.Utilities.Content
                 case WebBrowserElement w:
                     return new WebBrowserElementViewModel(w);
                 default:
-                    return new ContentElementViewModel(model);
+                    return App.GetCurrent().Addons.SelectMany(a => a.ResolvedAddonElements)
+                               .FirstOrDefault(a => a.IsContentElement())?.CreateContentElement(model) ??
+                           new ContentElementViewModel(model);
             }
         }
 

@@ -384,6 +384,13 @@
                                        Command="{Binding CreateWebBrowserCommand}"
                                        CommandParameter="{x:Static local1:MainWindow.ModifyProvider}" />
                 </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="Addons" ItemsSource="{Binding ContentAddonEntries}">
+                    <fluent:RibbonGroupBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:MainWindowViewModel+ContentAddonEntry}">
+                            <fluent:Button Command="{Binding AddElementCommand}" Header="{Binding AddonData.Name}"/>
+                        </DataTemplate>
+                    </fluent:RibbonGroupBox.ItemTemplate>
+                </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
             <fluent:RibbonTabItem Header="{x:Static properties:RibbonResources.Page}">
                 <fluent:RibbonGroupBox Header="{x:Static properties:RibbonResources.Page_Dimensions}">

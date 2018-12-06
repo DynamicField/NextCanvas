@@ -17,12 +17,7 @@ namespace NextCanvas.Extensibility
         public AddonInfo(Assembly assembly)
         {
             var attribute = assembly.GetCustomAttributes().OfType<AddonInfoAttribute>().FirstOrDefault();
-            if (attribute is null)
-            {
-                throw new InvalidOperationException("This assembly does not have an AddonInfoAttribute.");
-            }
-
-            AddonInfoAttribute = attribute;
+            AddonInfoAttribute = attribute ?? throw new InvalidOperationException("This assembly does not have an AddonInfoAttribute.");
             ResolvedAddonElements = assembly.ExportedTypes
                 .Select(t => new AddonElementData(t.GetCustomAttribute<AddonElementAttribute>(), t))
                 .Where(data => data.Attribute != null).ToArray();
@@ -45,35 +40,6 @@ namespace NextCanvas.Extensibility
         public AddonElementAttribute Attribute { get; }
         public Type Type { get; }
 
-        public object CreateInstance()
-        {
-            if (Attribute.ViewModelType != null)
-            {
-                return Activator.CreateInstance(Attribute.ViewModelType);
-            }
-            else
-            {
-                return Activator.CreateInstance(Type);
-            }
-        }
-        public object CreateInstance(object model)
-        {
-            try
-            {
-                if (Attribute.ViewModelType != null)
-                {
-                    return Activator.CreateInstance(Attribute.ViewModelType, model);
-                }
-                else
-                {
-                    return Activator.CreateInstance(Type, model);
-                }
-            }
-            catch
-            {
-                return CreateInstance();
-            }
-        }
         public AddonElementData(AddonElementAttribute attribute, Type type)
         {
             Attribute = attribute;

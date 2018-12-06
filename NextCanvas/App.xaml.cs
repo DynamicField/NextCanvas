@@ -1,4 +1,9 @@
 ﻿
+using NextCanvas.Content.ViewModels;
+using NextCanvas.Extensibility;
+using NextCanvas.Properties;
+using NextCanvas.ViewModels;
+using NextCanvas.Views;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,11 +12,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
-using NextCanvas.Properties;
-using NextCanvas.ViewModels;
-using NextCanvas.Content.ViewModels;
-using NextCanvas.Extensibility;
-using NextCanvas.Views;
 
 namespace NextCanvas
 {
@@ -21,7 +21,11 @@ namespace NextCanvas
     /// </summary>
     public partial class App : Application
     {
-        public static new App Current => (App) Application.Current;
+        public static App GetCurrent()
+        {
+            return (App)Current;
+        }
+
         public static string AddonsPath => Path.Combine(SettingsManager.ApplicationDataPath, "Addons");
         public static string RootAddonsPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Addons");
         public App()
@@ -43,7 +47,41 @@ namespace NextCanvas
 
         private void SetAddons()
         {
-            Addons = Directory.EnumerateFiles(RootAddonsPath).Where(s => s.EndsWith("dll")).Select(Assembly.LoadFrom).Select(assembly => new AddonInfo(assembly)).ToArray();
+            Addons = Directory.EnumerateFiles(RootAddonsPath).Where(s => s.EndsWith("dll"))
+                .Select(LoadAssemblySafe)
+                .Where(a => !(a is null))
+                .Select(CreateSafeAddonInfo)
+                .Where(a => !(a is null))
+                .ToArray();
+        }
+
+        private Assembly LoadAssemblySafe(string path)
+        {
+            try
+            {
+                return Assembly.LoadFrom(path);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    $"We had a problem loading the library {Path.GetFileName(path)}. Please contact the developer of this addon or it can also be a bug other than that.\n{e.Message}");
+                LogManager.AddLogItem($"Could not load assembly {path}. Exception: {e.Message}\nStack trace:\n{e.StackTrace}", status: LogEntryStatus.Error);
+                return null;
+            }
+        }
+        private AddonInfo CreateSafeAddonInfo(Assembly assembly)
+        {
+            try
+            {
+                return new AddonInfo(assembly);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    $"We had a problem loading the addon {assembly.GetName().Name}. Please contact the developer of this addon or it can also be a bug other than that.\n{e.Message}");
+                LogManager.AddLogItem($"Could not load addon {assembly.FullName}. Exception: {e.Message}\nStack trace:\n{e.StackTrace}", status: LogEntryStatus.Error);
+                return null;
+            }
         }
         private static void SetSettingsLanguage()
         {
@@ -73,7 +111,7 @@ namespace NextCanvas
             {
                 try
                 {
-                    var createWindow = (Window) Activator.CreateInstance(dataContext.Window.GetType());
+                    var createWindow = (Window)Activator.CreateInstance(dataContext.Window.GetType());
                     createWindow.DataContext = dataContext.DataContext;
                     createWindow.Show();
                 }
@@ -90,11 +128,11 @@ namespace NextCanvas
         public static IEnumerable<CultureInfo> SupportedCultures => new[]
         {
             CultureInfo.GetCultureInfo("en-US"),
-            CultureInfo.GetCultureInfo("fr-FR"), 
+            CultureInfo.GetCultureInfo("fr-FR"),
         };
         private static void RestInPeperonies(object sender, UnhandledExceptionEventArgs e)
         {
-            var exception = (Exception) e.ExceptionObject;
+            var exception = (Exception)e.ExceptionObject;
             foreach (var window in Current.Windows.OfType<Window>())
                 if (window is ScreenshotWindow || window.Topmost)
                     window.Close(); // It's top most and your computer will be LOCKED IF THIS THING ISNT CLOSED SO BETTER CLOSE IT.
