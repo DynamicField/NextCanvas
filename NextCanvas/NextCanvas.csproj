@@ -196,7 +196,6 @@
     <Compile Include="Converters\OrConverter.cs" />
     <Compile Include="Converters\DivideByConverter.cs" />
     <Compile Include="Converters\IsEqualToConverter.cs" />
-    <Compile Include="DelegateCommand.cs" />
     <Compile Include="Ink\DrawingAttributesExtensions.cs" />
     <Compile Include="Ink\SquareStroke.cs" />
     <Compile Include="Interactivity\DelegateInteractionProvider.cs" />

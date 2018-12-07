@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HelloWorldElementViewModel.cs" />
+    <Compile Include="HelloWorldElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NextCanvas.BaseLibrary\NextCanvas.BaseLibrary.csproj">
@@ -68,10 +68,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="DataTemplates.xaml">
+    <Page Include="DataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Resource>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

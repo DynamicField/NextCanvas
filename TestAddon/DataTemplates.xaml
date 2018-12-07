@@ -2,10 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    xmlns:viewModels="clr-namespace:TestAddon.ViewModels;assembly=TestAddon">
-    <DataTemplate DataType="{x:Type viewModels:HelloWorldElementViewModel}">
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25">
-            Hello <Run Text="{Binding Fun}"/> world(s)!
-        </TextBlock>
+                    xmlns:viewModels="clr-namespace:TestAddon">
+    <DataTemplate DataType="{x:Type viewModels:HelloWorldElement}">
+        <StackPanel>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25">
+                Hello <Run Text="{Binding Fun}" /> world(s)!
+            </TextBlock>
+            <Button Content="More worlds please!" Command="{Binding MoreWorldsCommand}"/>
+        </StackPanel>
     </DataTemplate>
 </ResourceDictionary>
