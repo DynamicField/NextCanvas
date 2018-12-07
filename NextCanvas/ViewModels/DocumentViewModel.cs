@@ -97,7 +97,7 @@ namespace NextCanvas.ViewModels
                 .SelectMany(o => o)
                 .OfType<ResourceElementViewModel>()
                 .Select(e => e.Resource);
-            foreach (var resource in Resources.Where(r => usedResources.All(used => used != r)).ToList())
+            foreach (var resource in Resources.Where(r => usedResources.All(used => !Equals(used, r))).ToList())
             {
                 LogManager.AddLogItem($"Cleaned up unused resource: {resource.Name}, freeing {resource.Data.Length} bytes.");
                 resource.Dispose();

@@ -1,9 +1,9 @@
 ﻿#region
 
-using System;
-using System.IO;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels;
+using System;
+using System.IO;
 
 #endregion
 
@@ -58,6 +58,17 @@ namespace NextCanvas.Content.ViewModels
                 Model.DataMD5Hash = value;
                 OnPropertyChanged(nameof(DataMD5Hash));
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ResourceViewModel o)) return false;
+            return DataMD5Hash == o.DataMD5Hash || Model == o.Model;
+        }
+
+        public override int GetHashCode()
+        {
+            return new { DataMD5Hash }.GetHashCode();
         }
 
         public void Dispose()

@@ -18,6 +18,7 @@ namespace NextCanvas.Serialization
         protected readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Auto,
+            PreserveReferencesHandling = PreserveReferencesHandling.Arrays,
             Error = IgnoreError
         };
 
