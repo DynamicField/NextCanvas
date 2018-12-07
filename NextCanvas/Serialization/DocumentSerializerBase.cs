@@ -1,12 +1,12 @@
 ﻿#region
 
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using Ionic.Zip;
 using Newtonsoft.Json;
 using NextCanvas;
 using NextCanvas.Content;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 
 #endregion
@@ -25,8 +25,13 @@ namespace NextCanvas.Serialization
         {
             if (e.CurrentObject is Page p &&
                 Regex.IsMatch(e.ErrorContext.Path, @"Pages\.\$values\[[0-9]+\]\.Elements\.\$type")) // If type is wrong
+            {
                 p.Elements.Add(new ContentElement()); // oh no
-            e.ErrorContext.Handled = true;
+                e.ErrorContext.Handled = true;
+            }
+#if !DEBUG
+                e.ErrorContext.Handled = true;
+#endif
         }
 
         protected Document GetDocumentJson(ZipFile zipFile)

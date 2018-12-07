@@ -7,9 +7,9 @@
              xmlns:vm="clr-namespace:NextCanvas.Content.ViewModels"
              xmlns:fluent="urn:fluent-ribbon"
              xmlns:properties="clr-namespace:NextCanvas.Properties"
-             xmlns:content="clr-namespace:NextCanvas.Content.ViewModels;assembly=NextCanvas.Content"
+             xmlns:viewModels="clr-namespace:NextCanvas.Content.ViewModels;assembly=NextCanvas.BaseLibrary"
              x:Name="UserControl"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance content:ContentElementViewModel}"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:ContentElementViewModel}"
              d:DesignHeight="381.064" d:DesignWidth="200.638">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter" />

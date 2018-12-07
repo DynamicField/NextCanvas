@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:NextCanvas.Controls.Content"
              xmlns:controls="clr-namespace:NextCanvas.Controls"
              xmlns:vm="clr-namespace:NextCanvas.Content.ViewModels"
-             xmlns:content="clr-namespace:NextCanvas.Content.ViewModels;assembly=NextCanvas.Content"
+             xmlns:content="clr-namespace:NextCanvas.Content.ViewModels;assembly=NextCanvas.BaseLibrary"
              x:Name="RendererControl"
              mc:Ignorable="d" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"
              InkCanvas.Left="{Binding Left, Mode=TwoWay}"

@@ -9,7 +9,7 @@
                         xmlns:vmcontent="clr-namespace:NextCanvas.Content.ViewModels"
                         xmlns:controls="clr-namespace:NextCanvas.Controls.Editor"
                         xmlns:properties="clr-namespace:NextCanvas.Properties"
-                        xmlns:content="clr-namespace:NextCanvas.Content.ViewModels;assembly=NextCanvas.Content"
+                        xmlns:content="clr-namespace:NextCanvas.Content.ViewModels;assembly=NextCanvas.BaseLibrary"
                         WindowStartupLocation="CenterOwner"
                         mc:Ignorable="d" d:DataContext="{d:DesignInstance local:ModifyObjectWindow+ModifierData}"
                         Title="ModifyObjectWindow" Height="450" Width="800">

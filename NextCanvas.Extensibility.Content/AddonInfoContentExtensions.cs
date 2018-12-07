@@ -1,32 +1,30 @@
-﻿using System;
+﻿using NextCanvas.Content.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NextCanvas.Content.ViewModels;
 
 namespace NextCanvas.Extensibility.Content
 {
     public static class AddonInfoContentExtensions
     {
-        public static ContentElementViewModel CreateContentElement(this AddonElementData data)
+        public static ContentElementViewModel CreateContentElement(this AddonElementData data, object model = null)
         {
-            if (data.Attribute is ContentAddonElementAttribute a)
+            if (data.Type.IsSubclassOf(typeof(ContentElementAddon)))
             {
-                return Activator.CreateInstance(a.ViewModelType ?? data.Type) as ContentElementViewModel;
+                return ContentElementAddon.CreateFromModel(data.Type, model);
             }
-                return null;
+            if (!(data.Attribute is ContentAddonElementAttribute a) || a.ViewModelType == null) return null;
+            if (model is null)
+            {
+                return (ContentElementViewModel) Activator.CreateInstance(a.ViewModelType);
+            }
+            return (ContentElementViewModel) Activator.CreateInstance(a.ViewModelType, model);
         }
-        public static ContentElementViewModel CreateContentElement(this AddonElementData data, object model)
+        public static bool IsContentElement(this AddonElementData data)
         {
-            if (data.Attribute is ContentAddonElementAttribute a)
-            {
-                return Activator.CreateInstance(a.ViewModelType ?? data.Type, model) as ContentElementViewModel;
-            }
-            return null;
+            return data.Attribute is ContentAddonElementAttribute;
         }
-
-        public static bool IsContentElement(this AddonElementData data) =>
-            data.Attribute is ContentAddonElementAttribute;
     }
 }
