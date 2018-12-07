@@ -139,7 +139,7 @@
     <Compile Include="Interactivity\IModifyObjectInteraction.cs" />
     <Compile Include="Interactivity\MessageBoxError.cs" />
     <Compile Include="LogManager.cs" />
-    <Compile Include="Models\Content\WebBrowserElement.cs" />
+    <Compile Include="Content\Models\WebBrowserElement.cs" />
     <Compile Include="Models\IStrokeTool.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
@@ -209,11 +209,11 @@
     <Compile Include="Interactivity\Progress\ProgressDataContext.cs" />
     <Compile Include="Interactivity\Progress\ProgressTask.cs" />
     <Compile Include="Interactivity\Progress\TaskManager.cs" />
-    <Compile Include="Models\Content\ImageElement.cs" />
-    <Compile Include="Models\Content\Resource.cs" />
-    <Compile Include="Models\Content\ResourceElement.cs" />
-    <Compile Include="Models\Content\ResourceType.cs" />
-    <Compile Include="Models\Content\TextBoxElement.cs" />
+    <Compile Include="Content\Models\ImageElement.cs" />
+    <Compile Include="Content\Models\Resource.cs" />
+    <Compile Include="Content\Models\ResourceElement.cs" />
+    <Compile Include="Content\Models\ResourceType.cs" />
+    <Compile Include="Content\Models\TextBoxElement.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\StrokeTool.cs" />
     <Compile Include="Models\Tool.cs" />
@@ -542,6 +542,9 @@
       <Project>{0915ad9c-af72-4df8-94d6-61fe8d148741}</Project>
       <Name>NextCanvas.Extensibility</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Content\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
