@@ -79,7 +79,7 @@ namespace NextCanvas.ViewModels
         {
             if (Locator == null)
                 Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,
-                    ContentElementViewModelFinder.GetViewModel); // With a locator.
+                    ContentElementViewModelFinder.GetViewModel); // Without a locator.
             else
             {
                 Elements = new ObservableViewModelCollection<ContentElementViewModel, ContentElement>(Model.Elements,

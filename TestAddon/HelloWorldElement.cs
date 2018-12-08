@@ -3,7 +3,7 @@ using NextCanvas.Extensibility.Content;
 
 namespace TestAddon
 {
-    [ContentAddonElement(Name = "Hello world!")]
+    [ContentAddonElement(icon: "pack://application:,,,/TestAddon;component/Icon.png", Name = "Hello world!")]
     public class HelloWorldElement : ContentElementAddon
     {
         public HelloWorldElement() : this(null) { }

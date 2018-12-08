@@ -21,7 +21,6 @@ namespace NextCanvas.ViewModels
         private DocumentResourceLocator _locator;
         private int _selectedIndex;
         public bool CanDeletePage => Pages.Count > 1;
-        public const string LogSenderString = "Document";
         public DocumentViewModel(Document model = null) : base(model)
         {
             Initialize();

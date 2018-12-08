@@ -7,7 +7,7 @@ using NextCanvas.Content.ViewModels;
 
 namespace NextCanvas.Utilities.Content
 {
-    internal interface IResourceViewModelLocator : IResourceLocator
+    public interface IResourceViewModelLocator : IResourceLocator
     {
         ResourceViewModel GetResourceViewModelDataFor(ResourceViewModel resource);
         ResourceViewModel GetResourceViewModelDataFor(Resource resource);

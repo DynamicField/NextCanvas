@@ -12,8 +12,9 @@ namespace NextCanvas.Content.ViewModels
     {
         private BitmapImage _image;
 
-        internal ImageElementViewModel(ResourceElement model, IResourceLocator resource = null) : base(model, resource)
+        public ImageElementViewModel(ResourceElement model, IResourceLocator resource = null) : base(model, resource)
         {
+            CacheImage();
         }
 
         public new ImageElement Model => (ImageElement) base.Model;
@@ -74,6 +75,14 @@ namespace NextCanvas.Content.ViewModels
             _image.EndInit();
             _image.Freeze();
             OnPropertyChanged(nameof(Image));
+        }
+
+        public void CacheImage()
+        {
+            if (Resource?.Data != null && _image != null)
+            {
+                CreateBitmapImage();
+            }
         }
         protected override void OnResourceChanged()
         {

@@ -6,7 +6,7 @@ using NextCanvas.Content;
 
 namespace NextCanvas.Utilities.Content
 {
-    internal interface IResourceLocator
+    public interface IResourceLocator
     {
         Resource GetResourceDataFor(Resource resource);
     }
