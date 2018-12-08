@@ -319,7 +319,7 @@
                                                  x:Name="ColorGallery" 
                                                  SelectedColor="{Binding SelectedTool.DrawingAttributes.Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsMoreColorsButtonVisible="True" IsNoColorButtonVisible="False"
-                                                 Mode="ThemeColors" ChipHeight="15" ChipWidth="15"
+                                                 Mode="ThemeColors" ChipHeight="16" ChipWidth="16"
                                                  IsAutomaticColorButtonVisible="False">
                             <fluent:ColorGallery.Resources>
                                 <Style TargetType="{x:Type fluent:GroupSeparatorMenuItem}">
