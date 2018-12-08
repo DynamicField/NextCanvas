@@ -387,11 +387,7 @@
                 <fluent:RibbonGroupBox Header="Addons" ItemsSource="{Binding ContentAddonEntries}" Visibility="{Binding HasContentAddons, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <fluent:RibbonGroupBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type vm:MainWindowViewModel+ContentAddonEntry}">
-                            <fluent:Button Command="{Binding AddElementCommand}" Header="{Binding AddonData.Name}">
-                                <fluent:Button.Icon>
-                                    <Image Source="{Binding AddonData.Icon}"/>
-                                </fluent:Button.Icon>
-                            </fluent:Button>
+                            <fluent:Button Command="{Binding AddElementCommand}" Header="{Binding AddonData.Name}" LargeIcon="{Binding AddonData.Icon}"/>
                         </DataTemplate>
                     </fluent:RibbonGroupBox.ItemTemplate>
                 </fluent:RibbonGroupBox>

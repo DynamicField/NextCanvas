@@ -45,7 +45,7 @@ namespace NextCanvas.Extensibility.Content
                 //image.EndInit();
                 //image.Freeze();
                 //Icon = image;
-                Icon = new Uri(s);
+                Icon = new BitmapImage(new Uri(s));
             }
         }
         public Type ViewModelType { get; }
