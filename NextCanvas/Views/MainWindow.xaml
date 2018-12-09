@@ -116,7 +116,7 @@
                         Style="{StaticResource ExtendButtonStyle}" CommandParameter="Bottom" />
             </Grid>
         </ScrollViewer>
-        <fluent:Ribbon Grid.Row="0" Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon" CanCustomizeRibbon="True">
+        <fluent:Ribbon Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon" CanCustomizeRibbon="True">
             <fluent:Ribbon.Style>
                 <Style TargetType="fluent:Ribbon">
                     <Setter Property="Grid.Row" Value="1"/>

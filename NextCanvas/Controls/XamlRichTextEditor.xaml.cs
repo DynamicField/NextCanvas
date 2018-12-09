@@ -1,13 +1,13 @@
-﻿using System;
+﻿using NextCanvas.Controls.Content;
 using NextCanvas.Utilities;
+using NextCanvas.Views;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
-using NextCanvas.Controls.Content;
-using NextCanvas.Views;
 
 namespace NextCanvas.Controls
 {
@@ -119,7 +119,7 @@ namespace NextCanvas.Controls
 
         private void UpdateItalicButton()
         {
-            var fontStyle = (FontStyle) TextBox.Selection.GetPropertyValue(FontStyleProperty);
+            var fontStyle = (FontStyle)TextBox.Selection.GetPropertyValue(FontStyleProperty);
             var isItalic = fontStyle.Equals(FontStyles.Italic);
             ItalicButton.IsChecked = isItalic;
         }
@@ -228,8 +228,8 @@ namespace NextCanvas.Controls
             {
                 var inline = new Run("")
                 {
-                    FontFamily = (FontFamily) FontFamilyBox.SelectedItem,
-                    FontSize = result ?? (double) TextBox.Selection.GetPropertyValue(FontSizeProperty),
+                    FontFamily = (FontFamily)FontFamilyBox.SelectedItem,
+                    FontSize = result ?? (double)TextBox.Selection.GetPropertyValue(FontSizeProperty),
                     FontWeight = BoldButton.IsChecked ?? false ? FontWeights.Bold : FontWeights.Normal,
                     Foreground = ColorRectangle.Fill
                 };
@@ -265,7 +265,8 @@ namespace NextCanvas.Controls
         private void ColorButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (_doNotReact) return;
-            var colorChooser = new ColorChooserWindow();
+            var window = Window.GetWindow(this);
+            var colorChooser = new ColorChooserWindow { Owner = window };
             colorChooser.ActionComplete += (o, args) =>
             {
                 var brush = new SolidColorBrush(args.Color);
@@ -273,7 +274,7 @@ namespace NextCanvas.Controls
                 SettingsManager.Settings.DefaultTextBoxColor = args.Color;
                 colorChooser.Closed += (_, __) =>
                 {
-                    Window.GetWindow(this)?.Focus();
+                    window?.Focus();
                     FocusTextBox();
                     TextBox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
                     TextBox_OnSelectionChanged(null, null);
