@@ -212,5 +212,13 @@ namespace NextCanvas.Views
         {
             _logViewerFactory.TryShowWindow();
         }
+
+        private void NewWindow_Click(object sender, RoutedEventArgs e)
+        {
+            new MainWindow() { DataContext = new MainWindowViewModel
+            {
+                CurrentDocument = ((MainWindowViewModel)DataContext).CurrentDocument
+            }}.Show();
+        }
     }
 }

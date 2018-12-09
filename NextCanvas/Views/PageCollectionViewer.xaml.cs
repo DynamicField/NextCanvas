@@ -71,7 +71,7 @@ namespace NextCanvas.Views
         private void DoubleClick(object sender, MouseButtonEventArgs e)
         {
             var vm = (PageCollectionViewerViewModel) DataContext;
-            vm.WindowViewModel.CurrentDocument.SelectedPage = ((ListBoxItem)sender).DataContext as PageViewModel;
+            vm.WindowViewModel.SelectedPage = ((ListBoxItem)sender).DataContext as PageViewModel;
         }
     }
 }

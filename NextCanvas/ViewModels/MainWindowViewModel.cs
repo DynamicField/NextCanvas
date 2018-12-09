@@ -57,7 +57,6 @@ namespace NextCanvas.ViewModels
                 if (_document != null)
                 {
                     _document.Pages.CollectionChanged -= PagesChanged;
-                    _document.PropertyChanged -= DocumentPropertyChanged;
                 }
 
                 _document = value;
@@ -67,6 +66,35 @@ namespace NextCanvas.ViewModels
                 UpdatePageManipulation();
                 UpdatePageText();
             }
+        }
+
+        private int _selectedPageIndex;
+        public int SelectedPageIndex
+        {
+            get => _selectedPageIndex;
+            set
+            {
+                if (value > CurrentDocument.Pages.Count - 1) throw new IndexOutOfRangeException("ur out of range");
+                _selectedPageIndex = value;
+                UpdateSelectedPage();
+            }
+        }
+        private void UpdateSelectedPage()
+        {
+            if (_selectedPageIndex >= CurrentDocument.Pages.Count)
+            {
+                _selectedPageIndex = CurrentDocument.Pages.Count - 1;
+            }
+            OnPropertyChanged(nameof(SelectedPageIndex));
+            OnPropertyChanged(nameof(SelectedPage));
+            UpdatePageText();
+            UpdatePageManipulation();
+        }
+
+        public PageViewModel SelectedPage
+        {
+            get => CurrentDocument.Pages[_selectedPageIndex];
+            set => SelectedPageIndex = CurrentDocument.Pages.IndexOf(value);
         }
 
         public ObservableCollection<Color> FavoriteColors => SettingsManager.Settings.FavoriteColors;
@@ -165,7 +193,7 @@ namespace NextCanvas.ViewModels
         public DelegateCommand CreateImageCommand { get; private set; }
         public DelegateCommand CreateScreenshotCommand { get; private set; }
         public DelegateCommand CreateWebBrowserCommand { get; private set; }
-        public string PageDisplayText => CurrentDocument.SelectedPageIndex + 1 + "/" + CurrentDocument.Pages.Count;
+        public string PageDisplayText => SelectedPageIndex + 1 + "/" + CurrentDocument.Pages.Count;
 
         private DocumentReader DocumentReader { get; } = new DocumentReader();
         private DocumentSaver DocumentSaver { get; } = new DocumentSaver();
@@ -173,16 +201,6 @@ namespace NextCanvas.ViewModels
         private void Subscribe() // To my youtube channel XD
         {
             _document.Pages.CollectionChanged += PagesChanged;
-            _document.PropertyChanged += DocumentPropertyChanged;
-        }
-
-        private void DocumentPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(DocumentViewModel.SelectedPageIndex))
-            {
-                UpdatePageText();
-                UpdatePageManipulation();
-            }
         }
 
         private void UpdatePageManipulation()
@@ -194,8 +212,8 @@ namespace NextCanvas.ViewModels
 
         private void PagesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            UpdatePageText();
-            UpdatePageManipulation();
+            if (SelectedPageIndex > 0 && e.OldStartingIndex >= SelectedPageIndex) SelectedPageIndex = e.OldStartingIndex - 1; // To avoid 3/2 for example
+            UpdateSelectedPage();
         }
 
         private void UpdatePageText()
@@ -304,8 +322,8 @@ namespace NextCanvas.ViewModels
                 // 3. Tries to not exceed the page's dimensions.
                 var cappedHeight = (ElementCreationContext.VisibleHeight - 25).Cap(100);
                 var cappedWidth = (ElementCreationContext.VisibleWidth - 25).Cap(100);
-                element.Width = Math.Min(Math.Min(cappedWidth, _document.SelectedPage.Width), element.Image.PixelWidth);
-                element.Height = Math.Min(Math.Min(cappedHeight, _document.SelectedPage.Height),
+                element.Width = Math.Min(Math.Min(cappedWidth, SelectedPage.Width), element.Image.PixelWidth);
+                element.Height = Math.Min(Math.Min(cappedHeight, SelectedPage.Height),
                     element.Image.PixelHeight);
             }
             ProcessItem(element);
@@ -343,7 +361,7 @@ namespace NextCanvas.ViewModels
 
         private void AddElementToSelectedPage(ContentElementViewModel element)
         {
-            CurrentDocument.SelectedPage.Elements.Add(element);
+            SelectedPage.Elements.Add(element);
         }
 
         private void SwitchToSelectTool() => IsSelectTool = true;
@@ -468,7 +486,7 @@ namespace NextCanvas.ViewModels
             interact.ActionComplete += (sender, args) =>
             {
                 if (!args.IsAccept) return;
-                DeletePage(CurrentDocument.SelectedPageIndex);
+                DeletePage(SelectedPageIndex);
             };
             interact.ShowInteraction();
         }
@@ -480,32 +498,32 @@ namespace NextCanvas.ViewModels
         private void ExtendPage(string direction)
         {
             if (direction.Equals("Right", StringComparison.InvariantCultureIgnoreCase))
-                CurrentDocument.SelectedPage.Width += 350;
+                SelectedPage.Width += 350;
 
             if (direction.Equals("Bottom", StringComparison.InvariantCultureIgnoreCase))
-                CurrentDocument.SelectedPage.Height += 350;
+                SelectedPage.Height += 350;
         }
 
         private void ChangePage(Direction direction)
         {
-            if (CanChangePage(direction)) _document.SelectedPageIndex += (int)direction;
+            if (CanChangePage(direction)) SelectedPageIndex += (int)direction;
         }
 
         public void ChangePage(int index)
         {
-            if (CanChangePage(index)) _document.SelectedPageIndex = index;
+            if (CanChangePage(index)) SelectedPageIndex = index;
         }
 
         private void CreateNewPage()
         {
-            CurrentDocument.Pages.Insert(CurrentDocument.SelectedPageIndex + 1, new PageViewModel());
+            CurrentDocument.Pages.Insert(SelectedPageIndex + 1, new PageViewModel());
             ChangePage(Direction.Forwards);
         }
 
         private bool CanChangePage(Direction direction)
         {
-            return direction == Direction.Forwards && _document.SelectedPageIndex + 1 != _document.Pages.Count ||
-                   direction == Direction.Backwards && _document.SelectedPageIndex - 1 >= 0;
+            return direction == Direction.Forwards && SelectedPageIndex + 1 != CurrentDocument.Pages.Count ||
+                   direction == Direction.Backwards && SelectedPageIndex - 1 >= 0;
         }
 
         private bool CanChangePage(int index)

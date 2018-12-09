@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Windows;
 using System.Windows.Input;
 
 #endregion
@@ -33,7 +34,15 @@ namespace NextCanvas
 
         public void RaiseCanExecuteChanged()
         {
-            CanExecuteChanged?.Invoke(this, new EventArgs());
+            if (Application.Current.Dispatcher.CheckAccess())
+            {
+                CanExecuteChanged?.Invoke(this, new EventArgs());
+            }
+            else
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    CanExecuteChanged?.Invoke(this, new EventArgs())));
+            }
         }
     }
 }

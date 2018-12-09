@@ -87,19 +87,19 @@
             <Grid>
                 <Button VerticalAlignment="Center" HorizontalAlignment="Right" 
                         Style="{StaticResource ExtendButtonStyle}" CommandParameter="Right" />
-                <Canvas Width="{Binding CurrentDocument.SelectedPage.Width}"
-                            Height="{Binding CurrentDocument.SelectedPage.Height}">
+                <Canvas Width="{Binding SelectedPage.Width}"
+                            Height="{Binding SelectedPage.Height}">
                     <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                     <local:NextInkCanvas
                             x:Name="Canvas"
                             EditingMode="{Binding SelectedTool.Mode, Mode=TwoWay, UpdateSourceTrigger=Explicit, TargetNullValue={StaticResource NullMode}, FallbackValue={StaticResource NullMode}}"
                             EraserShapeDP="{Binding SelectedTool.EraserShape}"
-                            Width="{Binding CurrentDocument.SelectedPage.Width}"
-                            Height="{Binding CurrentDocument.SelectedPage.Height}"
-                            Strokes="{Binding CurrentDocument.SelectedPage.Strokes, UpdateSourceTrigger=PropertyChanged}"
+                            Width="{Binding SelectedPage.Width}"
+                            Height="{Binding SelectedPage.Height}"
+                            Strokes="{Binding SelectedPage.Strokes, UpdateSourceTrigger=PropertyChanged}"
                             Canvas.Left="0" Canvas.Top="0"
                             UseCustomCursorDP="{Binding SelectedTool.UseCursor}"
-                            ItemsSource="{Binding CurrentDocument.SelectedPage.Elements}"
+                            ItemsSource="{Binding SelectedPage.Elements}"
                             Cursor="{Binding SelectedTool.Cursor}"
                             DefaultDrawingAttributes="{Binding SelectedTool.DrawingAttributes}"
                             ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"
@@ -405,10 +405,10 @@
                         </Grid.RowDefinitions>
                         <TextBlock HorizontalAlignment="Right" Text="{x:Static properties:RibbonResources.Page_Width}"/>
                         <fluent:Spinner Grid.Row="0" Grid.Column="1" Increment="25"
-                                            Value="{Binding CurrentDocument.SelectedPage.Width}" Margin="0,0,0,5" />
+                                            Value="{Binding SelectedPage.Width}" Margin="0,0,0,5" />
                         <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Text="{x:Static properties:RibbonResources.Page_Height}"/>
                         <fluent:Spinner Grid.Row="1" Grid.Column="1" Increment="25"
-                                            Value="{Binding CurrentDocument.SelectedPage.Height}" />
+                                            Value="{Binding SelectedPage.Height}" />
                     </Grid>
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
@@ -422,6 +422,9 @@
                 <fluent:RibbonGroupBox Header="Bugs">
                     <fluent:Button LargeIcon="pack://application:,,,/NextCanvas;component/Images/Ribbon/Debug/Log.png"
                                        Header="Log viewer" Click="LogViewerClick"></fluent:Button>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Header="Tests">
+                    <fluent:Button Header="New window" Click="NewWindow_Click"/>
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
         </fluent:Ribbon>
