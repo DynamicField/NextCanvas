@@ -158,7 +158,7 @@ namespace NextCanvas
         public bool IsRibbonOnTop { get; set; } = false;
         public List<object> DefaultValues { get; set; } = new List<object>();
         public double DefaultFontSize { get; set; } = 16;
-
+        public Color DefaultTextBoxColor { get; set; } = Colors.Black;
         public FontFamily DefaultFontFamily { get; set; } = Fonts.SystemFontFamilies.FirstOrDefault(t =>
             t.ToString().Equals("Calibri", StringComparison.InvariantCultureIgnoreCase));
 
@@ -190,7 +190,6 @@ namespace NextCanvas
                 Color = Colors.Black
             },
         };
-
         public ObservableCollection<Color> FavoriteColors => ColorGallery.RecentColors;
     }
 }

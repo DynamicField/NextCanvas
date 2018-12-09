@@ -19,9 +19,17 @@ namespace NextCanvas
             Dispatcher.Invoke(Close);
         }
 
-        public virtual void ShowInteraction()
+        public virtual void ShowInteraction() => ShowInteraction(true);
+        public virtual void ShowInteraction(bool modal)
         {
-            Dispatcher.Invoke(Show);
+            if (modal)
+            {
+                Dispatcher.Invoke(ShowDialog);
+            }
+            else
+            {
+                Dispatcher.Invoke(Show);
+            }
         }
 
         protected void RefreshUI(DispatcherPriority priority = DispatcherPriority.DataBind)

@@ -138,6 +138,16 @@ namespace NextCanvas.ViewModels
         }
         public ObservableViewModelCollection<ToolViewModel, Tool> Tools { get; set; }
         public ObservableViewModelCollection<ToolGroupViewModel, ToolGroup> Groups { get; set; }
+
+        public Color DefaultTextBoxColor
+        {
+            get => Model.DefaultTextBoxColor;
+            set
+            {
+                Model.DefaultTextBoxColor = value;
+                OnPropertyChanged(nameof(DefaultTextBoxColor));
+            }
+        }
         public ObservableCollection<Color> FavoriteColors => Model.FavoriteColors;
     }
 }

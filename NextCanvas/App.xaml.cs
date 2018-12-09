@@ -46,6 +46,11 @@ namespace NextCanvas
         {
             LogManager.AddLogItem("Loading the addons");
             Directory.CreateDirectory(RootAddonsPath);
+            if (!Directory.EnumerateFiles(RootAddonsPath).Any())
+            {
+                LogManager.AddLogItem("No files in the Addons folder.");
+                return;
+            }
             Addons = Directory.EnumerateFiles(RootAddonsPath).Where(s => s.EndsWith("dll"))
                 .Select(LoadAssemblySafe)
                 .Where(a => !(a is null))
@@ -56,6 +61,10 @@ namespace NextCanvas
             foreach (var addon in Addons)
             {
                 LogManager.AddLogItem($"...Addon: {addon.AddonInfoAttribute.Name}, Elements: {addon.ResolvedAddonElements.Length}");
+                foreach (var element in addon.ResolvedAddonElements)
+                {
+                    LogManager.AddLogItem($"......Element: {element.Type.Name}");
+                }
             }
         }
         public static List<string> ErrorQueue { get; } = new List<string>();

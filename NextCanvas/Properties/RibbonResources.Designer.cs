@@ -61,6 +61,15 @@ namespace NextCanvas.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Extend.
+        /// </summary>
+        public static string Extend {
+            get {
+                return ResourceManager.GetString("Extend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à File.
         /// </summary>
         public static string File {

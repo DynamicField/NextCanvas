@@ -228,4 +228,7 @@
   <data name="ToolGallery_EditItem" xml:space="preserve">
     <value>Éditer...</value>
   </data>
+  <data name="Extend" xml:space="preserve">
+    <value>Élargir</value>
+  </data>
 </root>

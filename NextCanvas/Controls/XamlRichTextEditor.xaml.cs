@@ -96,9 +96,21 @@ namespace NextCanvas.Controls
             UpdateFontSizeComboBox();
             UpdateFontFamilyComboBox();
             UpdateBulletsListButton();
+            UpdateColorButton();
             _doNotReact = false;
         }
 
+        private void UpdateColorButton()
+        {
+            if (TextBox.Selection.GetPropertyValue(TextElement.ForegroundProperty) is Brush color)
+            {
+                ColorRectangle.Fill = color;
+            }
+            else
+            {
+                ColorRectangle.Fill = new SolidColorBrush(Colors.Black);
+            }
+        }
         private void UpdateBulletsListButton()
         {
             var list = VisualTreeUtilities.FindLogicalParent<List>(TextBox.Selection.Start.Parent);
@@ -218,7 +230,8 @@ namespace NextCanvas.Controls
                 {
                     FontFamily = (FontFamily) FontFamilyBox.SelectedItem,
                     FontSize = result ?? (double) TextBox.Selection.GetPropertyValue(FontSizeProperty),
-                    FontWeight = BoldButton.IsChecked ?? false ? FontWeights.Bold : FontWeights.Normal
+                    FontWeight = BoldButton.IsChecked ?? false ? FontWeights.Bold : FontWeights.Normal,
+                    Foreground = ColorRectangle.Fill
                 };
                 TextBox.CaretPosition.Paragraph?.Inlines.Add(inline);
             }
@@ -247,6 +260,26 @@ namespace NextCanvas.Controls
         private void OpenInANewWindow(object sender, RoutedEventArgs e)
         {
             _factory.TryShowWindow();
+        }
+
+        private void ColorButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_doNotReact) return;
+            var colorChooser = new ColorChooserWindow();
+            colorChooser.ActionComplete += (o, args) =>
+            {
+                var brush = new SolidColorBrush(args.Color);
+                brush.Freeze();
+                SettingsManager.Settings.DefaultTextBoxColor = args.Color;
+                colorChooser.Closed += (_, __) =>
+                {
+                    Window.GetWindow(this)?.Focus();
+                    FocusTextBox();
+                    TextBox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
+                    TextBox_OnSelectionChanged(null, null);
+                };
+            };
+            colorChooser.ShowDialog();
         }
     }
 }

@@ -31,12 +31,18 @@
         <Style TargetType="fluent:Button">
             <Setter Property="Icon" Value="{Binding LargeIcon, RelativeSource={RelativeSource Self}}"></Setter>
         </Style>
-        <Style TargetType="{x:Type Button}" x:Key="OpacityOnHover">
+        <Style TargetType="{x:Type Button}" x:Key="ExtendButtonStyle">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Opacity" Value="1" />
                 </Trigger>
             </Style.Triggers>
+            <Setter Property="Opacity" Value="0.5"/>
+            <Setter Property="Padding" Value="7,3"/>
+            <Setter Property="Content" Value="{x:Static properties:RibbonResources.Extend}"/>
+            <Setter Property="Panel.ZIndex" Value="1"/>
+            <Setter Property="Command" Value="{Binding ExtendPageCommand}"/>
+            <EventSetter Event="Click" Handler="ResizeCanvasEvent"/>
         </Style>
         <InkCanvasEditingMode x:Key="NullMode">Select</InkCanvasEditingMode>
     </fluent:RibbonWindow.Resources>
@@ -79,11 +85,8 @@
                 </Style>
             </ScrollViewer.Style>
             <Grid>
-                <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Center"
-                            HorizontalAlignment="Right"
-                            Padding="5,2" Margin="2" Opacity="0.2" Style="{StaticResource OpacityOnHover}"
-                            Command="{Binding ExtendPageCommand}" CommandParameter="Right"
-                            Click="ResizeCanvasEvent" />
+                <Button VerticalAlignment="Center" HorizontalAlignment="Right" 
+                        Style="{StaticResource ExtendButtonStyle}" CommandParameter="Right" />
                 <Canvas Width="{Binding CurrentDocument.SelectedPage.Width}"
                             Height="{Binding CurrentDocument.SelectedPage.Height}">
                     <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
@@ -109,14 +112,11 @@
                         </i:Interaction.Triggers>
                     </local:NextInkCanvas>
                 </Canvas>
-                <Button Content="Extend" Panel.ZIndex="1" VerticalAlignment="Bottom"
-                            HorizontalAlignment="Center"
-                            Padding="5,2" Margin="2" Opacity="0.6" Style="{StaticResource OpacityOnHover}"
-                            Command="{Binding ExtendPageCommand}" CommandParameter="Bottom"
-                            Click="ResizeCanvasEvent" />
+                <Button VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+                        Style="{StaticResource ExtendButtonStyle}" CommandParameter="Bottom" />
             </Grid>
         </ScrollViewer>
-        <fluent:Ribbon Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon" CanCustomizeRibbon="True">
+        <fluent:Ribbon Grid.Row="0" Panel.ZIndex="2" Margin="0,0,0,0" x:Name="Ribbon" CanCustomizeRibbon="True">
             <fluent:Ribbon.Style>
                 <Style TargetType="fluent:Ribbon">
                     <Setter Property="Grid.Row" Value="1"/>

@@ -38,7 +38,8 @@
             XamlText="{Binding XamlText, ElementName=Control, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"    
             IsUndoEnabled="True" Background="{x:Null}" x:Name="TextBox" SelectionChanged="TextBox_OnSelectionChanged"
             FontSize="{Binding Path=DefaultFontSize, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}"
-            FontFamily="{Binding Path=DefaultFontFamily, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}">
+            FontFamily="{Binding Path=DefaultFontFamily, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}"
+            Foreground="{Binding Path=DefaultTextBoxColor, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}">
             <content:XamlRichTextBox.Resources>
                 <Style TargetType="{x:Type List}">
                     <Setter Property="MarkerOffset" Value="7"/>
@@ -88,6 +89,10 @@
                                     <Setter Property="Margin" Value="2,0" />
                                     <Setter Property="CommandTarget" Value="{Binding ElementName=TextBox}" />
                                 </Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Margin" Value="2,0" />
+                                    <Setter Property="Width" Value="20" />
+                                </Style>
                             </StackPanel.Resources>
                             <ToggleButton x:Name="BoldButton" Command="EditingCommands.ToggleBold" Click="FocusTextBox">
                                 <Run Text="B" FontWeight="Bold" />
@@ -98,6 +103,16 @@
                             <ToggleButton x:Name="UnderlineButton" Command="ToggleUnderline" Click="FocusTextBox">
                                 <Run Text="U" FontFamily="Georgia" TextDecorations="Underline" />
                             </ToggleButton>
+                            <Button x:Name="ColorButton" Click="ColorButton_OnClick">
+                                <StackPanel Margin="0,0,0,2">
+                                    <TextBlock Text="A" FontFamily="Segoe UI" FontWeight="Bold" Foreground="#FF363636"/>
+                                    <Rectangle Height="2" Margin="-2,-6,-2,-2" x:Name="ColorRectangle">
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{Binding Path=DefaultTextBoxColor, Source={x:Static nextCanvas:SettingsManager.Settings}, Mode=OneTime}"/>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </StackPanel>
+                            </Button>
                             <ToggleButton x:Name="BulletsListButton" Command="ToggleBullets">
                                 <StackPanel HorizontalAlignment="Left" Orientation="Vertical">
                                     <StackPanel.Resources>
