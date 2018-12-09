@@ -39,7 +39,7 @@ namespace NextCanvas.ViewModels
             dialog.Title = DialogResources.PageCollectionViewer_DeleteDialogTitle;
             dialog.ActionComplete += (sender, args) =>
             {
-                if (args.ChosenButtonText != "Yes") return;
+                if (!args.IsAccept) return;
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     foreach (var page in list)
@@ -60,7 +60,7 @@ namespace NextCanvas.ViewModels
             var list = preList?.Cast<PageViewModel>();
             return WindowViewModel.CurrentDocument.CanDeletePage && (list?.Any() ?? false);
         }
-        private double _wantedWidth = 225;
+        private double _wantedWidth = 135;
 
         public double WantedWidth
         {
@@ -68,7 +68,7 @@ namespace NextCanvas.ViewModels
             set { _wantedWidth = value; OnPropertyChanged(nameof(WantedWidth)); }
         }
 
-        private double _wantedHeight = 175;
+        private double _wantedHeight = 90;
 
         public double WantedHeight
         {

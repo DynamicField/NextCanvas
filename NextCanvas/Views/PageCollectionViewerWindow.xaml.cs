@@ -17,15 +17,15 @@ using NextCanvas.ViewModels;
 namespace NextCanvas.Views
 {
     /// <summary>
-    /// Logique d'interaction pour PageCollectionViewer.xaml
+    /// Logique d'interaction pour PageCollectionViewerWindow.xaml
     /// </summary>
-    public partial class PageCollectionViewer : Window
+    public partial class PageCollectionViewerWindow : Window
     {
-        public PageCollectionViewer() : this(new MainWindowViewModel())
+        public PageCollectionViewerWindow() : this(new MainWindowViewModel())
         {
             
         }
-        public PageCollectionViewer(MainWindowViewModel viewModel)
+        public PageCollectionViewerWindow(MainWindowViewModel viewModel)
         {
             var vm = new PageCollectionViewerViewModel(viewModel)
             {

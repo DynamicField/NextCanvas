@@ -260,8 +260,8 @@
     <Compile Include="Views\MultiCanvasExperimentWindow.xaml.cs">
       <DependentUpon>MultiCanvasExperimentWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PageCollectionViewer.xaml.cs">
-      <DependentUpon>PageCollectionViewer.xaml</DependentUpon>
+    <Compile Include="Views\PageCollectionViewerWindow.xaml.cs">
+      <DependentUpon>PageCollectionViewerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
@@ -337,7 +337,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PageCollectionViewer.xaml">
+    <Page Include="Views\PageCollectionViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

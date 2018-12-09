@@ -39,7 +39,7 @@ namespace NextCanvas.Views
             PropertyChangedObject.RegisterWindow(this);
             DataContextChanged += OnDataContextChanged;
             DataContext = new MainWindowViewModel();
-            _pageViewerFactory = new UniqueWindowFactory<PageCollectionViewer>(() => new PageCollectionViewer((MainWindowViewModel)DataContext), this);
+            _pageViewerFactory = new UniqueWindowFactory<PageCollectionViewerWindow>(() => new PageCollectionViewerWindow((MainWindowViewModel)DataContext), this);
             Canvas.DefaultDrawingAttributes.FitToCurve = true;
             ContentRendered += (_, __) =>
             {
@@ -201,7 +201,7 @@ namespace NextCanvas.Views
             new SettingsWindow { Owner = this }.ShowDialog();
         }
 
-        private readonly UniqueWindowFactory<PageCollectionViewer> _pageViewerFactory;
+        private readonly UniqueWindowFactory<PageCollectionViewerWindow> _pageViewerFactory;
         private void PagesTabLauncherClick(object sender, RoutedEventArgs e)
         {
             _pageViewerFactory.TryShowWindow();

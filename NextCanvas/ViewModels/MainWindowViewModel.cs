@@ -333,8 +333,8 @@ namespace NextCanvas.ViewModels
         {
             if (!(interaction is IInteractionProvider<IScreenshotInteraction> interact)) return;
             var screenshotter = interact.CreateInteraction();
-            screenshotter.ShowInteraction();
             screenshotter.ActionComplete += Screenshotter_ActionComplete;
+            screenshotter.ShowInteraction();
             // yes.
         }
 
