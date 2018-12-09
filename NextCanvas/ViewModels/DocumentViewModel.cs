@@ -19,7 +19,7 @@ namespace NextCanvas.ViewModels
     public class DocumentViewModel : ViewModelBase<Document>, IDisposable
     {
         private DocumentResourceLocator _locator;
-        private int _selectedIndex;
+        private int _selectedPageIndex;
         public bool CanDeletePage => Pages.Count > 1;
         public DocumentViewModel(Document model = null) : base(model)
         {
@@ -29,31 +29,31 @@ namespace NextCanvas.ViewModels
         public ObservableViewModelCollection<PageViewModel, Page> Pages { get; private set; }
         public ObservableViewModelCollection<ResourceViewModel, Resource> Resources { get; set; }
 
-        public int SelectedIndex
+        public int SelectedPageIndex
         {
-            get => _selectedIndex;
+            get => _selectedPageIndex;
             set
             {
                 if (value > Pages.Count - 1) throw new IndexOutOfRangeException("ur out of range");
-                _selectedIndex = value;
+                _selectedPageIndex = value;
                 UpdateSelectedPage();
             }
         }
 
         private void UpdateSelectedPage()
         {
-            if (_selectedIndex >= Pages.Count)
+            if (_selectedPageIndex >= Pages.Count)
             {
-                _selectedIndex = Pages.Count - 1;
+                _selectedPageIndex = Pages.Count - 1;
             }
-            OnPropertyChanged(nameof(SelectedIndex));
+            OnPropertyChanged(nameof(SelectedPageIndex));
             OnPropertyChanged(nameof(SelectedPage));
         }
 
         public PageViewModel SelectedPage
         {
-            get => Pages[_selectedIndex];
-            set => SelectedIndex = Pages.IndexOf(value);
+            get => Pages[_selectedPageIndex];
+            set => SelectedPageIndex = Pages.IndexOf(value);
         }
 
         internal IResourceViewModelLocator ResourceLocator => _locator;
@@ -105,7 +105,7 @@ namespace NextCanvas.ViewModels
         }
         private void Pages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (SelectedIndex > 0 && e.OldStartingIndex >= SelectedIndex) SelectedIndex = e.OldStartingIndex - 1; // To avoid 3/2 for example
+            if (SelectedPageIndex > 0 && e.OldStartingIndex >= SelectedPageIndex) SelectedPageIndex = e.OldStartingIndex - 1; // To avoid 3/2 for example
             OnPropertyChanged(nameof(CanDeletePage));
             UpdateSelectedPage();
         }

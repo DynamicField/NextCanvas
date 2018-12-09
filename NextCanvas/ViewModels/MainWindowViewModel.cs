@@ -165,7 +165,7 @@ namespace NextCanvas.ViewModels
         public DelegateCommand CreateImageCommand { get; private set; }
         public DelegateCommand CreateScreenshotCommand { get; private set; }
         public DelegateCommand CreateWebBrowserCommand { get; private set; }
-        public string PageDisplayText => CurrentDocument.SelectedIndex + 1 + "/" + CurrentDocument.Pages.Count;
+        public string PageDisplayText => CurrentDocument.SelectedPageIndex + 1 + "/" + CurrentDocument.Pages.Count;
 
         private DocumentReader DocumentReader { get; } = new DocumentReader();
         private DocumentSaver DocumentSaver { get; } = new DocumentSaver();
@@ -178,7 +178,7 @@ namespace NextCanvas.ViewModels
 
         private void DocumentPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(DocumentViewModel.SelectedIndex))
+            if (e.PropertyName == nameof(DocumentViewModel.SelectedPageIndex))
             {
                 UpdatePageText();
                 UpdatePageManipulation();
@@ -468,7 +468,7 @@ namespace NextCanvas.ViewModels
             interact.ActionComplete += (sender, args) =>
             {
                 if (!args.IsAccept) return;
-                DeletePage(CurrentDocument.SelectedIndex);
+                DeletePage(CurrentDocument.SelectedPageIndex);
             };
             interact.ShowInteraction();
         }
@@ -488,24 +488,24 @@ namespace NextCanvas.ViewModels
 
         private void ChangePage(Direction direction)
         {
-            if (CanChangePage(direction)) _document.SelectedIndex += (int)direction;
+            if (CanChangePage(direction)) _document.SelectedPageIndex += (int)direction;
         }
 
         public void ChangePage(int index)
         {
-            if (CanChangePage(index)) _document.SelectedIndex = index;
+            if (CanChangePage(index)) _document.SelectedPageIndex = index;
         }
 
         private void CreateNewPage()
         {
-            CurrentDocument.Pages.Add(new PageViewModel());
+            CurrentDocument.Pages.Insert(CurrentDocument.SelectedPageIndex + 1, new PageViewModel());
             ChangePage(Direction.Forwards);
         }
 
         private bool CanChangePage(Direction direction)
         {
-            return direction == Direction.Forwards && _document.SelectedIndex + 1 != _document.Pages.Count ||
-                   direction == Direction.Backwards && _document.SelectedIndex - 1 >= 0;
+            return direction == Direction.Forwards && _document.SelectedPageIndex + 1 != _document.Pages.Count ||
+                   direction == Direction.Backwards && _document.SelectedPageIndex - 1 >= 0;
         }
 
         private bool CanChangePage(int index)
