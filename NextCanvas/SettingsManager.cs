@@ -3,6 +3,9 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Media;
 using Newtonsoft.Json;
 using NextCanvas;
 using NextCanvas.ViewModels;
@@ -21,20 +24,31 @@ namespace NextCanvas
         static SettingsManager()
         {
             Directory.CreateDirectory(ApplicationDataPath);
-            try
+            Task.Run(() =>
             {
-                using (var streamReader = new StreamReader(FilePath, Encoding.UTF8))
+                try
                 {
-                    Settings = new SettingsViewModel(
-                        JsonConvert.DeserializeObject<SettingsModel>(streamReader.ReadToEnd(), _serializerSettings));
+                    using (var streamReader = new StreamReader(FilePath, Encoding.UTF8))
+                    using (var jsonReader = new JsonTextReader(streamReader))
+                    {
+                        Settings = new SettingsViewModel(new JsonSerializer
+                        {
+                            TypeNameHandling = TypeNameHandling.Auto,
+                            PreserveReferencesHandling = PreserveReferencesHandling.All
+                        }.Deserialize<SettingsModel>(jsonReader));
+                    }
                 }
-            }
-            catch (Exception)
-            {
-                // It's fine we will save it later
-                Settings = new SettingsViewModel();
-            }
-            
+                catch (Exception)
+                {
+                    // It's fine we will save it later
+                    Settings = new SettingsViewModel();
+                }
+
+                if (!Settings.FavoriteColors.Contains(Colors.Black))
+                {
+                    Settings.FavoriteColors.Add(Colors.Black);
+                }
+            });
         }
 
         internal static string ApplicationDataPath =>
@@ -42,7 +56,7 @@ namespace NextCanvas
         private static string FilePath =>
             Path.Combine(ApplicationDataPath, "settings.json");
 
-        public static SettingsViewModel Settings { get; }
+        public static SettingsViewModel Settings { get; private set; } = new SettingsViewModel();
 
         public static void SaveSettings()
         {          

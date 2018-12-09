@@ -103,7 +103,7 @@ namespace NextCanvas
                 Thread.CurrentThread.CurrentUICulture = SettingsManager.Settings.PreferredLanguage;
             }
         }
-        public AddonInfo[] Addons { get; private set; }
+        public AddonInfo[] Addons { get; private set; } = new AddonInfo[0];
         private void SettingsViewModel_CultureChanged(object sender, EventArgs e)
         {
             var windows = Current.Windows.OfType<Window>();

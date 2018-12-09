@@ -22,11 +22,6 @@ namespace NextCanvas
     {
         public SettingsModel()
         {
-            if (!FavoriteColors.Contains(Colors.Black))
-            {
-                FavoriteColors.Add(Colors.Black);
-                ColorGallery.RecentColors.Add(Colors.Black);
-            }
             Tools = new List<Tool>
             {
                 new Tool

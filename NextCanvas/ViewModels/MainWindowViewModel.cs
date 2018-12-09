@@ -1,15 +1,18 @@
 ﻿#region
 
 using Fluent;
-using NextCanvas.Interactivity;
-using NextCanvas.Interactivity.Multimedia;
-using NextCanvas.Interactivity.Progress;
 using NextCanvas;
 using NextCanvas.Content;
+using NextCanvas.Content.ViewModels;
+using NextCanvas.Extensibility.Content;
+using NextCanvas.Interactivity;
+using NextCanvas.Interactivity.Dialogs;
+using NextCanvas.Interactivity.Multimedia;
+using NextCanvas.Interactivity.Progress;
+using NextCanvas.Properties;
 using NextCanvas.Serialization;
 using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
-using NextCanvas.Content.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,9 +25,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using NextCanvas.Extensibility.Content;
-using NextCanvas.Interactivity.Dialogs;
-using NextCanvas.Properties;
 
 #endregion
 
@@ -33,7 +33,7 @@ namespace NextCanvas.ViewModels
     public class MainWindowViewModel : ViewModelBase<MainWindowModel>
     {
         private DocumentViewModel _document;
-       
+
         private ElementCreationContext _elementCreationContext;
         public IInteractionProvider<IErrorInteraction> ErrorProvider { get; set; }
         public IInteractionProvider<IModifyObjectInteraction> ModifyProvider { get; set; }
@@ -246,6 +246,8 @@ namespace NextCanvas.ViewModels
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
 #endif
+            if (App.GetCurrent().Addons.Any())
+            {
                 ContentAddonEntries = App.GetCurrent().Addons.SelectMany(a => a.ResolvedAddonElements)
                     .Where(a => a.IsContentElement())
                     .Select(a => new ContentAddonEntry
@@ -257,10 +259,11 @@ namespace NextCanvas.ViewModels
                         }),
                         AddonData = a.Attribute as ContentAddonElementAttribute
                     }).ToList();
+            }
 #if DEBUG
             }
 #endif
-                OnPropertyChanged(nameof(HasContentAddons));
+            OnPropertyChanged(nameof(HasContentAddons));
         }
         private void CenterElement(ContentElementViewModel v, ElementCreationContext context)
         {
@@ -364,8 +367,15 @@ namespace NextCanvas.ViewModels
             SelectedPage.Elements.Add(element);
         }
 
-        private void SwitchToSelectTool() => IsSelectTool = true;
-        private bool CanSwitchToSelectTool() => !IsSelectTool;
+        private void SwitchToSelectTool()
+        {
+            IsSelectTool = true;
+        }
+
+        private bool CanSwitchToSelectTool()
+        {
+            return !IsSelectTool;
+        }
 
         public void SelectionHandler(object sender, InkCanvasSelectionChangingEventArgs e)
         {
