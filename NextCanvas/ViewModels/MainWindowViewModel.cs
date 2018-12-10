@@ -65,6 +65,7 @@ namespace NextCanvas.ViewModels
                 OnPropertyChanged(nameof(CurrentDocument));
                 UpdatePageManipulation();
                 UpdatePageText();
+                UpdateSelectedPage();
             }
         }
 
