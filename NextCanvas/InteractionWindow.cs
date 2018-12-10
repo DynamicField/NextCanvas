@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Windows;
 using System.Windows.Threading;
 using NextCanvas.Interactivity;
@@ -18,13 +19,13 @@ namespace NextCanvas
         {
             Dispatcher.Invoke(Close);
         }
-
+        
         public virtual void ShowInteraction() => ShowInteraction(true);
         public virtual void ShowInteraction(bool modal)
         {
             if (modal)
             {
-                Dispatcher.Invoke(ShowDialog);
+                Dispatcher.BeginInvoke(new Action(() => ShowDialog()));
             }
             else
             {
