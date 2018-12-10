@@ -1,4 +1,5 @@
-﻿using NextCanvas;
+﻿using System.Text;
+using NextCanvas;
 
 namespace NextCanvas.ViewModels
 {
@@ -10,14 +11,21 @@ namespace NextCanvas.ViewModels
 
         public LogViewModel(LogModel model = null) : base(model)
         {
+            Model.SetBuilder(_logStringBuilder);
         }
+        private StringBuilder _logStringBuilder = new StringBuilder();
 
+        public void Append(string s)
+        {
+            _logStringBuilder.AppendLine(s);
+        }
         public string LogString
         {
-            get => Model.Log;
+            get => _logStringBuilder.ToString();
             set
             {
-                Model.Log = value;
+                _logStringBuilder = new StringBuilder(value);
+                Model.SetBuilder(_logStringBuilder);
                 OnPropertyChanged(nameof(LogString));
             }
         }

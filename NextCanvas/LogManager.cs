@@ -11,10 +11,11 @@ namespace NextCanvas
 
         public static void AddLogItem(string item, [CallerMemberName] string sender = "Unknown", LogEntryStatus status = LogEntryStatus.Information)
         {
-            Log.LogString += $"[{DateTime.Now:HH:mm:ss.ffff}] [{status}] {sender} -> {item}" + Environment.NewLine;
+            var result = $"[{DateTime.Now:HH:mm:ss.ffff}] [{status}] {sender} -> {item}";
+            Log.Append(result);
             if (status != LogEntryStatus.Information)
             {
-                Log.LogString += Environment.StackTrace;
+                Log.Append(Environment.StackTrace);
             }
         }
     }

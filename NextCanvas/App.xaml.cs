@@ -6,6 +6,7 @@ using NextCanvas.ViewModels;
 using NextCanvas.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,12 @@ namespace NextCanvas
     {
         public static App GetCurrent()
         {
+#if DEBUG
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) // This is a trick to make XAML designer ok with the default app.
+            {
+                return new App();
+            }
+#endif
             return (App)Current;
         }
 
