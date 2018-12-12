@@ -113,7 +113,7 @@ namespace NextCanvas.Controls
         }
         private void UpdateBulletsListButton()
         {
-            var list = VisualTreeUtilities.FindLogicalParent<List>(TextBox.Selection.Start.Parent);
+            var list = WpfTreeUtilities.FindLogicalParent<List>(TextBox.Selection.Start.Parent);
             BulletsListButton.IsChecked = list != null;
         }
 

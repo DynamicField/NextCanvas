@@ -46,7 +46,7 @@ namespace NextCanvas.Views
                     if (element == null)
                         continue;
                     object found;
-                    found = VisualTreeUtilities.FindVisualChild<StackPanel>(element).FindName("Number");
+                    found = WpfTreeUtilities.FindVisualChild<StackPanel>(element).FindName("Number");
                     var textBlock = found as TextBlock;
                     if (textBlock == null)
                         continue;

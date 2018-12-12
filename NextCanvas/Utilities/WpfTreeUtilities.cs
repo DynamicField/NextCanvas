@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace NextCanvas.Utilities
 {
-    public static class VisualTreeUtilities
+    public static class WpfTreeUtilities
     {
         public static T FindVisualChild<T>(DependencyObject obj)
             where T : DependencyObject

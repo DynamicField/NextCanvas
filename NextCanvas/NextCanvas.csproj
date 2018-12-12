@@ -230,7 +230,7 @@
     <Compile Include="Utilities\MathExtensions.cs" />
     <Compile Include="Utilities\Multimedia\ScreenshotHelper.cs" />
     <Compile Include="Utilities\UniqueWindowFactory.cs" />
-    <Compile Include="Utilities\VisualTreeUtilities.cs" />
+    <Compile Include="Utilities\WpfTreeUtilities.cs" />
     <Compile Include="Content\ViewModels\ImageElementViewModel.cs" />
     <Compile Include="Content\ViewModels\ResourceElementViewModel.cs" />
     <Compile Include="Content\ViewModels\ResourceViewModel.cs" />
