@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using NextCanvas;
 
 namespace NextCanvas.ViewModels
 {

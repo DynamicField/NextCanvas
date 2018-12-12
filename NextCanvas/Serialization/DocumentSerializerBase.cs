@@ -1,12 +1,11 @@
 ﻿#region
 
-using Ionic.Zip;
-using Newtonsoft.Json;
-using NextCanvas;
-using NextCanvas.Content;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Ionic.Zip;
+using Newtonsoft.Json;
+using NextCanvas.Content;
 using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 
 #endregion

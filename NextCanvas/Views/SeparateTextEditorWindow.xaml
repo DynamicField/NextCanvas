@@ -8,7 +8,5 @@
         xmlns:properties="clr-namespace:NextCanvas.Properties"
         mc:Ignorable="d"
         Title="{x:Static properties:DefaultObjectNamesResources.TextBox}" Height="450" Width="800">
-    <Grid x:Name="Grid">
-        
-    </Grid>
+    <Grid x:Name="Grid" />
 </Window>

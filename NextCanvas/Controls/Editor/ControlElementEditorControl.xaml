@@ -17,10 +17,10 @@
     <UniformGrid Margin="1" Columns="2" VerticalAlignment="Top">
         <UniformGrid.Style>
             <Style TargetType="UniformGrid">
-                <Setter Property="Rows" Value="5"/>
+                <Setter Property="Rows" Value="5" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding ShowCoordinates, ElementName=UserControl}" Value="False">
-                        <Setter Property="Rows" Value="3"/>
+                        <Setter Property="Rows" Value="3" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -44,11 +44,15 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
         </UniformGrid.Resources>
-        <TextBlock Text="{x:Static properties:EditorResources.ContentElementEditor_X}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}"/>
+        <TextBlock Text="{x:Static properties:EditorResources.ContentElementEditor_X}"
+                   Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}" />
         <!-- ReSharper disable Xaml.MissingGridIndex -->
-        <fluent:Spinner Value="{Binding Left}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}"/>
-        <TextBlock Text="{x:Static properties:EditorResources.ContentElementEditor_Y}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}"/>
-        <fluent:Spinner Value="{Binding Top}" Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}" />
+        <fluent:Spinner Value="{Binding Left}"
+                        Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}" />
+        <TextBlock Text="{x:Static properties:EditorResources.ContentElementEditor_Y}"
+                   Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}" />
+        <fluent:Spinner Value="{Binding Top}"
+                        Visibility="{Binding ShowCoordinates, ElementName=UserControl, Converter={StaticResource VisibilityConverter}}" />
         <TextBlock Text="{x:Static properties:RibbonResources.Page_Width}" />
         <fluent:Spinner Value="{Binding Width}" Interval="25" Increment="10" />
         <TextBlock Text="{x:Static properties:RibbonResources.Page_Height}" />

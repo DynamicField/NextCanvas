@@ -16,6 +16,7 @@
             <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-        <local:ControlElementEditorControl HorizontalAlignment="Left" VerticalAlignment="Bottom" ShowCoordinates="{Binding DataContext.IsObjectCreationReversed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:ModifyObjectWindow}}}"/>
+        <local:ControlElementEditorControl HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                           ShowCoordinates="{Binding DataContext.IsObjectCreationReversed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:ModifyObjectWindow}}}" />
     </Grid>
 </UserControl>

@@ -6,11 +6,10 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
-using NextCanvas;
 using NextCanvas.Content;
+using NextCanvas.Content.ViewModels;
 using NextCanvas.Serialization;
 using NextCanvas.Utilities.Content;
-using NextCanvas.Content.ViewModels;
 
 #endregion
 

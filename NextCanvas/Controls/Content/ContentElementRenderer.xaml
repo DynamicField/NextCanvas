@@ -17,30 +17,32 @@
              controls:NextInkCanvas.IsSelected="False"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <local:ContentElementTemplateSelector x:Key="Selector"/>
+        <local:ContentElementTemplateSelector x:Key="Selector" />
     </UserControl.Resources>
     <UserControl.Style>
         <Style TargetType="UserControl">
             <Style.Triggers>
                 <Trigger Property="controls:NextInkCanvas.IsHostedInLightweightRendering" Value="True">
-                    <Setter Property="RenderOptions.BitmapScalingMode" Value="LowQuality"/>
-                    <Setter Property="RenderOptions.EdgeMode" Value="Unspecified"/>
+                    <Setter Property="RenderOptions.BitmapScalingMode" Value="LowQuality" />
+                    <Setter Property="RenderOptions.EdgeMode" Value="Unspecified" />
                 </Trigger>
             </Style.Triggers>
         </Style>
     </UserControl.Style>
     <Grid>
-        <ContentPresenter Content="{Binding}" x:Name="ElementContentPresenter" ContentTemplateSelector="{StaticResource Selector}">
+        <ContentPresenter Content="{Binding}" x:Name="ElementContentPresenter"
+                          ContentTemplateSelector="{StaticResource Selector}">
             <ContentPresenter.Resources>
                 <DataTemplate DataType="{x:Type vm:ImageElementViewModel}">
                     <Image Source="{Binding Image, Mode=OneWay}" Stretch="Uniform" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:TextBoxElementViewModel}">
-                    <controls:XamlRichTextEditor XamlText="{Binding RtfText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                EditorFormatShown="{Binding Path=(controls:NextInkCanvas.IsSelected), ElementName=RendererControl, PresentationTraceSources.TraceLevel=High}"
-                                                Focusable="{Binding Path=(controls:NextInkCanvas.IsSelected), ElementName=RendererControl}"
-                                                Width="{Binding Width, Mode=TwoWay}"
-                                                Height="{Binding Height, Mode=TwoWay}"/>
+                    <controls:XamlRichTextEditor
+                        XamlText="{Binding RtfText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        EditorFormatShown="{Binding Path=(controls:NextInkCanvas.IsSelected), ElementName=RendererControl, PresentationTraceSources.TraceLevel=High}"
+                        Focusable="{Binding Path=(controls:NextInkCanvas.IsSelected), ElementName=RendererControl}"
+                        Width="{Binding Width, Mode=TwoWay}"
+                        Height="{Binding Height, Mode=TwoWay}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type content:ContentElementViewModel}">
                     <local:ElementRecognitionError />
@@ -51,17 +53,17 @@
                             <Border BorderThickness="4" BorderBrush="LightGray" x:Name="Border">
                                 <WebBrowser local:WebBrowserHelper.Source="{Binding Url}"
                                             local:WebBrowserHelper.IgnoreErrors="True"
-                                            Unloaded="WebBrowserUnloaded" x:Name="WebBrowser"/>
+                                            Unloaded="WebBrowserUnloaded" x:Name="WebBrowser" />
                             </Border>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type vm:WebBrowserElementViewModel}" x:Key="LightweightTemplate">
-                            <Rectangle Fill="DodgerBlue"/>
+                            <Rectangle Fill="DodgerBlue" />
                         </DataTemplate>
-                        <local:LightweightDataTemplateSelector 
+                        <local:LightweightDataTemplateSelector
                             LightweightRenderDataTemplate="{StaticResource LightweightTemplate}"
-                            NormalRenderDataTemplate="{StaticResource NormalTemplate}" x:Key="TemplateSelector"/>
+                            NormalRenderDataTemplate="{StaticResource NormalTemplate}" x:Key="TemplateSelector" />
                     </DataTemplate.Resources>
-                    <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource TemplateSelector}"/>
+                    <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource TemplateSelector}" />
                 </DataTemplate>
             </ContentPresenter.Resources>
         </ContentPresenter>

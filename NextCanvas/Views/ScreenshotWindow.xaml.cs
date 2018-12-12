@@ -37,18 +37,11 @@ namespace NextCanvas.Views
 
         private bool _isCapturing;
 
-        public ScreenshotWindow(Window owner)
+        public ScreenshotWindow(Window owner = null)
         {
             Initialize(owner);
             InitializeComponent();
         }
-
-        public ScreenshotWindow()
-        {
-            Initialize();
-            InitializeComponent();
-        }
-
         private void Initialize(Window owner = null)
         {
             if (owner != null)
@@ -63,8 +56,15 @@ namespace NextCanvas.Views
             {
                 FullScreenshot = ScreenshotHelper.TakeScreenshot(true, out _usedScreen);
             }
-            Left = _usedScreen.Bounds.Left;
+            LogManager.AddLogItem($"UsedScreen: left: {_usedScreen.Bounds.Left}", "Screenshot.Initialize");
+            Left = _usedScreen.Bounds.Left; // ensure multi screen
             Top = 0;
+            Width = 1; // This is a trick to reduce the maximizing visuals.
+            Height = 1;
+            WindowState = WindowState.Maximized;
+#if DEBUG
+            LogManager.AddLogItem($"My left is: {Left}");
+#endif
         }
         private Screen _usedScreen;
         public BitmapSource FullScreenshot
@@ -170,6 +170,7 @@ namespace NextCanvas.Views
 
         private async void ScreenshotWindow_OnContentRendered(object sender, EventArgs e)
         {
+            Focus();
             await Task.Delay(TimeBeforeAutoClose);
             if (!_isCapturing) Close();
         }

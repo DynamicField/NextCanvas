@@ -1,10 +1,5 @@
 ﻿#region
 
-using System;
-using System.Collections.Generic;
-using System.Windows.Controls;
-using System.Windows.Ink;
-using System.Windows.Input;
 using Newtonsoft.Json;
 
 #endregion

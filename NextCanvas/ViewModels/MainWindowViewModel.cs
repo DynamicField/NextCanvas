@@ -1,18 +1,5 @@
 ﻿#region
 
-using Fluent;
-using NextCanvas;
-using NextCanvas.Content;
-using NextCanvas.Content.ViewModels;
-using NextCanvas.Extensibility.Content;
-using NextCanvas.Interactivity;
-using NextCanvas.Interactivity.Dialogs;
-using NextCanvas.Interactivity.Multimedia;
-using NextCanvas.Interactivity.Progress;
-using NextCanvas.Properties;
-using NextCanvas.Serialization;
-using NextCanvas.Utilities;
-using NextCanvas.Utilities.Content;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,6 +12,18 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Fluent;
+using NextCanvas.Content;
+using NextCanvas.Content.ViewModels;
+using NextCanvas.Extensibility.Content;
+using NextCanvas.Interactivity;
+using NextCanvas.Interactivity.Dialogs;
+using NextCanvas.Interactivity.Multimedia;
+using NextCanvas.Interactivity.Progress;
+using NextCanvas.Properties;
+using NextCanvas.Serialization;
+using NextCanvas.Utilities;
+using NextCanvas.Utilities.Content;
 
 #endregion
 

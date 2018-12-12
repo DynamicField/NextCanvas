@@ -1,6 +1,5 @@
 ﻿#region
 
-using NextCanvas;
 using System.Windows.Media;
 
 #endregion

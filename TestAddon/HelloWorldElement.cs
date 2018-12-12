@@ -15,7 +15,7 @@ namespace TestAddon
         }
         public int Fun
         {
-            get => GetProperty<int>();
+            get => GetProperty(20);
             set => SetProperty(value);
         }
         public DelegateCommand MoreWorldsCommand { get; }

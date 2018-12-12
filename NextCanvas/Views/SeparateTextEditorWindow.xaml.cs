@@ -1,18 +1,5 @@
-﻿using NextCanvas.Controls;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Fluent;
+﻿using System.Windows;
+using NextCanvas.Controls;
 
 namespace NextCanvas.Views
 {
@@ -44,12 +31,10 @@ namespace NextCanvas.Views
             Width = _lastWidth + (ActualWidth - Grid.ActualWidth);
         }
 
-        private int _noResizeCount = 0;
         private double _lastWidth, _lastHeight;
         private readonly XamlRichTextEditor _editor;
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            _noResizeCount = 1;
             _editor.Width = Grid.ActualWidth;
             _editor.Height = Grid.ActualHeight;
         }

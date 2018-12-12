@@ -1,27 +1,22 @@
 ﻿#region
 
+using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Threading;
 using Fluent;
 using Microsoft.Win32;
 using NextCanvas.Interactivity;
 using NextCanvas.Interactivity.Dialogs;
 using NextCanvas.Interactivity.Multimedia;
 using NextCanvas.Interactivity.Progress;
+using NextCanvas.Properties;
 using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels;
 using NextCanvas.Views.Editor;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using NextCanvas.Properties;
 using Gallery = Fluent.ColorGallery;
-using MenuItem = Fluent.MenuItem;
 
 #endregion
 

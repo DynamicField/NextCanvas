@@ -63,13 +63,20 @@ namespace NextCanvas.Extensibility.Content
                 instance.SetModel(m);
             return instance;
         }
-        protected T GetProperty<T>([CallerMemberName] string name = null)
+        /// <summary>
+        /// Gets the stored property.
+        /// </summary>
+        /// <typeparam name="T">The property's type to find</typeparam>
+        /// <param name="defaultValue">The default value to return if the property is undefined.</param>
+        /// <param name="name">The name of the property</param>
+        /// <returns>The requested property</returns>
+        protected T GetProperty<T>(T defaultValue = default(T), [CallerMemberName] string name = null)
         {
             if (name is null)
             {
                 return default(T);
             }
-            AddIfNotPresent<T>(name);
+            AddIfNotPresent(name, defaultValue);
             var value = Model.Properties[name];
             try
             {
@@ -80,15 +87,24 @@ namespace NextCanvas.Extensibility.Content
                 return (T) Convert.ChangeType(value, typeof(T));
             }
         }
-
-        private void AddIfNotPresent<T>(string name)
+        /// <inheritdoc cref="GetProperty{T}"/>
+        /// <summary>
+        /// Gets the property with the default value. This is the same as <see cref="GetProperty{T}"/>, except the name is clearer.
+        /// </summary>
+        protected T GetPropertyWithDefault<T>(T defaultValue, string name = null) => GetProperty(defaultValue, name);
+        private void AddIfNotPresent<T>(string name, T defaultValue = default(T))
         {
             if (!Model.Properties.ContainsKey(name))
             {
-                Model.Properties.Add(name, default(T));
+                Model.Properties.Add(name, defaultValue);
             }
         }
-
+        /// <summary>
+        /// Sets the property.
+        /// </summary>
+        /// <typeparam name="T">The property's type</typeparam>
+        /// <param name="value">The value to set</param>
+        /// <param name="name">The name of the property</param>
         protected void SetProperty<T>(T value, [CallerMemberName] string name = null)
         {
             if (name is null) return;

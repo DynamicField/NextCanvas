@@ -1,9 +1,9 @@
 ﻿#region
 
-using NextCanvas.Utilities.Content;
-using NextCanvas.ViewModels;
 using System;
 using System.IO;
+using NextCanvas.Utilities.Content;
+using NextCanvas.ViewModels;
 
 #endregion
 

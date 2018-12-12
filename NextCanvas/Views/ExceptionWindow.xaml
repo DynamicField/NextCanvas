@@ -32,9 +32,10 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel>
-                <TextBlock FontSize="25" FontWeight="Bold" Text="{x:Static properties:ErrorResources.Exception_Header}"/>
-                <TextBlock TextWrapping="Wrap" LineHeight="12" Margin="0,5" Text="{x:Static properties:ErrorResources.Exception_Content}"/>
-                <TextBlock Text="{x:Static properties:ErrorResources.Exception_Footer}"/>
+                <TextBlock FontSize="25" FontWeight="Bold" Text="{x:Static properties:ErrorResources.Exception_Header}" />
+                <TextBlock TextWrapping="Wrap" LineHeight="12" Margin="0,5"
+                           Text="{x:Static properties:ErrorResources.Exception_Content}" />
+                <TextBlock Text="{x:Static properties:ErrorResources.Exception_Footer}" />
             </StackPanel>
             <TextBox Grid.Row="1" Margin="0,10,10,5" FontFamily="Consolas" Padding="2" IsReadOnly="True" x:Name="Info"
                      VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap">
@@ -43,8 +44,10 @@
         </Grid>
         <Border Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Background="LightGray">
             <StackPanel Orientation="Horizontal" Margin="8" HorizontalAlignment="Right">
-                <Button Padding="30,5" Margin="10,0" Click="Button_Click_1" Content="{x:Static properties:ErrorResources.Exception_ReportThisProblem}"/>
-                <Button Padding="30,5" Click="Button_Click" Content="{x:Static properties:ErrorResources.Exception_OkSad}"/>
+                <Button Padding="30,5" Margin="10,0" Click="Button_Click_1"
+                        Content="{x:Static properties:ErrorResources.Exception_ReportThisProblem}" />
+                <Button Padding="30,5" Click="Button_Click"
+                        Content="{x:Static properties:ErrorResources.Exception_OkSad}" />
             </StackPanel>
         </Border>
     </Grid>

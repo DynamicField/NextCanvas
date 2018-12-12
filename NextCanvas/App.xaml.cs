@@ -1,9 +1,4 @@
 ﻿
-using NextCanvas.Content.ViewModels;
-using NextCanvas.Extensibility;
-using NextCanvas.Properties;
-using NextCanvas.ViewModels;
-using NextCanvas.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +8,10 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using NextCanvas.Content.ViewModels;
+using NextCanvas.Extensibility;
+using NextCanvas.ViewModels;
+using NextCanvas.Views;
 
 namespace NextCanvas
 {
@@ -40,13 +39,14 @@ namespace NextCanvas
             WebBrowserElementViewModel.SetHighestIEMode();
             SetSettingsLanguage();
             AddUnhandledExceptionHandlers();
+            Exit += (sender, args) => { SettingsManager.SaveSettings(); };
             SettingsViewModel.CultureChanged += SettingsViewModel_CultureChanged;
         }
 
         private void AddUnhandledExceptionHandlers()
         {
             AppDomain.CurrentDomain.UnhandledException += RestInPeperonies;
-            Exit += (sender, args) => { SettingsManager.SaveSettings(); };
+            DispatcherUnhandledException += (s, e) => RestInPeperonies(s, new UnhandledExceptionEventArgs(e.Exception, e.Handled));
         }
 
         private void SetAddons()

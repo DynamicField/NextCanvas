@@ -1,10 +1,9 @@
 ﻿#region
 
 using System.Windows.Ink;
-using NextCanvas;
 using NextCanvas.Content;
-using NextCanvas.Utilities.Content;
 using NextCanvas.Content.ViewModels;
+using NextCanvas.Utilities.Content;
 
 #endregion
 

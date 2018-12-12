@@ -1,14 +1,12 @@
 ﻿#region
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ionic.Zip;
-using NextCanvas.Interactivity.Progress;
-using NextCanvas;
 using NextCanvas.Content;
+using NextCanvas.Interactivity.Progress;
 
 #endregion
 

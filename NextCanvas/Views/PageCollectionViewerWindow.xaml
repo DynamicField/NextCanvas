@@ -86,7 +86,8 @@
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Button Content="{x:Static properties:PageManagerResources.DeleteSelectedPages}" Padding="5,0" Command="{Binding DeletePagesCommand}"
+                <Button Content="{x:Static properties:PageManagerResources.DeleteSelectedPages}" Padding="5,0"
+                        Command="{Binding DeletePagesCommand}"
                         CommandParameter="{Binding SelectedItems, ElementName=ListBox}" x:Name="DeleteButton" />
             </Grid>
         </Border>

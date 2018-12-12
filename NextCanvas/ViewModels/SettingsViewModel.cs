@@ -1,8 +1,5 @@
 ﻿#region
 
-using Ionic.Zlib;
-using NextCanvas;
-using NextCanvas.Properties;
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
@@ -11,7 +8,8 @@ using System.Linq;
 using System.Resources;
 using System.Threading;
 using System.Windows.Media;
-using Fluent;
+using Ionic.Zlib;
+using NextCanvas.Properties;
 
 #endregion
 

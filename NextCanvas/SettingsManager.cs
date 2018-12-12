@@ -3,11 +3,9 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Newtonsoft.Json;
-using NextCanvas;
 using NextCanvas.ViewModels;
 
 #endregion

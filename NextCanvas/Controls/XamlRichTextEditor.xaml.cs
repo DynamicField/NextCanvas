@@ -1,13 +1,13 @@
-﻿using NextCanvas.Controls.Content;
-using NextCanvas.Utilities;
-using NextCanvas.Views;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
+using NextCanvas.Controls.Content;
+using NextCanvas.Utilities;
+using NextCanvas.Views;
 
 namespace NextCanvas.Controls
 {
