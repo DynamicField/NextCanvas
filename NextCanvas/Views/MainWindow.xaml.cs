@@ -1,10 +1,5 @@
 ﻿#region
 
-using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Threading;
 using Fluent;
 using Microsoft.Win32;
 using NextCanvas.Interactivity;
@@ -16,6 +11,13 @@ using NextCanvas.Utilities;
 using NextCanvas.Utilities.Content;
 using NextCanvas.ViewModels;
 using NextCanvas.Views.Editor;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Threading;
 using Gallery = Fluent.ColorGallery;
 
 #endregion
@@ -68,7 +70,7 @@ namespace NextCanvas.Views
         public DelegateInteractionProvider<IErrorInteraction> ErrorProvider =>
             new DelegateInteractionProvider<IErrorInteraction>(() => new MessageBoxError(this));
 
-        public DelegateInteractionProvider<IUserRequestInteraction> DialogProvider => 
+        public DelegateInteractionProvider<IUserRequestInteraction> DialogProvider =>
             new DelegateInteractionProvider<IUserRequestInteraction>(() => new MessageBoxRequest(this));
 
         public static DelegateInteractionProvider<IModifyObjectInteraction> ModifyProvider { get; private set; }
@@ -210,10 +212,13 @@ namespace NextCanvas.Views
 
         private void NewWindow_Click(object sender, RoutedEventArgs e)
         {
-            new MainWindow() { DataContext = new MainWindowViewModel
+            new MainWindow()
             {
-                CurrentDocument = ((MainWindowViewModel)DataContext).CurrentDocument
-            }}.Show();
+                DataContext = new MainWindowViewModel
+                {
+                    CurrentDocument = ((MainWindowViewModel)DataContext).CurrentDocument
+                }
+            }.Show();
         }
     }
 }

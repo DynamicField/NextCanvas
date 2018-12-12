@@ -26,7 +26,6 @@ namespace NextCanvas.ViewModels
 
         public ObservableViewModelCollection<PageViewModel, Page> Pages { get; private set; }
         public ObservableViewModelCollection<ResourceViewModel, Resource> Resources { get; set; }
-
         internal IResourceViewModelLocator ResourceLocator => _locator;
 
         private void Initialize()

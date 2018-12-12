@@ -1,9 +1,9 @@
 ﻿#region
 
-using System.Windows.Ink;
 using NextCanvas.Content;
 using NextCanvas.Content.ViewModels;
 using NextCanvas.Utilities.Content;
+using System.Windows.Ink;
 
 #endregion
 
@@ -11,8 +11,9 @@ namespace NextCanvas.ViewModels
 {
     public class PageViewModel : ViewModelBase<Page>
     {
+        public const int CacheStrokeVisualsThreshold = 2_250;
         private IResourceViewModelLocator _locator;
-
+        public bool ShouldCache => Strokes.Count >= CacheStrokeVisualsThreshold;
         public PageViewModel(Page model = null) : base(model)
         {
             Initialize();
@@ -85,6 +86,13 @@ namespace NextCanvas.ViewModels
                     e => ContentElementViewModelFinder.GetViewModel(e, Locator)); // With a locator.
             }
             if (_locator != null) SetLocatorForCollection();
+            Strokes.StrokesChanged += Strokes_StrokesChanged;
+        }
+
+        private void Strokes_StrokesChanged(object sender, StrokeCollectionChangedEventArgs e)
+        {
+             if (Strokes.Count >= CacheStrokeVisualsThreshold)
+                OnPropertyChanged(nameof(ShouldCache));
         }
 
         private void SetLocatorForCollection()

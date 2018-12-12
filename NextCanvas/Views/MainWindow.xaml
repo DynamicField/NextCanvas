@@ -111,6 +111,20 @@
                         ScrollViewerReferent="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"
                         SelectedItems="{Binding SelectedElements}"
                         CustomStrokeInvocator="{Binding SelectedTool, Converter={StaticResource ToolToConstructorConverter}}">
+                        <local:NextInkCanvas.Style>
+                            <Style TargetType="{x:Type local:NextInkCanvas}">
+                                <Setter Property="CacheMode" Value="{x:Null}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedPage.ShouldCache, IsAsync=True}" Value="True">
+                                        <Setter Property="CacheMode">
+                                            <Setter.Value>
+                                                <BitmapCache EnableClearType="True" RenderAtScale="2" SnapsToDevicePixels="True"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:NextInkCanvas.Style>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanging">
                                 <ei:CallMethodAction TargetObject="{Binding}" MethodName="SelectionHandler" />
