@@ -49,6 +49,7 @@
     <Compile Include="AddonElementAttribute.cs" />
     <Compile Include="AddonInfo.cs" />
     <Compile Include="AddonInfoAttribute.cs" />
+    <Compile Include="AddonInfoNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows;
 using NextCanvas.Content.ViewModels;
 using NextCanvas.Extensibility;
+using NextCanvas.Utilities;
 using NextCanvas.ViewModels;
 using NextCanvas.Views;
 
@@ -79,7 +80,7 @@ namespace NextCanvas
         {
             try
             {
-                return Assembly.LoadFrom(path);
+                return Assembly.ReflectionOnlyLoadFrom(path);
             }
             catch (Exception e)
             {
@@ -93,12 +94,17 @@ namespace NextCanvas
         {
             try
             {
-                return new AddonInfo(assembly);
+                return new AddonInfo(assembly, true);
+            }
+            catch (AddonInfoNotFoundException)
+            {
+                LogManager.AddLogItem($"No {nameof(AddonInfoAttribute)} found on the assembly {assembly.GetSimpleName()}.");
+                return null;
             }
             catch (Exception e)
             {
                 ErrorQueue.Add(
-                    $"We had a problem loading the addon {assembly.GetName().Name}. Please contact the developer of this addon or it can also be a bug other than that.\n{e.Message}");
+                    $"We had a problem loading the addon {assembly.GetSimpleName()}. Please contact the developer of this addon or it can also be a bug other than that.\n{e.Message}");
                 LogManager.AddLogItem($"Could not load addon {assembly.FullName}. Exception: {e.Message}\nStack trace:\n{e.StackTrace}", status: LogEntryStatus.Error);
                 return null;
             }
@@ -144,8 +150,17 @@ namespace NextCanvas
         {
             LogManager.AddLogItem("OnStartup started.", "Initialisation");
             base.OnStartup(e);
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
             SetAddons();
         }
+
+        private Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var resolvedAssembly = Assembly.ReflectionOnlyLoad(args.Name);
+            LogManager.AddLogItem($"Resolved reflection only assembly as requested by {args.RequestingAssembly.GetSimpleName()}: {resolvedAssembly.GetSimpleName()}", "ReflectionOnlyResolver");
+            return resolvedAssembly;
+        }
+
         public static IEnumerable<CultureInfo> SupportedCultures => new[]
         {
             CultureInfo.GetCultureInfo("en-US"),

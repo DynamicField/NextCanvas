@@ -14,10 +14,19 @@ namespace NextCanvas.Extensibility
         public AddonInfoAttribute AddonInfoAttribute { get; }
         public AddonElementData[] ResolvedAddonElements { get; }
         public DataTemplate[] AvailableDataTemplates { get; } = new DataTemplate[0];
-        public AddonInfo(Assembly assembly)
+        public AddonInfo(Assembly assembly, bool isReflectionOnlyLoad = false)
         {
+            if (isReflectionOnlyLoad)
+            {
+                if (assembly.CustomAttributes.All(c => c.AttributeType.FullName != typeof(AddonInfoAttribute).FullName))
+                {
+                    ThrowAddonInfoNotFound();
+                }
+                assembly = Assembly.Load(assembly.GetName());
+            }
             var attribute = assembly.GetCustomAttributes().OfType<AddonInfoAttribute>().FirstOrDefault();
-            AddonInfoAttribute = attribute ?? throw new InvalidOperationException("This assembly does not have an AddonInfoAttribute.");
+            if (attribute is null) ThrowAddonInfoNotFound();
+            AddonInfoAttribute = attribute;
             ResolvedAddonElements = assembly.ExportedTypes
                 .Select(t => new AddonElementData(t.GetCustomAttribute<AddonElementAttribute>(), t))
                 .Where(data => data.Attribute != null).ToArray();
@@ -32,6 +41,11 @@ namespace NextCanvas.Extensibility
             {
                 Debug.WriteLine("No data templates? " + e.Message);
             }
+        }
+
+        private static void ThrowAddonInfoNotFound()
+        {
+            throw new AddonInfoNotFoundException("This assembly does not have an AddonInfoAttribute.");
         }
     }
 
