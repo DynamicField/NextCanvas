@@ -135,9 +135,11 @@
                                             <Setter Property="X2" Value="10" />
                                             <Setter Property="Y2" Value="0" />
                                             <Setter Property="VerticalAlignment" Value="Center" />
+                                            <Setter Property="SnapsToDevicePixels" Value="True"/>
+                                            <Setter Property="UseLayoutRounding" Value="True"/>
                                         </Style>
                                     </StackPanel.Resources>
-                                    <StackPanel>
+                                    <StackPanel SnapsToDevicePixels="True">
                                         <Ellipse />
                                         <Line />
                                     </StackPanel>

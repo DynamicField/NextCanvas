@@ -36,7 +36,7 @@ namespace NextCanvas.Views
             PropertyChangedObject.RegisterWindow(this);
             DataContextChanged += OnDataContextChanged;
             DataContext = new MainWindowViewModel();
-            _pageViewerFactory = new UniqueWindowFactory<PageCollectionViewerWindow>(() => new PageCollectionViewerWindow((MainWindowViewModel)DataContext), this);
+            _pageViewerFactory = new UniqueWindowFactory<PageCollectionViewerWindow>(() => new PageCollectionViewerWindow((MainWindowViewModel)DataContext), this, hideInsteadOfClose: true);
             Canvas.DefaultDrawingAttributes.FitToCurve = true;
             ContentRendered += (_, __) =>
             {

@@ -36,9 +36,12 @@
                 <DataTemplate DataType="vm:PageViewModel">
                     <StackPanel HorizontalAlignment="Left" Margin="5">
                         <Border BorderThickness="1" BorderBrush="Black">
-                            <Viewbox Stretch="Fill" StretchDirection="Both"
+                            <Viewbox Stretch="Fill" StretchDirection="Both" Margin="1"
                                      Width="{Binding Path=DataContext.WantedWidth, ElementName=Window}"
                                      Height="{Binding Path=DataContext.WantedHeight, ElementName=Window}">
+                                <Viewbox.CacheMode>
+                                    <BitmapCache RenderAtScale="1.3" EnableClearType="False"/>
+                                </Viewbox.CacheMode>
                                 <controls:NextInkCanvas
                                     x:Name="Canvas" EditingMode="None"
                                     Width="{Binding Width}"
