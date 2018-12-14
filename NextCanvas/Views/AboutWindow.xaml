@@ -1,0 +1,59 @@
+﻿<Window x:Class="NextCanvas.Views.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NextCanvas.Views" WindowStartupLocation="CenterOwner"
+        xmlns:properties="clr-namespace:NextCanvas.Properties" WindowStyle="None" AllowsTransparency="True"
+        mc:Ignorable="d" Style="{StaticResource DarkWindowStyle}" BorderThickness="1" BorderBrush="Gray"
+        Title="{x:Static properties:AboutResources.About}" Height="490.567" Width="568.309">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="55"/>
+        </Grid.RowDefinitions>
+        <StackPanel MouseMove="UpperStackPanelMouseMove" VerticalAlignment="Top" Background="Transparent" x:Name="MoveBar" Height="60">
+            <Button HorizontalAlignment="Right" Width="35" Height="25" Background="Transparent" BorderThickness="0"
+                Content="X" Foreground="White" FontSize="15" Click="CloseButtonClick" Template="{DynamicResource DarkButtonTemplate}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Margin="15" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderBrush="Gray" BorderThickness="1">
+                <Image Source="/NextCanvas;component/Images/NextCanvas.png" />
+            </Border>
+            <Viewbox VerticalAlignment="Center" HorizontalAlignment="Center" StretchDirection="UpOnly" Margin="10,0">
+                <TextBlock Text="NEXTCANVAS" FontWeight="Bold" />
+            </Viewbox>
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock FontSize="19" TextWrapping="Wrap" HorizontalAlignment="Center" Grid.ColumnSpan="2" VerticalAlignment="Top"
+                       Text="{x:Static properties:AboutResources.NextCanvasMotto}" TextAlignment="Center"/>
+            <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock TextAlignment="Center">
+                    <Run Text="{x:Static properties:AboutResources.MadeBy}"/>
+                    <LineBreak/>
+                    <Run Text="{x:Static properties:AboutResources.MadeBy_SourceCode}"/> <Hyperlink Foreground="White" RequestNavigate="GithubLinkClick" NavigateUri="https://github.com/jeuxjeux20/NextCanvas">GitHub</Hyperlink>!
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center">
+                    <Run Text="{x:Static properties:AboutResources.IconSource}"/> <Hyperlink Foreground="White" RequestNavigate="Icons8Click" NavigateUri="https://icons8.com">Icons8</Hyperlink>
+                    <LineBreak/>
+                    <Run Text="{x:Static properties:AboutResources.IconSourceAmazing}"/>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                   Text="{x:Static properties:AssemblyInfo.VersionWithoutZeros}" Margin="10,0" FontSize="25"/>
+        <Button Margin="10" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                Content="{x:Static properties:DialogResources.Ok}" Padding="15,5" MinWidth="90" Click="OkButtonClick"/>
+    </Grid>
+</Window>

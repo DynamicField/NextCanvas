@@ -14,7 +14,7 @@
     xmlns:properties="clr-namespace:NextCanvas.Properties"
     x:Class="NextCanvas.Views.MainWindow"
     UseLayoutRounding="True" x:Name="Window"
-    mc:Ignorable="d" ResizeBorderThickness="8" ResizeMode="CanResizeWithGrip"
+    mc:Ignorable="d" ResizeBorderThickness="8" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
     d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:MainWindowViewModel}}"
     Title="NextCanvas" Height="720" Width="1202">
     <fluent:RibbonWindow.InputBindings>
@@ -150,12 +150,16 @@
                 </Style>
             </fluent:Ribbon.Style>
             <fluent:Ribbon.Menu>
-                <fluent:ApplicationMenu Header="{x:Static properties:RibbonResources.File}">
+                <fluent:ApplicationMenu Header="{x:Static properties:RibbonResources.File}" x:Name="ApplicationMenu">
                     <fluent:ApplicationMenu.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="0" />
                         </Style>
                     </fluent:ApplicationMenu.Resources>
+                    <fluent:ApplicationMenu.FooterPaneContent>
+                        <Button Content="{x:Static properties:AboutResources.About}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Margin="5" Padding="5,1" Click="AboutButtonClick"/>
+                    </fluent:ApplicationMenu.FooterPaneContent>
                     <fluent:ApplicationMenu.RightPaneContent>
                         <TextBlock>
                             <Run Text="Thing" />

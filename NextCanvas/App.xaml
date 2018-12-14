@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="/NextCanvas;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <ControlTemplate x:Key="SpinnerTemplate" TargetType="{x:Type fluent:Spinner}">
                 <Grid Background="Transparent" Height="22" Width="Auto">

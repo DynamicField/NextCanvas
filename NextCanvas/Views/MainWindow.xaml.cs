@@ -220,5 +220,11 @@ namespace NextCanvas.Views
                 }
             }.Show();
         }
+
+        private void AboutButtonClick(object sender, RoutedEventArgs e)
+        {
+            ApplicationMenu.IsDropDownOpen = false;
+            new AboutWindow { Owner = this }.ShowDialog();
+        }
     }
 }

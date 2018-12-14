@@ -1,9 +1,11 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using NextCanvas.Properties;
 
@@ -56,8 +58,8 @@ using NextCanvas.Properties;
 // Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de build et de révision par défaut
 // en utilisant '*', comme indiqué ci-dessous :
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion(AssemblyInfo.Version)]
+[assembly: AssemblyFileVersion(AssemblyInfo.Version)]
 [assembly: Guid(AssemblyInfo.GuidString)]
 
 namespace NextCanvas.Properties
@@ -65,6 +67,30 @@ namespace NextCanvas.Properties
     public static class AssemblyInfo
     {
         public const string GuidString = "572E9214-D38A-454A-A3F1-84714AC8C7C3";
+        public const string Version = "2.0.0.0";
         public static readonly Guid Guid = new Guid(GuidString);
+        public static string VersionWithoutZeros => GetVersionWithoutLeadingZeroes();
+        public static string GetVersionWithoutLeadingZeroes()
+        {
+            var bits = Version.Split('.');
+            var result = new StringBuilder();
+            for (var i = 0; i < bits.Length; i++)
+            {
+                var versionPart = bits[i];
+                var addDot = i != bits.Length - 1;
+                result.Append(versionPart);
+                if (i >= 1 && bits.Skip(i + 1).All(s => s.Equals("0"))) // They all are zeroes after.
+                {
+                    break;
+                }
+
+                if (addDot)
+                {
+                    result.Append('.');
+                }
+            }
+
+            return result.ToString();
+        }
     }
 }

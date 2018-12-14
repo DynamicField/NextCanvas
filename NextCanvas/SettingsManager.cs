@@ -55,7 +55,7 @@ namespace NextCanvas
             Path.Combine(ApplicationDataPath, "settings.json");
 
         public static SettingsViewModel Settings { get; private set; } = new SettingsViewModel();
-
+        
         public static void SaveSettings()
         {          
             using (var file = new FileStream(FilePath, FileMode.Create, FileAccess.Write))
