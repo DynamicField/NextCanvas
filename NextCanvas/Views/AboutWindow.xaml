@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NextCanvas.Views" WindowStartupLocation="CenterOwner"
         xmlns:properties="clr-namespace:NextCanvas.Properties" WindowStyle="None" AllowsTransparency="True"
-        mc:Ignorable="d" Style="{StaticResource DarkWindowStyle}" BorderThickness="1" BorderBrush="Gray"
-        Title="{x:Static properties:AboutResources.About}" Height="490.567" Width="568.309">
+        mc:Ignorable="d" Style="{StaticResource DarkWindowStyle}" BorderThickness="1" BorderBrush="Gray" ShowInTaskbar="False"
+        Title="{x:Static properties:AboutResources.About}" Height="490" Width="560">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="55"/>
         </Grid.RowDefinitions>
-        <StackPanel MouseMove="UpperStackPanelMouseMove" VerticalAlignment="Top" Background="Transparent" x:Name="MoveBar" Height="60">
+        <StackPanel MouseDown="UpperStackPanelMouseMove" Background="Transparent" x:Name="MoveBar" ZIndex="1">
             <Button HorizontalAlignment="Right" Width="35" Height="25" Background="Transparent" BorderThickness="0"
-                Content="X" Foreground="White" FontSize="15" Click="CloseButtonClick" Template="{DynamicResource DarkButtonTemplate}"/>
+                Content="X" Foreground="White" FontSize="15" Click="CloseButtonClick" Template="{DynamicResource CloseButtonTemplate}"/>
         </StackPanel>
         <StackPanel Grid.Row="0" Margin="15" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Border BorderBrush="Gray" BorderThickness="1">
