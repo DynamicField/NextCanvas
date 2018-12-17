@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime;
 using System.Threading;
 using System.Windows;
 using NextCanvas.Content.ViewModels;
@@ -34,14 +35,24 @@ namespace NextCanvas
         }
 
         public static string RootAddonsPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Addons");
+        public static string RuntimePath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Runtime");
+        private const string JitProfileName = "JitProfile.profile";
         public App()
         {
+            InitializeMultiCoreJit();
             LogManager.AddLogItem("Constructor app started :)", $"NextCanvas {Assembly.GetExecutingAssembly().GetName().Version}");
             WebBrowserElementViewModel.SetHighestIEMode();
             SetSettingsLanguage();
             AddUnhandledExceptionHandlers();
             Exit += (sender, args) => { SettingsManager.SaveSettings(); };
             SettingsViewModel.CultureChanged += SettingsViewModel_CultureChanged;
+        }
+
+        private static void InitializeMultiCoreJit()
+        {
+            Directory.CreateDirectory(RuntimePath);
+            ProfileOptimization.SetProfileRoot(RuntimePath);
+            ProfileOptimization.StartProfile(JitProfileName);
         }
 
         private void AddUnhandledExceptionHandlers()
