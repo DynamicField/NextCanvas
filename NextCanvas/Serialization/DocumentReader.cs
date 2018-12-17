@@ -38,7 +38,6 @@ namespace NextCanvas.Serialization
             using (var zipFile = ZipFile.Read(fileStream))
             {
                 var doc = GetDocumentJson(zipFile);
-                taskManager.Tasks[0].Complete();
                 var resourceTasks = doc.Resources.Select(r => new ProgressTask(40,
                     $"Reading resource {r.Name} ({doc.Resources.IndexOf(r) + 1}/{doc.Resources.Count})"));
                 var progressTasks = resourceTasks as ProgressTask[] ?? resourceTasks.ToArray();
@@ -46,6 +45,7 @@ namespace NextCanvas.Serialization
                 {
                     taskManager.Tasks.Add(task);
                 }
+                taskManager.Tasks[0].Complete();
                 foreach (var resource in doc.Resources)
                     ProcessDataCopying(zipFile, resource, progressTasks[doc.Resources.IndexOf(resource)]); // Copy the deeta to the resources.
                 taskManager.WorkDone();

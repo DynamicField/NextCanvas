@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using NextCanvas.Interactivity.Progress;
 
 #endregion
@@ -26,7 +27,7 @@ namespace NextCanvas.Views
         {
             Dispatcher.BeginInvoke((Action)(async () =>
             {
-                Data.Progress = 100;
+                RefreshUI();
                 await Task.Delay(100);
                 Close();
             }));

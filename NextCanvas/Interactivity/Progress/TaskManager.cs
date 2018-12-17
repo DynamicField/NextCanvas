@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 
 #endregion
 
@@ -17,7 +18,7 @@ namespace NextCanvas.Interactivity.Progress
 
         public TaskManager(T progress, IEnumerable<ProgressTask> tasks)
         {
-            this._progress = progress;
+            _progress = progress;
             var progressTasks = tasks.ToList();
             if (!progressTasks.Any())
                 throw new ArgumentException("There are no tasks for me to do something actually useful. :'(");
@@ -26,6 +27,7 @@ namespace NextCanvas.Interactivity.Progress
             Tasks.CollectionChanged += TasksOnCollectionChanged;
             CurrentTask = Tasks[0];
             UpdateProgress();
+            Application.Current.Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle);
         }
 
         public ProgressTask CurrentTask { get; private set; }
@@ -40,13 +42,10 @@ namespace NextCanvas.Interactivity.Progress
         private void Task_TaskComplete(object sender, EventArgs e)
         {
             var index = Tasks.IndexOf(CurrentTask) + 1;
-            if (index == Tasks.Count)
+            if (index < Tasks.Count)
             {
-                _progress.CloseInteraction();
-                return;
+                CurrentTask = Tasks[index];
             }
-
-            CurrentTask = Tasks[index];
             UpdateProgress();
         }
 
@@ -64,10 +63,12 @@ namespace NextCanvas.Interactivity.Progress
         private void UpdateProgress()
         {
             if (!Tasks.Any()) return;
-            var name = Tasks.First(t => !t.IsComplete || Tasks.IndexOf(t) == Tasks.Count - 1).ProgressText;
-            Application.Current.Dispatcher.Invoke(() => _progress.Data.ProgressText = name);
+            var name = Tasks.FirstOrDefault(t => !t.IsComplete || Tasks.IndexOf(t) == Tasks.Count - 1)?.ProgressText;
+            if (name is null) return;
+            _progress.Data.ProgressText = name;
             // Let's do some quick maths
             ProcessProgress();
+            Application.Current.Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle); // update ui
         }
 
         private void ProcessProgress()
@@ -75,28 +76,30 @@ namespace NextCanvas.Interactivity.Progress
             var totalProgress = Tasks.Sum(t => t.ProgressWeight);
             var completedProgress = Tasks.Sum(t => t.ProgressWeight * (t.Progress / 100));
             var percentage = completedProgress / totalProgress * 100;
-            Application.Current.Dispatcher.Invoke(() => _progress.Data.Progress = percentage);
+            _progress.Data.Progress = percentage;
         }
 
         private void TasksOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
                 foreach (var item in e.NewItems)
-                    AttachEvents((ProgressTask) item);
+                    AttachEvents((ProgressTask)item);
 
             if (e.OldItems != null)
                 foreach (var item in e.OldItems)
-                    DetachEvents((ProgressTask) item);
+                    DetachEvents((ProgressTask)item);
         }
 
         public void WorkDone()
         {
+            Application.Current.Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle);
             Tasks.Clear();
             Tasks.CollectionChanged -= TasksOnCollectionChanged;
             _progress.CloseInteraction();
         }
     }
-    public class TaskManager : TaskManager<IProgressInteraction> {
+    public class TaskManager : TaskManager<IProgressInteraction>
+    {
         public TaskManager(IProgressInteraction progress, IEnumerable<ProgressTask> tasks) : base(progress, tasks)
         {
         }

@@ -14,8 +14,8 @@
             <RowDefinition Height="73*" />
             <RowDefinition Height="96*" />
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding ProgressText}" FontSize="20"
+        <TextBlock Text="{Binding ProgressText, IsAsync=True}" FontSize="20"
                    VerticalAlignment="Center" TextWrapping="Wrap" />
-        <ProgressBar Grid.Row="1" Value="{Binding Progress}" Margin="0,20" />
+        <ProgressBar Grid.Row="1" Value="{Binding Progress, IsAsync=True}" Margin="0,20" />
     </Grid>
 </next:InteractionWindow>

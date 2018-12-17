@@ -33,7 +33,7 @@ namespace NextCanvas
             }
         }
 
-        protected void RefreshUI(DispatcherPriority priority = DispatcherPriority.DataBind)
+        protected void RefreshUI(DispatcherPriority priority = DispatcherPriority.ContextIdle)
         {
             Dispatcher.Invoke(() => { }, priority);
         }
