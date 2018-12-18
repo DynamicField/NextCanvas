@@ -21,14 +21,13 @@ namespace NextCanvas.Views
             if (owner != null) Owner = owner;
             DataContext = Data;
             PropertyChangedObject.RegisterWindow(this);
+            Loaded += (sender, args) => { DataContext = Data; };
         }
-
         public override void CloseInteraction()
         {
             Dispatcher.BeginInvoke((Action)(async () =>
             {
-                RefreshUI();
-                await Task.Delay(100);
+                await Task.Delay(25);
                 Close();
             }));
         }

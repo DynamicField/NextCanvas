@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ionic.Zip;
 using NextCanvas.Content;
@@ -20,7 +21,7 @@ namespace NextCanvas.Serialization
         {
             try
             {
-                return await Task.Run(() => OpenCompressedFileFormat(fileStream, interaction));
+                return await OpenCompressedFileFormat(fileStream, interaction);
             }
             catch (ZipException) // Try reading as json
             {
@@ -28,29 +29,34 @@ namespace NextCanvas.Serialization
             }
         }
 
-        public Document OpenCompressedFileFormat(Stream fileStream, IProgressInteraction interaction)
+        public async Task<Document> OpenCompressedFileFormat(Stream fileStream, IProgressInteraction interaction)
         {
             var taskManager = new TaskManager(interaction, new []
             {
                 new ProgressTask(10, "Reading document base data...")
             });
             interaction.ShowInteraction();
-            using (var zipFile = ZipFile.Read(fileStream))
+            return await Task.Run(() =>
             {
-                var doc = GetDocumentJson(zipFile);
-                var resourceTasks = doc.Resources.Select(r => new ProgressTask(40,
-                    $"Reading resource {r.Name} ({doc.Resources.IndexOf(r) + 1}/{doc.Resources.Count})"));
-                var progressTasks = resourceTasks as ProgressTask[] ?? resourceTasks.ToArray();
-                foreach (var task in progressTasks)
+                using (var zipFile = ZipFile.Read(fileStream))
                 {
-                    taskManager.Tasks.Add(task);
+                    var doc = GetDocumentJson(zipFile);
+                    var resourceTasks = doc.Resources.Select(r => new ProgressTask(40,
+                        $"Reading resource {r.Name} ({doc.Resources.IndexOf(r) + 1}/{doc.Resources.Count})"));
+                    var progressTasks = resourceTasks as ProgressTask[] ?? resourceTasks.ToArray();
+                    foreach (var task in progressTasks)
+                    {
+                        taskManager.Tasks.Add(task);
+                    }
+
+                    taskManager.Tasks[0].Complete();
+                    foreach (var resource in doc.Resources)
+                        ProcessDataCopying(zipFile, resource,
+                            progressTasks[doc.Resources.IndexOf(resource)]); // Copy the deeta to the resources.
+                    taskManager.WorkDone();
+                    return doc; // Yeah we're done :) dope nah?
                 }
-                taskManager.Tasks[0].Complete();
-                foreach (var resource in doc.Resources)
-                    ProcessDataCopying(zipFile, resource, progressTasks[doc.Resources.IndexOf(resource)]); // Copy the deeta to the resources.
-                taskManager.WorkDone();
-                return doc; // Yeah we're done :) dope nah?
-            }
+            });
         }
 
         private static void ProcessDataCopying(ZipFile zipFile, Resource resource, ProgressTask task = null)

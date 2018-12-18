@@ -23,5 +23,7 @@
                 OnPropertyChanged(nameof(ProgressText));
             }
         }
+
+        protected override bool IsSync => true;
     }
 }

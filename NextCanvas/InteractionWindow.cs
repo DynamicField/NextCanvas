@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using NextCanvas.Interactivity;
@@ -23,19 +24,17 @@ namespace NextCanvas
         public virtual void ShowInteraction() => ShowInteraction(true);
         public virtual void ShowInteraction(bool modal)
         {
-            if (modal)
+            Task.Run(() =>
             {
-                Dispatcher.BeginInvoke(new Action(() => ShowDialog()));
-            }
-            else
-            {
-                Dispatcher.Invoke(Show);
-            }
-        }
-
-        protected void RefreshUI(DispatcherPriority priority = DispatcherPriority.ContextIdle)
-        {
-            Dispatcher.Invoke(() => { }, priority);
+                if (modal)
+                {
+                    Dispatcher.BeginInvoke(new Action(() => ShowDialog()));
+                }
+                else
+                {
+                    Dispatcher.Invoke(Show);
+                }
+            });
         }
     }
 }

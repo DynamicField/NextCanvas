@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
@@ -20,23 +21,41 @@ namespace NextCanvas
         public event PropertyChangedEventHandler PropertyChanged;
         private static List<WindowSyncData> Contexts { get; } = new List<WindowSyncData>();
         private static readonly object IsChanging = new object();
+        protected virtual bool IsSync => false;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             lock (IsChanging)
             {
-                foreach (var context in Contexts)
+                try
                 {
-                    if (context.Dispatcher == Dispatcher.CurrentDispatcher)
+                    foreach (var context in Contexts.OrderByDescending(s => s.Dispatcher != Dispatcher.CurrentDispatcher ? 1 : 0))
                     {
-                        // Called on the same thread as the sync. No need to use the context.
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                        if (context.Dispatcher == Dispatcher.CurrentDispatcher)
+                        {
+                            // Called on the same thread as the sync. No need to use the context.
+                            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                        }
+                        else
+                        {
+                            if (IsSync && context.Window.IsLoaded)
+                            {
+                                context.Context.Send(
+                                    _ => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)),
+                                    null);
+                            }
+                            else
+                            {
+                                context.Context.Post(
+                                    _ => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)),
+                                    null);
+                            }
+                            break;
+                        }
                     }
-                    else
-                    {
-                        context.Context.Post(
-                            _ => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)),
-                            null);
-                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Weird propertychanged exception: " + e);
                 }
             }
         }

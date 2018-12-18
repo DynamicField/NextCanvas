@@ -27,7 +27,6 @@ namespace NextCanvas.Interactivity.Progress
             Tasks.CollectionChanged += TasksOnCollectionChanged;
             CurrentTask = Tasks[0];
             UpdateProgress();
-            Application.Current.Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle);
         }
 
         public ProgressTask CurrentTask { get; private set; }
@@ -63,12 +62,11 @@ namespace NextCanvas.Interactivity.Progress
         private void UpdateProgress()
         {
             if (!Tasks.Any()) return;
-            var name = Tasks.FirstOrDefault(t => !t.IsComplete || Tasks.IndexOf(t) == Tasks.Count - 1)?.ProgressText;
+            var name = CurrentTask.ProgressText;
             if (name is null) return;
             _progress.Data.ProgressText = name;
             // Let's do some quick maths
             ProcessProgress();
-            Application.Current.Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle); // update ui
         }
 
         private void ProcessProgress()
@@ -88,13 +86,17 @@ namespace NextCanvas.Interactivity.Progress
             if (e.OldItems != null)
                 foreach (var item in e.OldItems)
                     DetachEvents((ProgressTask)item);
+            UpdateProgress();
         }
 
         public void WorkDone()
         {
-            Application.Current.Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle);
-            Tasks.Clear();
+            foreach (var task in Tasks)
+            {
+                DetachEvents(task);
+            }
             Tasks.CollectionChanged -= TasksOnCollectionChanged;
+            Tasks.Clear();
             _progress.CloseInteraction();
         }
     }

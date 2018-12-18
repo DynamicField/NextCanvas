@@ -16,7 +16,7 @@ namespace NextCanvas.Serialization
     {
         public Task SaveCompressedDocument(Document document, string savePath, IProgressInteraction progress)
         {
-            return Task.Run(() => CreateZipFile(document, savePath, progress));
+            return CreateZipFile(document, savePath, progress);
         }
 
         private void AddDocumentJson(Document document, ZipFile zip)
@@ -25,7 +25,7 @@ namespace NextCanvas.Serialization
             zip.AddEntry("document.json", mainJson, Encoding.UTF8); // Fixes the things
         }
 
-        private void CreateZipFile(Document document, string savePath, IProgressInteraction progress)
+        private async Task CreateZipFile(Document document, string savePath, IProgressInteraction progress)
         {
             using (var zip = new ZipFile
                 {CompressionLevel = (CompressionLevel) SettingsManager.Settings.FileCompressionLevel})
@@ -33,16 +33,20 @@ namespace NextCanvas.Serialization
                 var taskManager = CreateSavingTasksInitialization(document, progress, out var writingTask,
                     out var resourceTasks, out var count, out var finalizingTask);
                 progress.ShowInteraction();
-                InitializeZipStructure(document, zip, writingTask);
-                if (count == 0)
+                await Task.Run(() =>
                 {
+                    InitializeZipStructure(document, zip, writingTask);
+                    if (count == 0)
+                    {
+                        FinalizeFileTask(savePath, finalizingTask, zip);
+                        taskManager.WorkDone();
+                        return;
+                    }
+
+                    ProcessResources(document, resourceTasks, zip);
                     FinalizeFileTask(savePath, finalizingTask, zip);
                     taskManager.WorkDone();
-                    return;
-                }
-                ProcessResources(document, resourceTasks, zip);
-                FinalizeFileTask(savePath, finalizingTask, zip);
-                taskManager.WorkDone();
+                });
             }
         }
 
